@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+html[data-theme="light"] #content-container {
+    background-color: #dddddd;
+    color: #000000;
+}
+
+html[data-theme="dark"] #content-container {
+    background-color: #000000;
+    color: #ffffff;
+}

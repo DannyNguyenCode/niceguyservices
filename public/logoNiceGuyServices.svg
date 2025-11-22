@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 318.03 285.03">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: #fff;
+      }
+
+      .cls-1, .cls-2 {
+        fill: none;
+        stroke-miterlimit: 10;
+        stroke-width: 8px;
+      }
+
+      .cls-2 {
+        stroke: #557ec0;
+      }
+
+      .cls-3 {
+        letter-spacing: .14em;
+      }
+
+      .cls-4 {
+        letter-spacing: .14em;
+      }
+
+      .cls-5 {
+        font-family: AGaramondPro-Semibold, 'Adobe Garamond Pro';
+        font-size: 35px;
+        font-weight: 600;
+      }
+
+      .cls-5, .cls-6 {
+        fill: #aac3e5;
+      }
+
+      .cls-6 {
+        font-family: Bahnschrift-Bold, Bahnschrift;
+        font-size: 43px;
+        font-variation-settings: 'wght' 700, 'wdth' 100;
+      }
+
+      .cls-6, .cls-7 {
+        font-weight: 700;
+      }
+
+      .cls-8 {
+        fill: #547dbf;
+      }
+
+      .cls-9 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-10 {
+        letter-spacing: .08em;
+      }
+
+      .cls-11 {
+        letter-spacing: .06em;
+      }
+
+      .cls-12 {
+        letter-spacing: .06em;
+      }
+
+      .cls-13 {
+        letter-spacing: .04em;
+      }
+
+      .cls-7 {
+        fill: #fff;
+        font-family: AGaramondPro-Bold, 'Adobe Garamond Pro';
+        font-size: 60px;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <path class="cls-2" d="M120.44,55.22v-12.8c0-7.04,6.75-12.8,15-12.8h96.31c8.25,0,15,6.75,15,15v46.27c0,8.25-3.87,15-8.59,15h-8.59"/>
+      <line class="cls-2" x1="217.76" y1="121.64" x2="232.58" y2="104.51"/>
+    </g>
+    <text class="cls-7" transform="translate(23.17 228.27)"><tspan x="0" y="0">N</tspan><tspan class="cls-9" x="44.88" y="0">IC</tspan><tspan x="106.08" y="0">E </tspan><tspan class="cls-9" x="156.06" y="0">G</tspan><tspan class="cls-12" x="198.9" y="0">U</tspan><tspan x="246.9" y="0">Y</tspan></text>
+    <text class="cls-5" transform="translate(68.66 261.6)"><tspan class="cls-3" x="0" y="0">SE</tspan><tspan class="cls-10" x="47.74" y="0">R</tspan><tspan class="cls-3" x="73.43" y="0">VICES</tspan></text>
+    <text class="cls-6" transform="translate(125.53 129.45)"><tspan class="cls-11" x="0" y="0">&lt;</tspan><tspan class="cls-13" x="20.83" y="0">/</tspan><tspan class="cls-4" x="38.82" y="0">&gt;</tspan></text>
+    <g>
+      <path class="cls-2" d="M74.76,115.84v-49.28c0-8.25,6.75-15,15-15h96.31c8.25,0,15,6.68,15,14.85v14.85"/>
+      <path class="cls-8" d="M78.8,72.18v51.73c-4.46,0-8.09-2.77-8.09-8.49v-43.25h8.09Z"/>
+    </g>
+    <path class="cls-2" d="M95.09,53.23V19c0-8.25,6.75-15,15-15h96.31c8.25,0,15,6.68,15,14.85v14.85"/>
+    <g>
+      <path class="cls-1" d="M177.23,153.54h-71.51c-8.25,0-15-6.75-15-15v-46.27c0-8.25,6.75-15,15-15h96.31c8.25,0,15,6.75,15,15v46.27c0,8.25-3.87,15-8.59,15h-8.59"/>
+      <path class="cls-1" d="M173.23,149.58v26.84c0,5.5,2.94,6.6,6.54,2.44l23.09-26.69"/>
+    </g>
+  </g>
+</svg>
