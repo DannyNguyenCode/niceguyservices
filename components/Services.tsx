@@ -403,17 +403,7 @@ export default function Services() {
                                                 variant="contained"
                                                 size="small"
                                                 color="primary"
-                                                startIcon={<MailOutlineIcon />}
-                                                href="#contact"
-                                                aria-label={`Request ${card.title}`}
-                                                sx={{ textTransform: 'none', boxShadow: 'none' }}
-                                            >
-                                                Request Quote
-                                            </Button>
-                                            <Button
-                                                variant="contained"
-                                                size="small"
-                                                color="primary"
+                                                fullWidth
                                                 endIcon={<ArrowForwardIcon />}
                                                 onClick={() => smoothScrollTo(`detail-${card.id}`)}
                                                 sx={{ textTransform: 'none', boxShadow: 'none' }}
@@ -553,7 +543,7 @@ export default function Services() {
                                                                 <CheckCircleOutlineIcon
                                                                     sx={{
                                                                         fontSize: 20,
-                                                                        color: 'primary.main',
+
                                                                         mt: '2px',
                                                                     }}
                                                                 />
