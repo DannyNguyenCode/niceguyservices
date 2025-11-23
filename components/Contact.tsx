@@ -211,7 +211,7 @@ export default function ContactPage() {
                                         borderColor: 'divider',
                                     }}
                                 >
-                                    <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 0.5 }}>
+                                    <Typography component={'h5'} variant="subtitle1" sx={{ fontWeight: 700, mb: 0.5 }}>
                                         Prefer to talk or leave a voicemail?
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
@@ -319,7 +319,7 @@ export default function ContactPage() {
 
                                         {/* Services */}
                                         <Box>
-                                            <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1 }}>
+                                            <Typography component={'h5'} variant="subtitle2" sx={{ fontWeight: 700, mb: 1 }}>
                                                 What do you need help with?
                                             </Typography>
                                             <FormGroup
