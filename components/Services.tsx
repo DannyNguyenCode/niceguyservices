@@ -339,7 +339,13 @@ export default function Services() {
                                                     }}
                                                     aria-hidden
                                                 >
-                                                    {card.icon && <card.icon fontSize="large" color="primary" />}
+                                                    {card.icon && <card.icon fontSize="large" sx={(theme) => ({
+
+                                                        color:
+                                                            theme.palette.mode === 'dark'
+                                                                ? theme.palette.primary.light
+                                                                : theme.palette.primary.main,
+                                                    })} />}
                                                 </Box>
 
                                                 <Box>
