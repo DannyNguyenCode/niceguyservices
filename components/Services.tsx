@@ -39,22 +39,22 @@ const serviceCards = [
         details: {
             headline: 'Modern, Fast, Maintainable Websites',
             description:
-                'I build full-stack websites using Next.js for optimal performance, React for rich interactivity, and MUI for a battle-tested design system. Every site is crafted with clean, documented code that any developer can maintain.',
+                'I build full-stack websites using Next.js, React, and MUI — so you get a fast, modern site that feels great to use and stays easy to maintain, even as your business grows.',
             includes: [
-                'Next.js framework for blazing-fast performance and SEO',
-                'React ecosystem with proven, maintained libraries',
-                'MUI design system with theme support',
-                'E-commerce includes complete backend setup',
-                'Mobile-first responsive design',
-                'Performance optimization & accessibility built-in',
+                'A fast, SEO-ready website that loads quickly and is friendly to Google',
+                'A layout tailored to your services instead of a generic WordPress/theme template',
+                'Mobile-first responsive design so it looks great on phones, tablets, and desktops',
+                'Clear navigation and calls-to-action that help visitors contact you or book faster',
+                'If needed, a fully wired e-commerce or booking flow that actually works for your use case',
+                'Clean, documented code that any junior or self-taught developer can safely work on later',
             ],
             process: [
-                { step: 'Discovery', desc: 'Understanding your goals and requirements' },
-                { step: 'Planning', desc: 'Architecture, tech stack, and timeline' },
-                { step: 'Design', desc: 'Wireframes and visual design approval' },
-                { step: 'Development', desc: 'Building with regular progress updates' },
-                { step: 'Testing', desc: 'Quality assurance across devices' },
-                { step: 'Launch', desc: 'Deployment and post-launch support' },
+                { step: 'Discovery', desc: 'Understanding your business, customers, and goals' },
+                { step: 'Planning', desc: 'Deciding page structure, content priorities, and tech stack' },
+                { step: 'Design', desc: 'Wireframes and visual design for your approval' },
+                { step: 'Development', desc: 'Building the site with regular check-ins and previews' },
+                { step: 'Testing', desc: 'Verifying everything works across devices and browsers' },
+                { step: 'Launch', desc: 'Deployment, DNS, SSL, and basic training on how to use it' },
             ],
         },
     },
@@ -69,23 +69,23 @@ const serviceCards = [
         ],
         description: 'User-centered design that converts visitors into customers',
         details: {
-            headline: 'Design That Drives Results',
+            headline: 'Design That Feels Good and Works Hard',
             description:
-                'I create intuitive user experiences through careful planning and iteration. From wireframes to final designs, every decision is made with your users and business goals in mind.',
+                'Good design isn’t just about looking pretty — it should make it easy for visitors to understand what you do, trust you, and take the next step.',
             includes: [
-                'User flow mapping and journey analysis',
-                'Low and high-fidelity wireframes',
-                'Modern, conversion-focused visual design',
-                'Theme variants for different contexts',
-                'Responsive design for all screen sizes',
-                'Design system documentation',
+                'Clear page layouts that guide visitors toward calling, booking, or filling out a form',
+                'User flows that make it obvious where to click next instead of leaving people confused',
+                'Modern, professional visuals that match your brand and don’t look like a generic template',
+                'Theme variants like dark mode or seasonal/holiday layouts for campaigns and promotions',
+                'Responsive designs that stay usable and readable on all screen sizes',
+                'Design system thinking, so new pages in the future still feel consistent and on-brand',
             ],
             process: [
-                { step: 'Research', desc: 'User needs and competitor analysis' },
-                { step: 'Wireframing', desc: 'Structure and user flow planning' },
-                { step: 'Design', desc: 'Visual design and component creation' },
-                { step: 'Feedback', desc: 'Review and refinement iterations' },
-                { step: 'Handoff', desc: 'Development-ready specifications' },
+                { step: 'Research', desc: 'Understanding your audience and looking at competitors' },
+                { step: 'Wireframing', desc: 'Planning structure and hierarchy before visuals' },
+                { step: 'Design', desc: 'Creating polished mockups and reusable components' },
+                { step: 'Feedback', desc: 'Iterating with your input until it feels right' },
+                { step: 'Handoff', desc: 'Delivering assets, specs, and notes for development' },
             ],
         },
     },
@@ -103,23 +103,23 @@ const serviceCards = [
         ],
         description: 'Technical excellence for reliability and performance',
         details: {
-            headline: 'Technical Excellence, Simplified',
+            headline: 'The Reliable, Technical Backbone of Your Site',
             description:
-                "I handle all the technical complexities so you don't have to. From hosting setup to performance optimization, your site will be fast, secure, and accessible.",
+                "I handle all the technical complexity behind the scenes so you don't have to think about servers, certificates, or strange error messages.",
             includes: [
-                'Hosting on Vercel/Netlify with automatic deployments',
-                'Complete DNS and SSL certificate setup',
-                'Lighthouse performance optimization (90+ scores)',
-                'WCAG/AODA accessibility compliance',
-                'Third-party API integrations and webhooks',
-                'Automated backups and security monitoring',
+                'Hosting configured on modern platforms like Vercel or Netlify for speed and reliability',
+                'Domain, DNS, and SSL setup so your site loads securely at the right address',
+                'Performance tuning to hit strong Lighthouse scores (speed, SEO, best practices)',
+                'Accessibility improvements so more people can use your site — and you meet WCAG/AODA expectations',
+                'Solid integrations with APIs, webhooks, or third-party tools your business already relies on',
+                'Automated backups and sensible security practices so you’re less likely to wake up to a broken site',
             ],
             process: [
-                { step: 'Setup', desc: 'Hosting, domain, and SSL configuration' },
-                { step: 'Optimization', desc: 'Performance and accessibility tuning' },
-                { step: 'Integration', desc: 'APIs, webhooks, and third-party services' },
-                { step: 'Security', desc: 'Backups, monitoring, and hardening' },
-                { step: 'Documentation', desc: 'Technical documentation and guides' },
+                { step: 'Setup', desc: 'Connecting your domain, DNS, and SSL to modern hosting' },
+                { step: 'Optimization', desc: 'Improving load times, caching, and performance scores' },
+                { step: 'Integration', desc: 'Connecting payment, forms, CRMs, or other external tools' },
+                { step: 'Security', desc: 'Setting up backups, monitoring, and basic hardening' },
+                { step: 'Documentation', desc: 'Recording what’s set up so future devs can understand it' },
             ],
         },
     },
@@ -135,22 +135,22 @@ const serviceCards = [
         ],
         description: 'Ongoing support to keep your site running smoothly',
         details: {
-            headline: 'Peace of Mind, Always',
+            headline: 'Peace of Mind, Without the Tech Headaches',
             description:
-                'Your website is never "done." I provide ongoing maintenance to keep it secure, fast, and up-to-date with the latest technologies and best practices.',
+                'Websites need care over time. I keep your site updated, secure, and running smoothly so you can focus on running the business.',
             includes: [
-                'Regular updates to latest framework versions',
-                'Proactive security patch management',
-                'Performance monitoring and optimization',
-                'Bug fixing and troubleshooting',
-                'Priority support with fast response times',
-                'Emergency support for critical issues',
+                'Regular updates to frameworks, libraries, and dependencies to stay current and secure',
+                'Bug fixes and troubleshooting when something breaks or doesn’t behave as expected',
+                'Security patches and monitoring to reduce the risk of downtime or hacks',
+                'Performance checks so the site doesn’t slowly get bloated and sluggish over time',
+                'Priority support for urgent issues that affect sales, leads, or bookings',
+                'Clear communication so you know what changed and why it mattered',
             ],
             process: [
-                { step: 'Monitoring', desc: 'Continuous uptime and performance tracking' },
-                { step: 'Updates', desc: 'Regular framework and dependency updates' },
-                { step: 'Security', desc: 'Security patches and vulnerability scanning' },
-                { step: 'Support', desc: 'Priority response for issues and requests' },
+                { step: 'Monitoring', desc: 'Keeping an eye on uptime, errors, and performance' },
+                { step: 'Updates', desc: 'Rolling out safe updates on a regular schedule' },
+                { step: 'Security', desc: 'Applying patches and watching for suspicious behavior' },
+                { step: 'Support', desc: 'Being available for questions and issues as they come up' },
             ],
         },
     },
@@ -166,23 +166,23 @@ const serviceCards = [
         ],
         description: 'Marketing tools to grow your business',
         details: {
-            headline: 'Marketing That Converts',
+            headline: 'Turn Website Traffic into Real Leads',
             description:
-                "I set up the marketing infrastructure you need to grow. From email services to CRM and analytics, you'll have the tools to understand and engage your audience.",
+                "A good-looking site is only part of the story. I help you set up the tools that turn visitors into calls, bookings, and repeat customers.",
             includes: [
-                'Resend email service setup (reliable, developer-friendly)',
-                'MUI contact forms with validation and automation',
-                'CRM integration for lead management',
-                'Google Analytics for traffic and conversion tracking',
-                'SEO optimization and search console setup',
-                'Marketing automation workflows',
+                'Resend or similar email service setup so contact forms reliably reach your inbox',
+                'Well-designed contact forms with validation and thank-you states that feel professional',
+                'Lightweight CRM or lead tracking setup so you don’t lose track of who reached out and when',
+                'Google Analytics and basic dashboarding so you can see where traffic comes from',
+                'SEO and Google Search Console basics so Google can properly index and understand your site',
+                'Simple automations (like confirmation emails or notifications) so you respond faster with less manual work',
             ],
             process: [
-                { step: 'Strategy', desc: 'Define goals and key metrics' },
-                { step: 'Setup', desc: 'Email, CRM, and analytics configuration' },
-                { step: 'Integration', desc: 'Connect marketing tools to your site' },
-                { step: 'Optimization', desc: 'SEO and conversion rate improvements' },
-                { step: 'Reporting', desc: 'Regular performance reports and insights' },
+                { step: 'Strategy', desc: 'Clarifying what a “lead” or “conversion” actually means for you' },
+                { step: 'Setup', desc: 'Configuring email, forms, analytics, and basic CRM tools' },
+                { step: 'Integration', desc: 'Connecting your forms and website flows into those tools' },
+                { step: 'Optimization', desc: 'Improving wording, layout, and steps to lift conversion rates' },
+                { step: 'Reporting', desc: 'Giving you simple numbers you can check without being “techy”' },
             ],
         },
     },
@@ -198,23 +198,23 @@ const serviceCards = [
         ],
         description: 'Tailored solutions for unique business needs',
         details: {
-            headline: 'Built for Your Unique Needs',
+            headline: 'Built Around Your Business, Not a Template',
             description:
-                "Sometimes off-the-shelf solutions don't cut it. I create custom applications, themes, and integrations tailored to your specific business requirements.",
+                "When your needs don’t fit into a standard template or drag-and-drop builder, I design and build custom solutions around how your business actually works.",
             includes: [
-                'Custom web applications with complex functionality',
-                'Bespoke themes and component libraries',
-                'Third-party service integrations and APIs',
-                'Campaign landing pages optimized for conversion',
-                'Microsites for special projects or events',
-                'White-label solutions for agencies',
+                'Custom web applications with logic and workflows specific to your business',
+                'Bespoke themes and components that reflect your brand instead of looking like everyone else',
+                'Deep integrations with third-party tools, CRMs, or internal systems you already use',
+                'Campaign-specific landing pages designed to maximize signups, calls, or sales',
+                'Microsites for events, launches, or side projects that need their own identity',
+                'White-label or partner-friendly builds if you’re an agency or collaborator',
             ],
             process: [
-                { step: 'Consultation', desc: 'Deep dive into your requirements' },
-                { step: 'Proposal', desc: 'Detailed scope, timeline, and pricing' },
-                { step: 'Design', desc: 'Custom UI/UX tailored to your brand' },
-                { step: 'Development', desc: 'Agile development with regular check-ins' },
-                { step: 'Delivery', desc: 'Launch with comprehensive documentation' },
+                { step: 'Consultation', desc: 'Digging into your requirements, constraints, and ideas' },
+                { step: 'Proposal', desc: 'Defining scope, milestones, and pricing for custom work' },
+                { step: 'Design', desc: 'Designing flows and visuals tailored specifically to your use case' },
+                { step: 'Development', desc: 'Implementing features in stages with ongoing feedback' },
+                { step: 'Delivery', desc: 'Launching and documenting the system so it’s maintainable long term' },
             ],
         },
     },
@@ -231,6 +231,7 @@ export default function Services() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
+
     const smoothScrollTo = (id: string) => {
         const el = document.getElementById(id);
         if (!el) return;
@@ -239,12 +240,10 @@ export default function Services() {
 
     return (
         <>
-
-
             <Box
                 component="section"
                 aria-labelledby="services-header"
-                id='services-header'
+                id="services-header"
                 sx={(theme) => ({
                     py: { xs: 6, md: 10 },
                     px: { xs: 2, md: 6 },
@@ -339,13 +338,17 @@ export default function Services() {
                                                     }}
                                                     aria-hidden
                                                 >
-                                                    {card.icon && <card.icon fontSize="large" sx={(theme) => ({
-
-                                                        color:
-                                                            theme.palette.mode === 'dark'
-                                                                ? theme.palette.primary.light
-                                                                : theme.palette.primary.main,
-                                                    })} />}
+                                                    {card.icon && (
+                                                        <card.icon
+                                                            fontSize="large"
+                                                            sx={(theme) => ({
+                                                                color:
+                                                                    theme.palette.mode === 'dark'
+                                                                        ? theme.palette.primary.light
+                                                                        : theme.palette.primary.main,
+                                                            })}
+                                                        />
+                                                    )}
                                                 </Box>
 
                                                 <Box>
@@ -410,7 +413,6 @@ export default function Services() {
                                             >
                                                 Learn More
                                             </Button>
-
                                         </Stack>
                                     </Paper>
                                 </Grid>
@@ -423,17 +425,13 @@ export default function Services() {
                         <Paper elevation={3} sx={{ borderRadius: 3, p: { xs: 2.5, md: 3 } }}>
                             <Grid container spacing={2} alignItems="center">
                                 <Grid size={{ xs: 12, md: 8 }}>
-                                    <Typography
-                                        component={'h4'}
-                                        variant="h6"
-                                        sx={{ fontWeight: 800 }}
-                                    >
+                                    <Typography component={'h4'} variant="h6" sx={{ fontWeight: 800 }}>
                                         Why choose this approach?
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
                                         Clean, documented code — built with maintainability in mind so any junior or
-                                        self-taught developer can pick it up. Predictable pricing, fast performance, and
-                                        accessibility best practices baked in.
+                                        self-taught developer can pick it up. Predictable pricing, fast performance,
+                                        and accessibility best practices baked in.
                                     </Typography>
                                 </Grid>
 
@@ -502,16 +500,10 @@ export default function Services() {
                                                         />
                                                     </Box>
                                                     <Box>
-                                                        <Typography
-                                                            variant="h5"
-                                                            sx={{ fontWeight: 800, mb: 0.5 }}
-                                                        >
+                                                        <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5 }}>
                                                             {service.title}
                                                         </Typography>
-                                                        <Typography
-                                                            variant="body2"
-                                                            color="text.secondary"
-                                                        >
+                                                        <Typography variant="body2" color="text.secondary">
                                                             {service.details.headline}
                                                         </Typography>
                                                     </Box>
@@ -526,11 +518,8 @@ export default function Services() {
                                                 </Typography>
 
                                                 <Box>
-                                                    <Typography
-                                                        variant="h6"
-                                                        sx={{ fontWeight: 700, mb: 1.5 }}
-                                                    >
-                                                        What&apos;s Included
+                                                    <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5 }}>
+                                                        What You Get
                                                     </Typography>
                                                     <Stack spacing={1.2}>
                                                         {service.details.includes.map((item, i) => (
@@ -543,7 +532,6 @@ export default function Services() {
                                                                 <CheckCircleOutlineIcon
                                                                     sx={{
                                                                         fontSize: 20,
-
                                                                         mt: '2px',
                                                                     }}
                                                                 />
@@ -565,9 +553,7 @@ export default function Services() {
                                                         color="primary"
                                                         href="#contact"
                                                         fullWidth
-                                                        endIcon={
-                                                            <MailOutlineIcon sx={{ fontSize: 18 }} />
-                                                        }
+                                                        endIcon={<MailOutlineIcon sx={{ fontSize: 18 }} />}
                                                         sx={{ textTransform: 'none' }}
                                                     >
                                                         Request Quote
@@ -688,10 +674,7 @@ export default function Services() {
                                 textAlign: 'center',
                             }}
                         >
-                            <Typography
-                                variant="h5"
-                                sx={{ fontWeight: 800, mb: 1.5 }}
-                            >
+                            <Typography variant="h5" sx={{ fontWeight: 800, mb: 1.5 }}>
                                 Ready to start your project?
                             </Typography>
                             <Typography
@@ -715,8 +698,6 @@ export default function Services() {
                     </Grid>
                 </Grid>
             </Box>
-
         </>
-
     );
 }

@@ -36,7 +36,7 @@ const Navigation = () => {
 
 
     return (
-        <AppBar position="static">
+        <AppBar position="sticky">
             <Container maxWidth="xl">
                 <Toolbar
                     disableGutters

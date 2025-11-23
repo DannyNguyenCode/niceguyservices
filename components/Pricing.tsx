@@ -15,8 +15,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import PageHeader from './PageHeader';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
-
-// NEW: icons for highlight/checklist areas
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import SecurityIcon from '@mui/icons-material/Security';
@@ -135,8 +133,6 @@ const Pricing = () => {
                                             $40/hr (minimum 2 hours per engagement).
                                         </Typography>
                                     </Box>
-
-                                    {/* NEW: “Perfect if” highlight box */}
                                     <Box
                                         mt={2}
                                         sx={{
@@ -146,7 +142,7 @@ const Pricing = () => {
                                         }}
                                     >
                                         <Stack direction="row" spacing={1.5} alignItems="flex-start">
-                                            <CheckCircleOutlineIcon fontSize="small" color="primary" />
+                                            <CheckCircleOutlineIcon fontSize="small" />
                                             <Box>
                                                 <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                                                     Perfect if you:
@@ -263,7 +259,6 @@ const Pricing = () => {
                                         </Typography>
                                     </Box>
 
-                                    {/* NEW: “Perfect if” highlight box focused on long-term relationship */}
                                     <Box
                                         mt={2}
                                         sx={{
@@ -273,7 +268,7 @@ const Pricing = () => {
                                         }}
                                     >
                                         <Stack direction="row" spacing={1.5} alignItems="flex-start">
-                                            <LoopIcon fontSize="small" color="primary" />
+                                            <LoopIcon fontSize="small" />
                                             <Box>
                                                 <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                                                     Perfect if you:
@@ -531,8 +526,6 @@ const Pricing = () => {
                                     <Typography variant="h5" fontWeight={700} color="text.primary">
                                         Why Clients Choose the Subscription Model
                                     </Typography>
-
-                                    {/* NEW: three highlight “cards” instead of one long block */}
                                     <Grid container spacing={2}>
                                         <Grid size={{ xs: 12, md: 4 }}>
                                             <Paper
@@ -611,8 +604,6 @@ const Pricing = () => {
                                             </Paper>
                                         </Grid>
                                     </Grid>
-
-                                    {/* NEW: one short “relationship” paragraph, no IP/cancel clause */}
                                     <Typography variant="body1" color="text.secondary">
                                         I do my best work with clients who want a partner, not just a one-off project. If
                                         you&apos;re serious about growing your business over the next year and beyond, the
@@ -974,7 +965,7 @@ const Pricing = () => {
                     </Stack>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseBreakdown} sx={{ textTransform: 'none' }}>
+                    <Button onClick={handleCloseBreakdown} variant='outlined' sx={{ textTransform: 'none' }}>
                         Close
                     </Button>
                     <Button

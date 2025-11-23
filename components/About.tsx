@@ -568,7 +568,7 @@ const About = () => {
                                         <Button
                                             variant="outlined"
                                             size="large"
-                                            href="contact"
+                                            href="/contact"
                                             color="primary"
                                             sx={{ textTransform: 'none', borderRadius: 2 }}
                                         >
