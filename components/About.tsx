@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -10,7 +10,71 @@ import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
 import Image from 'next/image';
 import PageHeader from './PageHeader';
+const PrivacyFriendlyMap: React.FC = () => {
+    const [loaded, setLoaded] = useState(false);
 
+    return (
+        <Box
+            sx={{
+                mt: 2,
+                borderRadius: 2,
+                overflow: 'hidden',
+                border: '1px solid',
+                borderColor: 'divider',
+                height: 220,
+                position: 'relative',
+            }}
+        >
+            {!loaded ? (
+                <Box
+                    sx={(theme) => ({
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        textAlign: 'center',
+                        px: 2,
+                        bgcolor:
+                            theme.palette.mode === 'dark'
+                                ? 'rgba(15,23,42,0.9)'
+                                : 'rgba(248,250,252,0.95)',
+                    })}
+                >
+                    <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 600 }}>
+                        Map preview is disabled for privacy
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2, maxWidth: 360 }}>
+                        Click below to load an interactive Google Map. This may allow Google to set cookies
+                        and collect usage data.
+                    </Typography>
+                    <Button
+                        variant="contained"
+                        size="small"
+                        onClick={() => setLoaded(true)}
+                        sx={{ textTransform: 'none', borderRadius: 2 }}
+                    >
+                        Load Google Map
+                    </Button>
+                </Box>
+            ) : (
+                <Box
+                    component="iframe"
+                    title="Toronto Meeting Area"
+                    src="https://www.google.com/maps?q=Toronto,%20ON&output=embed"
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                    style={{
+                        border: 0,
+                        width: '100%',
+                        height: '100%',
+                    }}
+                />
+            )}
+        </Box>
+    );
+};
 const About = () => {
     return (
         <Box
@@ -371,29 +435,9 @@ const About = () => {
                                             Just mention that you&apos;d like to meet in person when you contact me, and I&apos;ll
                                             suggest a few options and times.
                                         </Typography>
+                                        <PrivacyFriendlyMap />
 
-                                        <Box
-                                            sx={{
-                                                mt: 2,
-                                                borderRadius: 2,
-                                                overflow: 'hidden',
-                                                border: '1px solid',
-                                                borderColor: 'divider',
-                                                height: 220,
-                                            }}
-                                        >
-                                            <Box
-                                                component="iframe"
-                                                title="Toronto Meeting Area"
-                                                src="https://www.google.com/maps?q=Toronto,%20ON&output=embed"
-                                                loading="lazy"
-                                                style={{
-                                                    border: 0,
-                                                    width: '100%',
-                                                    height: '100%',
-                                                }}
-                                            />
-                                        </Box>
+
                                     </Stack>
                                 </Paper>
                             </Grid>
