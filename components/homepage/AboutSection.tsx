@@ -10,9 +10,9 @@ import Button from '@mui/material/Button';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
-const AboutSection = () => {
+const AboutSection = ({ contentHeight }: { contentHeight: number }) => {
     return (
-        <Box sx={{ py: { xs: 6, md: 10 } }}>
+        <Box sx={{ py: { xs: 6, md: 10 }, minHeight: contentHeight ? contentHeight : 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }} id="aboutSection">
             <Grid container spacing={4} alignItems="center">
                 {/* Profile picture */}
                 <Grid size={{ xs: 12, md: 5 }}>

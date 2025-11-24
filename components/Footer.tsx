@@ -20,6 +20,7 @@ const Footer = () => {
     return (
         <AppBar
             position="static"
+            id="footer"
             sx={{
                 mt: { xs: 6, md: 8 },
                 borderTop: '1px solid',

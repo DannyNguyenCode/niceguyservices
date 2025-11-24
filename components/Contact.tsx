@@ -51,6 +51,7 @@ const servicesOffered = [
     'Landing page / campaign',
     'SEO & Analytics',
     'Ongoing maintenance',
+    'Subscription plans',
     'Something custom',
 ];
 

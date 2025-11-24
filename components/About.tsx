@@ -572,7 +572,7 @@ const About = () => {
                                             color="primary"
                                             sx={{ textTransform: 'none', borderRadius: 2 }}
                                         >
-                                            Get in Contact
+                                            Try a Free Consultation
                                         </Button>
                                     </Grid>
                                 </Grid>

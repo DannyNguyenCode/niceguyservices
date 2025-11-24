@@ -40,7 +40,7 @@ const BannerCTA = () => {
                     minWidth: 180
                 }}
             >
-                Contact Me
+                Try a Free Consultation
             </Button>
         </Paper>
     );

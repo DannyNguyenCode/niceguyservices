@@ -184,7 +184,7 @@ const Pricing = () => {
                                                 aria-label="Request Quote for Lump-Sum Website Build"
                                                 sx={{ textTransform: 'none', boxShadow: 'none' }}
                                             >
-                                                Request Quote
+                                                Request A Free Quote
                                             </Button>
                                         </Stack>
                                     </Box>
@@ -310,7 +310,7 @@ const Pricing = () => {
                                                 aria-label="Request Quote for Subscription Website Plan"
                                                 sx={{ textTransform: 'none', boxShadow: 'none' }}
                                             >
-                                                Request Quote
+                                                Request A Free Quote
                                             </Button>
                                         </Stack>
                                     </Box>
@@ -619,7 +619,7 @@ const Pricing = () => {
                                         href="/contact"
                                         sx={{ textTransform: 'none', alignSelf: 'flex-start', mt: 1 }}
                                     >
-                                        Talk to Me About the Subscription Plan
+                                        See If the Monthly Plan Fits You
                                     </Button>
                                 </Stack>
                             </Paper>
@@ -772,7 +772,7 @@ const Pricing = () => {
                                                 aria-label="Request Quote for Add-Ons"
                                                 sx={{ textTransform: 'none', boxShadow: 'none' }}
                                             >
-                                                Request Quote
+                                                Request A Free Quote
                                             </Button>
                                         </Stack>
                                     </Box>
@@ -977,7 +977,7 @@ const Pricing = () => {
                         color="primary"
                         sx={{ textTransform: 'none' }}
                     >
-                        Talk About My Project
+                        See How I Can Save You Time & Money
                     </Button>
                 </DialogActions>
             </Dialog>

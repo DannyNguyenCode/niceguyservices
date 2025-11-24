@@ -36,7 +36,7 @@ const Navigation = () => {
 
 
     return (
-        <AppBar position="sticky">
+        <AppBar position="sticky" id="nav" sx={{ boxShadow: 'none' }}>
             <Container maxWidth="xl">
                 <Toolbar
                     disableGutters
@@ -49,24 +49,6 @@ const Navigation = () => {
                     <Link href="/" sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none', paddingY: 1, color: 'inherit' }}>
                         <Image width={75} height={75} src={'../logoNiceGuyServices.svg'} alt='nice guy services logo' />
                     </Link>
-
-                    {/* <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        href="#app-bar-with-responsive-menu"
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        Nice Guy Services
-                    </Typography> */}
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton

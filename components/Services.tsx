@@ -446,7 +446,7 @@ export default function Services() {
                                         color="primary"
                                         sx={{ textTransform: 'none', borderRadius: 2 }}
                                     >
-                                        Get a Proposal
+                                        Get a Free Proposal
                                     </Button>
                                 </Grid>
                             </Grid>
@@ -556,7 +556,7 @@ export default function Services() {
                                                         endIcon={<MailOutlineIcon sx={{ fontSize: 18 }} />}
                                                         sx={{ textTransform: 'none' }}
                                                     >
-                                                        Request Quote
+                                                        Request A Free Quote
                                                     </Button>
                                                 </Box>
                                             </Stack>
@@ -692,7 +692,7 @@ export default function Services() {
                                 endIcon={<ArrowForwardIcon sx={{ fontSize: 20 }} />}
                                 sx={{ textTransform: 'none' }}
                             >
-                                Get in Touch
+                                Get a Free Consultation
                             </Button>
                         </Paper>
                     </Grid>

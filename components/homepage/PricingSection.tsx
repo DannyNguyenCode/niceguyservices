@@ -290,19 +290,19 @@ const PricingSection = () => {
                                 <Stack
                                     direction={{ xs: 'column', sm: 'row' }}
                                     spacing={1.5}
-                                    sx={{ mt: 1 }}
+                                    sx={{ mt: 1, display: 'flex', justifyContent: 'space-around' }}
                                     alignItems={{ xs: 'stretch', sm: 'center' }}
                                 >
                                     <Button
                                         variant="contained"
                                         size="large"
                                         color="primary"
-                                        fullWidth
+
                                         startIcon={<MailOutlineIcon />}
                                         href="/contact"
                                         sx={{ textTransform: 'none', boxShadow: 'none' }}
                                     >
-                                        Talk about the subscription plan
+                                        See How the Monthly Plan Saves You Time
                                     </Button>
                                     <Button
                                         variant="text"
@@ -311,7 +311,7 @@ const PricingSection = () => {
                                         endIcon={<ArrowForwardIcon />}
                                         sx={{ textTransform: 'none', alignSelf: 'flex-start' }}
                                     >
-                                        Compare plans in detail
+                                        Compare Plans in Detail
                                     </Button>
                                 </Stack>
                             </Stack>

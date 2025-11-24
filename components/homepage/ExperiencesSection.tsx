@@ -25,31 +25,10 @@ const cardVariants: Variants = {
     }),
 };
 
-const ExperiencesSection = () => {
+const ExperiencesSection = ({ contentHeight }: { contentHeight: number }) => {
     return (
-        <Box sx={{ py: { xs: 6, md: 10 } }}>
-            {/* Section header */}
-            <Stack
-                spacing={1}
-                sx={{ mb: { xs: 4, md: 6 }, maxWidth: 720 }}
-            >
-                <Typography
-                    variant="overline"
-                    color="text.secondary"
-                    sx={{ letterSpacing: 2, textTransform: 'uppercase' }}
-                >
-                    Experience & Collaboration
-                </Typography>
-                <Typography variant="h4" sx={{ fontWeight: 800 }}>
-                    What I bring, and what it’s like to work together
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    A mix of frontend engineering, support experience, and long-term thinking —
-                    focused on building websites that feel good to use and easy to maintain.
-                </Typography>
-            </Stack>
-
-            <Grid container spacing={6}>
+        <Box id={'experienceSection'} sx={{ py: 1 }}>
+            <Grid container spacing={1}>
                 {/* ROW 1 — What I Bring to Your Project */}
                 <Grid size={{ xs: 12 }}>
                     <MotionPaper
@@ -59,7 +38,7 @@ const ExperiencesSection = () => {
                             borderRadius: 3,
                             border: '1px solid',
                             borderColor: 'divider',
-                            maxWidth: { xs: '100%', md: '80%' },
+                            maxWidth: { xs: '100%', md: '100%' },
                         }}
                         variants={cardVariants}
                         initial="hidden"
@@ -186,7 +165,7 @@ const ExperiencesSection = () => {
                             borderRadius: 3,
                             border: '1px solid',
                             borderColor: 'divider',
-                            maxWidth: { xs: '100%', md: '80%' },
+                            maxWidth: { xs: '100%', md: '100%' },
                             ml: { xs: 0, md: 'auto' },
                         }}
                         variants={cardVariants}
