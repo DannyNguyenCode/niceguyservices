@@ -2,366 +2,376 @@
 
 import React from 'react';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
+import Chip from '@mui/material/Chip';
+import { motion, Variants } from 'framer-motion';
+import BannerCTA from './BannerCTA';
 
-const MotionBox = motion(Box);
+const MotionPaper = motion(Paper);
 
-const benefits = [
-    'No more website headaches',
-    'Done-for-you updates',
-    'Built to grow with you',
-];
+const cardVariants: Variants = {
+    hidden: {
+        opacity: 0,
+        y: 80,
+    },
+    visible: (delay: number = 0) => ({
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.75,
+            delay,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    }),
+};
 
-const SectionHeader = ({ contentHeight }: { contentHeight: number }) => {
+const ExperiencesSection = ({ contentHeight }: { contentHeight: number }) => {
     return (
         <Box
-            component="section"
-            sx={(theme) => ({
-                position: 'relative',
+            id="experienceSection"
+            sx={{
                 minHeight: contentHeight,
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                overflow: 'hidden',
-                py: { xs: 8, md: 10 },
-                px: { xs: 2, md: 4 },
-            })}
+            }}
         >
-            {/* Decorative background elements */}
-            <Box
-                sx={{
-                    position: 'absolute',
-                    inset: 0,
-                    opacity: 0.06,
-                    backgroundSize: '18px 18px',
-                    pointerEvents: 'none',
-                }}
-            />
-            <Box
-                sx={(theme) => ({
-                    position: 'absolute',
-                    top: { xs: 40, md: 80 },
-                    right: { xs: -40, md: -20 },
-                    width: 260,
-                    height: 260,
-                    borderRadius: '50%',
-                    filter: 'blur(40px)',
-
-                    pointerEvents: 'none',
-                })}
-            />
-            <Box
-                sx={(theme) => ({
-                    position: 'absolute',
-                    bottom: { xs: -40, md: -20 },
-                    left: { xs: -40, md: -10 },
-                    width: 320,
-                    height: 320,
-                    borderRadius: '50%',
-                    filter: 'blur(50px)',
-
-                    pointerEvents: 'none',
-                })}
-            />
-
-            <Box
-                sx={{
-                    position: 'relative',
-                    maxWidth: '1200px',
-                    width: '100%',
-                    mx: 'auto',
-                    zIndex: 1,
-                }}
+            <Grid
+                container
+                spacing={1}
+                alignItems="stretch" // make items in each row same height
             >
+                {/* ROW 1 — left text card */}
                 <Grid
-                    container
-                    spacing={{ xs: 6, md: 8 }}
-                    alignItems="center"
+                    size={{ xs: 12, md: 6 }}
+                    sx={{
+                        display: 'flex',
+                    }}
                 >
-                    {/* Left: content */}
-                    <Grid size={{ xs: 12, md: 6 }}>
-                        <MotionBox
-                            initial={{ opacity: 0, y: 24 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, ease: 'easeOut' }}
-                            viewport={{ once: true, amount: 0.4 }}
-                        >
-                            <Stack spacing={3}>
-                                <Stack spacing={1.5}>
-                                    {/* Badge / tag */}
-                                    <Chip
-                                        label="Built for busy business owners"
-                                        size="small"
-                                        sx={(theme) => ({
-                                            alignSelf: 'flex-start',
-                                            borderRadius: 999,
-                                            fontSize: 11,
-                                            textTransform: 'uppercase',
-                                            letterSpacing: 1.5,
-                                            borderColor:
-                                                theme.palette.mode === 'dark'
-                                                    ? 'rgba(59,130,246,0.6)'
-                                                    : 'rgba(37,99,235,0.4)',
-                                            bgcolor:
-                                                theme.palette.mode === 'dark'
-                                                    ? 'rgba(37,99,235,0.16)'
-                                                    : 'rgba(59,130,246,0.08)',
-                                            color: 'text.primary',
-                                        })}
-                                        variant="outlined"
-                                    />
+                    <MotionPaper
+                        elevation={4}
+                        sx={{
+                            p: { xs: 3, md: 4 },
+                            borderRadius: 3,
+                            border: '1px solid',
+                            borderColor: 'divider',
+                            width: '100%',
+                            display: 'flex',     // allows content to stretch
+                        }}
+                        variants={cardVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        custom={0}
+                        viewport={{ once: true, amount: 0.25 }}
+                    >
+                        <Stack spacing={2} sx={{ flex: 1 }}>
+                            <Typography variant="h5" sx={{ fontWeight: 700 }}>
+                                What I bring to your project
+                            </Typography>
 
-                                    <Typography
-                                        variant="h3"
-                                        sx={{
-                                            fontWeight: 800,
-                                            fontSize: { xs: 32, md: 40, lg: 46 },
-                                            lineHeight: 1.15,
-                                        }}
-                                    >
-                                        Nice Guy {' '}
-                                        <Box
-                                            component="span"
-                                            sx={(theme) => ({
-                                                backgroundImage:
-                                                    theme.palette.mode === 'dark'
-                                                        ? 'linear-gradient(to right, #38bdf8, #a855f7)'
-                                                        : 'linear-gradient(to right, #2563eb, #22c55e)',
-                                                backgroundClip: 'text',
-                                                WebkitBackgroundClip: 'text',
-                                                color: 'transparent',
-                                            })}
-                                        >
-                                            Services
-                                        </Box>
+                            <Typography variant="body1" color="text.secondary">
+                                I combine hands-on frontend development with real customer-facing support
+                                experience — so the websites I build work well for both your users and your team.
+                            </Typography>
+                        </Stack>
+                    </MotionPaper>
+                </Grid>
+
+                {/* ROW 1 — right experience grid */}
+                <Grid
+                    size={{ xs: 12, md: 6 }}
+                    sx={{
+                        display: 'flex',
+                    }}
+                >
+                    <MotionPaper
+                        elevation={4}
+                        sx={{
+                            p: { xs: 3, md: 4 },
+                            borderRadius: 3,
+                            border: '1px solid',
+                            borderColor: 'divider',
+                            width: '100%',
+                            display: 'flex',
+                        }}
+                        variants={cardVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        custom={0.15}
+                        viewport={{ once: true, amount: 0.25 }}
+                    >
+                        <Grid
+                            container
+                            spacing={3}
+                            sx={{ flex: 1 }}
+                            alignItems="stretch"
+                        >
+                            {/* Column 1 */}
+                            <Grid
+                                size={{ xs: 12, md: 6 }}
+                                sx={{ display: 'flex' }}
+                            >
+                                <Stack
+                                    spacing={1.25}
+                                    sx={{
+                                        borderRadius: 2,
+                                        p: 2,
+                                        bgcolor: (theme) =>
+                                            theme.palette.mode === 'dark'
+                                                ? 'rgba(255,255,255,0.04)'
+                                                : 'rgba(0,0,0,0.02)',
+                                        height: '100%',
+                                        border: '1px solid',
+                                        borderColor: 'divider',
+                                    }}
+                                >
+                                    <Typography variant="subtitle1" fontWeight={600}>
+                                        Frontend development
                                     </Typography>
-                                    <Typography
-                                        variant="h3"
-                                        sx={{
-                                            fontWeight: 800,
-                                            fontSize: { xs: 32, md: 40, lg: 46 },
-                                            lineHeight: 1.15,
-                                        }}
-                                    >
-                                        A Web Development Company
+                                    <Typography variant="body2" color="text.secondary">
+                                        Built modern React and Next.js features at Shipvista, including secure
+                                        payment flows and real-time shipping updates.
                                     </Typography>
-                                    <Stack spacing={0.75}>
-                                        <Typography
-                                            component="h2"
-                                            variant="subtitle1"
-                                            color="text.secondary"
-                                            sx={{
-                                                textTransform: 'uppercase',
-                                                letterSpacing: 2,
-                                                fontWeight: 600,
-                                            }}
-                                        >
-                                            Your website, fully managed
-                                        </Typography>
-                                        <Typography
-                                            variant="body1"
-                                            color="text.secondary"
-                                            sx={{ maxWidth: 520 }}
-                                        >
-                                            I handle the technical side with clean code, reliable updates, and
-                                            long-term care — giving you peace of mind and more time to focus on
-                                            your business goals.
-                                        </Typography>
+
+                                    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                                        <Chip label="React" size="small" />
+                                        <Chip label="Next.js" size="small" />
+                                        <Chip label="Real-time UIs" size="small" />
                                     </Stack>
                                 </Stack>
+                            </Grid>
 
-                                {/* Benefit chips */}
-                                <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    flexWrap="wrap"
-                                    useFlexGap
-                                >
-                                    {benefits.map((benefit, index) => (
-                                        <Chip
-                                            key={benefit}
-                                            label={benefit}
-                                            size="small"
-                                            variant="outlined"
-                                            sx={{
-                                                borderRadius: 2,
-                                                px: 1.5,
-                                                py: 0.25,
-                                                fontSize: 12,
-                                                opacity: 0,
-                                                transform: 'translateY(8px)',
-                                                animation: `fadeUp 0.4s ease-out forwards`,
-                                                animationDelay: `${0.2 + index * 0.08}s`,
-                                                '@keyframes fadeUp': {
-                                                    to: {
-                                                        opacity: 1,
-                                                        transform: 'translateY(0)',
-                                                    },
-                                                },
-                                            }}
-                                        />
-                                    ))}
-                                </Stack>
-
-                                {/* CTAs */}
-                                <Stack
-                                    direction={{ xs: 'column', sm: 'row' }}
-                                    spacing={1.5}
-                                    sx={{ pt: 1 }}
-                                >
-                                    <Button
-                                        variant="contained"
-                                        size="large"
-                                        color="primary"
-                                        startIcon={<MailOutlineIcon />}
-                                        href="/contact"
-                                        sx={{
-                                            textTransform: 'none',
-                                            boxShadow: 'none',
-                                            borderRadius: 999,
-                                            px: 3,
-                                        }}
-                                    >
-                                        Try a free consultation
-                                    </Button>
-
-                                    <Button
-                                        variant="outlined"
-                                        size="large"
-                                        href="/pricing"
-                                        sx={{
-                                            textTransform: 'none',
-                                            borderRadius: 999,
-                                            px: 3,
-                                        }}
-                                    >
-                                        See pricing options
-                                    </Button>
-                                </Stack>
-                            </Stack>
-                        </MotionBox>
-                    </Grid>
-
-                    {/* Right: hero image + stat card */}
-                    <Grid size={{ xs: 12, md: 6 }} >
-                        <MotionBox
-                            initial={{ opacity: 0, y: 24 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.15 }}
-                            viewport={{ once: true, amount: 0.4 }}
-                            sx={{
-                                position: 'relative',
-                                height: { xs: 320, sm: 380, md: 600 },
-                                width: 800
-                            }}
-                        >
-                            <Box
-                                sx={(theme) => ({
-                                    position: 'relative',
-                                    width: '100%',
-                                    height: '100%',
-                                    borderRadius: 4,
-                                    overflow: 'hidden',
-                                    border: '1px solid',
-                                    borderColor: 'divider',
-                                    bgcolor: 'background.paper',
-                                })}
+                            {/* Column 2 */}
+                            <Grid
+                                size={{ xs: 12, md: 6 }}
+                                sx={{ display: 'flex' }}
                             >
-                                {/* Overlay gradient */}
-                                <Box
+                                <Stack
+                                    spacing={1.25}
                                     sx={{
-                                        position: 'absolute',
-                                        inset: 0,
-                                        zIndex: 1,
+                                        borderRadius: 2,
+                                        p: 2,
+                                        bgcolor: (theme) =>
+                                            theme.palette.mode === 'dark'
+                                                ? 'rgba(255,255,255,0.04)'
+                                                : 'rgba(0,0,0,0.02)',
+                                        height: '100%',
+                                        border: '1px solid',
+                                        borderColor: 'divider',
                                     }}
-                                />
-
-                                {/* Hero image */}
-                                <Image
-                                    src="/imageheader.png"
-                                    alt="Professional freelance web developer workspace with laptop, coffee, cat and dog."
-                                    fill
-                                    style={{ objectFit: 'cover' }}
-                                    priority
-                                />
-
-                                {/* Floating stat card */}
-                                <MotionBox
-                                    initial={{ y: 8, opacity: 0 }}
-                                    animate={{ y: [-4, 4, -4], opacity: 1 }}
-                                    transition={{
-                                        duration: 5,
-                                        repeat: Infinity,
-                                        repeatType: 'mirror',
-                                        ease: 'easeInOut',
-                                        delay: 0.4,
-                                    }}
-                                    sx={(theme) => ({
-                                        position: 'absolute',
-                                        left: { xs: 16, md: 20 },
-                                        right: { xs: 16, md: 'auto' },
-                                        bottom: { xs: 16, md: 20 },
-                                        maxWidth: 320,
-                                        zIndex: 2,
-                                    })}
                                 >
-                                    <Paper
-                                        elevation={4}
-                                        sx={{
-                                            borderRadius: 3,
-                                            p: 2,
-                                            backdropFilter: 'blur(12px)',
-                                            border: '1px solid',
-                                            borderColor: 'rgba(148,163,184,0.4)',
-                                        }}
-                                    >
-                                        <Stack direction="row" spacing={1.5} alignItems="flex-start">
-                                            <Box
-                                                sx={(theme) => ({
-                                                    p: 1,
-                                                    borderRadius: 2,
-                                                    color: 'text.primary',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                    flexShrink: 0,
-                                                })}
-                                            >
-                                                <AccessTimeIcon fontSize="small" />
-                                            </Box>
-                                            <Box>
-                                                <Typography
-                                                    variant="body2"
-                                                    sx={{ fontWeight: 700, mb: 0.3 }}
-                                                    color="text.primary"
-                                                >
-                                                    Save hours every week
-                                                </Typography>
-                                                <Typography variant="caption" color="text.primary">
-                                                    No more DIY fixes or plugin drama.
-                                                </Typography>
-                                            </Box>
-                                        </Stack>
-                                    </Paper>
-                                </MotionBox>
+                                    <Typography variant="subtitle1" fontWeight={600}>
+                                        Communication & support
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        IT Service Desk at Seneca Polytechnic taught me how to explain technical
+                                        concepts clearly and stay calm under pressure.
+                                    </Typography>
 
+                                    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                                        <Chip label="Support" size="small" />
+                                        <Chip label="Clear communication" size="small" />
+                                    </Stack>
+                                </Stack>
+                            </Grid>
 
-                            </Box>
-                        </MotionBox>
-                    </Grid>
+                            {/* Column 3 */}
+                            <Grid
+                                size={{ xs: 12, md: 6 }}
+                                sx={{ display: 'flex' }}
+                            >
+                                <Stack
+                                    spacing={1.25}
+                                    sx={{
+                                        borderRadius: 2,
+                                        p: 2,
+                                        bgcolor: (theme) =>
+                                            theme.palette.mode === 'dark'
+                                                ? 'rgba(255,255,255,0.04)'
+                                                : 'rgba(0,0,0,0.02)',
+                                        height: '100%',
+                                        border: '1px solid',
+                                        borderColor: 'divider',
+                                    }}
+                                >
+                                    <Typography variant="subtitle1" fontWeight={600}>
+                                        Foundation & mindset
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        Diploma in Computer Programming plus a people-focused background that makes
+                                        collaboration comfortable and straightforward.
+                                    </Typography>
+
+                                    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                                        <Chip label="Seneca College" size="small" />
+                                        <Chip label="Problem-solving" size="small" />
+                                    </Stack>
+                                </Stack>
+                            </Grid>
+                        </Grid>
+                    </MotionPaper>
                 </Grid>
-            </Box>
+
+                {/* ROW 2 — left text card */}
+                <Grid
+                    size={{ xs: 12, md: 6 }}
+                    sx={{
+                        display: 'flex',
+                    }}
+                >
+                    <MotionPaper
+                        elevation={4}
+                        sx={{
+                            p: { xs: 3, md: 4 },
+                            borderRadius: 3,
+                            border: '1px solid',
+                            borderColor: 'divider',
+                            width: '100%',
+                            display: 'flex',
+                        }}
+                        variants={cardVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        custom={0.3}
+                        viewport={{ once: true, amount: 0.25 }}
+                    >
+                        <Stack spacing={2.5} sx={{ flex: 1 }}>
+                            <Typography variant="h5" sx={{ fontWeight: 700 }}>
+                                What it’s like to work with me
+                            </Typography>
+
+                            <Typography variant="body1" color="text.secondary">
+                                A calm, collaborative process where you always know whatʼs happening and why —
+                                with a focus on long-term maintainability.
+                            </Typography>
+                        </Stack>
+                    </MotionPaper>
+                </Grid>
+
+                {/* ROW 2 — right detail cards */}
+                <Grid
+                    size={{ xs: 12, md: 6 }}
+                    sx={{
+                        display: 'flex',
+                    }}
+                >
+                    <MotionPaper
+                        elevation={4}
+                        sx={{
+                            p: { xs: 3, md: 4 },
+                            borderRadius: 3,
+                            border: '1px solid',
+                            borderColor: 'divider',
+                            width: '100%',
+                            display: 'flex',
+                        }}
+                        variants={cardVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        custom={0.45}
+                        viewport={{ once: true, amount: 0.25 }}
+                    >
+                        <Grid
+                            container
+                            spacing={2.5}
+                            sx={{ pt: 1, flex: 1 }}
+                            alignItems="stretch"
+                        >
+                            <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex' }}>
+                                <Stack
+                                    spacing={1}
+                                    sx={{
+                                        borderRadius: 2,
+                                        p: 2,
+                                        border: '1px solid',
+                                        borderColor: 'divider',
+                                        height: '100%',
+                                    }}
+                                >
+                                    <Typography variant="subtitle1" fontWeight={600}>
+                                        Clear, honest communication
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        You always know what’s happening, why decisions are made, and what’s
+                                        coming next — no guesswork.
+                                    </Typography>
+                                </Stack>
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex' }}>
+                                <Stack
+                                    spacing={1}
+                                    sx={{
+                                        borderRadius: 2,
+                                        p: 2,
+                                        border: '1px solid',
+                                        borderColor: 'divider',
+                                        height: '100%',
+                                    }}
+                                >
+                                    <Typography variant="subtitle1" fontWeight={600}>
+                                        Calm and easy to work with
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        My support background helps me stay patient and solution-focused, even
+                                        when things get complex.
+                                    </Typography>
+                                </Stack>
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex' }}>
+                                <Stack
+                                    spacing={1}
+                                    sx={{
+                                        borderRadius: 2,
+                                        p: 2,
+                                        border: '1px solid',
+                                        borderColor: 'divider',
+                                        height: '100%',
+                                    }}
+                                >
+                                    <Typography variant="subtitle1" fontWeight={600}>
+                                        Built for the long term
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        Clean architecture and modern best practices so your website stays easy
+                                        to update years from now.
+                                    </Typography>
+                                </Stack>
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex' }}>
+                                <Stack
+                                    spacing={1}
+                                    sx={{
+                                        borderRadius: 2,
+                                        p: 2,
+                                        border: '1px solid',
+                                        borderColor: 'divider',
+                                        height: '100%',
+                                    }}
+                                >
+                                    <Typography variant="subtitle1" fontWeight={600}>
+                                        Curiosity that moves projects forward
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        If your project needs new tools or APIs, I lean in and learn quickly —
+                                        so your solution stays modern instead of stuck.
+                                    </Typography>
+                                </Stack>
+                            </Grid>
+                        </Grid>
+                    </MotionPaper>
+                </Grid>
+
+                <Grid size={{ xs: 12 }}>
+                    <BannerCTA />
+                </Grid>
+            </Grid>
         </Box>
     );
 };
 
-export default SectionHeader;
+export default ExperiencesSection;

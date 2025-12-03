@@ -6,6 +6,6 @@ html[data-theme="light"] #content-container {
 }
 
 html[data-theme="dark"] #content-container {
-    background-color: #000000;
+    background-color: #0f172a;
     color: #ffffff;
 }

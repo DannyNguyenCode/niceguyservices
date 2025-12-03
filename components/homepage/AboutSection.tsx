@@ -12,8 +12,17 @@ import { motion } from 'framer-motion';
 
 const AboutSection = ({ contentHeight }: { contentHeight: number }) => {
     return (
-        <Box sx={{ py: { xs: 6, md: 10 }, minHeight: contentHeight ? contentHeight : 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }} id="aboutSection">
-            <Grid container spacing={4} alignItems="center">
+        <Box sx={(theme) => ({
+            py: {
+                xs: 6, md: 10
+            },
+            bgcolor:
+                theme.palette.mode === 'dark'
+                    ? '#0f172a'
+                    : '#f3f4f6',
+            display: 'flex', justifyContent: 'center'
+        })} id="aboutSection" >
+            <Grid container spacing={4} width={'90%'}>
                 {/* Profile picture */}
                 <Grid size={{ xs: 12, md: 5 }}>
                     <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}>
@@ -160,7 +169,7 @@ const AboutSection = ({ contentHeight }: { contentHeight: number }) => {
                     </motion.div>
                 </Grid>
             </Grid>
-        </Box>
+        </Box >
     );
 };
 

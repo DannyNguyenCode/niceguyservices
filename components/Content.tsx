@@ -37,7 +37,7 @@ export default function Homepage() {
         <Box sx={{ px: { xs: 2, md: 0 }, pt: { xs: 4, md: 0 } }}>
             <SectionHeader contentHeight={contentHeight} />
             <ExperiencesSection contentHeight={contentHeight} />
-            <BannerCTA />
+            {/* <BannerCTA /> */}
             <AboutSection contentHeight={contentHeight} />
             {/* <TemplatesSection /> */}
             <PricingSection />

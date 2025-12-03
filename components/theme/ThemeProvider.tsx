@@ -38,7 +38,7 @@ const ThemeProvider = ({
                         contrastText: '#ffffff',
                     },
                     background: {
-                        default: theme === 'dark' ? '#050816' : '#f3f4f6', // near-black / light grey
+                        default: theme === 'dark' ? '#0f172a' : '#f3f4f6', // near-black / light grey
                         paper: theme === 'dark' ? '#0b1120' : '#ffffff',
                     },
                     text: {

@@ -45,35 +45,52 @@ const cardVariants: Variants = {
 
 const PricingSection = () => {
     return (
-        <Box sx={{ py: { xs: 6, md: 10 } }}>
+        <Box sx={(theme) => ({
+            width: '100%', bgcolor:
+                theme.palette.mode === 'dark'
+                    ? '#0f172a'
+                    : '#f3f4f6',
+        })}
+            id='pricingSection'>
             {/* Section header */}
-            <Stack spacing={1.2} sx={{ mb: { xs: 4, md: 5 }, maxWidth: 720 }}>
-                <Typography
-                    variant="overline"
-                    color="text.secondary"
-                    sx={{ letterSpacing: 2, textTransform: 'uppercase' }}
-                >
-                    Pricing Overview
-                </Typography>
-                <Typography variant="h4" sx={{ fontWeight: 800 }}>
-                    Simple pricing, two ways to work together
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Choose between a one-time build or a fully managed subscription — both built
-                    on the same modern stack, with clear expectations and no hidden surprises.
-                </Typography>
-            </Stack>
+            <Paper
+                elevation={4}
+                sx={{
 
-            {/* Animated container (no component=Grid here) */}
+                    borderRadius: 3,
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: { xs: 'column', md: 'row' },
+                    gap: 2,
+                    mx: 12
+
+                }}
+            >
+                <Stack textAlign={'center'} spacing={1.2} sx={{ my: { xs: 4, md: 4 } }}>
+
+                    <Typography variant="h4" sx={{ fontWeight: 800 }}>
+                        Simple pricing, two ways to work together
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        Choose between a one-time build or a fully managed subscription — both built
+                        on the same modern stack, with clear expectations and no hidden surprises.
+                    </Typography>
+                </Stack>
+            </Paper>
+            {/* Animated container */}
             <MotionBox
                 variants={containerVariants}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.25 }}
+                sx={{ width: '100%', justifyContent: 'center', display: 'flex', my: 2 }}
             >
-                <Grid container spacing={3}>
+                <Grid container spacing={3} sx={{ width: '90%' }}>
                     {/* Lump-sum card */}
-                    <Grid size={{ xs: 12, md: 6 }} >
+                    <Grid size={{ xs: 12, md: 6 }}  >
                         <MotionPaper
                             elevation={4}
                             variants={cardVariants}
@@ -91,7 +108,7 @@ const PricingSection = () => {
                                 position: 'relative',
                                 background:
                                     theme.palette.mode === 'dark'
-                                        ? 'linear-gradient(135deg,#020617,#020617,#020617)'
+                                        ? '#0f172a'
                                         : 'linear-gradient(135deg,#ffffff,#f9fafb)',
                             })}
                         >
@@ -203,7 +220,7 @@ const PricingSection = () => {
                                 position: 'relative',
                                 background:
                                     theme.palette.mode === 'dark'
-                                        ? 'linear-gradient(135deg,#020617,#0b1120)'
+                                        ? '#0f172a'
                                         : 'linear-gradient(135deg,#e0f2fe,#ffffff)',
                             })}
                         >
