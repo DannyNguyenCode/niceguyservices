@@ -1,6 +1,5 @@
 import React from 'react'
 import Pricing from '@/components/Pricing'
-import PricingPage from '@/components/PricingVs'
 const page = () => {
     return (
         <Pricing />
