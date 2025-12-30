@@ -22,7 +22,7 @@ export default function SectionHeader({
                 {/* Background image */}
                 <div
                     className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: "url('/images/imageHeader.png')" }} // ← update path
+                    style={{ backgroundImage: "url('/images/imageheader.png')" }}
                 />
 
                 {/* Gradient overlay for readability */}
