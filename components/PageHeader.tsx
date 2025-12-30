@@ -1,6 +1,6 @@
-import React from 'react';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+"use client";
+
+import React from "react";
 
 interface PageHeaderProps {
   title: string;
@@ -9,38 +9,20 @@ interface PageHeaderProps {
 
 const PageHeader: React.FC<PageHeaderProps> = ({ title, subtitle }) => {
   return (
-    <Box sx={{ width: '100%', mb: { xs: 3, md: 4 } }}>
-      <Typography
-        textAlign="center"
-        py={{ xs: 2, md: 3 }}
-        variant="h3"
-        sx={{
-          fontWeight: 800,
-          letterSpacing: '.18em',
-          textTransform: 'uppercase',
-        }}
-        color='text.primary'
-      >
+    <div className="w-full mb-6 md:mb-8 text-center">
+      {/* TITLE */}
+      <h2 className="text-2xl md:text-4xl font-extrabold tracking-[0.18em] uppercase">
         {title}
-      </Typography>
+      </h2>
+
+      {/* SUBTITLE */}
       {subtitle && (
-        <Typography
-          textAlign="center"
-          variant="body1"
-          sx={{
-            maxWidth: 640,
-            mx: 'auto',
-            mt: 1,
-            color: 'text.secondary',
-          }}
-        >
+        <p className="max-w-xl mx-auto mt-2 text-sm md:text-base text-base-content/70">
           {subtitle}
-        </Typography>
+        </p>
       )}
-    </Box>
+    </div>
   );
 };
 
 export default PageHeader;
-
-

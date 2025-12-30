@@ -1,11 +1,6 @@
 @import "tailwindcss";
 
-html[data-theme="light"] #content-container {
-    background-color: #dddddd;
-    color: #000000;
-}
 
-html[data-theme="dark"] #content-container {
-    background-color: #0f172a;
-    color: #ffffff;
+@plugin "daisyui" {
+    themes: retro --default, dark --prefersdark, light;
 }

@@ -1,343 +1,156 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import LoopIcon from '@mui/icons-material/Loop';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { motion, Variants } from 'framer-motion';
+import React from "react";
 
-const MotionPaper = motion(Paper);
-const MotionBox = motion(Box);
-
-const containerVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.55,
-            ease: 'easeOut',
-            staggerChildren: 0.12,
-        },
-    },
-};
-
-const cardVariants: Variants = {
-    hidden: { opacity: 0, y: 14, scale: 0.98 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        transition: {
-            duration: 0.45,
-            ease: 'easeOut',
-        },
-    },
-};
-
-const PricingSection = () => {
+export default function PricingSection() {
     return (
-        <Box sx={(theme) => ({
-            width: '100%', bgcolor:
-                theme.palette.mode === 'dark'
-                    ? '#0f172a'
-                    : '#f3f4f6',
-        })}
-            id='pricingSection'>
-            {/* Section header */}
-            <Paper
-                elevation={4}
-                sx={{
+        <section
+            id="homepage-pricing"
+            aria-labelledby="homepage-pricing-heading"
+            className="bg-base-200 py-12 md:py-16 px-3 md:px-6"
+        >
+            <div className="mx-auto max-w-5xl">
+                {/* Header */}
+                <div className="mb-8 md:mb-10 flex flex-col items-center text-center gap-3">
+                    <span className="badge badge-outline badge-lg rounded-full font-semibold tracking-[0.08em] uppercase text-primary">
+                        Two ways to work together
+                    </span>
 
-                    borderRadius: 3,
-                    border: '1px solid',
-                    borderColor: 'divider',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: { xs: 'column', md: 'row' },
-                    gap: 2,
-                    mx: 12
+                    <h2
+                        id="homepage-pricing-heading"
+                        className="text-2xl md:text-3xl font-extrabold"
+                    >
+                        Pricing that fits where your business is today
+                    </h2>
 
-                }}
-            >
-                <Stack textAlign={'center'} spacing={1.2} sx={{ my: { xs: 4, md: 4 } }}>
+                    <p className="max-w-xl text-sm md:text-base text-base-content/80">
+                        Some owners prefer to invest up front, others want a predictable
+                        monthly cost with support included. I offer both—without hidden
+                        fees or agency bloat.
+                    </p>
+                </div>
 
-                    <Typography variant="h4" sx={{ fontWeight: 800 }}>
-                        Simple pricing, two ways to work together
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        Choose between a one-time build or a fully managed subscription — both built
-                        on the same modern stack, with clear expectations and no hidden surprises.
-                    </Typography>
-                </Stack>
-            </Paper>
-            {/* Animated container */}
-            <MotionBox
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.25 }}
-                sx={{ width: '100%', justifyContent: 'center', display: 'flex', my: 2 }}
-            >
-                <Grid container spacing={3} sx={{ width: '90%' }}>
-                    {/* Lump-sum card */}
-                    <Grid size={{ xs: 12, md: 6 }}  >
-                        <MotionPaper
-                            elevation={4}
-                            variants={cardVariants}
-                            whileHover={{
-                                y: -6,
-                                boxShadow: '0 18px 40px rgba(15,23,42,0.22)',
-                            }}
-                            transition={{ type: 'spring', stiffness: 220, damping: 22 }}
-                            sx={(theme) => ({
-                                borderRadius: 3,
-                                p: { xs: 3, md: 4 },
-                                height: '100%',
-                                border: '1px solid',
-                                borderColor: 'divider',
-                                position: 'relative',
-                                background:
-                                    theme.palette.mode === 'dark'
-                                        ? '#0f172a'
-                                        : 'linear-gradient(135deg,#ffffff,#f9fafb)',
-                            })}
-                        >
-                            <Chip
-                                label="One-time build"
-                                size="small"
-                                sx={{
-                                    position: 'absolute',
-                                    top: 16,
-                                    right: 16,
-                                    fontSize: 11,
-                                    textTransform: 'uppercase',
-                                    letterSpacing: 0.4,
-                                }}
-                            />
+                {/* Two-path cards */}
+                <div className="grid gap-4 md:gap-6 md:grid-cols-2">
+                    {/* Pay-once option */}
+                    <div>
+                        <div className="card h-full border border-base-300 bg-base-100 shadow-md">
+                            <div className="card-body gap-4">
+                                <div className="flex items-center gap-2">
+                                    <span className="badge badge-primary rounded-full font-semibold">
+                                        Pay once, own the site
+                                    </span>
+                                    <span className="text-[0.7rem] uppercase tracking-[0.12em] text-base-content/60">
+                                        Best for 3–10 page sites
+                                    </span>
+                                </div>
 
-                            <Stack spacing={2}>
-                                <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                                    Lump-Sum Website Build
-                                </Typography>
+                                <div className="space-y-1">
+                                    <h3 className="text-lg font-extrabold">
+                                        $2,000 – $5,000 one-time
+                                    </h3>
+                                    <p className="text-sm text-base-content/80">
+                                        Most local projects land in this range depending on pages,
+                                        integrations, and content needs.
+                                    </p>
+                                </div>
 
-                                <Stack direction="row" spacing={1} alignItems="baseline">
-                                    <Typography variant="h5" sx={{ fontWeight: 800 }}>
-                                        $1,600
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        one-time • up to 5 pages
-                                    </Typography>
-                                </Stack>
+                                <div className="mt-1 space-y-2">
+                                    {[
+                                        "Custom design matched to your brand",
+                                        "Built on a modern stack (Next.js + MUI)",
+                                        "You own the site and can host anywhere",
+                                    ].map((line) => (
+                                        <div
+                                            key={line}
+                                            className="flex items-start gap-2 text-sm text-base-content/80"
+                                        >
+                                            <span className="mt-1 inline-block h-3 w-3 rounded-full bg-success" />
+                                            <p>{line}</p>
+                                        </div>
+                                    ))}
+                                </div>
 
-                                <Typography variant="body2" color="text.secondary">
-                                    40 hours × $40/hr — ideal if you want a professional build with predictable
-                                    cost and already have (or plan to hire) someone to maintain the site later.
-                                </Typography>
-
-                                <Stack spacing={0.5} sx={{ mt: 1 }}>
-                                    <Typography component={'h6'} variant="subtitle2" sx={{ fontWeight: 600 }}>
-                                        You get:
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        • Responsive, modern design tailored to your brand
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        • Deployment, DNS, and SSL fully set up for you
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        • Clean, documented codebase for future developers
-                                    </Typography>
-                                </Stack>
-
-                                {/* mini “perfect if” highlight */}
-                                <Box
-                                    mt={2}
-                                    sx={{
-                                        p: 1.75,
-                                        borderRadius: 2,
-                                        bgcolor: 'action.hover',
-                                    }}
-                                >
-                                    <Stack direction="row" spacing={1.5} alignItems="flex-start">
-                                        <CheckCircleOutlineIcon fontSize="small" />
-                                        <Box>
-                                            <Typography component={'h6'} variant="subtitle2" sx={{ fontWeight: 600 }}>
-                                                Perfect if you:
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                • Prefer a clear, one-time project cost
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                • Have in-house or trusted technical help
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                • Want a solid foundation you can grow on
-                                            </Typography>
-                                        </Box>
-                                    </Stack>
-                                </Box>
-
-                                <Button
-                                    variant="outlined"
-                                    size="large"
-                                    href="/pricing"
-                                    endIcon={<ArrowForwardIcon />}
-                                    sx={{ textTransform: 'none', mt: 1, alignSelf: 'flex-start' }}
-                                >
-                                    See full pricing details
-                                </Button>
-                            </Stack>
-                        </MotionPaper>
-                    </Grid>
-
-                    {/* Subscription card */}
-                    <Grid size={{ xs: 12, md: 6 }} >
-                        <MotionPaper
-                            elevation={6}
-                            variants={cardVariants}
-                            whileHover={{
-                                y: -6,
-                                boxShadow: '0 22px 50px rgba(15,23,42,0.28)',
-                                scale: 1.01,
-                            }}
-                            transition={{ type: 'spring', stiffness: 230, damping: 24 }}
-                            sx={(theme) => ({
-                                borderRadius: 3,
-                                p: { xs: 3, md: 4 },
-                                height: '100%',
-                                border: '2px solid',
-                                borderColor: 'primary.main',
-                                position: 'relative',
-                                background:
-                                    theme.palette.mode === 'dark'
-                                        ? '#0f172a'
-                                        : 'linear-gradient(135deg,#e0f2fe,#ffffff)',
-                            })}
-                        >
-                            <Chip
-                                label="Most popular"
-                                color="primary"
-                                size="small"
-                                sx={{
-                                    position: 'absolute',
-                                    top: 16,
-                                    right: 16,
-                                    fontSize: 11,
-                                    textTransform: 'uppercase',
-                                    letterSpacing: 0.4,
-                                }}
-                            />
-
-                            <Stack spacing={2}>
-                                <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                                    Subscription Website Plan
-                                </Typography>
-
-                                <Stack spacing={0.5}>
-                                    <Stack direction="row" spacing={1} alignItems="baseline">
-                                        <Typography variant="h5" sx={{ fontWeight: 800 }}>
-                                            $140
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            / month
-                                        </Typography>
-                                    </Stack>
-                                    <Typography variant="body2" color="text.secondary">
-                                        + Hosting (~$25/month) → around $165/month, $0 upfront.
-                                    </Typography>
-                                </Stack>
-
-                                <Typography variant="body2" color="text.secondary">
-                                    Website-as-a-Service — the tech, security, and updates are fully managed for you,
-                                    so you can focus on running your business.
-                                </Typography>
-
-                                <Stack spacing={0.5} sx={{ mt: 1 }}>
-                                    <Typography component={'h6'} variant="subtitle2" sx={{ fontWeight: 600 }}>
-                                        You get:
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        • Full custom build with no upfront fee
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        • 24/7 support & unlimited small updates
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        • Security patches, backups, and uptime monitoring
-                                    </Typography>
-                                </Stack>
-
-                                <Box
-                                    mt={2}
-                                    sx={{
-                                        p: 1.75,
-                                        borderRadius: 2,
-                                        bgcolor: 'action.hover',
-                                    }}
-                                >
-                                    <Stack direction="row" spacing={1.5} alignItems="flex-start">
-                                        <LoopIcon fontSize="small" />
-                                        <Box>
-                                            <Typography component={'h6'} variant="subtitle2" sx={{ fontWeight: 600 }}>
-                                                Perfect if you:
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                • Want a long-term partner, not just a one-off project
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                • Never want to worry about tech or security
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                • Prefer a predictable monthly cost
-                                            </Typography>
-                                        </Box>
-                                    </Stack>
-                                </Box>
-
-                                <Stack
-                                    direction={{ xs: 'column', sm: 'row' }}
-                                    spacing={1.5}
-                                    sx={{ mt: 1, display: 'flex', justifyContent: 'space-around' }}
-                                    alignItems={{ xs: 'stretch', sm: 'center' }}
-                                >
-                                    <Button
-                                        variant="contained"
-                                        size="large"
-                                        color="primary"
-
-                                        startIcon={<MailOutlineIcon />}
-                                        href="/contact"
-                                        sx={{ textTransform: 'none', boxShadow: 'none' }}
-                                    >
-                                        See How the Monthly Plan Saves You Time
-                                    </Button>
-                                    <Button
-                                        variant="text"
-                                        size="medium"
+                                <div className="mt-auto pt-2">
+                                    <a
                                         href="/pricing"
-                                        endIcon={<ArrowForwardIcon />}
-                                        sx={{ textTransform: 'none', alignSelf: 'flex-start' }}
+                                        className="btn btn-primary normal-case rounded-lg font-semibold"
                                     >
-                                        Compare Plans in Detail
-                                    </Button>
-                                </Stack>
-                            </Stack>
-                        </MotionPaper>
-                    </Grid>
-                </Grid>
-            </MotionBox>
-        </Box>
-    );
-};
+                                        See full pay-once details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-export default PricingSection;
+                    {/* Subscription option */}
+                    <div>
+                        <div className="card h-full border border-primary bg-gradient-to-br from-primary/10 via-primary/20 to-primary shadow-lg">
+                            <div className="card-body gap-4">
+                                <div className="flex items-center gap-2">
+                                    <span className="badge rounded-full font-semibold bg-base-100 text-primary">
+                                        Website subscription
+                                    </span>
+                                    <span className="text-[0.7rem] uppercase tracking-[0.12em] text-base-content/70">
+                                        Best for ongoing support
+                                    </span>
+                                </div>
+
+                                <div className="space-y-1">
+                                    <h3 className="text-lg font-extrabold text-base-content">
+                                        From $150 / month
+                                    </h3>
+                                    <p className="text-sm text-base-content/90">
+                                        Lower upfront cost, with hosting, updates, and tweaks
+                                        bundled into one simple monthly fee.
+                                    </p>
+                                </div>
+
+                                <div className="mt-1 space-y-2">
+                                    {[
+                                        "Launch-ready site without a big lump sum",
+                                        "Ongoing changes, bug fixes, and small improvements",
+                                        "Ideal if you want a “done-for-you” web partner",
+                                    ].map((line) => (
+                                        <div
+                                            key={line}
+                                            className="flex items-start gap-2 text-sm text-base-content/90"
+                                        >
+                                            <span className="mt-1 inline-block h-3 w-3 rounded-full bg-base-100" />
+                                            <p>{line}</p>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="mt-auto pt-2">
+                                    <a
+                                        href="/pricing"
+                                        className="btn btn-outline normal-case rounded-lg font-semibold border-base-200 bg-base-100/90"
+                                    >
+                                        See subscription breakdown
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Helper CTA under cards */}
+                <div className="mt-8">
+                    <div className="flex flex-col items-start gap-3 rounded-2xl border border-dashed border-base-300 bg-base-100/80 p-4 md:flex-row md:items-center md:justify-between">
+                        <p className="text-sm md:text-base text-base-content/80">
+                            Not sure which option fits your situation? I can walk you through
+                            tradeoffs in a short call and give a specific quote.
+                        </p>
+                        <a
+                            href="/contact"
+                            className="btn btn-ghost text-primary normal-case font-semibold"
+                        >
+                            Talk about my project
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}

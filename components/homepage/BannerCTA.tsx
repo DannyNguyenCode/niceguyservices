@@ -1,50 +1,35 @@
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-const BannerCTA = () => {
-    return (
-        <Paper
-            elevation={4}
-            sx={{
-                p: { xs: 3, md: 4 },
-                borderRadius: 3,
-                border: '1px solid',
-                borderColor: 'divider',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                flexDirection: { xs: 'column', md: 'row' },
-                gap: 2,
-            }}
-        >
-            <Box>
-                <Typography variant="h5" sx={{ fontWeight: 800 }}>
-                    Ready to start your project?
-                </Typography>
-                <Typography variant="body2" sx={{ mt: 1 }} color="text.secondary">
-                    I’ll walk you through everything — timelines, options, and the
-                    simplest way to get a clean, modern website built.
-                </Typography>
-            </Box>
+"use client";
 
-            <Button
-                variant="outlined"
-                size="large"
-                href="/contact"
-                color="primary"
-                sx={{
-                    textTransform: 'none',
-                    borderRadius: 2,
-                    minWidth: 180
-                }}
-            >
-                Try a Free Consultation
-            </Button>
-        </Paper>
+import React from "react";
+import Link from "next/link";
+
+interface BannerCTAProps {
+    path: string;
+}
+
+const BannerCTA: React.FC<BannerCTAProps> = ({ path }) => {
+    return (
+        <div className="card bg-base-100 border border-base-300 shadow-lg">
+            <div className="card-body flex flex-col md:flex-row gap-4 md:gap-6 items-start md:items-center justify-between">
+                <div className="space-y-2">
+                    <h3 className="text-xl md:text-2xl font-extrabold">
+                        Ready to start your project?
+                    </h3>
+                    <p className="text-sm md:text-base text-base-content/80 max-w-xl">
+                        I’ll walk you through everything — timelines, options, and the
+                        simplest way to get a clean, modern website built.
+                    </p>
+                </div>
+
+                <Link
+                    href={`/${path}`}
+                    className="btn btn-outline btn-primary normal-case rounded-full min-w-[180px] self-stretch md:self-auto text-center"
+                >
+                    Free Consult
+                </Link>
+            </div>
+        </div>
     );
 };
-
 
 export default BannerCTA;

@@ -1,46 +1,57 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import ExperiencesSection from './homepage/ExperiencesSection';
-import BannerCTA from './homepage/BannerCTA';
-import AboutSection from './homepage/AboutSection';
-import TemplatesSection from './homepage/TemplatesSection';
-import PricingSection from './homepage/PricingSection';
-import Box from '@mui/material/Box';
-import SectionHeader from './homepage/SectionHeader';
+"use client";
+
+import React, { useEffect, useState, useCallback } from "react";
+import ExperiencesSection from "./homepage/ExperiencesSection";
+import BannerCTA from "./homepage/BannerCTA";
+import AboutSection from "./homepage/AboutSection";
+import TemplatesSection from "./homepage/TemplatesSection";
+import PricingSection from "./homepage/PricingSection";
+import SectionHeader from "./homepage/SectionHeader";
+
 export default function Homepage() {
-    const [contentHeight, setContentHeight] = useState<number>(0)
-    const getElementHeights = (elementId: string) => {
-        return document.getElementById(elementId)?.offsetHeight
-    }
-    useEffect(() => {
-        const navHeight: number = getElementHeights('nav') as number;
-        // const footerHeight: number = getElementHeights('footer') as number
-        const mainHeight = window.innerHeight
-        setContentHeight(mainHeight - navHeight)
+    const [contentHeight, setContentHeight] = useState<number>(0);
 
+    const getElementHeight = (elementId: string): number => {
+        if (typeof window === "undefined") return 0;
+        const el = document.getElementById(elementId);
+        return el?.offsetHeight ?? 0;
+    };
+
+    const computeContentHeight = useCallback(() => {
+        const navHeight = getElementHeight("nav");
+        const mainHeight = window.innerHeight;
+        setContentHeight(mainHeight - navHeight);
     }, []);
+
+    // On mount: compute initial height
     useEffect(() => {
-        const windowSizeHandler = () => {
-            const navHeight: number = getElementHeights('nav') as number;
-            // const footerHeight: number = getElementHeights('footer') as number
-            const mainHeight = window.innerHeight
-            setContentHeight(mainHeight - navHeight)
-        };
-        window.addEventListener("resize", windowSizeHandler);
+        computeContentHeight();
+    }, [computeContentHeight]);
 
-        return () => {
-            window.removeEventListener("resize", windowSizeHandler);
+    // Recompute on resize
+    useEffect(() => {
+        window.addEventListener("resize", computeContentHeight);
+        return () => window.removeEventListener("resize", computeContentHeight);
+    }, [computeContentHeight]);
 
-        };
-    }, [contentHeight])
     return (
-        <Box sx={{ px: { xs: 2, md: 0 }, pt: { xs: 4, md: 0 } }}>
+        <main className="px-3 md:px-0 pt-4 md:pt-0">
+            {/* Hero / section header gets dynamic height */}
             <SectionHeader contentHeight={contentHeight} />
-            <ExperiencesSection contentHeight={contentHeight} />
-            {/* <BannerCTA /> */}
-            <AboutSection contentHeight={contentHeight} />
-            {/* <TemplatesSection /> */}
-            <PricingSection />
-        </Box>
+
+            {/* Main homepage sections */}
+            <div className="space-y-12 md:space-y-16">
+                <ExperiencesSection />
+
+                {/* Uncomment if/when you want this back */}
+                {/* <BannerCTA /> */}
+
+                <AboutSection contentHeight={contentHeight} />
+
+                {/* <TemplatesSection /> */}
+
+                <PricingSection />
+            </div>
+        </main>
     );
 }

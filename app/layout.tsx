@@ -31,19 +31,18 @@ export default async function RootLayout({
   const theme = (cookieStore.get('theme')?.value ?? 'light') as 'light' | 'dark';
 
   return (
-    <html lang="en">
+    <html lang="en" data-theme={'retro'}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AppRouterCacheProvider >
-          <ThemeProvider initialTheme={theme}>
-            <Navigation />
-            <div id="content-container">
-              {children}
-            </div>
-            <Footer />
-          </ThemeProvider>
-        </AppRouterCacheProvider>
+        <ThemeProvider initialTheme={theme}>
+          <Navigation />
+          <div id="content-container">
+            {children}
+          </div>
+          <Footer />
+        </ThemeProvider>
+
       </body>
     </html>
   );

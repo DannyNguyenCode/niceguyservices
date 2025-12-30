@@ -1,133 +1,92 @@
-'use client';
-import React from 'react'
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import Link from '@mui/material/Link';
-import ThemeToggleBtn from './ThemeToggleBtn';
-import Image from 'next/image';
+"use client";
 
-const Navigation = () => {
-    const pages = [
-        { title: 'Home', link: '/' },
-        { title: 'Services', link: 'services' },
-        { title: 'Pricing', link: 'pricing' },
-        { title: 'About Us', link: 'about' },
-        { title: 'Contact', link: 'contact' }];
+import React from "react";
+import Image from "next/image";
+import ThemeToggleBtn from "./ThemeToggleBtn";
 
-    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+const pages = [
+    { title: "Home", link: "/" },
+    { title: "Services", link: "/services" },
+    { title: "Pricing", link: "/pricing" },
+    { title: "About Us", link: "/about" },
+    { title: "Contact", link: "/contact" },
+];
 
-    const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElNav(event.currentTarget);
-    };
-
-
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
-    };
-
-
-
+export default function Navigation() {
     return (
-        <AppBar position="sticky" id="nav" sx={{ boxShadow: 'none' }}>
-            <Container maxWidth="xl">
-                <Toolbar
-                    disableGutters
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                    }}
-                >
-                    <Link href="/" sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none', paddingY: 1, color: 'inherit' }}>
-                        <Image width={75} height={75} src={'../logoNiceGuyServices.svg'} alt='nice guy services logo' />
-                    </Link>
-
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleOpenNavMenu}
-                            color="inherit"
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorElNav}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'left',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                            }}
-                            open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
-                            sx={{ display: { xs: 'block', md: 'none' } }}
-                        >
-                            {pages.map((page) => (
-                                <MenuItem key={page.title} onClick={handleCloseNavMenu}>
-                                    <Link href={page.link} sx={{ textAlign: 'center' }}>{page.title}</Link>
-                                </MenuItem>
-                            ))}
-                        </Menu>
-                    </Box>
-                    <Box
-                        sx={{
-                            flexGrow: 1,
-                            display: { xs: 'none', md: 'flex' },
-                            justifyContent: 'center',
-                            gap: 6,
-                        }}
+        <div className="navbar bg-base-100 shadow-sm px-4 sticky top-0 z-50">
+            {/* LEFT — Mobile Menu + Logo */}
+            <div className="navbar-start">
+                {/* Mobile dropdown */}
+                <div className="dropdown">
+                    <div
+                        tabIndex={0}
+                        role="button"
+                        className="btn btn-ghost lg:hidden"
                     >
-                        {pages.map((page) => (
-                            <Link
-                                key={page.title}
-                                href={page.link}
-                                onClick={handleCloseNavMenu}
-                                sx={{
-                                    my: 2,
-                                    color: 'white',
-                                    display: 'block',
-                                    textDecoration: 'none',
-                                    p: 1,
-                                    '&:hover': {
-                                        color: 'text.secondary',
-                                        p: 1,
-                                        boxShadow: '1px 1px 5px rgba(0,0,0,0.2)',
-                                        backgroundColor: 'background.default',
-                                        borderRadius: 1,
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M4 6h16M4 12h16m-8 6h8"
+                            />
+                        </svg>
+                    </div>
 
-                                    },
-                                }}
-                            >
-                                {page.title}
-                            </Link>
+                    {/* Mobile Menu Items */}
+                    <ul
+                        tabIndex={0}
+                        className="menu menu-sm dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow"
+                    >
+                        {pages.map((p) => (
+                            <li key={p.title}>
+                                <a href={p.link}>{p.title}</a>
+                            </li>
                         ))}
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
-                        <ThemeToggleBtn />
-                    </Box>
-                </Toolbar>
-            </Container>
-        </AppBar>
+                        <li className="mt-1">
+                            <ThemeToggleBtn />
+                        </li>
+                    </ul>
+                </div>
+
+                {/* LOGO */}
+                <a href="/" className="btn btn-ghost px-1">
+                    <Image
+                        src="/logoNiceGuyServices.svg"
+                        width={55}
+                        height={55}
+                        alt="Nice Guy Services Logo"
+                    />
+                </a>
+            </div>
+
+            {/* CENTER — Desktop Menu */}
+            <div className="navbar-center hidden lg:flex">
+                <ul className="menu menu-horizontal gap-2 px-1 text-base">
+                    {pages.map((p) => (
+                        <li key={p.title}>
+                            <a
+                                href={p.link}
+                                className="hover:text-primary transition-colors font-medium"
+                            >
+                                {p.title}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            {/* RIGHT — Theme Toggle */}
+            <div className="navbar-end">
+                <ThemeToggleBtn />
+            </div>
+        </div>
     );
 }
-
-
-
-
-
-export default Navigation

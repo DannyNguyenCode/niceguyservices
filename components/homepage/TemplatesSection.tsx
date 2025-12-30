@@ -1,55 +1,48 @@
-'use client';
+"use client";
 
-import { Box, Grid, Paper, Typography, Button, Stack } from '@mui/material';
-import { motion } from 'framer-motion';
-
-const templateVariants = {
-    hidden: { opacity: 0, y: 30 },
-    show: (i: number) => ({
-        opacity: 1,
-        y: 0,
-        transition: { delay: i * 0.15, duration: 0.5 },
-    }),
-};
+import React from "react";
 
 export default function TemplatesSection() {
     const templates = [
-        { title: 'Basic Template', desc: 'Simple, clean, and fast. Great for small services.' },
-        { title: 'Medium Template', desc: 'More structure, more content, more flexibility.' },
-        { title: 'Complex Template', desc: 'Full layouts, advanced sections, animations, CMS-ready.' },
+        {
+            title: "Basic Template",
+            desc: "Simple, clean, and fast. Great for small services.",
+        },
+        {
+            title: "Medium Template",
+            desc: "More structure, more content, more flexibility.",
+        },
+        {
+            title: "Complex Template",
+            desc: "Full layouts, advanced sections, animations, CMS-ready.",
+        },
     ];
 
     return (
-        <Box sx={{ py: { xs: 6, md: 10 } }}>
-            <Typography variant="h4" sx={{ mb: 4, textAlign: 'center' }}>
+        <section className="py-10 md:py-16 px-4 bg-base-200">
+            {/* Header */}
+            <h2 className="text-2xl md:text-3xl font-extrabold text-center mb-8">
                 Website Templates (3 Versions)
-            </Typography>
+            </h2>
 
-            <Grid container spacing={4}>
+            {/* Templates Grid */}
+            <div className="grid gap-6 md:grid-cols-3 max-w-6xl mx-auto">
                 {templates.map((t, i) => (
-                    <Grid key={i} size={{ xs: 12, md: 4 }}>
-                        <motion.div
-                            variants={templateVariants}
-                            initial="hidden"
-                            whileInView="show"
-                            custom={i}
-                        >
-                            <Paper
-                                elevation={4}
-                                sx={{ p: 3, borderRadius: 3, height: '100%' }}
-                            >
-                                <Stack spacing={1.5}>
-                                    <Typography variant="h5">{t.title}</Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        {t.desc}
-                                    </Typography>
-                                </Stack>
-                            </Paper>
-                        </motion.div>
-                    </Grid>
-                ))}
-            </Grid>
+                    <div
+                        key={i}
+                        className="card bg-base-100 border border-base-300 shadow-lg hover:shadow-xl transition p-6"
+                    >
+                        <h3 className="text-xl font-bold mb-2">{t.title}</h3>
+                        <p className="text-sm text-base-content/70">{t.desc}</p>
 
-        </Box>
+                        <div className="mt-4">
+                            <button className="btn btn-outline btn-primary w-full">
+                                Preview
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
     );
 }
