@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import Link from "next/link";
 import type { Service } from "@/components/services/data";
 
 interface ServiceDetailsModalProps {
@@ -8,10 +9,7 @@ interface ServiceDetailsModalProps {
     onClose: () => void;
 }
 
-const ServiceDetailsModal: React.FC<ServiceDetailsModalProps> = ({
-    service,
-    onClose,
-}) => {
+const ServiceDetailsModal: React.FC<ServiceDetailsModalProps> = ({ service, onClose }) => {
     const dialogRef = useRef<HTMLDialogElement | null>(null);
 
     // Open/close the native <dialog> when `service` changes
@@ -31,34 +29,35 @@ const ServiceDetailsModal: React.FC<ServiceDetailsModalProps> = ({
         const dialog = dialogRef.current;
         if (!dialog) return;
 
-        const handleDialogClose = () => {
-            onClose();
-        };
+        const handleDialogClose = () => onClose();
 
         dialog.addEventListener("close", handleDialogClose);
         return () => dialog.removeEventListener("close", handleDialogClose);
     }, [onClose]);
 
-    // Optional: don’t render at all when there’s no active service
     if (!service) return null;
+
+    const titleId = `service-modal-title-${service.id}`;
+    const descId = `service-modal-desc-${service.id}`;
 
     return (
         <dialog
             ref={dialogRef}
-            id="service_modal"
             className="modal modal-bottom sm:modal-middle"
+            aria-labelledby={titleId}
+            aria-describedby={descId}
         >
             <div className="modal-box max-h-[90vh] overflow-y-auto space-y-5 w-11/12 max-w-5xl">
                 {/* Header */}
                 <div className="space-y-1">
-                    <h3 className="text-xl font-extrabold">{service.title}</h3>
-                    <p className="text-sm text-base-content/70">
-                        {service.details.headline}
-                    </p>
+                    <h3 id={titleId} className="text-xl font-extrabold">
+                        {service.title}
+                    </h3>
+                    <p className="text-sm text-base-content/70">{service.details.headline}</p>
                 </div>
 
                 {/* Description */}
-                <p className="text-sm text-base-content/80">
+                <p id={descId} className="text-sm text-base-content/80">
                     {service.details.description}
                 </p>
 
@@ -95,24 +94,15 @@ const ServiceDetailsModal: React.FC<ServiceDetailsModalProps> = ({
 
                 {/* CTA */}
                 <div className="pt-2">
-                    <a
-                        href="#contact"
-                        className="btn btn-secondary normal-case w-full"
-                    >
+                    <Link href="/contact" className="btn btn-secondary normal-case w-full">
                         Request a Free Quote
-                    </a>
+                    </Link>
                 </div>
 
-                {/* Close button inside modal */}
+                {/* Close button */}
                 <div className="modal-action">
                     <form method="dialog">
-                        <button
-                            className="btn"
-                            onClick={() => {
-                                // This closes the dialog and triggers the `close` event,
-                                // which in turn will call onClose() via the listener.
-                            }}
-                        >
+                        <button className="btn" type="submit">
                             Close
                         </button>
                     </form>

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 
 export default function PricingSection() {
     return (
@@ -20,13 +21,12 @@ export default function PricingSection() {
                         id="homepage-pricing-heading"
                         className="text-2xl md:text-3xl font-extrabold"
                     >
-                        Pricing that fits where your business is today
+                        Small business website pricing that fits where you are today
                     </h2>
 
                     <p className="max-w-xl text-sm md:text-base text-base-content/80">
-                        Some owners prefer to invest up front, others want a predictable
-                        monthly cost with support included. I offer both—without hidden
-                        fees or agency bloat.
+                        Some owners prefer to invest up front, others want a predictable monthly
+                        cost with support included. I offer both — without hidden fees or agency bloat.
                     </p>
                 </div>
 
@@ -46,11 +46,9 @@ export default function PricingSection() {
                                 </div>
 
                                 <div className="space-y-1">
-                                    <h3 className="text-lg font-extrabold">
-                                        $2,000 – $5,000 one-time
-                                    </h3>
+                                    <h3 className="text-lg font-extrabold">$2,000 – $5,000 one-time</h3>
                                     <p className="text-sm text-base-content/80">
-                                        Most local projects land in this range depending on pages,
+                                        Most small business projects land in this range depending on pages,
                                         integrations, and content needs.
                                     </p>
                                 </div>
@@ -72,12 +70,13 @@ export default function PricingSection() {
                                 </div>
 
                                 <div className="mt-auto pt-2">
-                                    <a
+                                    <Link
                                         href="/pricing"
+                                        aria-label="See full one-time website pricing details"
                                         className="btn btn-primary normal-case rounded-lg font-semibold"
                                     >
                                         See full pay-once details
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -101,8 +100,8 @@ export default function PricingSection() {
                                         From $150 / month
                                     </h3>
                                     <p className="text-sm text-base-content/90">
-                                        Lower upfront cost, with hosting, updates, and tweaks
-                                        bundled into one simple monthly fee.
+                                        Lower upfront cost, with hosting, updates, and tweaks bundled into one
+                                        simple monthly fee.
                                     </p>
                                 </div>
 
@@ -110,7 +109,7 @@ export default function PricingSection() {
                                     {[
                                         "Launch-ready site without a big lump sum",
                                         "Ongoing changes, bug fixes, and small improvements",
-                                        "Ideal if you want a “done-for-you” web partner",
+                                        "Ideal if you want a done-for-you web partner",
                                     ].map((line) => (
                                         <div
                                             key={line}
@@ -123,12 +122,13 @@ export default function PricingSection() {
                                 </div>
 
                                 <div className="mt-auto pt-2">
-                                    <a
+                                    <Link
                                         href="/pricing"
+                                        aria-label="See website subscription pricing breakdown"
                                         className="btn btn-outline normal-case rounded-lg font-semibold border-base-200 bg-base-100/90"
                                     >
                                         See subscription breakdown
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -139,15 +139,16 @@ export default function PricingSection() {
                 <div className="mt-8">
                     <div className="flex flex-col items-start gap-3 rounded-2xl border border-dashed border-base-300 bg-base-100/80 p-4 md:flex-row md:items-center md:justify-between">
                         <p className="text-sm md:text-base text-base-content/80">
-                            Not sure which option fits your situation? I can walk you through
-                            tradeoffs in a short call and give a specific quote.
+                            Not sure which option fits your situation? I can walk you through the tradeoffs
+                            in a short call and give a specific quote.
                         </p>
-                        <a
+                        <Link
                             href="/contact"
+                            aria-label="Contact Nice Guy Services to discuss your website project"
                             className="btn btn-ghost text-primary normal-case font-semibold"
                         >
                             Talk about my project
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import ThemeToggleBtn from "./ThemeToggleBtn";
 
 const pages = [
@@ -10,6 +11,7 @@ const pages = [
     { title: "Pricing", link: "/pricing" },
     { title: "About Us", link: "/about" },
     { title: "Contact", link: "/contact" },
+    { title: "Resources", link: "/resources" },
 ];
 
 export default function Navigation() {
@@ -23,6 +25,7 @@ export default function Navigation() {
                         tabIndex={0}
                         role="button"
                         className="btn btn-ghost lg:hidden"
+                        aria-label="Open menu"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +50,7 @@ export default function Navigation() {
                     >
                         {pages.map((p) => (
                             <li key={p.title}>
-                                <a href={p.link}>{p.title}</a>
+                                <Link href={p.link}>{p.title}</Link>
                             </li>
                         ))}
                         <li className="mt-1">
@@ -57,14 +60,15 @@ export default function Navigation() {
                 </div>
 
                 {/* LOGO */}
-                <a href="/" className="btn btn-ghost px-1">
+                <Link href="/" className="btn btn-ghost px-1" aria-label="Go to homepage">
                     <Image
                         src="/logoNiceGuyServices.svg"
                         width={55}
                         height={55}
                         alt="Nice Guy Services Logo"
+                        priority
                     />
-                </a>
+                </Link>
             </div>
 
             {/* CENTER — Desktop Menu */}
@@ -72,12 +76,12 @@ export default function Navigation() {
                 <ul className="menu menu-horizontal gap-2 px-1 text-base">
                     {pages.map((p) => (
                         <li key={p.title}>
-                            <a
+                            <Link
                                 href={p.link}
                                 className="hover:text-primary transition-colors font-medium"
                             >
                                 {p.title}
-                            </a>
+                            </Link>
                         </li>
                     ))}
                 </ul>

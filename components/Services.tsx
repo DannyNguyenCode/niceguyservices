@@ -1,51 +1,12 @@
-"use client";
+import type { Metadata } from "next";
+import ServicesClient from "@/components/services/ServicesPage";
 
-import React, { useState } from "react";
-import PageHeader from "./PageHeader";
-import {
-    serviceCards,
-    type Service,
-} from "./services/data";
-import ServiceCardGrid from "./services/ServiceCardGrid";
-import ScrollToTop from "./services/ScrollToTop";
-import FinalCTA from "./services/FinalCTA";
-import ServiceDetailModal from "./services/ServiceDetailModal";
-
-const Services: React.FC = () => {
-    const [activeService, setActiveService] = useState<Service | null>(null);
-
-    const handleLearnMore = (service: Service) => {
-        setActiveService(service);
-    };
-
-    const handleCloseModal = () => {
-        setActiveService(null);
-    };
-
-    return (
-        <section className="bg-base-200 py-12 md:py-16 px-4">
-            <div className="mx-auto max-w-6xl space-y-10">
-                <PageHeader
-                    title="Services"
-                    subtitle="Modern, maintainable websites and engineering designed for growth."
-                />
-
-                <ServiceCardGrid
-                    cards={serviceCards}
-                    onLearnMore={handleLearnMore}
-                />
-
-                <FinalCTA />
-            </div>
-
-            <ServiceDetailModal
-                service={activeService}
-                onClose={handleCloseModal}
-            />
-
-            <ScrollToTop />
-        </section>
-    );
+export const metadata: Metadata = {
+    title: "Website Design Services for Small Businesses in Toronto | Nice Guy Services",
+    description:
+        "Explore Nice Guy Services: custom website builds, UX/UI design, performance & technical SEO, and ongoing maintenance for small businesses in Toronto and the GTA.",
 };
 
-export default Services;
+export default function ServicesPage() {
+    return <ServicesClient />;
+}

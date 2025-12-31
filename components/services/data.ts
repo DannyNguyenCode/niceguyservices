@@ -1,6 +1,3 @@
-// services/data.ts
-// services/data.ts
-
 export interface ServiceProcessStep {
     step: string;
     desc: string;
@@ -19,30 +16,32 @@ export interface Service {
     bullets: string[];
     description: string;
     details: ServiceDetails;
+    featured?: boolean; // ✅ add this
 }
 
 export const serviceCards: Service[] = [
     {
         id: "builds",
-        title: "Website Builds",
+        title: "Custom Website Builds",
+        featured: true,
         bullets: [
             "Full websites (5+ pages)",
             "Landing pages & campaigns",
             "E-commerce websites",
             "Legacy → modern migrations",
         ],
-        description: "Complete website solutions from concept to launch.",
+        description: "Custom website builds from concept to launch — fast, modern, and SEO-ready.",
         details: {
             headline: "Modern, fast, maintainable websites.",
             description:
-                "I build full-stack websites using frameworks like Next.js and React so you get a fast, modern site that feels great to use and stays easy to maintain as your business grows.",
+                "I build websites using frameworks like Next.js and React so you get a fast, modern site that feels great to use and stays easy to maintain as your business grows.",
             includes: [
                 "A fast, SEO-ready website that loads quickly and feels modern",
                 "A layout tailored to your services instead of a generic template",
                 "Mobile-first responsive design across phones, tablets, and desktops",
                 "Clear navigation and calls-to-action that help visitors call or book",
                 "If needed, a fully wired e-commerce or booking flow that actually works",
-                "Clean, documented code that any junior or self-taught dev can work on later",
+                "Clean, documented code that’s easy for future developers to maintain",
             ],
             process: [
                 { step: "Discovery", desc: "Understanding your business, customers, and goals." },
@@ -57,16 +56,13 @@ export const serviceCards: Service[] = [
     {
         id: "design",
         title: "UX / UI & Design",
-        bullets: [
-            "User flows & wireframes",
-            "Modern visual redesigns",
-            "Theme variants (dark, seasonal)",
-        ],
-        description: "User-centered design that converts visitors into customers.",
+        featured: true,
+        bullets: ["User flows & wireframes", "Modern visual redesigns", "Theme variants (dark, seasonal)"],
+        description: "User-centered design that builds trust and converts visitors into customers.",
         details: {
             headline: "Design that feels good and works hard.",
             description:
-                "Good design isn’t just about looking nice—it should make it easy for visitors to understand what you do, trust you, and take the next step.",
+                "Good design isn’t just about looking nice — it should make it easy for visitors to understand what you do, trust you, and take the next step.",
             includes: [
                 "Clear page layouts that guide visitors toward calling, booking, or filling out a form",
                 "User flows that make it obvious where to click next instead of leaving people confused",
@@ -86,14 +82,10 @@ export const serviceCards: Service[] = [
     },
     {
         id: "technical",
-        title: "Technical Services",
-        bullets: [
-            "Hosting (Vercel / Netlify)",
-            "DNS, SSL, domain setup",
-            "Performance & accessibility",
-            "API integrations & webhooks",
-        ],
-        description: "Technical excellence for reliability and performance.",
+        title: "Performance & Technical SEO",
+        featured: true,
+        bullets: ["Hosting (Vercel / Netlify)", "DNS, SSL, domain setup", "Performance & accessibility", "API integrations & webhooks"],
+        description: "Speed, reliability, and technical setup that supports SEO and conversions.",
         details: {
             headline: "The reliable, technical backbone of your site.",
             description:
@@ -118,13 +110,8 @@ export const serviceCards: Service[] = [
     {
         id: "maintenance",
         title: "Maintenance & Support",
-        bullets: [
-            "Updates & latest versions",
-            "Troubleshooting & debugging",
-            "Security patches & monitoring",
-            "Priority & emergency response",
-        ],
-        description: "Ongoing support to keep your site running smoothly.",
+        bullets: ["Updates & latest versions", "Troubleshooting & debugging", "Security patches & monitoring", "Priority & emergency response"],
+        description: "Ongoing support to keep your website fast, secure, and running smoothly.",
         details: {
             headline: "Peace of mind, without the tech headaches.",
             description:
@@ -148,13 +135,8 @@ export const serviceCards: Service[] = [
     {
         id: "growth",
         title: "Email, Marketing & Growth",
-        bullets: [
-            "Email service setup",
-            "Contact forms & automations",
-            "Lightweight CRM setup",
-            "SEO & analytics setup",
-        ],
-        description: "Marketing tools to grow your business.",
+        bullets: ["Email service setup", "Contact forms & automations", "Lightweight CRM setup", "SEO & analytics setup"],
+        description: "Simple tools that turn small business website traffic into real leads.",
         details: {
             headline: "Turn website traffic into real leads.",
             description:
@@ -179,13 +161,8 @@ export const serviceCards: Service[] = [
     {
         id: "custom",
         title: "Custom & Premium",
-        bullets: [
-            "Custom websites & applications",
-            "Custom themes & components",
-            "Third-party integrations",
-            "Campaign landings & microsites",
-        ],
-        description: "Tailored solutions for unique business needs.",
+        bullets: ["Custom websites & applications", "Custom themes & components", "Third-party integrations", "Campaign landings & microsites"],
+        description: "Tailored solutions when templates don’t fit your business.",
         details: {
             headline: "Built around your business, not a template.",
             description:
