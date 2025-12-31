@@ -49,13 +49,11 @@ const ServiceCardGrid: React.FC<ServiceCardGridProps> = ({
 
                             {/* CTA */}
                             {variant === "link" ? (
-                                <Link
-                                    href={href}
-                                    className="btn btn-primary btn-sm normal-case mt-2"
-                                    aria-label={`Learn more about ${card.title}`}
-                                >
-                                    Learn more
+                                <Link href={href} className="btn btn-primary btn-sm normal-case mt-2">
+                                    <span aria-hidden="true">Learn more</span>
+                                    <span className="sr-only"> about {card.title} web development service</span>
                                 </Link>
+
                             ) : (
                                 <button
                                     type="button"
