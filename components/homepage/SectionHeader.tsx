@@ -8,7 +8,7 @@ import {
     ChartBarIcon,
     ArrowRightIcon,
 } from "@heroicons/react/24/outline";
-
+import Image from "next/image";
 export default function SectionHeader({ contentHeight }: { contentHeight: number }) {
     return (
         <section className="bg-base-100">
@@ -16,10 +16,19 @@ export default function SectionHeader({ contentHeight }: { contentHeight: number
             <div className="relative w-full min-h-80 md:min-h-[420px] lg:min-h-[480px] overflow-hidden">
                 {/* Background image */}
                 <div
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: "url('/images/imageheader.png')" }}
-                    aria-hidden="true"
-                />
+                    className="absolute inset-0"
+
+                >
+                    <Image
+                        src="/images/imageheader.png"
+                        alt="Custom web development services by Nice Guy Services"
+                        fill
+                        priority
+                        fetchPriority="high"
+                        sizes="100vw"
+                        className="object-cover object-center"
+                    />
+                </div>
 
                 {/* Gradient overlay for readability */}
                 <div
@@ -33,7 +42,7 @@ export default function SectionHeader({ contentHeight }: { contentHeight: number
                         Built for busy small business owners
                     </div>
 
-                    {/* ✅ H1 should describe what you do + who it's for + where (local SEO) */}
+                    {/* H1 should describe what you do + who it's for + where (local SEO) */}
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-primary-content drop-shadow-sm">
                         Custom Websites for Small Businesses in Toronto
                     </h1>
@@ -82,7 +91,7 @@ export default function SectionHeader({ contentHeight }: { contentHeight: number
                         </div>
                     </div>
 
-                    {/* Primary CTAs (✅ use Links for internal SEO + navigation) */}
+                    {/* Primary CTAs  */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-6">
                         <Link
                             href="/contact"

@@ -84,7 +84,7 @@ export default function PricingSection() {
 
                     {/* Subscription option */}
                     <div>
-                        <div className="card h-full border border-primary bg-gradient-to-br from-primary/10 via-primary/20 to-primary shadow-lg">
+                        <div className="card h-full border border-primary bg-linear-to-br from-primary/10 via-primary/20 to-primary shadow-lg">
                             <div className="card-body gap-4">
                                 <div className="flex items-center gap-2">
                                     <span className="badge rounded-full font-semibold bg-base-100 text-primary">
