@@ -13,7 +13,7 @@ export default function PricingSection() {
             <div className="mx-auto max-w-5xl">
                 {/* Header */}
                 <div className="mb-8 md:mb-10 flex flex-col items-center text-center gap-3">
-                    <span className="badge badge-outline badge-lg rounded-full font-semibold tracking-[0.08em] uppercase text-primary">
+                    <span className="badge badge-lg rounded-full font-semibold tracking-[0.08em] uppercase text-primary">
                         Two ways to work together
                     </span>
 

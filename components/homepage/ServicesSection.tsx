@@ -17,7 +17,7 @@ export default function ServicesSection() {
             <div className="mx-auto max-w-6xl space-y-8">
                 <div className="text-center">
                     <div className="inline-flex justify-center">
-                        <span className="badge badge-outline badge-lg rounded-full font-semibold tracking-[0.08em] uppercase text-primary">
+                        <span className="badge badge-lg rounded-full font-semibold tracking-[0.08em] uppercase text-primary">
                             Services
                         </span>
                     </div>
