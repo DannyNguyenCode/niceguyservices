@@ -6,7 +6,7 @@ export default function FinalCTA() {
                 <h3 className="text-xl md:text-2xl font-extrabold">
                     Ready to start your project?
                 </h3>
-                <p className="text-base-content/80 max-w-xl mx-auto text-sm md:text-base">
+                <p className="text-base-content  max-w-xl mx-auto text-sm md:text-base">
                     Let’s discuss your needs and figure out the right solution for your business.
                 </p>
                 <a href="#contact" className="btn btn-secondary rounded-full normal-case">

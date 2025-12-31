@@ -50,11 +50,11 @@ const ThankYouModal: React.FC<ThankYouModalProps> = ({ open, onClose }) => {
                 >
                     Thank you for reaching out
                 </h3>
-                <p className="text-sm text-base-content/80 mb-2">
+                <p className="text-sm text-base-content  mb-2">
                     I&apos;ve received your message and will get back to you within 24
                     hours.
                 </p>
-                <p className="text-sm text-base-content/70">
+                <p className="text-sm text-base-content">
                     If you requested a meeting, I&apos;ll include a few available time
                     slots in my reply and a link where you can pick what works best for
                     you.

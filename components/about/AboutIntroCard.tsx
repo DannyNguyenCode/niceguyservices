@@ -26,13 +26,13 @@ const AboutIntroCard: React.FC = () => {
                         Who you&apos;ll be working with
                     </h4>
 
-                    <p className="text-sm md:text-base text-base-content/80">
+                    <p className="text-sm md:text-base text-base-content ">
                         Hi, I&apos;m Danny — a Toronto-based web developer who builds clean,
                         modern websites that are easy to maintain and simple to scale as
                         your business grows.
                     </p>
 
-                    <p className="text-sm md:text-base text-base-content/80">
+                    <p className="text-sm md:text-base text-base-content ">
                         Outside of work, I&apos;m a big animal lover — I share my home with{" "}
                         <strong>two cats and a dog</strong> that I care for and love. I
                         enjoy playing games with friends and genuinely like talking to
@@ -41,7 +41,7 @@ const AboutIntroCard: React.FC = () => {
                         something that immediately engages me.
                     </p>
 
-                    <p className="text-sm md:text-base text-base-content/80">
+                    <p className="text-sm md:text-base text-base-content ">
                         I&apos;ve spent years in both customer-facing roles and technical
                         roles, which means I&apos;m just as comfortable explaining options
                         in plain language as I am digging into code. Talking to me is easy —

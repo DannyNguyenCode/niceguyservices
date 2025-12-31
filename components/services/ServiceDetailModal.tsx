@@ -53,11 +53,11 @@ const ServiceDetailsModal: React.FC<ServiceDetailsModalProps> = ({ service, onCl
                     <h3 id={titleId} className="text-xl font-extrabold">
                         {service.title}
                     </h3>
-                    <p className="text-sm text-base-content/70">{service.details.headline}</p>
+                    <p className="text-sm text-base-content">{service.details.headline}</p>
                 </div>
 
                 {/* Description */}
-                <p id={descId} className="text-sm text-base-content/80">
+                <p id={descId} className="text-sm text-base-content ">
                     {service.details.description}
                 </p>
 
@@ -85,7 +85,7 @@ const ServiceDetailsModal: React.FC<ServiceDetailsModalProps> = ({ service, onCl
                                 </div>
                                 <div>
                                     <p className="font-semibold">{step.step}</p>
-                                    <p className="text-xs text-base-content/70">{step.desc}</p>
+                                    <p className="text-xs text-base-content">{step.desc}</p>
                                 </div>
                             </li>
                         ))}

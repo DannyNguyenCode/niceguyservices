@@ -36,7 +36,7 @@ const ServiceCardGrid: React.FC<ServiceCardGridProps> = ({
                         <div className="card-body gap-3">
                             <h3 className="card-title text-lg font-extrabold">{card.title}</h3>
 
-                            <p className="text-sm text-base-content/80">{card.description}</p>
+                            <p className="text-sm text-base-content ">{card.description}</p>
 
                             <ul className="mt-1 space-y-1 text-sm">
                                 {card.bullets.map((b, i) => (

@@ -33,7 +33,7 @@ export default function TemplatesSection() {
                         className="card bg-base-100 border border-base-300 shadow-lg hover:shadow-xl transition p-6"
                     >
                         <h3 className="text-xl font-bold mb-2">{t.title}</h3>
-                        <p className="text-sm text-base-content/70">{t.desc}</p>
+                        <p className="text-sm text-base-content">{t.desc}</p>
 
                         <div className="mt-4">
                             <button className="btn btn-outline btn-primary w-full">

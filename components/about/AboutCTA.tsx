@@ -11,7 +11,7 @@ const AboutCTA: React.FC = () => {
                     <h4 className="text-lg md:text-xl font-extrabold">
                         Want to talk through your project?
                     </h4>
-                    <p className="text-sm md:text-base text-base-content/80 mt-1">
+                    <p className="text-sm md:text-base text-base-content  mt-1">
                         Reach out for a free consultation. We can start over email, hop on a
                         call, or — if you&apos;re local to Toronto — set up a quick
                         in-person chat.

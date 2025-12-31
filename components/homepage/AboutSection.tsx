@@ -32,7 +32,7 @@ const AboutSection: React.FC<AboutSectionProps> = () => {
 
                         <div className="space-y-1">
                             <p className="text-xl font-bold">Gia Bao (Danny) Nguyen</p>
-                            <p className="text-sm text-base-content/70">
+                            <p className="text-sm text-base-content">
                                 Web Developer • Frontend &amp; Full-Stack
                             </p>
                         </div>
@@ -57,11 +57,11 @@ const AboutSection: React.FC<AboutSectionProps> = () => {
                         </h2>
 
                         {/* ✅ Subheading (H3) for better hierarchy */}
-                        <h3 className="text-lg font-semibold text-base-content/80">
+                        <h3 className="text-lg font-semibold text-base-content ">
                             A developer who builds fast, maintainable websites for small businesses
                         </h3>
 
-                        <div className="space-y-3 text-sm md:text-base text-base-content/80">
+                        <div className="space-y-3 text-sm md:text-base text-base-content ">
                             <p>
                                 Hi, I&apos;m Danny — a Toronto-based web developer who builds clean, modern
                                 websites that are easy to maintain and simple to scale as your business
@@ -83,7 +83,7 @@ const AboutSection: React.FC<AboutSectionProps> = () => {
                             </p>
                         </div>
 
-                        <ul className="mt-1 space-y-1 text-sm text-base-content/80">
+                        <ul className="mt-1 space-y-1 text-sm text-base-content ">
                             <li>• Customer service &amp; IT support background</li>
                             <li>• Frontend &amp; full-stack project experience</li>
                             <li>• Patient, detail-oriented, and easy to work with</li>

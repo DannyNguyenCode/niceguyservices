@@ -9,7 +9,7 @@ export default function ServiceCard({ card, onClick }: any) {
             onClick={onClick}>
             <div className="card-body gap-3">
                 <h3 className="card-title text-lg font-extrabold">{card.title}</h3>
-                <p className="text-sm text-base-content/80">{card.short}</p>
+                <p className="text-sm text-base-content ">{card.short}</p>
 
                 <ul className="mt-1 space-y-1 text-sm">
                     {card.bullets.map((b: string, i: number) => (
@@ -20,7 +20,7 @@ export default function ServiceCard({ card, onClick }: any) {
                     ))}
                 </ul>
 
-                <p className="text-xs text-base-content/70 font-semibold">
+                <p className="text-xs text-base-content font-semibold">
                     {card.headline}
                 </p>
 

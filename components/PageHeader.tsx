@@ -17,7 +17,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, subtitle }) => {
 
       {/* SUBTITLE */}
       {subtitle && (
-        <p className="max-w-xl mx-auto mt-2 text-sm md:text-base text-base-content/70">
+        <p className="max-w-xl mx-auto mt-2 text-sm md:text-base text-base-content">
           {subtitle}
         </p>
       )}

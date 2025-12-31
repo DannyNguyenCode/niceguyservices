@@ -54,11 +54,11 @@ const CostBreakdownModal: React.FC<CostBreakdownModalProps> = ({
                     Full Cost Breakdown
                 </h3>
 
-                <p className="text-sm opacity-80 mb-3">
+                <p className="text-sm   mb-3">
                     Why a $50 template usually becomes thousands after setup.
                 </p>
 
-                <ul className="list-disc ml-5 text-sm opacity-80 space-y-1">
+                <ul className="list-disc ml-5 text-sm   space-y-1">
                     <li>Template purchase: ~$50</li>
                     <li>Developer customization: $600–$1,600</li>
                     <li>Premium plugins: $200–$400/year</li>

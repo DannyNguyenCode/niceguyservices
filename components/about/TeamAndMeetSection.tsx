@@ -12,7 +12,7 @@ const TeamAndMeetSection: React.FC = () => {
             <div className="card bg-base-100 border border-base-300 shadow-md h-full">
                 <div className="card-body space-y-4">
                     <h5 className="text-lg font-bold">Who&apos;s on the team?</h5>
-                    <p className="text-sm text-base-content/80">
+                    <p className="text-sm text-base-content ">
                         Right now, you&apos;ll be working directly with me — no account
                         managers, no hand-offs, no getting lost in a big agency pipeline. As
                         the work grows, the process and codebase are set up so additional
@@ -31,15 +31,15 @@ const TeamAndMeetSection: React.FC = () => {
                         </div>
                         <div className="space-y-1 text-sm">
                             <p className="font-semibold">Gia Bao (Danny) Nguyen</p>
-                            <p className="text-base-content/80">
+                            <p className="text-base-content ">
                                 Web Developer • Frontend &amp; Full-Stack
                             </p>
-                            <p className="text-base-content/80">
+                            <p className="text-base-content ">
                                 Diploma in Computer Programming from Seneca College. Experience
                                 in customer service, IT support, and front-end development for a
                                 shipping platform.
                             </p>
-                            <p className="text-base-content/80">
+                            <p className="text-base-content ">
                                 Loves: two cats, one dog, gaming with friends, learning new
                                 tech, and meeting new people.
                             </p>
@@ -76,13 +76,13 @@ const TeamAndMeetSection: React.FC = () => {
             <div className="card bg-base-100 border border-base-300 shadow-md h-full">
                 <div className="card-body space-y-3">
                     <h5 className="text-lg font-bold">Meet in person (Toronto)</h5>
-                    <p className="text-sm text-base-content/80">
+                    <p className="text-sm text-base-content ">
                         If you&apos;re local to the GTA, I&apos;m happy to meet in person
                         for a project kickoff or strategy session. We can pick a convenient
                         café or public workspace in Toronto and walk through your goals
                         together.
                     </p>
-                    <p className="text-sm text-base-content/80">
+                    <p className="text-sm text-base-content ">
                         Just mention that you&apos;d like to meet in person when you contact
                         me, and I&apos;ll suggest a few options and times.
                     </p>

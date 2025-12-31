@@ -12,7 +12,7 @@ const PrivacyFriendlyMap: React.FC = () => {
                     <h4 className="font-semibold mb-1">
                         Map preview is disabled for privacy
                     </h4>
-                    <p className="text-sm text-base-content/70 mb-3 max-w-md">
+                    <p className="text-sm text-base-content mb-3 max-w-md">
                         Click below to load an interactive Google Map. This may allow Google
                         to set cookies and collect usage data.
                     </p>

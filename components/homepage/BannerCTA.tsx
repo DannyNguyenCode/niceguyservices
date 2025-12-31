@@ -15,7 +15,7 @@ const BannerCTA: React.FC<BannerCTAProps> = ({ path }) => {
                     <h3 className="text-xl md:text-2xl font-extrabold">
                         Ready to build a better website for your small business?
                     </h3>
-                    <p className="text-sm md:text-base text-base-content/80 max-w-xl">
+                    <p className="text-sm md:text-base text-base-content  max-w-xl">
                         I’ll walk you through timelines, options, and the simplest way to get
                         a fast, modern, SEO-ready website — without pressure or technical
                         headaches.

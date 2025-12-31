@@ -29,7 +29,7 @@ export default function ServicesSection() {
                         Custom websites for small businesses — built fast, supported long-term
                     </h2>
 
-                    <p className="mt-3 max-w-2xl mx-auto text-sm md:text-base text-base-content/80">
+                    <p className="mt-3 max-w-2xl mx-auto text-sm md:text-base text-base-content ">
                         From custom builds to performance and SEO foundations, I help small businesses
                         launch a site that looks professional and stays easy to maintain.
                     </p>
@@ -37,8 +37,8 @@ export default function ServicesSection() {
 
                 <ServiceCardGrid cards={featured} variant="link" />
 
-                <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-stretch md:items-center md:justify-between rounded-2xl border border-base-300 bg-base-100/70 p-4">
-                    <p className="text-sm md:text-base text-base-content/80">
+                <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-stretch md:items-center md:justify-between rounded-2xl border border-base-300 bg-base-100 p-4">
+                    <p className="text-sm md:text-base text-base-content">
                         Want the full breakdown? See everything that’s included — or book a quick call
                         and I’ll recommend the simplest setup.
                     </p>

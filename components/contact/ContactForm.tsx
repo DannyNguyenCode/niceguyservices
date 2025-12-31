@@ -172,7 +172,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                                             checked={checked}
                                             onChange={() => onServiceToggle(service)}
                                         />
-                                        <span className="text-sm text-base-content/80">
+                                        <span className="text-sm text-base-content ">
                                             {service}
                                         </span>
                                     </label>
@@ -202,7 +202,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                             checked={form.wantsMeeting}
                             onChange={(e) => onChange("wantsMeeting", e.target.checked)}
                         />
-                        <span className="text-sm text-base-content/80">
+                        <span className="text-sm text-base-content ">
                             I&apos;d like to book an in-person meeting as part of this
                             inquiry.
                         </span>

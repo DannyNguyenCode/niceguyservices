@@ -33,7 +33,7 @@ export default function ExperiencesSectionV2() {
                             </h2>
 
                             {/* Intro copy */}
-                            <p className="text-sm md:text-base text-base-content/80">
+                            <p className="text-sm md:text-base text-base-content ">
                                 I blend modern frontend development with real customer-facing support work,
                                 so what we build is practical, reliable, and comfortable for your team to
                                 live with — even when things get busy.
@@ -54,7 +54,7 @@ export default function ExperiencesSectionV2() {
                                         <span className="badge badge-primary badge-xs" />
                                         <span>How I usually help small businesses</span>
                                     </div>
-                                    <p className="text-xs md:text-sm text-base-content/80">
+                                    <p className="text-xs md:text-sm text-base-content ">
                                         Understand your business → ship a clean, modern build → iterate together
                                         based on what visitors are actually doing (calls, forms, clicks).
                                     </p>
@@ -88,7 +88,7 @@ export default function ExperiencesSectionV2() {
                             <div className="space-y-3">
                                 <div className="space-y-1">
                                     <h4 className="text-sm font-semibold">Frontend development</h4>
-                                    <p className="text-xs md:text-sm text-base-content/80">
+                                    <p className="text-xs md:text-sm text-base-content ">
                                         Modern React &amp; Next.js builds with clean structure, fast load times,
                                         and a website that’s easy to extend later.
                                     </p>
@@ -96,7 +96,7 @@ export default function ExperiencesSectionV2() {
 
                                 <div className="space-y-1">
                                     <h4 className="text-sm font-semibold">Communication &amp; support</h4>
-                                    <p className="text-xs md:text-sm text-base-content/80">
+                                    <p className="text-xs md:text-sm text-base-content ">
                                         Service-desk background — staying calm, clear, and patient when timelines
                                         are tight or questions come up.
                                     </p>
@@ -104,7 +104,7 @@ export default function ExperiencesSectionV2() {
 
                                 <div className="space-y-1">
                                     <h4 className="text-sm font-semibold">Foundation &amp; mindset</h4>
-                                    <p className="text-xs md:text-sm text-base-content/80">
+                                    <p className="text-xs md:text-sm text-base-content ">
                                         A people-first approach focused on outcomes: clarity, credibility, and
                                         a website that supports long-term growth.
                                     </p>
@@ -123,36 +123,36 @@ export default function ExperiencesSectionV2() {
                                 </h3>
                             </div>
 
-                            <p className="text-xs md:text-sm text-base-content/80">
+                            <p className="text-xs md:text-sm text-base-content ">
                                 A calm, collaborative process where you always know what&apos;s happening and
                                 why — with decisions made around your business, not just the code.
                             </p>
 
                             <div className="grid gap-3 md:gap-4 md:grid-cols-2">
-                                <div className="space-y-1 rounded-xl border border-base-200/80 bg-base-200/40 p-3">
+                                <div className="space-y-1 rounded-xl border border-base-200  bg-base-200/40 p-3">
                                     <h4 className="text-sm font-semibold">Clear, honest communication</h4>
-                                    <p className="text-xs md:text-sm text-base-content/80">
+                                    <p className="text-xs md:text-sm text-base-content ">
                                         You always know what&apos;s happening, why decisions are made, and what&apos;s coming next.
                                     </p>
                                 </div>
 
-                                <div className="space-y-1 rounded-xl border border-base-200/80 bg-base-200/40 p-3">
+                                <div className="space-y-1 rounded-xl border border-base-200  bg-base-200/40 p-3">
                                     <h4 className="text-sm font-semibold">Calm and organised delivery</h4>
-                                    <p className="text-xs md:text-sm text-base-content/80">
+                                    <p className="text-xs md:text-sm text-base-content ">
                                         Clear steps, realistic timelines, and updates along the way so you never feel left in the dark.
                                     </p>
                                 </div>
 
-                                <div className="space-y-1 rounded-xl border border-base-200/80 bg-base-200/40 p-3">
+                                <div className="space-y-1 rounded-xl border border-base-200  bg-base-200/40 p-3">
                                     <h4 className="text-sm font-semibold">Built for the long term</h4>
-                                    <p className="text-xs md:text-sm text-base-content/80">
+                                    <p className="text-xs md:text-sm text-base-content ">
                                         Clean architecture and modern practices so your site stays easy to update years from now.
                                     </p>
                                 </div>
 
-                                <div className="space-y-1 rounded-xl border border-base-200/80 bg-base-200/40 p-3">
+                                <div className="space-y-1 rounded-xl border border-base-200  bg-base-200/40 p-3">
                                     <h4 className="text-sm font-semibold">Curiosity that moves projects forward</h4>
-                                    <p className="text-xs md:text-sm text-base-content/80">
+                                    <p className="text-xs md:text-sm text-base-content ">
                                         If your project needs new tools or integrations, I&apos;ll explore options with you so your site keeps up.
                                     </p>
                                 </div>

@@ -14,7 +14,7 @@ const pages = [
 
 export default function Footer() {
     return (
-        <footer className="footer sm:footer-horizontal text-neutral-content items-center p-6 mt-12">
+        <footer className="footer sm:footer-horizontal items-center p-6 mt-12">
             {/* LEFT SIDE — Logo + About Text */}
             <aside className="flex flex-col gap-2 items-start">
                 <Link href="/" className="flex items-center" aria-label="Go to homepage">
@@ -30,7 +30,7 @@ export default function Footer() {
                     Custom websites for small businesses in Toronto and the GTA.
                 </p>
 
-                <p className="text-sm opacity-80">
+                <p className="text-sm">
                     © {new Date().getFullYear()} Nice Guy Services. All rights reserved.
                 </p>
             </aside>

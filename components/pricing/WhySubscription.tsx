@@ -12,19 +12,19 @@ const WhySubscription: React.FC = () => {
             <div className="grid md:grid-cols-3 gap-4">
                 <div className="card border border-base-300 p-4">
                     <h4 className="font-bold mb-1">Easier on Cash Flow</h4>
-                    <p className="text-sm opacity-70">
+                    <p className="text-sm  ">
                         Instead of paying thousands up front, pay a predictable monthly fee.
                     </p>
                 </div>
                 <div className="card border border-base-300 p-4">
                     <h4 className="font-bold mb-1">Everything Managed for You</h4>
-                    <p className="text-sm opacity-70">
+                    <p className="text-sm  ">
                         No plugins, no updates, no stress. I handle it all.
                     </p>
                 </div>
                 <div className="card border border-base-300 p-4">
                     <h4 className="font-bold mb-1">Built for Long-Term Growth</h4>
-                    <p className="text-sm opacity-70">
+                    <p className="text-sm  ">
                         Ranking in Google takes time — the subscription model supports
                         long-term success.
                     </p>

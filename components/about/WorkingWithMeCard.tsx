@@ -12,7 +12,7 @@ const WorkingWithMeCard: React.FC = () => {
                     <h5 className="text-sm md:text-base font-semibold">
                         I’m easy to work with &amp; communicate clearly
                     </h5>
-                    <p className="text-sm text-base-content/80">
+                    <p className="text-sm text-base-content ">
                         I have around <strong>2 years of customer service experience</strong>
                         , both front-facing and over the phone, as well as time spent
                         supporting students and faculty at Seneca Polytechnic. That taught
@@ -26,7 +26,7 @@ const WorkingWithMeCard: React.FC = () => {
                     <h5 className="text-sm md:text-base font-semibold">
                         I turn complex requirements into simple, user-friendly solutions
                     </h5>
-                    <p className="text-sm text-base-content/80">
+                    <p className="text-sm text-base-content ">
                         Whether it was secure payment flows at Shipvista — a shipping
                         company providing labels and real-time rates — or real-time gameplay
                         logic in my Pokémon project, I’m comfortable solving hard problems
@@ -39,7 +39,7 @@ const WorkingWithMeCard: React.FC = () => {
                     <h5 className="text-sm md:text-base font-semibold">
                         I care about long-term maintainability
                     </h5>
-                    <p className="text-sm text-base-content/80">
+                    <p className="text-sm text-base-content ">
                         I don’t just build something that “works for now.” I focus on fast
                         load times, modern best practices, clean architecture, and patterns
                         that stay easy to maintain years from now — even if another
@@ -51,7 +51,7 @@ const WorkingWithMeCard: React.FC = () => {
                     <h5 className="text-sm md:text-base font-semibold">
                         Curiosity drives how I work
                     </h5>
-                    <p className="text-sm text-base-content/80">
+                    <p className="text-sm text-base-content ">
                         I like to learn. When your project needs something I haven&apos;t
                         seen before — a new tool, API, or workflow — I get genuinely excited
                         to dig in, understand it, and implement it properly. That curiosity

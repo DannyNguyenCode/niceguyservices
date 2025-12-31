@@ -24,7 +24,7 @@ export default function PricingSection() {
                         Small business website pricing that fits where you are today
                     </h2>
 
-                    <p className="max-w-xl text-sm md:text-base text-base-content/80">
+                    <p className="max-w-xl text-sm md:text-base text-base-content ">
                         Some owners prefer to invest up front, others want a predictable monthly
                         cost with support included. I offer both — without hidden fees or agency bloat.
                     </p>
@@ -47,7 +47,7 @@ export default function PricingSection() {
 
                                 <div className="space-y-1">
                                     <h3 className="text-lg font-extrabold">$2,000 – $5,000 one-time</h3>
-                                    <p className="text-sm text-base-content/80">
+                                    <p className="text-sm text-base-content ">
                                         Most small business projects land in this range depending on pages,
                                         integrations, and content needs.
                                     </p>
@@ -61,7 +61,7 @@ export default function PricingSection() {
                                     ].map((line) => (
                                         <div
                                             key={line}
-                                            className="flex items-start gap-2 text-sm text-base-content/80"
+                                            className="flex items-start gap-2 text-sm text-base-content "
                                         >
                                             <span className="mt-1 inline-block h-3 w-3 rounded-full bg-success" />
                                             <p>{line}</p>
@@ -90,7 +90,7 @@ export default function PricingSection() {
                                     <span className="badge rounded-full font-semibold bg-base-100 text-primary">
                                         Website subscription
                                     </span>
-                                    <span className="text-[0.7rem] uppercase tracking-[0.12em] text-base-content/70">
+                                    <span className="text-[0.7rem] uppercase tracking-[0.12em] text-base-content">
                                         Best for ongoing support
                                     </span>
                                 </div>
@@ -137,8 +137,8 @@ export default function PricingSection() {
 
                 {/* Helper CTA under cards */}
                 <div className="mt-8">
-                    <div className="flex flex-col items-start gap-3 rounded-2xl border border-dashed border-base-300 bg-base-100/80 p-4 md:flex-row md:items-center md:justify-between">
-                        <p className="text-sm md:text-base text-base-content/80">
+                    <div className="flex flex-col items-start gap-3 rounded-2xl border border-dashed border-base-300 bg-base-100  p-4 md:flex-row md:items-center md:justify-between">
+                        <p className="text-sm md:text-base text-base-content ">
                             Not sure which option fits your situation? I can walk you through the tradeoffs
                             in a short call and give a specific quote.
                         </p>

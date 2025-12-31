@@ -12,14 +12,14 @@ const BackgroundSection: React.FC = () => {
 
                     <div className="space-y-1">
                         <p className="text-sm font-semibold">Professional Experience</p>
-                        <p className="text-sm text-base-content/80">
+                        <p className="text-sm text-base-content ">
                             <strong>Junior Frontend Developer @ Shipvista (1 year)</strong> —
                             Built secure UI flows, payment interfaces, real-time shipping
                             updates, and modern React components for a shipping label
                             platform. Collaborated with backend teams and handled code reviews
                             using Azure DevOps.
                         </p>
-                        <p className="text-sm text-base-content/80 mt-2">
+                        <p className="text-sm text-base-content  mt-2">
                             <strong>Customer Service &amp; IT Support (~2 years)</strong> —
                             Including IT Service Desk at Seneca Polytechnic, helping hundreds
                             of students and faculty with tech issues. These roles strengthened
@@ -30,7 +30,7 @@ const BackgroundSection: React.FC = () => {
 
                     <div className="space-y-1">
                         <p className="text-sm font-semibold">Education</p>
-                        <p className="text-sm text-base-content/80">
+                        <p className="text-sm text-base-content ">
                             Diploma in Computer Programming — Seneca College
                         </p>
                     </div>
@@ -41,7 +41,7 @@ const BackgroundSection: React.FC = () => {
             <div className="card bg-base-100 border border-base-300 shadow-md h-full">
                 <div className="card-body space-y-3">
                     <h5 className="text-lg font-bold">Socials &amp; Portfolio</h5>
-                    <p className="text-sm text-base-content/80">
+                    <p className="text-sm text-base-content ">
                         Follow along or reach out on any of these platforms:
                     </p>
 

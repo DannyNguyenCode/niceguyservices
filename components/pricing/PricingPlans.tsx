@@ -17,7 +17,7 @@ const PricingPlans: React.FC = () => {
 
                 <div className="card-body space-y-3">
                     <h3 className="text-xl font-extrabold">Pay once, own the site.</h3>
-                    <p className="text-sm opacity-70">
+                    <p className="text-sm  ">
                         Best when you want a clear up-front investment to get your site
                         designed, built, and launched — with no long-term contract.
                     </p>
@@ -26,7 +26,7 @@ const PricingPlans: React.FC = () => {
 
                     <div>
                         <h4 className="text-lg font-semibold mb-1">Includes</h4>
-                        <ul className="list-disc ml-5 text-sm opacity-80 space-y-1">
+                        <ul className="list-disc ml-5 text-sm   space-y-1">
                             <li>Full website (up to 5 pages)</li>
                             <li>Responsive, modern design</li>
                             <li>Deployment, DNS, and SSL setup</li>
@@ -36,7 +36,7 @@ const PricingPlans: React.FC = () => {
 
                     <div>
                         <h4 className="text-lg font-semibold mb-1">Does not include</h4>
-                        <ul className="list-disc ml-5 text-sm opacity-80 space-y-1">
+                        <ul className="list-disc ml-5 text-sm   space-y-1">
                             <li>Ongoing support or maintenance</li>
                             <li>Additional pages or features</li>
                             <li>Security monitoring</li>
@@ -45,12 +45,12 @@ const PricingPlans: React.FC = () => {
 
                     <div>
                         <h4 className="text-lg font-semibold mb-1">Future changes</h4>
-                        <p className="text-sm opacity-80">$40/hr (2 hour minimum)</p>
+                        <p className="text-sm  ">$40/hr (2 hour minimum)</p>
                     </div>
 
                     <div className="bg-base-200 p-3 rounded-lg">
                         <h4 className="text-sm font-bold mb-1">Perfect if you:</h4>
-                        <ul className="list-disc ml-5 text-sm opacity-80 space-y-1">
+                        <ul className="list-disc ml-5 text-sm   space-y-1">
                             <li>Prefer a one-time project cost</li>
                             <li>Have technical help for future updates</li>
                             <li>Want a strong, modern foundation</li>
@@ -73,7 +73,7 @@ const PricingPlans: React.FC = () => {
                     <h3 className="text-xl font-extrabold">
                         Monthly care & improvements.
                     </h3>
-                    <p className="text-sm opacity-70">
+                    <p className="text-sm  ">
                         Best when you don't want to worry about hosting, updates, security,
                         or small changes.
                     </p>
@@ -82,7 +82,7 @@ const PricingPlans: React.FC = () => {
 
                     <div>
                         <h4 className="text-lg font-semibold mb-1">Includes</h4>
-                        <ul className="list-disc ml-5 text-sm opacity-80 space-y-1">
+                        <ul className="list-disc ml-5 text-sm   space-y-1">
                             <li>Full website build, no upfront fee</li>
                             <li>Unlimited small updates</li>
                             <li>Backups, security patches, monitoring</li>
@@ -92,7 +92,7 @@ const PricingPlans: React.FC = () => {
 
                     <div className="bg-base-200 p-3 rounded-lg">
                         <h4 className="text-sm font-bold mb-1">Perfect if you:</h4>
-                        <ul className="list-disc ml-5 text-sm opacity-80 space-y-1">
+                        <ul className="list-disc ml-5 text-sm   space-y-1">
                             <li>Want a long-term partner</li>
                             <li>Never want to touch the tech side</li>
                             <li>Prefer predictable monthly costs</li>

@@ -10,7 +10,7 @@ const ConsultCTA: React.FC = () => {
                     <h3 className="text-xl font-bold">
                         Not sure which option fits you best?
                     </h3>
-                    <p className="text-sm opacity-90 mt-1">
+                    <p className="text-sm   mt-1">
                         Tell me about your business and what’s not working — I’ll recommend
                         the simplest option.
                     </p>

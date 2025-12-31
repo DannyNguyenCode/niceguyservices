@@ -32,13 +32,13 @@ export default function SectionHeader({ contentHeight }: { contentHeight: number
 
                 {/* Gradient overlay for readability */}
                 <div
-                    className="absolute inset-0 bg-linear-to-r from-base-300/80 via-base-100/70 to-transparent"
+                    className="absolute inset-0 bg-linear-to-r from-base-300  via-base-100 to-transparent"
                     aria-hidden="true"
                 />
 
                 {/* Text content */}
                 <div className="relative max-w-6xl mx-auto px-4 py-12 md:py-16 flex flex-col justify-center">
-                    <div className="badge badge-outline bg-base-100/80 backdrop-blur mb-4 w-fit">
+                    <div className="badge badge-outline bg-base-100  backdrop-blur mb-4 w-fit">
                         Built for busy small business owners
                     </div>
 
@@ -64,28 +64,28 @@ export default function SectionHeader({ contentHeight }: { contentHeight: number
                 <div className="max-w-6xl mx-auto px-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:py-6">
                         {/* Card 1 */}
-                        <div className="group border border-base-300 bg-base-200/70 rounded-xl p-6 flex flex-col items-center text-center transition hover:-translate-y-1 hover:shadow-lg hover:border-primary">
-                            <BoltIcon className="w-6 h-6 mb-3 opacity-70 group-hover:text-primary transition" />
+                        <div className="group border border-base-300 bg-base-200 rounded-xl p-6 flex flex-col items-center text-center transition hover:-translate-y-1 hover:shadow-lg hover:border-primary">
+                            <BoltIcon className="w-6 h-6 mb-3   group-hover:text-primary transition" />
                             <h2 className="font-semibold text-base mb-1">No more website headaches</h2>
-                            <p className="text-sm text-base-content/70">
+                            <p className="text-sm text-base-content">
                                 I’ll handle bugs, hosting, and tech so it stops living in your head.
                             </p>
                         </div>
 
                         {/* Card 2 */}
-                        <div className="group border border-base-300 bg-base-200/70 rounded-xl p-6 flex flex-col items-center text-center transition hover:-translate-y-1 hover:shadow-lg hover:border-primary">
-                            <WrenchScrewdriverIcon className="w-6 h-6 mb-3 opacity-70 group-hover:text-primary transition" />
+                        <div className="group border border-base-300 bg-base-200 rounded-xl p-6 flex flex-col items-center text-center transition hover:-translate-y-1 hover:shadow-lg hover:border-primary">
+                            <WrenchScrewdriverIcon className="w-6 h-6 mb-3   group-hover:text-primary transition" />
                             <h2 className="font-semibold text-base mb-1">Done-for-you updates</h2>
-                            <p className="text-sm text-base-content/70">
+                            <p className="text-sm text-base-content">
                                 Send changes, get them done. No logins, no drag-and-drop stress.
                             </p>
                         </div>
 
                         {/* Card 3 */}
-                        <div className="group border border-base-300 bg-base-200/70 rounded-xl p-6 flex flex-col items-center text-center transition hover:-translate-y-1 hover:shadow-lg hover:border-primary">
-                            <ChartBarIcon className="w-6 h-6 mb-3 opacity-70 group-hover:text-primary transition" />
+                        <div className="group border border-base-300 bg-base-200 rounded-xl p-6 flex flex-col items-center text-center transition hover:-translate-y-1 hover:shadow-lg hover:border-primary">
+                            <ChartBarIcon className="w-6 h-6 mb-3   group-hover:text-primary transition" />
                             <h2 className="font-semibold text-base mb-1">Built to grow with you</h2>
-                            <p className="text-sm text-base-content/70">
+                            <p className="text-sm text-base-content">
                                 Clean, future-proof foundations ready for new services and offers.
                             </p>
                         </div>
