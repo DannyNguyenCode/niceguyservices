@@ -20,6 +20,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Nice Guy Services",
   description: "Building and maintaining clean, modern websites giving you more time to focus on what matters.",
+  verification: {
+    google: 'SVu4bQTn5qjJHWHKw6pz34Ob__tmftRjWWFkMecbU_Q'
+  }
 };
 
 export default async function RootLayout({
