@@ -40,7 +40,7 @@ export default function PricingSection() {
                                     <span className="badge badge-primary rounded-full font-semibold">
                                         Pay once, own the site
                                     </span>
-                                    <span className="text-[0.7rem] uppercase tracking-[0.12em] text-base-content/60">
+                                    <span className="uppercase tracking-[0.12em] text-base-content text-xs">
                                         Best for 3–10 page sites
                                     </span>
                                 </div>

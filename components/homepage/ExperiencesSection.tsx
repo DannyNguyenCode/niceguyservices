@@ -22,8 +22,8 @@ export default function ExperiencesSectionV2() {
                     <div className="card bg-base-100 shadow-xl border border-base-300">
                         <div className="card-body gap-4">
                             {/* Label */}
-                            <div className="flex items-center gap-2 text-xs uppercase tracking-[0.12em] text-base-content/60">
-                                <div className="badge badge-outline badge-sm">Dev + support background</div>
+                            <div className="flex items-center gap-2 text-xs uppercase tracking-[0.12em] text-base-content ">
+                                <div className="badge badge-primary badge-sm text-primary-content">Dev + support background</div>
                                 <span>Frontend &amp; customer support</span>
                             </div>
 
@@ -48,7 +48,7 @@ export default function ExperiencesSectionV2() {
                             </div>
 
                             {/* How I help strip */}
-                            <div className="mt-3 rounded-xl border border-dashed border-base-300 bg-base-200/60 px-4 py-3">
+                            <div className="mt-3 rounded-xl border border-dashed border-base-300 bg-base-200  px-4 py-3">
                                 <div className="space-y-1">
                                     <div className="font-semibold text-sm flex items-center gap-2">
                                         <span className="badge badge-primary badge-xs" />

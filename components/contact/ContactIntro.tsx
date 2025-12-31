@@ -88,7 +88,7 @@ const ContactIntro: React.FC = () => {
                                     📞
                                 </div>
                                 <div>
-                                    <p className="text-[10px] uppercase tracking-wide text-base-content/60">
+                                    <p className="text-[10px] uppercase tracking-wide text-base-content ">
                                         Call or voicemail
                                     </p>
                                     <p className="text-sm font-semibold text-base-content">
@@ -108,7 +108,7 @@ const ContactIntro: React.FC = () => {
                                     ✉️
                                 </div>
                                 <div>
-                                    <p className="text-[10px] uppercase tracking-wide text-base-content/60">
+                                    <p className="text-[10px] uppercase tracking-wide text-base-content ">
                                         Email
                                     </p>
                                     <p className="text-sm font-semibold text-base-content">
