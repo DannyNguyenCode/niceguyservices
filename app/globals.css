@@ -2,5 +2,5 @@
 
 
 @plugin "daisyui" {
-    themes: retro --default, dark --prefersdark, light;
+    themes: fantasy --default, luxury --prefersdark, fantasy;
 }

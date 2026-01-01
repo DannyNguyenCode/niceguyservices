@@ -35,7 +35,7 @@ export default function Homepage() {
     }, [computeContentHeight]);
 
     return (
-        <main className="px-3 md:px-0 pt-4 md:pt-0">
+        <section className="px-3 md:px-0 pt-4 md:pt-0">
             {/* Hero / section header gets dynamic height */}
             <SectionHeader contentHeight={contentHeight} />
 
@@ -53,6 +53,6 @@ export default function Homepage() {
                 <PricingSection />
                 <ServicesSection />
             </div>
-        </main>
+        </section>
     );
 }

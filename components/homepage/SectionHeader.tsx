@@ -30,29 +30,31 @@ export default function SectionHeader({ contentHeight }: { contentHeight: number
                     />
                 </div>
 
-                {/* Gradient overlay for readability */}
+                <div className="absolute inset-0 bg-base-100/70" aria-hidden="true" />
+
+                {/* Optional premium edge vignette */}
                 <div
-                    className="absolute inset-0 bg-linear-to-r from-base-300  via-base-100 to-transparent"
+                    className="absolute inset-0 shadow-[inset_0_0_140px_rgba(0,0,0,0.18)]"
                     aria-hidden="true"
                 />
 
                 {/* Text content */}
                 <div className="relative max-w-6xl mx-auto px-4 py-12 md:py-16 flex flex-col justify-center">
-                    <div className="badge badge-outline bg-base-100  backdrop-blur mb-4 w-fit">
+                    <div className="badge badge-outline bg-base-100 text-primary  backdrop-blur mb-4 w-fit">
                         Built for busy small business owners
                     </div>
 
                     {/* H1 should describe what you do + who it's for + where (local SEO) */}
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-primary-content drop-shadow-sm">
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-primary drop-shadow-sm">
                         Custom Websites for Small Businesses in Toronto
                     </h1>
 
                     {/* Brand as supporting text (still visible, but not the H1) */}
                     <p className="mt-3 text-xl md:text-2xl font-semibold text-primary-content drop-shadow-sm">
-                        <span className="text-accent">Nice Guy Services</span> — Web Development & Ongoing Support
+                        <span className="text-accent-content">Nice Guy Services — Web Development & Ongoing Support</span>
                     </p>
 
-                    <p className="mt-4 max-w-xl text-base md:text-lg text-primary-content/90 drop-shadow-sm">
+                    <p className="mt-4 max-w-xl  text-accent-content md:text-lg  drop-shadow-sm">
                         I build fast, clean, SEO-ready websites and handle reliable updates and long-term care —
                         so your website stays professional while you stay focused on running your business.
                     </p>

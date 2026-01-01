@@ -30,7 +30,7 @@ const resources = [
 
 export default function ResourcesPage() {
     return (
-        <main className="max-w-5xl mx-auto px-6 py-16 space-y-10">
+        <section className="max-w-5xl mx-auto px-6 py-16 space-y-10">
             {/* Page intro */}
             <header className="space-y-4">
                 <h1 className="text-3xl md:text-4xl font-bold">
@@ -83,6 +83,6 @@ export default function ResourcesPage() {
                     View website services →
                 </Link>
             </section>
-        </main>
+        </section>
     );
 }

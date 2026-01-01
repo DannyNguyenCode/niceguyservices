@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function CustomWebsitesVsTemplatesPage() {
     return (
-        <main className="max-w-4xl mx-auto px-6 py-16 space-y-10">
+        <section className="max-w-4xl mx-auto px-6 py-16 space-y-10">
             {/* Article header */}
             <header className="space-y-4">
                 <h1 className="text-3xl md:text-4xl font-bold">
@@ -174,6 +174,6 @@ export default function CustomWebsitesVsTemplatesPage() {
                     </Link>
                 </div>
             </section>
-        </main>
+        </section>
     );
 }

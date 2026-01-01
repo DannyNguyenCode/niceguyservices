@@ -16,7 +16,7 @@ const pages = [
 
 export default function Navigation() {
     return (
-        <div className="navbar bg-base-100 shadow-sm px-4 sticky top-0 z-50">
+        <div className="navbar bg-neutral/90 backdrop-blur-md  text-neutral-content  shadow-sm  px-4  sticky top-0  z-50">
             {/* LEFT — Mobile Menu + Logo */}
             <div className="navbar-start">
                 {/* Mobile dropdown */}
@@ -60,13 +60,14 @@ export default function Navigation() {
                 </div>
 
                 {/* LOGO */}
-                <Link href="/" className="btn btn-ghost px-1" aria-label="Go to homepage">
+                <Link href="/" className="px-2 " aria-label="Go to homepage">
                     <Image
                         src="/logoNiceGuyServices.svg"
                         width={55}
                         height={55}
                         alt="Nice Guy Services Logo"
                         priority
+                        className="px-1 transition "
                     />
                 </Link>
             </div>

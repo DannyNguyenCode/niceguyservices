@@ -14,7 +14,7 @@ const pages = [
 
 export default function Footer() {
     return (
-        <footer className="footer sm:footer-horizontal items-center p-6 mt-12">
+        <footer className="footer bg-neutral/90 backdrop-blur-md  text-neutral-content sm:footer-horizontal items-center p-6 mt-12">
             {/* LEFT SIDE — Logo + About Text */}
             <aside className="flex flex-col gap-2 items-start">
                 <Link href="/" className="flex items-center" aria-label="Go to homepage">

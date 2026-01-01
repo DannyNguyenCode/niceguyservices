@@ -42,9 +42,9 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({
             }`;
     }, [theme]);
 
-    // simple light/dark toggle (you can extend this later for "retro")
+    // simple light/dark toggle (you can extend this later for "garden")
     const toggle = () => {
-        const next = theme === "retro" ? "dark" : "retro";
+        const next = theme === "fantasy" ? "luxury" : "fantasy";
         setTheme(next);
     };
 

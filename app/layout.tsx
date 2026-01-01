@@ -31,18 +31,18 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookieStore = await cookies();
-  const theme = (cookieStore.get('theme')?.value ?? 'retro') as 'retro' | 'dark';
+  const theme = (cookieStore.get('theme')?.value ?? 'garden') as 'garden' | 'dark';
 
   return (
-    <html lang="en" data-theme={'retro'}>
+    <html lang="en" data-theme={'garden'}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider initialTheme={theme}>
           <Navigation />
-          <div id="content-container">
+          <main id="content-container">
             {children}
-          </div>
+          </main>
           <Footer />
         </ThemeProvider>
 
