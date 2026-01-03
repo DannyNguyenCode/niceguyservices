@@ -40,10 +40,9 @@ export default function Homepage() {
             <SectionHeader contentHeight={contentHeight} />
 
             {/* Main homepage sections */}
-            <div className="space-y-12 md:space-y-16">
+            <div className="">
                 <ExperiencesSection />
 
-                {/* Uncomment if/when you want this back */}
                 {/* <BannerCTA /> */}
 
                 <AboutSection contentHeight={contentHeight} />

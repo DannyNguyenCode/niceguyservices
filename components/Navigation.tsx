@@ -16,7 +16,7 @@ const pages = [
 
 export default function Navigation() {
     return (
-        <div className="navbar bg-neutral/90 backdrop-blur-md  text-neutral-content  shadow-sm  px-4  sticky top-0  z-50">
+        <div className="navbar bg-neutral/90 backdrop-blur-md  text-neutral-content  shadow-sm  px-4  sticky top-0  z-50" id="nav">
             {/* LEFT — Mobile Menu + Logo */}
             <div className="navbar-start">
                 {/* Mobile dropdown */}

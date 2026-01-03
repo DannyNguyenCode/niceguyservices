@@ -9,16 +9,14 @@ import {
     ArrowRightIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
+
 export default function SectionHeader({ contentHeight }: { contentHeight: number }) {
     return (
-        <section className="bg-base-100">
+        <section style={{ minHeight: contentHeight }}>
             {/* ROW 1 – Background image with title + subtitle */}
-            <div className="relative w-full min-h-80 md:min-h-[420px] lg:min-h-[480px] overflow-hidden">
+            <div className="relative w-full md:min-h-140 overflow-hidden">
                 {/* Background image */}
-                <div
-                    className="absolute inset-0"
-
-                >
+                <div className="absolute inset-0">
                     <Image
                         src="/images/imageheader.png"
                         alt="Custom web development services by Nice Guy Services"
@@ -26,13 +24,12 @@ export default function SectionHeader({ contentHeight }: { contentHeight: number
                         priority
                         fetchPriority="high"
                         sizes="100vw"
-                        className="object-cover object-center"
+                        className="object-cover object-[50%_45%]"
                     />
                 </div>
 
-                <div className="absolute inset-0 bg-base-100/70" aria-hidden="true" />
+                <div className="absolute inset-0 bg-white/70" aria-hidden="true" />
 
-                {/* Optional premium edge vignette */}
                 <div
                     className="absolute inset-0 shadow-[inset_0_0_140px_rgba(0,0,0,0.18)]"
                     aria-hidden="true"
@@ -40,21 +37,21 @@ export default function SectionHeader({ contentHeight }: { contentHeight: number
 
                 {/* Text content */}
                 <div className="relative max-w-6xl mx-auto px-4 py-12 md:py-16 flex flex-col justify-center">
-                    <div className="badge badge-outline bg-base-100 text-primary  backdrop-blur mb-4 w-fit">
+                    <div className="badge badge-outline backdrop-blur mb-4 w-fit whitespace-normal h-auto py-2">
                         Built for busy small business owners
                     </div>
 
                     {/* H1 should describe what you do + who it's for + where (local SEO) */}
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-primary drop-shadow-sm">
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-primary drop-shadow-sm">
                         Custom Websites for Small Businesses in Toronto
                     </h1>
 
                     {/* Brand as supporting text (still visible, but not the H1) */}
-                    <p className="mt-3 text-xl md:text-2xl font-semibold text-primary-content drop-shadow-sm">
-                        <span className="text-accent-content">Nice Guy Services — Web Development & Ongoing Support</span>
+                    <p className="mt-3 font-semibold drop-shadow-sm">
+                        <span>Nice Guy Services — Web Development & Ongoing Support</span>
                     </p>
 
-                    <p className="mt-4 max-w-xl  text-accent-content md:text-lg  drop-shadow-sm">
+                    <p className="mt-4 max-w-xl md:text-lg drop-shadow-sm">
                         I build fast, clean, SEO-ready websites and handle reliable updates and long-term care —
                         so your website stays professional while you stay focused on running your business.
                     </p>
@@ -62,55 +59,66 @@ export default function SectionHeader({ contentHeight }: { contentHeight: number
             </div>
 
             {/* ROW 2 – Remaining content (value cards + buttons) */}
-            <div className="bg-base-100 border-t border-base-300 shadow-[0_-10px_35px_rgba(0,0,0,0.12)]">
+            <div className="p-4 md:pt-0">
                 <div className="max-w-6xl mx-auto px-4">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:py-6">
+                    {/* Value cards grid */}
+                    <div className="grid grid-cols-12 md:grid-cols-3 md:py-6 gap-4">
                         {/* Card 1 */}
-                        <div className="group border border-base-300 bg-base-200 rounded-xl p-6 flex flex-col items-center text-center transition hover:-translate-y-1 hover:shadow-lg hover:border-primary">
-                            <BoltIcon className="w-6 h-6 mb-3   group-hover:text-primary transition" />
-                            <h2 className="font-semibold text-base mb-1">No more website headaches</h2>
-                            <p className="text-sm text-base-content">
-                                I’ll handle bugs, hosting, and tech so it stops living in your head.
-                            </p>
+                        <div className="col-span-12 md:col-span-1">
+                            <div className="group border rounded-xl p-6 flex flex-col items-center text-center transition hover:-translate-y-1 hover:shadow-lg hover:border-primary">
+                                <BoltIcon className="w-6 h-6 mb-3 group-hover:text-primary transition" />
+                                <h2 className="font-semibold text-base mb-1">No more website headaches</h2>
+                                <p className="text-sm">
+                                    I’ll handle bugs, hosting, and tech so it stops living in your head.
+                                </p>
+                            </div>
                         </div>
 
                         {/* Card 2 */}
-                        <div className="group border border-base-300 bg-base-200 rounded-xl p-6 flex flex-col items-center text-center transition hover:-translate-y-1 hover:shadow-lg hover:border-primary">
-                            <WrenchScrewdriverIcon className="w-6 h-6 mb-3   group-hover:text-primary transition" />
-                            <h2 className="font-semibold text-base mb-1">Done-for-you updates</h2>
-                            <p className="text-sm text-base-content">
-                                Send changes, get them done. No logins, no drag-and-drop stress.
-                            </p>
+                        <div className="col-span-12 md:col-span-1 mt-4 md:mt-0">
+                            <div className="group border rounded-xl p-6 flex flex-col items-center text-center transition hover:-translate-y-1 hover:shadow-lg hover:border-primary">
+                                <WrenchScrewdriverIcon className="w-6 h-6 mb-3 group-hover:text-primary transition" />
+                                <h2 className="font-semibold text-base mb-1">Done-for-you updates</h2>
+                                <p className="text-sm">
+                                    Send changes, get them done. No logins, no drag-and-drop stress.
+                                </p>
+                            </div>
                         </div>
 
                         {/* Card 3 */}
-                        <div className="group border border-base-300 bg-base-200 rounded-xl p-6 flex flex-col items-center text-center transition hover:-translate-y-1 hover:shadow-lg hover:border-primary">
-                            <ChartBarIcon className="w-6 h-6 mb-3   group-hover:text-primary transition" />
-                            <h2 className="font-semibold text-base mb-1">Built to grow with you</h2>
-                            <p className="text-sm text-base-content">
-                                Clean, future-proof foundations ready for new services and offers.
-                            </p>
+                        <div className="col-span-12 md:col-span-1 mt-4 md:mt-0">
+                            <div className="group border rounded-xl p-6 flex flex-col items-center text-center transition hover:-translate-y-1 hover:shadow-lg hover:border-primary">
+                                <ChartBarIcon className="w-6 h-6 mb-3 group-hover:text-primary transition" />
+                                <h2 className="font-semibold text-base mb-1">Built to grow with you</h2>
+                                <p className="text-sm">
+                                    Clean, future-proof foundations ready for new services and offers.
+                                </p>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Primary CTAs  */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-6">
-                        <Link
-                            href="/contact"
-                            className="btn btn-primary btn-lg w-full justify-between md:justify-center gap-3"
-                            aria-label="Book a free consultation"
-                        >
-                            <span>Book a free consultation</span>
-                            <ArrowRightIcon className="w-5 h-5" />
-                        </Link>
+                    {/* Primary CTAs */}
+                    <div className="grid grid-cols-12 md:grid-cols-2 gap-4 pb-6 p-4 md:pt-4">
+                        <div className="col-span-12 md:col-span-1">
+                            <Link
+                                href="/contact"
+                                className="btn btn-primary btn-lg w-full justify-between md:justify-center"
+                                aria-label="Book a free consultation"
+                            >
+                                <span>Book a free consultation</span>
+                                <ArrowRightIcon className="w-5 h-5" />
+                            </Link>
+                        </div>
 
-                        <Link
-                            href="/pricing"
-                            className="btn btn-outline btn-lg w-full"
-                            aria-label="View pricing options"
-                        >
-                            See pricing options
-                        </Link>
+                        <div className="col-span-12 md:col-span-1 mt-4 md:mt-0">
+                            <Link
+                                href="/pricing"
+                                className="btn btn-outline btn-lg w-full"
+                                aria-label="View pricing options"
+                            >
+                                See pricing options
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>

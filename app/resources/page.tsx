@@ -26,6 +26,12 @@ const resources = [
             "A practical comparison to help small business owners decide between custom-built sites and templates like WordPress or Wix.",
         href: "/resources/custom-websites-vs-templates",
     },
+    {
+        title: "How to Start SEO on Your Website (Beginner Guide)",
+        description:
+            "A beginner-friendly guide to starting SEO on your own website. Learn what matters first, what to avoid, and how to build a strong SEO foundation.",
+        href: "/resources/how-to-start-seo-for-your-website",
+    },
 ];
 
 export default function ResourcesPage() {
