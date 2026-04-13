@@ -5,7 +5,6 @@
     "headlineGradient": "clarity & care.",
     "subtitle": "A Toronto-based studio focused on fast, maintainable websites for small businesses — technical precision without the jargon.",
     "primaryCta": { "label": "Start a project", "href": "/contact" },
-    "secondaryCta": { "label": "View portfolio", "href": "/portfolio" },
     "heroImage": {
       "src": "/images/Futuristic-tech-abstract.png",
       "alt": "Abstract tech visualization — modern web development"

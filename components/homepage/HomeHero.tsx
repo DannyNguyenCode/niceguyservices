@@ -25,18 +25,12 @@ export default function HomeHero() {
             <p className="mb-12 max-w-2xl text-lg leading-relaxed text-(--pm-on-surface-variant)">
                 {hero.subtitle}
             </p>
-            <div className="flex flex-col gap-6 md:flex-row">
+            <div className="flex justify-center">
                 <Link
                     href={hero.primaryCta.href}
                     className="rounded-full bg-linear-to-br from-primary to-(--pm-primary-container) px-10 py-4 font-pm-headline font-bold tracking-wide text-primary-content shadow-xl shadow-primary/25 transition-opacity hover:opacity-90"
                 >
                     {hero.primaryCta.label}
-                </Link>
-                <Link
-                    href={hero.secondaryCta.href}
-                    className="rounded-full border border-(--pm-outline-variant)/30 bg-base-100/60 px-10 py-4 font-pm-headline font-bold tracking-wide text-(--pm-on-surface) backdrop-blur-xl transition-colors hover:bg-(--pm-surface-low) dark:bg-base-100/40"
-                >
-                    {hero.secondaryCta.label}
                 </Link>
             </div>
             <div className="group relative mt-16 aspect-21/9 w-full overflow-hidden rounded-xl md:mt-20">

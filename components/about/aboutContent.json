@@ -5,7 +5,7 @@
   },
   "intro": {
     "image": {
-      "src": "/profilePicture.jpg",
+      "src": "/profilePicture.png",
       "alt": "Danny Nguyen, web developer based in Toronto"
     },
     "heading": "Who you'll be working with",
@@ -34,29 +34,47 @@
       {
         "heading": "I'm easy to work with & communicate clearly",
         "bodySegments": [
-          { "text": "I have around " },
-          { "text": "2 years of customer service experience", "bold": true },
-          { "text": ", both front-facing and over the phone, as well as time spent supporting students and faculty at Seneca Polytechnic. That taught me how to listen, stay calm under pressure, and explain technical concepts in plain language. You'll always know what's happening, why decisions are being made, and what to expect next." }
+          {
+            "text": "I have around "
+          },
+          {
+            "text": "2 years of customer service experience",
+            "bold": true
+          },
+          {
+            "text": ", both front-facing and over the phone, as well as time spent supporting students and faculty at Seneca Polytechnic. That taught me how to listen, stay calm under pressure, and explain technical concepts in plain language. You'll always know what's happening, why decisions are being made, and what to expect next."
+          }
         ]
       },
       {
         "heading": "I turn complex requirements into simple, user-friendly solutions",
         "bodySegments": [
-          { "text": "Whether it was secure payment flows at Shipvista — a shipping company providing labels and real-time rates — or real-time gameplay logic in my Pokémon project, I'm comfortable solving hard problems and turning them into experiences your customers actually enjoy using." }
+          {
+            "text": "Whether it was secure payment flows at Shipvista — a shipping company providing labels and real-time rates — or real-time gameplay logic in my Pokémon project, I'm comfortable solving hard problems and turning them into experiences your customers actually enjoy using."
+          }
         ]
       },
       {
         "heading": "I care about long-term maintainability",
         "bodySegments": [
-          { "text": "I don't just build something that " },
-          { "text": "works for now.", "bold": true },
-          { "text": " I focus on fast load times, modern best practices, clean architecture, and patterns that stay easy to maintain years from now — even if another developer takes over." }
+          {
+            "text": "I don't just build something that "
+          },
+          {
+            "text": "works for now.",
+            "bold": true
+          },
+          {
+            "text": " I focus on fast load times, modern best practices, clean architecture, and patterns that stay easy to maintain years from now — even if another developer takes over."
+          }
         ]
       },
       {
         "heading": "Curiosity drives how I work",
         "bodySegments": [
-          { "text": "I like to learn. When your project needs something I haven't seen before — a new tool, API, or workflow — I get genuinely excited to dig in, understand it, and implement it properly. That curiosity helps your business benefit from modern solutions, not just the safe old way of doing things." }
+          {
+            "text": "I like to learn. When your project needs something I haven't seen before — a new tool, API, or workflow — I get genuinely excited to dig in, understand it, and implement it properly. That curiosity helps your business benefit from modern solutions, not just the safe old way of doing things."
+          }
         ]
       }
     ]
@@ -66,7 +84,7 @@
       "title": "Who's on the team?",
       "intro": "Right now, you'll be working directly with me — no account managers, no hand-offs, no getting lost in a big agency pipeline. As the work grows, the process and codebase are set up so additional developers or designers can be brought in smoothly.",
       "profile": {
-        "imageSrc": "/profilePicture.jpg",
+        "imageSrc": "/profilePicture.png",
         "imageAlt": "Danny Nguyen profile",
         "name": "Gia Bao (Danny) Nguyen",
         "roleLine": "Web Developer • Frontend & Full-Stack",
@@ -82,10 +100,6 @@
           {
             "label": "LinkedIn",
             "href": "https://www.linkedin.com/in/gia-bao-danny-nguyen"
-          },
-          {
-            "label": "Portfolio",
-            "href": "https://portfolio-black-two-97.vercel.app"
           }
         ]
       }
@@ -143,7 +157,7 @@
         "tagline": "The lead architect of naps."
       },
       {
-        "src": "/images/mina.png",
+        "src": "/images/mina1.png",
         "alt": "Mina",
         "name": "Mina",
         "tagline": "Quality assurance specialist."

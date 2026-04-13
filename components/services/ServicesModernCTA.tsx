@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
     goToContact,
     pricingLayoutHeadline as headline,
@@ -31,7 +30,7 @@ export default function ServicesModernCTA() {
                         Ready to architect your <br className="hidden md:block" />
                         next digital project?
                     </h2>
-                    <div className="flex flex-col justify-center gap-4 sm:flex-row">
+                    <div className="flex justify-center">
                         <button
                             type="button"
                             onClick={goToContact}
@@ -43,16 +42,6 @@ export default function ServicesModernCTA() {
                         >
                             Start your project
                         </button>
-                        <Link
-                            href="/portfolio"
-                            className={`inline-flex items-center justify-center rounded-xl border px-10 py-5 font-bold transition-colors ${headline}`}
-                            style={{
-                                borderColor: `color-mix(in srgb, var(--pm-on-primary) 30%, transparent)`,
-                                color: "var(--pm-on-primary)",
-                            }}
-                        >
-                            View portfolio
-                        </Link>
                     </div>
                 </div>
             </div>

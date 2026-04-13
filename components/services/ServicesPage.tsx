@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
     ArrowRightIcon,
     BoltIcon,
@@ -50,7 +49,7 @@ export default function ServicesClient() {
                                 </div>
                                 <h3 className="text-3xl font-bold mb-3">Custom Website Builds</h3>
                                 <p className="text-base-content/70 mb-4 text-lg">
-                                    Scalable, secure, and uniquely yours. From static portfolios to complex web applications.
+                                    Scalable, secure, and uniquely yours. From simple brochure sites to complex web applications.
                                 </p>
                                 <ul className="space-y-2 mb-6 text-sm font-medium">
                                     <li className="flex items-center gap-2">
@@ -266,13 +265,10 @@ export default function ServicesClient() {
                     <h2 className="text-4xl md:text-5xl font-bold mb-8">
                         Ready to architect your next digital project?
                     </h2>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <div className="flex justify-center">
                         <button className="btn btn-primary btn-lg" onClick={goToContact}>
                             Start Your Project
                         </button>
-                        <Link href="/portfolio" className="btn btn-outline btn-lg">
-                            View Portfolio
-                        </Link>
                     </div>
                 </div>
             </section>
