@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useTheme } from "@/components/theme/ThemeProvider";
 
 const pages = [
     { title: "Home", link: "/" },
@@ -13,37 +13,44 @@ const pages = [
 ];
 
 export default function Footer() {
+    const { theme } = useTheme();
+    const logoSrc =
+        theme === "dark" ? "/logoNiceGuyServices.svg" : "/blue_logo_test.png";
+
     return (
-        <footer className="footer bg-neutral/90 backdrop-blur-md  text-neutral-content sm:footer-horizontal items-center p-6 mt-12">
+        <footer
+            className={`border-t border-base-300/60 bg-base-200/90 text-base-content backdrop-blur-md transition-[background-color,border-color,color] duration-200 ${theme === "dark" ? "mt-0" : "mt-12"}`}
+        >
+            <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-10 sm:px-8 md:flex-row md:items-center md:justify-between md:py-12 lg:px-10">
             {/* LEFT SIDE — Logo + About Text */}
             <aside className="flex flex-col gap-2 items-start">
                 <Link href="/" className="flex items-center" aria-label="Go to homepage">
                     <Image
-                        src="/logoNiceGuyServices.svg"
-                        width={50}
+                        src={logoSrc}
+                        width={160}
                         height={50}
-                        alt="Nice Guy Services Logo"
+                        alt="Nice Guy Services"
+                        className="h-[50px] w-auto max-w-[160px] object-contain object-left"
                     />
                 </Link>
 
-                <p className="text-sm">
+                <p className="text-sm text-base-content/80">
                     Custom websites for small businesses in Toronto and the GTA.
                 </p>
 
-                <p className="text-sm">
+                <p className="text-sm text-base-content/60">
                     © {new Date().getFullYear()} Nice Guy Services. All rights reserved.
                 </p>
             </aside>
 
             {/* RIGHT SIDE — Footer Navigation + Socials */}
             <nav className="flex flex-col gap-4 md:place-self-center md:justify-self-end" aria-label="Footer navigation">
-                {/* Navigation Links */}
                 <ul className="grid grid-flow-col gap-4 text-sm">
                     {pages.map((page) => (
                         <li key={page.title}>
                             <Link
                                 href={page.link}
-                                className="hover:text-primary transition-colors"
+                                className="text-base-content/80 transition-colors hover:text-primary"
                             >
                                 {page.title}
                             </Link>
@@ -51,14 +58,12 @@ export default function Footer() {
                     ))}
                 </ul>
 
-                {/* Social Icons */}
                 <div className="grid grid-flow-col gap-4 mt-1" aria-label="Social links">
-                    {/* Twitter / X */}
                     <a
                         href="https://x.com/BaoGiaNguyen"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="hover:text-primary"
+                        className="text-base-content/70 transition-colors hover:text-primary"
                         aria-label="Nice Guy Services on X"
                     >
                         <svg
@@ -70,12 +75,11 @@ export default function Footer() {
                         </svg>
                     </a>
 
-                    {/* GitHub */}
                     <a
                         href="https://github.com/DannyNguyenCode"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="hover:text-primary"
+                        className="text-base-content/70 transition-colors hover:text-primary"
                         aria-label="Danny Nguyen on GitHub"
                     >
                         <svg
@@ -90,12 +94,11 @@ export default function Footer() {
                         </svg>
                     </a>
 
-                    {/* LinkedIn */}
                     <a
                         href="https://www.linkedin.com/in/gia-bao-danny-nguyen/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="hover:text-primary"
+                        className="text-base-content/70 transition-colors hover:text-primary"
                         aria-label="Nice Guy Services on LinkedIn"
                     >
                         <svg
@@ -108,6 +111,7 @@ export default function Footer() {
                     </a>
                 </div>
             </nav>
+            </div>
         </footer>
     );
 }

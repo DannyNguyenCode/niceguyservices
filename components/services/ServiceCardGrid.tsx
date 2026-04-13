@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import type { Service } from "@/components/services/data";
 
@@ -10,22 +9,19 @@ interface ServiceCardGridProps {
     cards: Service[];
     onLearnMore?: (service: Service) => void;
     variant?: ServiceCardGridVariant;
-    learnMoreHref?: (service: Service) => string; // optional override
+    learnMoreHref?: (service: Service) => string;
 }
 
-const ServiceCardGrid: React.FC<ServiceCardGridProps> = ({
+export default function ServiceCardGrid({
     cards,
     onLearnMore,
     variant = "modal",
     learnMoreHref,
-}) => {
+}: ServiceCardGridProps) {
     return (
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {cards.map((card) => {
-                const href =
-                    learnMoreHref?.(card) ??
-                    // default: jump to service section on services page
-                    `/services#${card.id}`;
+                const href = learnMoreHref?.(card) ?? `/services#${card.id}`;
 
                 return (
                     <article
@@ -47,7 +43,6 @@ const ServiceCardGrid: React.FC<ServiceCardGridProps> = ({
                                 ))}
                             </ul>
 
-                            {/* CTA */}
                             {variant === "link" ? (
                                 <Link href={href} className="btn btn-primary btn-sm normal-case mt-2">
                                     <span aria-hidden="true">Learn more</span>
@@ -70,6 +65,4 @@ const ServiceCardGrid: React.FC<ServiceCardGridProps> = ({
             })}
         </div>
     );
-};
-
-export default ServiceCardGrid;
+}

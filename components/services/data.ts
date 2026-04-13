@@ -16,7 +16,7 @@ export interface Service {
     bullets: string[];
     description: string;
     details: ServiceDetails;
-    featured?: boolean; // ✅ add this
+    featured?: boolean;
 }
 
 export const serviceCards: Service[] = [
@@ -185,3 +185,7 @@ export const serviceCards: Service[] = [
         },
     },
 ];
+
+export function getServiceById(id: string): Service | undefined {
+    return serviceCards.find((s) => s.id === id);
+}

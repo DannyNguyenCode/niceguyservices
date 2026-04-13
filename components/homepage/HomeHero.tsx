@@ -1,0 +1,58 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import homepageContent from "./homepageContent.json";
+
+export default function HomeHero() {
+    const { hero } = homepageContent;
+
+    return (
+        <section className="mx-auto flex max-w-7xl flex-col items-center px-4 text-center md:px-8">
+            <div className="mb-8 inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 font-pm-headline text-xs font-bold tracking-widest text-secondary-content uppercase">
+                <span
+                    className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-secondary-content"
+                    aria-hidden
+                />
+                {hero.availabilityBadge}
+            </div>
+            <h1 className="font-pm-headline mb-10 text-5xl leading-none font-bold tracking-tighter text-(--pm-on-surface) md:text-7xl lg:text-8xl">
+                {hero.headlineBefore}{" "}
+                <span className="bg-linear-to-r from-primary to-(--pm-primary-container) bg-clip-text text-transparent">
+                    {hero.headlineGradient}
+                </span>
+            </h1>
+            <p className="mb-12 max-w-2xl text-lg leading-relaxed text-(--pm-on-surface-variant)">
+                {hero.subtitle}
+            </p>
+            <div className="flex flex-col gap-6 md:flex-row">
+                <Link
+                    href={hero.primaryCta.href}
+                    className="rounded-full bg-linear-to-br from-primary to-(--pm-primary-container) px-10 py-4 font-pm-headline font-bold tracking-wide text-primary-content shadow-xl shadow-primary/25 transition-opacity hover:opacity-90"
+                >
+                    {hero.primaryCta.label}
+                </Link>
+                <Link
+                    href={hero.secondaryCta.href}
+                    className="rounded-full border border-(--pm-outline-variant)/30 bg-base-100/60 px-10 py-4 font-pm-headline font-bold tracking-wide text-(--pm-on-surface) backdrop-blur-xl transition-colors hover:bg-(--pm-surface-low) dark:bg-base-100/40"
+                >
+                    {hero.secondaryCta.label}
+                </Link>
+            </div>
+            <div className="group relative mt-16 aspect-21/9 w-full overflow-hidden rounded-xl md:mt-20">
+                <Image
+                    src={hero.heroImage.src}
+                    alt={hero.heroImage.alt}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    sizes="(max-width: 1280px) 100vw, 1280px"
+                    priority
+                />
+                <div
+                    className="absolute inset-0 bg-linear-to-t from-(--pm-surface) via-transparent to-transparent"
+                    aria-hidden
+                />
+            </div>
+        </section>
+    );
+}

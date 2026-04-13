@@ -1,11 +1,5 @@
-import Services from '@/components/Services'
-import React from 'react'
+import Services from "@/components/Services";
 
-const page = () => {
-    return (
-        <Services />
-        // <ServicesV2 />
-    )
+export default function Page() {
+    return <Services />;
 }
-
-export default page

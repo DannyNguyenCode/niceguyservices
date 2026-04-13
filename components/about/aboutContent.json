@@ -1,0 +1,234 @@
+{
+  "page": {
+    "title": "About Us",
+    "subtitle": "Professional, warm, and focused on building clean, modern websites that are easy to maintain and scale."
+  },
+  "intro": {
+    "image": {
+      "src": "/profilePicture.jpg",
+      "alt": "Danny Nguyen, web developer based in Toronto"
+    },
+    "heading": "Who you'll be working with",
+    "leadParagraph": "Hi, I'm Danny — a Toronto-based web developer who builds clean, modern websites that are easy to maintain and simple to scale as your business grows.",
+    "outsideWork": {
+      "before": "Outside of work, I'm a big animal lover — I share my home with ",
+      "emphasis": "two cats and a dog",
+      "after": " that I care for and love. I enjoy playing games with friends and genuinely like talking to people. If there's something I don't know much about, I tend to lean in rather than back away — learning new things is something that immediately engages me."
+    },
+    "closingParagraph": "I've spent years in both customer-facing roles and technical roles, which means I'm just as comfortable explaining options in plain language as I am digging into code. Talking to me is easy — no buzzwords, no pressure, just honest guidance about what will actually help your business.",
+    "badges": [
+      "Toronto, ON • Local & remote",
+      "Strong communication • Curious & people-focused"
+    ]
+  },
+  "summary": {
+    "title": "About Me — Professional, Warm, and Client-Focused",
+    "paragraphs": [
+      "I help businesses, nonprofits, and creators transform outdated, slow, or confusing websites into fast, secure, and user-friendly experiences. I specialize in modern frameworks like React, Next.js, Supabase, Python, and Angular — giving you the right balance of speed, flexibility, and long-term reliability.",
+      "My approach is simple: I build websites that are clean and well-structured so they're easy to maintain. Your site stays future-proof, readable, and inexpensive to update — whether I keep working with you or you bring in another developer later."
+    ]
+  },
+  "workingWithMe": {
+    "title": "What Working With Me Is Like",
+    "items": [
+      {
+        "heading": "I'm easy to work with & communicate clearly",
+        "bodySegments": [
+          { "text": "I have around " },
+          { "text": "2 years of customer service experience", "bold": true },
+          { "text": ", both front-facing and over the phone, as well as time spent supporting students and faculty at Seneca Polytechnic. That taught me how to listen, stay calm under pressure, and explain technical concepts in plain language. You'll always know what's happening, why decisions are being made, and what to expect next." }
+        ]
+      },
+      {
+        "heading": "I turn complex requirements into simple, user-friendly solutions",
+        "bodySegments": [
+          { "text": "Whether it was secure payment flows at Shipvista — a shipping company providing labels and real-time rates — or real-time gameplay logic in my Pokémon project, I'm comfortable solving hard problems and turning them into experiences your customers actually enjoy using." }
+        ]
+      },
+      {
+        "heading": "I care about long-term maintainability",
+        "bodySegments": [
+          { "text": "I don't just build something that " },
+          { "text": "works for now.", "bold": true },
+          { "text": " I focus on fast load times, modern best practices, clean architecture, and patterns that stay easy to maintain years from now — even if another developer takes over." }
+        ]
+      },
+      {
+        "heading": "Curiosity drives how I work",
+        "bodySegments": [
+          { "text": "I like to learn. When your project needs something I haven't seen before — a new tool, API, or workflow — I get genuinely excited to dig in, understand it, and implement it properly. That curiosity helps your business benefit from modern solutions, not just the safe old way of doing things." }
+        ]
+      }
+    ]
+  },
+  "teamAndMeet": {
+    "teamCard": {
+      "title": "Who's on the team?",
+      "intro": "Right now, you'll be working directly with me — no account managers, no hand-offs, no getting lost in a big agency pipeline. As the work grows, the process and codebase are set up so additional developers or designers can be brought in smoothly.",
+      "profile": {
+        "imageSrc": "/profilePicture.jpg",
+        "imageAlt": "Danny Nguyen profile",
+        "name": "Gia Bao (Danny) Nguyen",
+        "roleLine": "Web Developer • Frontend & Full-Stack",
+        "bioParagraphs": [
+          "Diploma in Computer Programming from Seneca College. Experience in customer service, IT support, and front-end development for a shipping platform.",
+          "Loves: two cats, one dog, gaming with friends, learning new tech, and meeting new people."
+        ],
+        "links": [
+          {
+            "label": "X / Twitter",
+            "href": "https://x.com/BaoGiaNguyen"
+          },
+          {
+            "label": "LinkedIn",
+            "href": "https://www.linkedin.com/in/gia-bao-danny-nguyen"
+          },
+          {
+            "label": "Portfolio",
+            "href": "https://portfolio-black-two-97.vercel.app"
+          }
+        ]
+      }
+    },
+    "meetCard": {
+      "title": "Meet in person (Toronto)",
+      "paragraphs": [
+        "If you're local to the GTA, I'm happy to meet in person for a project kickoff or strategy session. We can pick a convenient café or public workspace in Toronto and walk through your goals together.",
+        "Just mention that you'd like to meet in person when you contact me, and I'll suggest a few options and times."
+      ]
+    }
+  },
+  "map": {
+    "privacyTitle": "Map preview is disabled for privacy",
+    "privacyDescription": "Click below to load an interactive Google Map. This may allow Google to set cookies and collect usage data.",
+    "loadButton": "Load Google Map",
+    "iframeTitle": "Toronto Meeting Area",
+    "embedUrl": "https://www.google.com/maps?q=Toronto,%20ON&output=embed",
+    "previewImageSrc": "/images/Toronto-city-map.png",
+    "previewImageAlt": "Stylized map of Toronto"
+  },
+  "biographyLayout": {
+    "heroEyebrow": "ABOUT NICE GUY SERVICES",
+    "heroHeadlineLine1": "Websites that",
+    "heroHeadlineAccent": "stay maintainable.",
+    "spotlightImage": {
+      "src": "/images/Futuristic-tech-abstract.png",
+      "alt": "Abstract futuristic technology visualization"
+    },
+    "homePackSkyline": {
+      "src": "/images/Toronto-skyline-dusk.png",
+      "alt": "Toronto skyline at dusk"
+    },
+    "professionalCard": {
+      "title": "What I focus on"
+    },
+    "status": {
+      "eyebrow": "AVAILABILITY & LOCATION"
+    },
+    "bentoSectionTitle": "Beyond the code",
+    "homePackCardTitle": "Outside of work",
+    "gamingCard": {
+      "title": "Games & conversation",
+      "subtitle": "Gaming with friends — easy to talk to"
+    },
+    "quoteCard": {
+      "quote": "Design is not just what it looks like and feels like. Design is how it works.",
+      "attribution": "Steve Jobs"
+    },
+    "petPortraits": [
+      {
+        "src": "/images/nala.png",
+        "alt": "Nala",
+        "name": "Nala",
+        "tagline": "The lead architect of naps."
+      },
+      {
+        "src": "/images/mina.png",
+        "alt": "Mina",
+        "name": "Mina",
+        "tagline": "Quality assurance specialist."
+      },
+      {
+        "src": "/images/flair.png",
+        "alt": "Flair",
+        "name": "Flair",
+        "tagline": "Head of employee morale."
+      }
+    ],
+    "vitalStats": [
+      {
+        "label": "Location",
+        "value": "Toronto, Canada"
+      },
+      {
+        "label": "Experience",
+        "value": "2+ years"
+      },
+      {
+        "label": "Status",
+        "value": "Available",
+        "tone": "secondary"
+      },
+      {
+        "label": "Timezone",
+        "value": "EST (UTC-5)"
+      }
+    ],
+    "heroPrimaryCta": {
+      "label": "Start project",
+      "href": "/contact"
+    },
+    "heroSecondaryCta": {
+      "label": "View services",
+      "href": "/services"
+    },
+    "heroFocusCard": {
+      "eyebrow": "Focus",
+      "title": "Websites & frontend"
+    },
+    "methodologySectionTitle": "The methodology",
+    "methodologySectionIntro": "My work is guided by principles that keep projects clear, maintainable, and pleasant to use.",
+    "meetModuleEyebrow": "Local to the GTA",
+    "meetIconRowCaption": "Cafés, transit, green space",
+    "floatingCtaLabel": "CONTACT",
+    "layoutBrand": "Nice Guy Services"
+  },
+  "background": {
+    "experienceTimeline": [
+      {
+        "period": "2025 — Present",
+        "title": "Customer Service Representative",
+        "org": "Alight Solutions",
+        "description": "Helping participants with their benefits and claims, providing information and resolving issues.",
+        "active": true
+      },
+      {
+        "period": "2021 — 2022",
+        "title": "Junior Frontend Developer",
+        "org": "Shipvista",
+        "description": "Built secure UI flows, payment interfaces, real-time shipping updates, and modern React components for a shipping label platform. Collaborated with backend teams and handled code reviews using Azure DevOps.",
+        "active": false
+      },
+      {
+        "period": "2018 — 2019",
+        "title": "Customer service & IT support",
+        "org": "Seneca Polytechnic",
+        "description": "IT Service Desk and related support — helping students and faculty with tech issues. Strengthened communication, patience, and explaining technical concepts clearly in person and over the phone.",
+        "active": false
+      }
+    ],
+    "educationHighlight": {
+      "eyebrow": "Education",
+      "cardEyebrow": "Credential",
+      "title": "Diploma in Computer Programming",
+      "org": "Seneca College, Toronto",
+      "description": "Focused on software development and practical engineering, complemented by real-world customer-facing and technical roles."
+    }
+  },
+  "cta": {
+    "title": "Want to talk through your project?",
+    "description": "Reach out for a free consultation. We can start over email, hop on a call, or — if you're local to Toronto — set up a quick in-person chat.",
+    "buttonLabel": "Try a Free Consultation",
+    "buttonHref": "/contact"
+  }
+}

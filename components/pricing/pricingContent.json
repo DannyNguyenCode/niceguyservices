@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "contactHref": "/contact"
+  },
+  "pageHeader": {
+    "title": "Pricing",
+    "subtitle": "Two simple ways to work together: pay once and own it, or keep everything managed for you monthly."
+  },
+  "hero": {
+    "badge": "Scalable, straightforward builds",
+    "headlineBefore": "Engineered for",
+    "headlineGradient": "lasting growth",
+    "subtitle": "Transparent pricing for small businesses in Toronto and beyond. No surprise invoices — just a clear build, optional monthly care, and honest hourly work when you need it.",
+    "toggleMonthly": "Monthly care",
+    "toggleOneTime": "One-time build",
+    "toggleOneTimeNote": "own it"
+  },
+  "plans": {
+    "spark": {
+      "tierLabel": "As needed",
+      "name": "SPARK",
+      "tagline": "Hourly updates when you need them.",
+      "price": "$40",
+      "priceUnit": "/ hr",
+      "footnote": "2 hour minimum. For fixes or scope outside your plan.",
+      "featureIcon": "check",
+      "features": [
+        "Small changes & fixes",
+        "Clear estimates before work",
+        "Same codebase you already own"
+      ],
+      "buttonLabel": "Book time"
+    },
+    "monthlyCare": {
+      "tierLabel": "Ongoing",
+      "price": "$200",
+      "priceUnit": "/ mo",
+      "tagline": "Care, hosting, and small updates handled for you.",
+      "featureIcon": "bolt",
+      "features": [
+        "Full site build — no large upfront fee",
+        "Unlimited small updates",
+        "Backups, security & monitoring",
+        "Priority support"
+      ],
+      "buttonLabel": "Start care",
+      "popularBadge": "Most popular"
+    },
+    "nova": {
+      "focusBadge": "Own your site",
+      "tierLabel": "Project",
+      "name": "NOVA",
+      "tagline": "One-time build, full ownership.",
+      "price": "$2,500",
+      "priceUnit": "project",
+      "featureIcon": "check",
+      "features": [
+        "Up to 5 pages, responsive design",
+        "Deploy, DNS & SSL included",
+        "Clean, documented codebase",
+        "You own 100% of the work"
+      ],
+      "buttonLabel": "Request a quote"
+    }
+  },
+  "trust": {
+    "items": [
+      {
+        "icon": "bolt",
+        "title": "FAST LAUNCH",
+        "body": "Modern stacks and lean handoffs so your site ships on time and stays easy to extend.",
+        "accent": "secondary"
+      },
+      {
+        "icon": "shield",
+        "title": "SECURITY FIRST",
+        "body": "SSL, sensible defaults, and maintenance options that keep your site and visitors safer.",
+        "accent": "primary"
+      },
+      {
+        "icon": "command",
+        "title": "CLEAN CODEBASE",
+        "body": "Readable structure and docs so the next developer — or you — never hits a wall.",
+        "accent": "tertiary"
+      }
+    ]
+  },
+  "addOns": {
+    "title": "Extend the build",
+    "subtitle": "Modular add-ons as your site grows — pages, design passes, and commerce.",
+    "ctaLabel": "Get a full quote",
+    "cards": [
+      {
+        "icon": "shield",
+        "iconBg": "primary",
+        "title": "Extra pages",
+        "desc": "Standard, feature-rich, or dynamic — by complexity.",
+        "price": "$80+"
+      },
+      {
+        "icon": "cpu",
+        "iconBg": "secondary",
+        "title": "Design & themes",
+        "desc": "Variations, campaigns, and landing experiments.",
+        "price": "$100–$600"
+      },
+      {
+        "icon": "circleStack",
+        "iconBg": "primaryContainer",
+        "title": "E-commerce",
+        "desc": "Catalog through full checkout integrations.",
+        "price": "Tiers"
+      },
+      {
+        "icon": "bolt",
+        "iconBg": "surfaceHighest",
+        "title": "Priority blocks",
+        "desc": "Reserved time for launches and urgent fixes.",
+        "price": "Custom"
+      }
+    ]
+  },
+  "consultCta": {
+    "title": "Need a custom build?",
+    "body": "Tell me what you sell, who you serve, and what's broken today — I'll recommend a simple path and honest pricing.",
+    "buttonLabel": "Get a free consult"
+  }
+}

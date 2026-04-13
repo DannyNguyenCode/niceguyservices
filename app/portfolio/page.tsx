@@ -1,10 +1,5 @@
-import Portfolio from '@/components/Portfolio'
-import React from 'react'
+import Portfolio from "@/components/Portfolio";
 
-const page = () => {
-    return (
-        <Portfolio />
-    )
+export default function Page() {
+    return <Portfolio />;
 }
-
-export default page

@@ -1,14 +1,16 @@
 "use client";
 
-import React, {
+import {
     createContext,
     useContext,
     useState,
     useEffect,
+    type ReactNode,
 } from "react";
+import type { SiteColorMode } from "@/lib/themes/siteTheme";
 
 interface Ctx {
-    theme: string;
+    theme: SiteColorMode;
     toggle: () => void;
 }
 
@@ -23,29 +25,26 @@ export const useTheme = () => {
 };
 
 type ThemeProviderProps = {
-    initialTheme: string; // "light" | "dark" | "retro" etc.
-    children: React.ReactNode;
+    initialTheme: SiteColorMode;
+    children: ReactNode;
 };
 
-const ThemeProvider: React.FC<ThemeProviderProps> = ({
+export default function ThemeProvider({
     initialTheme,
     children,
-}) => {
-    const [theme, setTheme] = useState<string>(initialTheme);
+}: ThemeProviderProps) {
+    const [theme, setTheme] = useState<SiteColorMode>(initialTheme);
 
-    // apply theme to <html data-theme="..."> + persist in cookie
     useEffect(() => {
-        if (typeof document !== "undefined") {
-            document.documentElement.dataset.theme = theme;
-        }
-        document.cookie = `theme=${theme}; path=/; max-age=${60 * 60 * 24 * 365
-            }`;
+        document.documentElement.setAttribute(
+            "data-theme",
+            theme === "dark" ? "niceguys-dark" : "niceguys-light",
+        );
+        document.cookie = `theme=${theme}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
     }, [theme]);
 
-    // simple light/dark toggle (you can extend this later for "garden")
     const toggle = () => {
-        const next = theme === "fantasy" ? "luxury" : "fantasy";
-        setTheme(next);
+        setTheme((t) => (t === "light" ? "dark" : "light"));
     };
 
     return (
@@ -53,6 +52,4 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({
             {children}
         </ThemeCtx.Provider>
     );
-};
-
-export default ThemeProvider;
+}

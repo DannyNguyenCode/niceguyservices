@@ -1,16 +1,15 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 interface ThankYouModalProps {
     open: boolean;
     onClose: () => void;
 }
 
-const ThankYouModal: React.FC<ThankYouModalProps> = ({ open, onClose }) => {
+export default function ThankYouModal({ open, onClose }: ThankYouModalProps) {
     const dialogRef = useRef<HTMLDialogElement | null>(null);
 
-    // Sync the native <dialog> with the `open` prop
     useEffect(() => {
         const dialog = dialogRef.current;
         if (!dialog) return;
@@ -22,7 +21,6 @@ const ThankYouModal: React.FC<ThankYouModalProps> = ({ open, onClose }) => {
         }
     }, [open]);
 
-    // Ensure React state updates when dialog closes via ESC/backdrop
     useEffect(() => {
         const dialog = dialogRef.current;
         if (!dialog) return;
@@ -75,6 +73,4 @@ const ThankYouModal: React.FC<ThankYouModalProps> = ({ open, onClose }) => {
             </form>
         </dialog>
     );
-};
-
-export default ThankYouModal;
+}

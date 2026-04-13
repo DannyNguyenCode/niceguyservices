@@ -1,4 +1,3 @@
-// services/FinalCTA.tsx
 export default function FinalCTA() {
     return (
         <div className="card bg-base-100 border border-base-300 shadow-md text-center mt-12">

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { cookies } from 'next/headers';
+import { cookies } from "next/headers";
 import ThemeProvider from "@/components/theme/ThemeProvider";
+import { parseStoredColorMode } from "@/lib/themes/siteTheme";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,14 +31,16 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookieStore = await cookies();
-  const theme = (cookieStore.get('theme')?.value ?? 'garden') as 'garden' | 'dark';
+  const initialColorMode = parseStoredColorMode(cookieStore.get("theme")?.value);
+  const dataTheme =
+    initialColorMode === "dark" ? "niceguys-dark" : "niceguys-light";
 
   return (
-    <html lang="en" data-theme={'garden'}>
+    <html lang="en" data-theme={dataTheme}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider initialTheme={theme}>
+        <ThemeProvider initialTheme={initialColorMode}>
           <Navigation />
           <main id="content-container">
             {children}

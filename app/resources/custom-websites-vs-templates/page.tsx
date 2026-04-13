@@ -1,5 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import {
+    BoltIcon,
+    NoSymbolIcon,
+    ShieldExclamationIcon,
+    Square3Stack3DIcon,
+} from "@heroicons/react/24/outline";
+import ResourceArticleTemplate, {
+    ResourceLimitationList,
+    ResourceQuoteCallout,
+    ResourceSection,
+} from "@/components/resources/ResourceArticleTemplate";
 
 export const metadata: Metadata = {
     title: "Custom Websites vs Templates: What Small Businesses Should Know | Nice Guy Services",
@@ -9,41 +20,67 @@ export const metadata: Metadata = {
 
 export default function CustomWebsitesVsTemplatesPage() {
     return (
-        <section className="max-w-4xl mx-auto px-6 py-16 space-y-10">
-            {/* Article header */}
-            <header className="space-y-4">
-                <h1 className="text-3xl md:text-4xl font-bold">
-                    Custom Websites vs Templates: What Small Businesses Should Know
-                </h1>
-                <p className="text-lg text-muted-foreground">
+        <ResourceArticleTemplate
+            seriesBadge="Website strategy 01"
+            title={
+                <>
+                    Custom Websites <span className="text-primary">vs</span>{" "}
+                    Templates
+                </>
+            }
+            updatedIso="2025-12-31"
+            updatedLabel="December 31, 2025"
+            heroImage={{
+                src: "/images/Futuristic-tech-abstract.png",
+                alt: "Abstract digital architecture and soft purple lighting",
+            }}
+            executiveSummary="Choosing between bespoke builds and pre-built themes shapes performance, SEO depth, and how far you can grow before rework."
+            comparisonBars={[
+                {
+                    label: "Custom flexibility",
+                    valueLabel: "100%",
+                    fillPercent: 100,
+                    variant: "primary",
+                },
+                {
+                    label: "Typical template flexibility",
+                    valueLabel: "35%",
+                    fillPercent: 35,
+                    variant: "secondary",
+                },
+                {
+                    label: "Lean performance potential",
+                    valueLabel: "High",
+                    fillPercent: 90,
+                    variant: "primary",
+                },
+            ]}
+            expertTip={{
+                title: "Expert tip",
+                body: "For some products, a custom marketing site plus a templated app dashboard can balance brand polish with delivery speed—just keep the public site fast and clear.",
+            }}
+            cta={{
+                title: "Ready for a site built around your business?",
+                body: "If your website is core to leads and trust, a custom build can remove bloat and grow with you.",
+                primary: { href: "/contact", label: "Start a conversation" },
+                secondary: { href: "/services", label: "View services" },
+            }}
+        >
+            <div className="space-y-6 text-lg leading-relaxed text-(--pm-on-surface-variant)">
+                <p>
                     Templates are popular for a reason — but they aren’t always the best
                     long-term choice. Here’s how custom websites compare and when each
                     option makes sense.
                 </p>
-
-                {/* Optional trust signal */}
-                <p className="text-sm text-muted-foreground">
-                    Last updated: <time dateTime="2025-12-31">December 31, 2025</time>
-                </p>
-            </header>
-
-            {/* Intro */}
-            <section className="space-y-4">
                 <p>
                     When building a website, most small business owners face the same
                     question: should you use a template platform like WordPress or Wix, or
-                    invest in a custom-built website?
+                    invest in a custom-built website? The right answer depends on your
+                    goals.
                 </p>
-                <p>
-                    The right answer depends on your goals. Understanding the differences
-                    helps you choose a solution that supports your business — not one that
-                    creates limitations later.
-                </p>
-            </section>
+            </div>
 
-            {/* What templates are */}
-            <section className="space-y-4">
-                <h2 className="text-2xl font-semibold">What Template Websites Are</h2>
+            <ResourceSection index="01" title="What template websites are">
                 <p>
                     Template websites use pre-built themes and layouts that can be quickly
                     customized. Platforms like WordPress, Wix, and Squarespace make it easy
@@ -53,32 +90,58 @@ export default function CustomWebsitesVsTemplatesPage() {
                     For early-stage businesses or simple projects, templates can be a
                     reasonable starting point.
                 </p>
-            </section>
+            </ResourceSection>
 
-            {/* Limitations */}
-            <section className="space-y-4">
-                <h2 className="text-2xl font-semibold">
-                    Common Limitations of Template-Based Websites
-                </h2>
+            <ResourceQuoteCallout
+                title="Structural integrity"
+                icon={Square3Stack3DIcon}
+                quote={
+                    <>
+                        “A custom website is not a luxury; it is a strategic investment in
+                        clarity and speed. Templates are a starting point; custom is built
+                        for where you’re going.”
+                    </>
+                }
+            />
+
+            <ResourceSection
+                index="02"
+                accent="secondary"
+                title="Common limitations of template-based websites"
+            >
                 <p>
                     While convenient, templates often come with trade-offs that aren’t
                     obvious at first:
                 </p>
-                <ul className="list-disc pl-6 space-y-2">
-                    <li>Extra code and features you don’t actually need</li>
-                    <li>Slower load times due to plugins and heavy themes</li>
-                    <li>Limited flexibility as the business grows</li>
-                    <li>Ongoing maintenance and compatibility issues</li>
-                </ul>
+                <ResourceLimitationList
+                    items={[
+                        {
+                            icon: NoSymbolIcon,
+                            title: "Extra weight you don’t need",
+                            description:
+                                "Bundled features, scripts, and styles you never use still load and slow the experience.",
+                        },
+                        {
+                            icon: BoltIcon,
+                            title: "Performance drag",
+                            description:
+                                "Heavy themes and plugins stack up, hurting load times and Core Web Vitals.",
+                        },
+                        {
+                            icon: ShieldExclamationIcon,
+                            title: "Maintenance surface area",
+                            description:
+                                "More moving parts mean more updates, conflicts, and security exposure over time.",
+                        },
+                    ]}
+                />
                 <p>
                     Over time, these issues can affect performance, SEO, and the overall
                     experience for visitors.
                 </p>
-            </section>
+            </ResourceSection>
 
-            {/* What custom means */}
-            <section className="space-y-4">
-                <h2 className="text-2xl font-semibold">What a Custom Website Means</h2>
+            <ResourceSection index="03" title="What a custom website means">
                 <p>
                     A custom website is designed and built specifically for your business.
                     Instead of adapting your content to fit a theme, the site is structured
@@ -88,13 +151,13 @@ export default function CustomWebsitesVsTemplatesPage() {
                     This approach removes unnecessary features and focuses only on what
                     helps your business perform well online.
                 </p>
-            </section>
+            </ResourceSection>
 
-            {/* Performance & SEO */}
-            <section className="space-y-4">
-                <h2 className="text-2xl font-semibold">
-                    Performance, SEO, and Long-Term Value
-                </h2>
+            <ResourceSection
+                index="04"
+                accent="secondary"
+                title="Performance, SEO, and long-term value"
+            >
                 <p>
                     Custom-built websites are typically faster and easier for search
                     engines to understand. With fewer plugins and cleaner structure, pages
@@ -104,29 +167,25 @@ export default function CustomWebsitesVsTemplatesPage() {
                     Faster websites tend to rank better, keep visitors engaged longer, and
                     convert more consistently.
                 </p>
-            </section>
+            </ResourceSection>
 
-            {/* When templates make sense */}
-            <section className="space-y-4">
-                <h2 className="text-2xl font-semibold">
-                    When Templates Can Be the Right Choice
-                </h2>
+            <ResourceSection index="05" title="When templates can be the right choice">
                 <p>
                     Templates aren’t bad — they’re just designed for general use. They may
                     be suitable if:
                 </p>
-                <ul className="list-disc pl-6 space-y-2">
+                <ul className="list-disc space-y-2 pl-6">
                     <li>You need something temporary or experimental</li>
                     <li>Your site has very simple requirements</li>
                     <li>You’re comfortable managing updates and plugins</li>
                 </ul>
-            </section>
+            </ResourceSection>
 
-            {/* When custom makes sense */}
-            <section className="space-y-4">
-                <h2 className="text-2xl font-semibold">
-                    When a Custom Website Makes More Sense
-                </h2>
+            <ResourceSection
+                index="06"
+                accent="secondary"
+                title="When a custom website makes more sense"
+            >
                 <p>
                     A custom website is often a better fit when your website is a core part
                     of your business — not just an online brochure.
@@ -135,45 +194,30 @@ export default function CustomWebsitesVsTemplatesPage() {
                     Businesses that rely on visibility, trust, and consistent leads often
                     benefit from a site built for speed, clarity, and growth.
                 </p>
-            </section>
+            </ResourceSection>
 
-            {/* Conclusion */}
-            <section className="space-y-4">
-                <h2 className="text-2xl font-semibold">
-                    Choosing the Right Tool for Your Business
-                </h2>
+            <ResourceSection index="07" title="Choosing the right tool for your business">
                 <p>
                     Templates and custom websites serve different purposes. The key is
                     choosing a solution that supports where your business is going — not
                     just where it is today.
                 </p>
                 <p>
-                    A website built intentionally can become a long-term asset instead of
-                    a recurring source of frustration.
+                    A website built intentionally can become a long-term asset instead of a
+                    recurring source of frustration.
                 </p>
-            </section>
-
-            {/* Internal links */}
-            <section className="pt-8 border-t space-y-4">
-                <p className="text-muted-foreground">
-                    These principles guide how I build websites for small businesses —
-                    focusing on performance, clarity, and long-term value.
-                </p>
-                <Link
-                    href="/services"
-                    className="inline-block text-primary font-medium hover:underline"
-                >
-                    View website services →
-                </Link>
-                <div>
+                <p className="text-(--pm-on-surface-variant)">
+                    These principles guide how I build for small businesses — performance,
+                    clarity, and long-term value.{" "}
                     <Link
-                        href="/resources"
-                        className="text-sm text-muted-foreground hover:underline"
+                        href="/services"
+                        className="font-medium text-primary underline-offset-4 hover:underline"
                     >
-                        ← Back to resources
+                        View website services
                     </Link>
-                </div>
-            </section>
-        </section>
+                    .
+                </p>
+            </ResourceSection>
+        </ResourceArticleTemplate>
     );
 }

@@ -1,10 +1,5 @@
-import Testimonials from '@/components/Testimonials'
-import React from 'react'
+import Testimonials from "@/components/Testimonials";
 
-const page = () => {
-    return (
-        <Testimonials />
-    )
+export default function Page() {
+    return <Testimonials />;
 }
-
-export default page

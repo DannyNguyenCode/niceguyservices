@@ -1,15 +1,12 @@
 "use client";
 
-import React from "react";
+import pricingContent from "./pricingContent.json";
 import PageHeader from "../PageHeader";
 
-const PricingHeader: React.FC = () => {
-    return (
-        <PageHeader
-            title="Pricing"
-            subtitle="Two simple ways to work together: pay once and own it, or keep everything managed for you monthly."
-        />
-    );
-};
+export default function PricingHeader() {
+    const { pageHeader } = pricingContent;
 
-export default PricingHeader;
+    return (
+        <PageHeader title={pageHeader.title} subtitle={pageHeader.subtitle} />
+    );
+}

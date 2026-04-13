@@ -1,0 +1,425 @@
+/**
+ * Minimal UI primitives (buttons, cards, forms, nav).
+ * Uses daisyUI theme tokens (`--color-*`) from `niceguys-theme.css`.
+ */
+@layer components {
+    /* ---- Buttons ---- */
+    .btn {
+        display: inline-flex;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        border-radius: 0.5rem;
+        border-width: 1px;
+        border-color: transparent;
+        min-height: 2.5rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        line-height: 1.25;
+        transition-property: color, background-color, border-color, opacity, transform;
+        transition-duration: 150ms;
+    }
+
+    .btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    .btn-primary {
+        border-color: var(--color-primary);
+        background-color: var(--color-primary);
+        color: var(--color-primary-content);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+        filter: brightness(1.05);
+    }
+
+    .btn-secondary {
+        border-color: var(--color-secondary);
+        background-color: var(--color-secondary);
+        color: var(--color-secondary-content);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+        filter: brightness(1.06);
+    }
+
+    .btn-outline.btn-primary {
+        border-color: var(--color-primary);
+        background-color: transparent;
+        color: var(--color-primary);
+    }
+
+    .btn-outline.btn-primary:hover:not(:disabled) {
+        background-color: color-mix(in srgb, var(--color-primary) 12%, transparent);
+    }
+
+    .btn-ghost {
+        border-color: transparent;
+        background-color: transparent;
+        color: var(--color-base-content);
+    }
+
+    .btn-ghost:hover:not(:disabled) {
+        background-color: color-mix(in srgb, var(--color-base-content) 8%, transparent);
+    }
+
+    .btn-sm {
+        min-height: 2rem;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    .btn-lg {
+        min-height: 3rem;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+        font-size: 1rem;
+    }
+
+    .btn-circle {
+        width: 3rem;
+        height: 3rem;
+        min-height: 3rem;
+        border-radius: 9999px;
+        padding: 0;
+    }
+
+    /* ---- Cards ---- */
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        border-radius: 0.75rem;
+    }
+
+    .card-body {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1.5rem;
+    }
+
+    .card-title {
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+        font-weight: 800;
+    }
+
+    /* ---- Badges ---- */
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9999px;
+        border-width: 1px;
+        border-color: transparent;
+        padding: 0.25rem 0.65rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        line-height: 1rem;
+    }
+
+    .badge-primary {
+        border-color: var(--color-primary);
+        background-color: var(--color-primary);
+        color: var(--color-primary-content);
+    }
+
+    .badge-outline {
+        border-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
+        background-color: transparent;
+        color: var(--color-primary);
+    }
+
+    .badge-sm {
+        padding: 0.125rem 0.5rem;
+        font-size: 0.65rem;
+    }
+
+    .badge-lg {
+        padding: 0.35rem 0.85rem;
+        font-size: 0.8rem;
+    }
+
+    /* ---- Forms ---- */
+    .form-control {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+
+    .label-text {
+        color: var(--color-base-content);
+    }
+
+    .input,
+    .select,
+    .textarea {
+        width: 100%;
+        border-radius: 0.5rem;
+        border-width: 1px;
+        border-color: var(--color-base-300);
+        background-color: var(--color-base-100);
+        color: var(--color-base-content);
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+    }
+
+    .input:focus,
+    .select:focus,
+    .textarea:focus {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 0;
+    }
+
+    .checkbox {
+        height: 1.125rem;
+        width: 1.125rem;
+        flex-shrink: 0;
+        cursor: pointer;
+        border-radius: 0.25rem;
+        border: 2px solid var(--color-base-300);
+        accent-color: var(--color-primary);
+    }
+
+    .checkbox-sm {
+        height: 1rem;
+        width: 1rem;
+    }
+
+    /* ---- Links ---- */
+    .link {
+        cursor: pointer;
+        text-underline-offset: 3px;
+    }
+
+    .link:hover {
+        text-decoration-line: underline;
+    }
+
+    .link-primary {
+        color: var(--color-primary);
+    }
+
+    /* ---- Divider ---- */
+    .divider {
+        display: flex;
+        align-items: center;
+        align-self: stretch;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        height: 1rem;
+    }
+
+    .divider::before,
+    .divider::after {
+        content: "";
+        flex-grow: 1;
+        height: 1px;
+        width: 100%;
+        background-color: var(--color-base-300);
+    }
+
+    /* ---- Navbar ---- */
+    .navbar {
+        display: flex;
+        width: 100%;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem 1rem;
+    }
+
+    /* daisyUI navbar defaults use 50% width on start/end, which overlaps the center links */
+    .navbar-start {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: auto;
+        max-width: none;
+    }
+
+    .navbar-center {
+        display: none;
+        flex: 1 1 auto;
+        justify-content: center;
+        min-width: 0;
+    }
+
+    @media (min-width: 1024px) {
+        .navbar-center {
+            display: flex;
+        }
+    }
+
+    .navbar-end {
+        margin-left: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: auto;
+        max-width: none;
+    }
+
+    /* ---- Menu ---- */
+    .menu {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        flex-wrap: wrap;
+        padding: 0.25rem;
+    }
+
+    .menu-horizontal {
+        flex-direction: row;
+        align-items: center;
+        width: auto;
+    }
+
+    .menu :where(li > *),
+    .menu li > a,
+    .menu li > button {
+        border-radius: 0.5rem;
+    }
+
+    .menu-sm :where(li > *) {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+    }
+
+    .menu li > a {
+        display: block;
+        padding: 0.5rem 0.75rem;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .menu li > a:hover {
+        background-color: color-mix(in srgb, var(--color-base-content) 6%, transparent);
+    }
+
+    /* ---- Footer ---- */
+    .footer {
+        display: grid;
+        width: 100%;
+        grid-auto-flow: row;
+        align-items: start;
+        gap: 2rem;
+    }
+
+    @media (min-width: 640px) {
+        .footer.sm\:footer-horizontal {
+            grid-auto-flow: column;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+        }
+    }
+
+    .rounded-box {
+        border-radius: 1rem;
+    }
+
+    /* ---- Modal (native <dialog>) ---- */
+    dialog.modal {
+        position: fixed;
+        inset: 0;
+        margin: 0;
+        display: flex;
+        max-height: none;
+        max-width: none;
+        height: 100%;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        background: transparent;
+        padding: 0;
+    }
+
+    @media (min-width: 640px) {
+        dialog.modal.sm\:modal-middle {
+            justify-content: center;
+        }
+    }
+
+    dialog.modal::backdrop {
+        background-color: color-mix(in srgb, #0a0a0f 55%, transparent);
+    }
+
+    /* Service detail <dialog>: lighter scrim + blur (matches modern services modal) */
+    dialog.modal.service-detail-dialog {
+        padding: 0;
+    }
+
+    @media (min-width: 640px) {
+        dialog.modal.service-detail-dialog {
+            padding: 1.5rem;
+        }
+    }
+
+    dialog.modal.service-detail-dialog::backdrop {
+        background-color: color-mix(
+            in srgb,
+            var(--pm-on-surface, var(--color-base-content)) 20%,
+            transparent
+        );
+        backdrop-filter: blur(6px);
+    }
+
+    .modal-box {
+        position: relative;
+        z-index: 1;
+        margin: 1rem;
+        max-height: min(90vh, 100% - 2rem);
+        overflow-y: auto;
+        border-radius: 1rem;
+        border-width: 1px;
+        border-color: var(--color-base-300);
+        background-color: var(--color-base-100);
+        color: var(--color-base-content);
+        padding: 1.5rem;
+        box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.35);
+    }
+
+    @media (max-width: 639px) {
+        .modal.modal-bottom .modal-box {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            border-radius: 1rem 1rem 0 0;
+        }
+    }
+
+    .modal-action {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+    }
+
+    .modal-backdrop {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        display: grid;
+        align-items: stretch;
+        justify-items: stretch;
+        background: transparent;
+    }
+
+    .modal-backdrop button {
+        height: 100%;
+        width: 100%;
+        cursor: default;
+        background: transparent;
+        border: none;
+        padding: 0;
+    }
+}

@@ -1,0 +1,45 @@
+{
+  "hero": {
+    "availabilityBadge": "Available for new projects",
+    "headlineBefore": "Crafting digital solutions with",
+    "headlineGradient": "clarity & care.",
+    "subtitle": "A Toronto-based studio focused on fast, maintainable websites for small businesses — technical precision without the jargon.",
+    "primaryCta": { "label": "Start a project", "href": "/contact" },
+    "secondaryCta": { "label": "View portfolio", "href": "/portfolio" },
+    "heroImage": {
+      "src": "/images/Futuristic-tech-abstract.png",
+      "alt": "Abstract tech visualization — modern web development"
+    }
+  },
+  "servicesTeaser": {
+    "title": "Core capabilities",
+    "subtitle": "Engineered for performance, designed for people who run real businesses.",
+    "viewAllHref": "/services",
+    "viewAllLabel": "View all services"
+  },
+  "aboutTeaser": {
+    "title": "The mind behind the code",
+    "experienceStatLabel": "Experience",
+    "meetCtaLabel": "Meet Danny",
+    "meetCtaHref": "/about"
+  },
+  "pricingTeaser": {
+    "title": "Investment structures",
+    "subtitle": "Transparent pricing — pay once and own it, or stay supported month to month.",
+    "fullPricingHref": "/pricing",
+    "fullPricingLabel": "View full pricing breakdown",
+    "projectCtaLabel": "Get started",
+    "monthlyCtaLabel": "Start monthly care"
+  },
+  "contactTeaser": {
+    "headline": "Ready to talk?",
+    "body": "Tell me what you need — I’ll reply with a clear next step and honest scope. Currently taking new small-business projects in Toronto and remote.",
+    "primaryCtaLabel": "Contact",
+    "responseNote": "I usually reply within one business day"
+  },
+  "serviceTags": {
+    "builds": ["TypeScript", "Next.js"],
+    "design": ["UX / UI", "Figma"],
+    "technical": ["Performance", "Technical SEO"]
+  }
+}
