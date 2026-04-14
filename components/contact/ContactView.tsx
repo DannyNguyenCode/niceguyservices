@@ -101,14 +101,14 @@ export default function ContactView() {
 
     return (
         <div
-            className="min-h-[max(884px,100dvh)] bg-[color:var(--pm-surface)] font-pm-body text-[color:var(--pm-on-surface)]"
+            className="min-h-[max(884px,100dvh)] bg-(--pm-surface) font-pm-body text-(--pm-on-surface)"
             data-contact-page="modern"
         >
             <main className="mx-auto max-w-6xl px-6 pb-24 pt-28 md:pt-32">
                 <header className="mb-16 flex flex-col items-baseline gap-6 overflow-hidden md:mb-24 md:flex-row">
                     <h1
                         id="contact-header"
-                        className="font-pm-headline text-5xl leading-none font-bold tracking-tighter text-[color:var(--pm-on-surface)] sm:text-6xl md:text-7xl lg:text-8xl"
+                        className="font-pm-headline text-5xl leading-none font-bold tracking-tighter text-(--pm-on-surface) sm:text-6xl md:text-7xl lg:text-8xl"
                     >
                         Get in touch
                     </h1>
@@ -119,7 +119,7 @@ export default function ContactView() {
                 </header>
 
                 <div className="mb-20 grid grid-cols-1 gap-6 md:grid-cols-3">
-                    <div className="group flex flex-col gap-4 rounded-xl border-b border-[rgb(171_173_174/0.15)] bg-base-100 p-8 transition-all hover:bg-base-100 dark:border-[color:rgb(255_255_255/0.08)] dark:hover:bg-base-200">
+                    <div className="group flex flex-col gap-4 rounded-xl border-b border-[rgb(171_173_174/0.15)] bg-base-100 p-8 transition-all hover:bg-base-100 dark:border-[rgb(255_255_255/0.08)] dark:hover:bg-base-200">
                         <BoltIcon
                             className="h-8 w-8 shrink-0 text-primary"
                             aria-hidden
@@ -132,7 +132,7 @@ export default function ContactView() {
                             sooner—so you are never left waiting on a black hole inbox.
                         </p>
                     </div>
-                    <div className="group flex flex-col gap-4 rounded-xl border-b border-[rgb(171_173_174/0.15)] bg-base-100 p-8 transition-all hover:bg-base-100 dark:border-[color:rgb(255_255_255/0.08)] dark:hover:bg-base-200">
+                    <div className="group flex flex-col gap-4 rounded-xl border-b border-[rgb(171_173_174/0.15)] bg-base-100 p-8 transition-all hover:bg-base-100 dark:border-[rgb(255_255_255/0.08)] dark:hover:bg-base-200">
                         <LockClosedIcon
                             className="h-8 w-8 shrink-0 text-secondary"
                             aria-hidden
@@ -183,7 +183,7 @@ export default function ContactView() {
                     </section>
 
                     <aside className="w-full space-y-6 lg:w-1/3">
-                        <div className="group flex flex-col items-center gap-6 rounded-xl border-b border-[rgb(171_173_174/0.15)] bg-base-100 p-8 text-center transition-transform hover:-translate-y-1 dark:border-[color:rgb(255_255_255/0.08)]">
+                        <div className="group flex flex-col items-center gap-6 rounded-xl border-b border-[rgb(171_173_174/0.15)] bg-base-100 p-8 text-center transition-transform hover:-translate-y-1 dark:border-[rgb(255_255_255/0.08)]">
                             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary/15 text-secondary">
                                 <PhoneIcon
                                     className="h-8 w-8"
@@ -203,7 +203,7 @@ export default function ContactView() {
                             </div>
                         </div>
 
-                        <div className="group flex flex-col items-center gap-6 rounded-xl border-b border-[rgb(171_173_174/0.15)] bg-base-100 p-8 text-center transition-transform hover:-translate-y-1 dark:border-[color:rgb(255_255_255/0.08)]">
+                        <div className="group flex flex-col items-center gap-6 rounded-xl border-b border-[rgb(171_173_174/0.15)] bg-base-100 p-8 text-center transition-transform hover:-translate-y-1 dark:border-[rgb(255_255_255/0.08)]">
                             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/15 text-primary">
                                 <EnvelopeIcon
                                     className="h-8 w-8"
