@@ -41,7 +41,7 @@ export default function ResourceArticleTemplate({
     cta,
 }: ResourceArticleTemplateProps) {
     return (
-        <div className="bg-(--pm-surface) font-pm-body text-(--pm-on-surface) selection:bg-(--pm-primary-container) selection:text-(--pm-on-primary)">
+        <div className="bg-(--pm-surface) font-pm-body text-(--pm-on-surface)">
             <main className="mx-auto max-w-5xl px-6 pt-28 pb-24 md:px-8">
                 <div className="mb-12">
                     <Link
@@ -60,7 +60,7 @@ export default function ResourceArticleTemplate({
                     <h1 className="font-pm-headline mb-8 text-5xl leading-tight font-bold tracking-tighter md:text-7xl">
                         {title}
                     </h1>
-                    <div className="flex items-center gap-4 font-pm-headline text-sm tracking-widest text-(--pm-outline-variant) uppercase">
+                    <div className="flex items-center gap-4 font-pm-headline text-sm tracking-widest text-(--pm-on-surface-variant) uppercase">
                         <span>Last updated</span>
                         <span
                             className="h-px w-8 bg-(--pm-outline-variant)/30"
@@ -215,7 +215,7 @@ export function ResourceSection({
     children: ReactNode;
 }) {
     const idxColor =
-        accent === "secondary" ? "text-secondary opacity-50" : "text-primary opacity-50";
+        accent === "secondary" ? "text-secondary opacity-70" : "text-primary opacity-70";
     return (
         <section>
             <h2 className="font-pm-headline mb-6 flex items-center gap-3 text-3xl font-bold tracking-tight">

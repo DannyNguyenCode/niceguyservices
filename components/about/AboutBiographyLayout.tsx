@@ -48,10 +48,9 @@ export default function AboutBiographyLayout() {
 
     return (
         <div
-            className="selection:bg-(--pm-primary-container) selection:text-(--pm-on-primary)"
+            className="flex min-h-screen flex-col bg-(--pm-surface) font-pm-body text-(--pm-on-surface)"
             data-about-biography-layout=""
         >
-            <div className="flex min-h-screen flex-col bg-(--pm-surface) font-pm-body text-(--pm-on-surface)">
                 <main className="min-w-0 w-full flex-1">
                     <BiographyHero
                         locationEyebrow={locationEyebrow}
@@ -99,7 +98,6 @@ export default function AboutBiographyLayout() {
                     href={cta.buttonHref}
                     label={bl.floatingCtaLabel}
                 />
-            </div>
         </div>
     );
 }

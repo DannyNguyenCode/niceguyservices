@@ -81,7 +81,7 @@ export default function ContactView() {
             if (!res.ok) {
                 throw new Error(
                     payload.error ||
-                        "Something went wrong sending your message."
+                    "Something went wrong sending your message."
                 );
             }
 
@@ -101,7 +101,7 @@ export default function ContactView() {
 
     return (
         <div
-            className="min-h-[max(884px,100dvh)] bg-[color:var(--pm-surface)] font-pm-body text-[color:var(--pm-on-surface)] selection:bg-[color:var(--pm-primary-container)] selection:text-[color:var(--pm-on-primary)]"
+            className="min-h-[max(884px,100dvh)] bg-[color:var(--pm-surface)] font-pm-body text-[color:var(--pm-on-surface)]"
             data-contact-page="modern"
         >
             <main className="mx-auto max-w-6xl px-6 pb-24 pt-28 md:pt-32">
@@ -198,7 +198,7 @@ export default function ContactView() {
                                     className="font-pm-headline text-2xl font-bold tracking-tighter transition-colors hover:text-secondary"
                                     href="tel:+15551234567"
                                 >
-                                    +1 (555) 123-4567
+                                    (647) 760-3458
                                 </a>
                             </div>
                         </div>
@@ -218,7 +218,7 @@ export default function ContactView() {
                                     className="break-all font-pm-headline text-xl font-bold tracking-tighter transition-colors hover:text-primary sm:text-2xl"
                                     href="mailto:hello@example.com"
                                 >
-                                    hello@example.com
+                                    gbnguyenw@gmail.com
                                 </a>
                             </div>
                         </div>

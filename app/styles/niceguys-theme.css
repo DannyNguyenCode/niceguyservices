@@ -185,6 +185,16 @@
         color: var(--color-base-content);
     }
 
+    html[data-theme="niceguys-light"] ::selection {
+        background-color: var(--pm-primary-container);
+        color: var(--pm-on-surface);
+    }
+
+    html[data-theme="niceguys-dark"] ::selection {
+        background-color: var(--pm-primary-container);
+        color: var(--pm-on-primary);
+    }
+
     /* Links and primary controls: hand cursor on hover */
     a[href]:not([href=""]):not([aria-disabled="true"]),
     button:not(:disabled),

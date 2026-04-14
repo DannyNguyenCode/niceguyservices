@@ -55,11 +55,11 @@ export default function ResourcesPage() {
     const { localSeo, speed, customVsTemplates, beginnerSeo } = resources;
 
     return (
-        <div className="bg-(--pm-surface) font-pm-body text-(--pm-on-surface) selection:bg-primary/20">
+        <div className="bg-(--pm-surface) font-pm-body text-(--pm-on-surface)">
             <main className="mx-auto max-w-screen-2xl px-6 pt-28 pb-24 md:px-12">
                 <header className="mb-20">
                     <div className="mb-6 inline-block rounded-full bg-secondary/30 px-3 py-1">
-                        <span className="font-pm-headline text-[10px] font-bold tracking-widest text-secondary uppercase">
+                        <span className="font-pm-headline text-[10px] font-bold tracking-widest text-(--pm-on-surface) uppercase">
                             Knowledge archive
                         </span>
                     </div>

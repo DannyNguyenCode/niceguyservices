@@ -38,7 +38,7 @@ export default function Footer() {
                     Custom websites for small businesses in Toronto and the GTA.
                 </p>
 
-                <p className="text-sm text-base-content/60">
+                <p className="text-sm text-base-content/70">
                     © {new Date().getFullYear()} Nice Guy Services. All rights reserved.
                 </p>
             </aside>

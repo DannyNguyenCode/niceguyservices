@@ -41,7 +41,7 @@ export default function BiographyExperienceSection({
                                         className={`font-pm-headline mb-2 text-xs font-bold tracking-widest uppercase ${
                                             job.active
                                                 ? "text-primary"
-                                                : "text-neutral-content/50"
+                                                : "text-neutral-content/60"
                                         }`}
                                     >
                                         {job.period}

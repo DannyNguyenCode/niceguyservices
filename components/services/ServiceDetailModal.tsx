@@ -119,7 +119,7 @@ export default function ServiceDetailModal({ service, onClose }: ServiceDetailMo
                             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--pm-primary)",
                             "focus-visible:ring-offset-2 focus-visible:ring-offset-(--pm-bento-tile-light)",
                         ].join(" ")}
-                        style={{ color: "var(--pm-outline-variant)" }}
+                        style={{ color: "var(--pm-on-surface-variant)" }}
                         aria-label="Close"
                         onClick={() => dialogRef.current?.close()}
                     >
