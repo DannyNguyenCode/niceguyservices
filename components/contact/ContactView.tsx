@@ -112,14 +112,14 @@ export default function ContactView() {
                     >
                         Get in touch
                     </h1>
-                    <div className="hidden h-[2px] grow bg-[color:var(--pm-surface-highest)] opacity-50 md:block" />
+                    <div className="hidden h-[2px] grow bg-(--pm-surface-highest) opacity-50 md:block" />
                     <p className="font-pm-body text-sm text-primary">
                         Replies within one business day
                     </p>
                 </header>
 
                 <div className="mb-20 grid grid-cols-1 gap-6 md:grid-cols-3">
-                    <div className="group flex flex-col gap-4 rounded-xl border-b border-[color:rgb(171_173_174/0.15)] bg-base-100 p-8 transition-all hover:bg-base-100 dark:border-[color:rgb(255_255_255/0.08)] dark:hover:bg-base-200">
+                    <div className="group flex flex-col gap-4 rounded-xl border-b border-[rgb(171_173_174/0.15)] bg-base-100 p-8 transition-all hover:bg-base-100 dark:border-[color:rgb(255_255_255/0.08)] dark:hover:bg-base-200">
                         <BoltIcon
                             className="h-8 w-8 shrink-0 text-primary"
                             aria-hidden
@@ -127,12 +127,12 @@ export default function ContactView() {
                         <h3 className="font-pm-headline text-xl font-bold tracking-tight">
                             24-hour response
                         </h3>
-                        <p className="text-sm leading-relaxed text-[color:var(--pm-on-surface-variant)]">
+                        <p className="text-sm leading-relaxed text-(--pm-on-surface-variant)">
                             I reply to new inquiries within one business day—usually much
                             sooner—so you are never left waiting on a black hole inbox.
                         </p>
                     </div>
-                    <div className="group flex flex-col gap-4 rounded-xl border-b border-[color:rgb(171_173_174/0.15)] bg-base-100 p-8 transition-all hover:bg-base-100 dark:border-[color:rgb(255_255_255/0.08)] dark:hover:bg-base-200">
+                    <div className="group flex flex-col gap-4 rounded-xl border-b border-[rgb(171_173_174/0.15)] bg-base-100 p-8 transition-all hover:bg-base-100 dark:border-[color:rgb(255_255_255/0.08)] dark:hover:bg-base-200">
                         <LockClosedIcon
                             className="h-8 w-8 shrink-0 text-secondary"
                             aria-hidden
@@ -140,12 +140,12 @@ export default function ContactView() {
                         <h3 className="font-pm-headline text-xl font-bold tracking-tight">
                             Straightforward process
                         </h3>
-                        <p className="text-sm leading-relaxed text-[color:var(--pm-on-surface-variant)]">
+                        <p className="text-sm leading-relaxed text-(--pm-on-surface-variant)">
                             No jargon walls or surprise invoices. Clear scope, honest
                             timelines, and communication you can actually use.
                         </p>
                     </div>
-                    <div className="group flex flex-col gap-4 rounded-xl border-b border-[color:rgb(171_173_174/0.15)] bg-base-100 p-8 transition-all hover:bg-base-100 dark:border-[color:rgb(255_255_255/0.08)] dark:hover:bg-base-200">
+                    <div className="group flex flex-col gap-4 rounded-xl border-b border-[rgb(171_173_174/0.15)] bg-base-100 p-8 transition-all hover:bg-base-100 dark:border-[rgb(255_255_255/0.08)] dark:hover:bg-base-200">
                         <HandRaisedIcon
                             className="h-8 w-8 shrink-0 text-accent"
                             aria-hidden
@@ -153,7 +153,7 @@ export default function ContactView() {
                         <h3 className="font-pm-headline text-xl font-bold tracking-tight">
                             Direct line to me
                         </h3>
-                        <p className="text-sm leading-relaxed text-[color:var(--pm-on-surface-variant)]">
+                        <p className="text-sm leading-relaxed text-(--pm-on-surface-variant)">
                             You work with me—not a ticket queue. Real conversation about
                             your site, SEO, and what will move the needle for your
                             business.
@@ -162,12 +162,12 @@ export default function ContactView() {
                 </div>
 
                 <div className="flex flex-col items-start gap-12 lg:flex-row">
-                    <section className="w-full rounded-xl bg-[color:var(--pm-surface-low)] p-8 md:p-12 lg:w-2/3">
+                    <section className="w-full rounded-xl bg-(--pm-surface-low) p-8 md:p-12 lg:w-2/3">
                         <div className="mb-10">
-                            <h2 className="mb-2 font-pm-headline text-3xl font-bold tracking-tight text-[color:var(--pm-on-surface)]">
+                            <h2 className="mb-2 font-pm-headline text-3xl font-bold tracking-tight text-(--pm-on-surface)">
                                 Send a message
                             </h2>
-                            <p className="font-pm-body text-sm text-[color:var(--pm-on-surface-variant)]">
+                            <p className="font-pm-body text-sm text-(--pm-on-surface-variant)">
                                 Fill in what you can below and I&apos;ll get back to you
                                 with next steps. Required fields are marked so we can
                                 respond quickly.
@@ -183,7 +183,7 @@ export default function ContactView() {
                     </section>
 
                     <aside className="w-full space-y-6 lg:w-1/3">
-                        <div className="group flex flex-col items-center gap-6 rounded-xl border-b border-[color:rgb(171_173_174/0.15)] bg-base-100 p-8 text-center transition-transform hover:-translate-y-1 dark:border-[color:rgb(255_255_255/0.08)]">
+                        <div className="group flex flex-col items-center gap-6 rounded-xl border-b border-[rgb(171_173_174/0.15)] bg-base-100 p-8 text-center transition-transform hover:-translate-y-1 dark:border-[color:rgb(255_255_255/0.08)]">
                             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary/15 text-secondary">
                                 <PhoneIcon
                                     className="h-8 w-8"
@@ -191,7 +191,7 @@ export default function ContactView() {
                                 />
                             </div>
                             <div>
-                                <span className="mb-2 block text-xs font-semibold text-[color:var(--pm-on-surface-variant)]">
+                                <span className="mb-2 block text-xs font-semibold text-(--pm-on-surface-variant)">
                                     Phone number
                                 </span>
                                 <a
@@ -203,7 +203,7 @@ export default function ContactView() {
                             </div>
                         </div>
 
-                        <div className="group flex flex-col items-center gap-6 rounded-xl border-b border-[color:rgb(171_173_174/0.15)] bg-base-100 p-8 text-center transition-transform hover:-translate-y-1 dark:border-[color:rgb(255_255_255/0.08)]">
+                        <div className="group flex flex-col items-center gap-6 rounded-xl border-b border-[rgb(171_173_174/0.15)] bg-base-100 p-8 text-center transition-transform hover:-translate-y-1 dark:border-[color:rgb(255_255_255/0.08)]">
                             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/15 text-primary">
                                 <EnvelopeIcon
                                     className="h-8 w-8"
@@ -211,7 +211,7 @@ export default function ContactView() {
                                 />
                             </div>
                             <div>
-                                <span className="mb-2 block text-xs font-semibold text-[color:var(--pm-on-surface-variant)]">
+                                <span className="mb-2 block text-xs font-semibold text-(--pm-on-surface-variant)">
                                     Email address
                                 </span>
                                 <a
@@ -231,15 +231,15 @@ export default function ContactView() {
                                 className="object-cover opacity-40 brightness-125 grayscale transition-transform duration-700 group-hover:scale-105"
                                 sizes="(max-width: 1024px) 100vw, 33vw"
                             />
-                            <div className="absolute inset-0 flex items-end bg-gradient-to-t from-[color:var(--pm-surface)]/80 to-transparent p-8">
+                            <div className="absolute inset-0 flex items-end bg-linear-to-t from-(--pm-surface)/80 to-transparent p-8">
                                 <div className="space-y-1">
                                     <div className="flex items-center gap-2">
                                         <div className="h-2 w-2 animate-pulse rounded-full bg-secondary" />
-                                        <span className="text-[10px] font-bold tracking-wide text-[color:var(--pm-on-surface)] uppercase">
+                                        <span className="text-[10px] font-bold tracking-wide text-(--pm-on-surface) uppercase">
                                             Toronto &amp; GTA
                                         </span>
                                     </div>
-                                    <p className="font-pm-headline text-sm font-medium text-[color:var(--pm-on-surface-variant)]">
+                                    <p className="font-pm-headline text-sm font-medium text-(--pm-on-surface-variant)">
                                         Local &amp; remote small-business websites
                                     </p>
                                 </div>

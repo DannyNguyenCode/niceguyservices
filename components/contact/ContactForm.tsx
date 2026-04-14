@@ -169,7 +169,7 @@ export default function ContactForm({
 
             <div className="space-y-3">
                 <p className={labelClass}>Services you need</p>
-                <p className="text-sm text-[color:var(--pm-on-surface-variant)]">
+                <p className="text-sm text-(--pm-on-surface-variant)">
                     Choose everything that applies.
                 </p>
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -213,7 +213,7 @@ export default function ContactForm({
                 />
             </div>
 
-            <label className="flex cursor-pointer items-start gap-3 font-pm-body text-sm text-[color:var(--pm-on-surface-variant)]">
+            <label className="flex cursor-pointer items-start gap-3 font-pm-body text-sm text-(--pm-on-surface-variant)">
                 <input
                     type="checkbox"
                     className="checkbox checkbox-primary mt-0.5"
@@ -229,7 +229,7 @@ export default function ContactForm({
             <button
                 type="submit"
                 disabled={submitting}
-                className="w-full cursor-pointer rounded-lg bg-gradient-to-br from-primary to-[color:var(--pm-primary-container)] px-12 py-4 font-pm-headline font-bold tracking-tight text-primary-content shadow-none transition-all hover:shadow-lg active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 md:w-auto"
+                className="w-full cursor-pointer rounded-lg bg-linear-to-br from-primary to-(--pm-primary-container) px-12 py-4 font-pm-headline font-bold tracking-tight text-primary-content shadow-none transition-all hover:shadow-lg active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 md:w-auto"
             >
                 {submitting ? "Sending…" : "Send message"}
             </button>
