@@ -190,11 +190,10 @@ function OngoingPlanCard({ plan }: { plan: OngoingPlan }) {
 
     return (
         <div
-            className={`relative flex flex-col rounded-xl border p-8 transition-all duration-300 ${
-                featured
+            className={`relative flex flex-col rounded-xl border p-8 transition-all duration-300 ${featured
                     ? "z-10 border-2 shadow-xl md:scale-105"
                     : "shadow-sm hover:border-(--pm-primary)/30"
-            }`}
+                }`}
             style={{
                 backgroundColor: "var(--pm-bento-tile-light)",
                 borderColor: featured ? "var(--pm-primary)" : "var(--pm-outline-variant)",
@@ -236,7 +235,7 @@ function OngoingPlanCard({ plan }: { plan: OngoingPlan }) {
                 </span>
             </div>
 
-            <ul className="mb-10 flex flex-grow flex-col gap-4">
+            <ul className="mb-10 flex grow flex-col gap-4">
                 {plan.features.map((line) => {
                     const boldLead = line.startsWith("Everything in Growth");
                     return (
@@ -260,31 +259,31 @@ function OngoingPlanCard({ plan }: { plan: OngoingPlan }) {
                 style={
                     featured
                         ? {
-                              background: `linear-gradient(to bottom right, var(--pm-primary), var(--pm-primary-container))`,
-                              color: "var(--pm-on-primary)",
-                              boxShadow: "var(--pm-shadow-cta-button)",
-                          }
+                            background: `linear-gradient(to bottom right, var(--pm-primary), var(--pm-primary-container))`,
+                            color: "var(--pm-on-primary)",
+                            boxShadow: "var(--pm-shadow-cta-button)",
+                        }
                         : {
-                              borderWidth: 2,
-                              borderStyle: "solid",
-                              borderColor: "var(--pm-outline-variant)",
-                              color: "var(--pm-on-surface)",
-                              backgroundColor: "transparent",
-                          }
+                            borderWidth: 2,
+                            borderStyle: "solid",
+                            borderColor: "var(--pm-outline-variant)",
+                            color: "var(--pm-on-surface)",
+                            backgroundColor: "transparent",
+                        }
                 }
                 onMouseEnter={
                     featured
                         ? undefined
                         : (e) => {
-                              e.currentTarget.style.backgroundColor = "var(--pm-surface-container)";
-                          }
+                            e.currentTarget.style.backgroundColor = "var(--pm-surface-container)";
+                        }
                 }
                 onMouseLeave={
                     featured
                         ? undefined
                         : (e) => {
-                              e.currentTarget.style.backgroundColor = "transparent";
-                          }
+                            e.currentTarget.style.backgroundColor = "transparent";
+                        }
                 }
             >
                 {plan.buttonLabel}

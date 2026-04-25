@@ -42,7 +42,7 @@ export default function HomePricing() {
                             {websiteBuild.priceUnit}
                         </span>
                     </div>
-                    <ul className="mb-12 flex-grow space-y-4">
+                    <ul className="mb-12 grow space-y-4">
                         {websiteBuild.features.slice(0, 3).map((line) => (
                             <li
                                 key={line}
@@ -88,7 +88,7 @@ export default function HomePricing() {
                                 {growthPlan.priceUnit.trim()}
                             </span>
                         </div>
-                        <ul className="mb-12 flex-grow space-y-4">
+                        <ul className="mb-12 grow space-y-4">
                             {growthPlan.features.slice(0, 3).map((line) => (
                                 <li
                                     key={line}
