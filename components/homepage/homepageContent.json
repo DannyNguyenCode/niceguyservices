@@ -23,12 +23,12 @@
     "meetCtaHref": "/about"
   },
   "pricingTeaser": {
-    "title": "Investment structures",
-    "subtitle": "Transparent pricing — pay once and own it, or stay supported month to month.",
+    "title": "Website pricing",
+    "subtitle": "From a one-time custom build to ongoing Starter, Growth, and Pro plans — pick what fits.",
     "fullPricingHref": "/pricing",
     "fullPricingLabel": "View full pricing breakdown",
     "projectCtaLabel": "Get started",
-    "monthlyCtaLabel": "Start monthly care"
+    "monthlyCtaLabel": "Choose Growth"
   },
   "contactTeaser": {
     "headline": "Ready to talk?",

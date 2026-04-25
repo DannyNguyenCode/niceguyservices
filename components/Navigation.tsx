@@ -43,7 +43,10 @@ export default function Navigation() {
     }, [mobileOpen]);
 
     useEffect(() => {
-        setMobileOpen(false);
+        const id = window.setTimeout(() => {
+            setMobileOpen(false);
+        }, 0);
+        return () => window.clearTimeout(id);
     }, [pathname]);
 
     useEffect(() => {

@@ -3,65 +3,108 @@
     "contactHref": "/contact"
   },
   "pageHeader": {
-    "title": "Pricing",
-    "subtitle": "Two simple ways to work together: pay once and own it, or keep everything managed for you monthly."
+    "title": "Website Pricing",
+    "subtitle": "A clear one-time build plus optional ongoing plans — from keeping the lights on to growing traffic and conversions."
   },
   "hero": {
-    "badge": "Scalable, straightforward builds",
-    "headlineBefore": "Engineered for",
+    "eyebrow": "Transparent pricing",
+    "headlineLine1": "Engineered for",
     "headlineGradient": "lasting growth",
-    "subtitle": "Transparent pricing for small businesses in Toronto and beyond. No surprise invoices — just a clear build, optional monthly care, and honest hourly work when you need it.",
-    "toggleMonthly": "Monthly care",
-    "toggleOneTime": "One-time build",
-    "toggleOneTimeNote": "own it"
+    "subtitle": "Transparent pricing for high-performance websites. Choose between a custom build or ongoing growth strategies."
   },
-  "plans": {
-    "spark": {
-      "tierLabel": "As needed",
-      "name": "SPARK",
-      "tagline": "Hourly updates when you need them.",
-      "price": "$40",
-      "priceUnit": "/ hr",
-      "footnote": "2 hour minimum. For fixes or scope outside your plan.",
+  "websiteBuild": {
+    "sectionTitle": "Website Build",
+    "tierLabel": "One-time",
+    "cardTitle": "Custom Build",
+    "name": "Website Build",
+    "price": "$1,600",
+    "priceUnit": "one-time",
+    "priceEyebrow": "One-time payment",
+    "priceSubtext": "Full custom ownership",
+    "tagline": "A complete launch-ready site you own.",
+    "featureIcon": "check",
+    "features": [
+      "Custom-designed website (up to 5 pages/sections)",
+      "Mobile responsive",
+      "Contact form integration",
+      "SEO-ready structure",
+      "Performance optimized"
+    ],
+    "launchNote": "Note: Every website includes an initial optimization phase to ensure it launches properly.",
+    "buttonLabel": "Start your build"
+  },
+  "ongoingSection": {
+    "title": "Ongoing Plans"
+  },
+  "ongoingPlans": [
+    {
+      "id": "starter",
+      "tierLabel": "Ongoing",
+      "name": "Starter",
+      "price": "$20",
+      "priceUnit": "/mo",
+      "tagline": "Keep your site running smoothly and securely.",
       "featureIcon": "check",
       "features": [
-        "Small changes & fixes",
-        "Clear estimates before work",
-        "Same codebase you already own"
+        "Maintenance & updates",
+        "Backups + security checks",
+        "Minor content edits"
       ],
-      "buttonLabel": "Book time"
+      "buttonLabel": "Select Starter"
     },
-    "monthlyCare": {
+    {
+      "id": "growth",
       "tierLabel": "Ongoing",
-      "price": "$200",
-      "priceUnit": "/ mo",
-      "tagline": "Care, hosting, and small updates handled for you.",
+      "name": "Growth",
+      "price": "$100",
+      "priceUnit": "/mo",
+      "tagline": "Help customers find you and grow your reach.",
       "featureIcon": "bolt",
       "features": [
-        "Full site build — no large upfront fee",
-        "Unlimited small updates",
-        "Backups, security & monitoring",
-        "Priority support"
+        "Ongoing SEO optimization",
+        "Keyword targeting + content updates",
+        "Performance improvements",
+        "Tracking setup via Google Analytics and Google Search Console",
+        "Basic visibility tracking"
       ],
-      "buttonLabel": "Start care",
+      "buttonLabel": "Choose Growth",
       "popularBadge": "Most popular"
     },
-    "nova": {
-      "focusBadge": "Own your site",
-      "tierLabel": "Project",
-      "name": "NOVA",
-      "tagline": "One-time build, full ownership.",
-      "price": "$2,500",
-      "priceUnit": "project",
+    {
+      "id": "pro",
+      "tierLabel": "Ongoing",
+      "name": "Pro",
+      "price": "$200",
+      "priceUnit": "/mo",
+      "tagline": "Turn visitors into loyal, paying customers.",
       "featureIcon": "check",
       "features": [
-        "Up to 5 pages, responsive design",
-        "Deploy, DNS & SSL included",
-        "Clean, documented codebase",
-        "You own 100% of the work"
+        "Everything in Growth",
+        "Conversion optimization (buttons, layout, UX improvements)",
+        "1 landing page or major update per month",
+        "Management of Google Business Profile",
+        "Monthly performance insights + action plan"
       ],
-      "buttonLabel": "Request a quote"
+      "buttonLabel": "Select Pro"
     }
+  ],
+  "growthStory": {
+    "title": "Built for effortless growth",
+    "body": "Our process removes the complexity of launching and maintaining a digital presence. We focus on technical excellence so you can focus on your business goals.",
+    "image": {
+      "src": "/effotlesssection.png",
+      "alt": "Modern workspace and digital growth — effortless web presence"
+    },
+    "highlights": [
+      {
+        "icon": "bolt",
+        "title": "99.9% performance score"
+      },
+      {
+        "icon": "shield",
+        "title": "Secure infrastructure"
+      }
+    ]
   },
   "trust": {
     "items": [

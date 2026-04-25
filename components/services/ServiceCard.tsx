@@ -2,7 +2,19 @@
 
 import React from "react";
 
-export default function ServiceCard({ card, onClick }: any) {
+interface ServiceCardData {
+    title: string;
+    short: string;
+    bullets: string[];
+    headline: string;
+}
+
+interface ServiceCardProps {
+    card: ServiceCardData;
+    onClick?: () => void;
+}
+
+export default function ServiceCard({ card, onClick }: ServiceCardProps) {
     return (
         <div className="card bg-base-100 border border-base-300 shadow-md hover:shadow-xl transition-all cursor-pointer h-full"
             onClick={onClick}>

@@ -47,7 +47,7 @@ export default function AddOnsSection() {
     const { title, subtitle, ctaLabel, cards } = pricingContent.addOns;
 
     return (
-        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-8">
+        <section className="w-full py-16">
             <div className="mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
                 <div className="max-w-xl">
                     <h2

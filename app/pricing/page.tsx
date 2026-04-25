@@ -4,7 +4,7 @@ import Pricing from "@/components/Pricing";
 export const metadata: Metadata = {
     title: "Website Pricing for Small Businesses | Nice Guy Services",
     description:
-        "Transparent website pricing for small businesses. Choose between one-time custom website builds or a monthly website subscription with hosting, updates, and support included.",
+        "Website build from $1,600 one-time, plus ongoing plans from $20/mo (Starter) to $200/mo (Pro) — maintenance, SEO, analytics, and conversion support.",
 };
 
 export default function PricingPage() {

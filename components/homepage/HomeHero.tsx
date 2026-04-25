@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import homepageContent from "./homepageContent.json";
 
@@ -8,7 +7,7 @@ export default function HomeHero() {
     const { hero } = homepageContent;
 
     return (
-        <section className="mx-auto flex max-w-7xl flex-col items-center px-4 text-center md:px-8">
+        <section className="mx-auto flex min-h-dvh w-full max-w-7xl flex-col items-center justify-center px-4 py-12 text-center md:px-8 md:py-16">
             <div className="mb-8 inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 font-pm-headline text-xs font-bold tracking-widest text-secondary-content uppercase">
                 <span
                     className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-secondary-content"
@@ -32,20 +31,6 @@ export default function HomeHero() {
                 >
                     {hero.primaryCta.label}
                 </Link>
-            </div>
-            <div className="group relative mt-16 aspect-21/9 w-full overflow-hidden rounded-xl md:mt-20">
-                <Image
-                    src={hero.heroImage.src}
-                    alt={hero.heroImage.alt}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 1280px) 100vw, 1280px"
-                    priority
-                />
-                <div
-                    className="absolute inset-0 bg-linear-to-t from-(--pm-surface) via-transparent to-transparent"
-                    aria-hidden
-                />
             </div>
         </section>
     );

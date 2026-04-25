@@ -1,16 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import AddOnsSection from "./AddOnsSection";
 import ConsultCTA from "./ConsultCTA";
+import PricingGrowthSection from "./PricingGrowthSection";
 import PricingHero from "./PricingHero";
 import PricingPlans from "./PricingPlans";
 import PricingTrustSection from "./PricingTrustSection";
 import { pricingLayoutBodyFont as bodyFont } from "./pricingLayoutConstants";
 
 export default function PricingLayout() {
-    const [focusOneTime, setFocusOneTime] = useState(false);
-
     return (
         <div
             className={`relative overflow-x-hidden pb-16 ${bodyFont}`}
@@ -26,15 +23,15 @@ export default function PricingLayout() {
             />
 
             <div className="relative z-10">
-                <PricingHero
-                    focusOneTime={focusOneTime}
-                    onFocusMonthly={() => setFocusOneTime(false)}
-                    onFocusOneTime={() => setFocusOneTime(true)}
-                />
-                <PricingPlans focusOneTime={focusOneTime} />
+                <div className="mx-auto w-full max-w-[1200px] px-6 md:px-8">
+                    <PricingHero />
+                    <PricingPlans />
+                    <PricingGrowthSection />
+                </div>
                 <PricingTrustSection />
-                <AddOnsSection />
-                <ConsultCTA />
+                <div className="mx-auto w-full max-w-[1200px] px-6 md:px-8">
+                    <ConsultCTA />
+                </div>
             </div>
         </div>
     );

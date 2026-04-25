@@ -11,9 +11,9 @@ export default function ConsultCTA() {
     const { title, body, buttonLabel } = pricingContent.consultCta;
 
     return (
-        <section className="px-4 pb-8 sm:px-8">
+        <section className="pb-8">
             <div
-                className="relative mx-auto max-w-7xl overflow-hidden rounded-[48px] px-8 py-16 md:px-16 md:py-20"
+                className="relative mx-auto w-full max-w-[1200px] overflow-hidden rounded-[48px] px-8 py-16 md:px-16 md:py-20"
                 style={{ backgroundColor: "var(--pm-cta-band)" }}
             >
                 <div className="pointer-events-none absolute inset-0 overflow-hidden">
