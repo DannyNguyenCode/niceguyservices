@@ -7,7 +7,7 @@ export default function HomeHero() {
     const { hero } = homepageContent;
 
     return (
-        <section className="mx-auto flex min-h-dvh w-full max-w-7xl flex-col items-center justify-center px-4 py-12 text-center md:px-8 md:py-16">
+        <section className="mx-auto flex max-w-7xl flex-col items-center px-4 text-center">
             <div className="mb-8 inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 font-pm-headline text-xs font-bold tracking-widest text-secondary-content uppercase">
                 <span
                     className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-secondary-content"

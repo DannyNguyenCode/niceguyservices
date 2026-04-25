@@ -69,7 +69,7 @@ export default function Navigation() {
     return (
         <div
             ref={navRef}
-            className="navbar sticky top-0 z-50 min-h-16 flex-nowrap items-center gap-4 border-b border-base-300/60 bg-base-100/80 px-6 py-2 text-base-content shadow-sm backdrop-blur-md transition-[background-color,border-color,color] duration-200 sm:px-10 md:px-12 lg:px-16 xl:px-20"
+            className="navbar sticky top-0 z-50 min-h-16 flex-nowrap items-center gap-4 border-b border-base-300/60 bg-base-100/80 px-6 text-base-content shadow-sm backdrop-blur-md transition-[background-color,border-color,color] duration-200 sm:px-10 md:px-12 lg:px-16 xl:px-20"
             id="nav"
         >
             <div className="navbar-start z-20 flex min-w-0 shrink-0 items-center lg:z-auto lg:gap-3">
