@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { sitePageContentClass } from "@/components/pricing/pricingLayoutConstants";
 import {
     AcademicCapIcon,
     ArrowLongRightIcon,
@@ -12,7 +13,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 export const metadata: Metadata = {
-    title: "Resources | Nice Guy Services",
+    title: "Resources | Nice Guy Web Design",
     description:
         "Short, practical guides explaining how modern websites help small businesses rank better, load faster, and turn visitors into customers.",
 };
@@ -56,7 +57,7 @@ export default function ResourcesPage() {
 
     return (
         <div className="bg-(--pm-surface) font-pm-body text-(--pm-on-surface)">
-            <main className="mx-auto max-w-screen-2xl px-6 pt-28 pb-24 md:px-12">
+            <main className={`pt-28 pb-24 ${sitePageContentClass}`}>
                 <header className="mb-20">
                     <div className="mb-6 inline-block rounded-full bg-secondary/30 px-3 py-1">
                         <span className="font-pm-headline text-[10px] font-bold tracking-widest text-(--pm-on-surface) uppercase">

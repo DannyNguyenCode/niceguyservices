@@ -3,6 +3,7 @@
 import { ArrowRightIcon, CodeBracketIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
+import { sitePageContentClass } from "@/components/pricing/pricingLayoutConstants";
 import type { HeroCta, HeroFocusCard, IntroImage } from "./aboutBiographyTypes";
 
 type BiographyHeroProps = {
@@ -27,7 +28,9 @@ export default function BiographyHero({
     portrait,
 }: BiographyHeroProps) {
     return (
-        <section className="mx-auto flex max-w-7xl flex-col items-center gap-12 px-4 py-12 md:flex-row md:px-8 md:py-20">
+        <section
+            className={`flex flex-col items-center gap-12 py-12 md:flex-row md:py-20 ${sitePageContentClass}`}
+        >
             <div className="flex-1 space-y-6">
                 <div className="inline-flex items-center gap-2 rounded-full border border-(--pm-outline-variant)/25 bg-(--pm-surface-low) px-3 py-1">
                     <MapPinIcon

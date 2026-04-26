@@ -53,7 +53,7 @@ function buildEmailBody(data: ContactPayload): { text: string; html: string } {
         `<tr><td style="padding:6px 12px 6px 0;font-weight:600;vertical-align:top;">${escapeHtml(label)}</td><td style="padding:6px 0;">${escapeHtml(value)}</td></tr>`;
 
     const html = `<!DOCTYPE html><html><body style="font-family:system-ui,sans-serif;line-height:1.5;color:#2c2f30;">
-<h2 style="margin:0 0 16px;">New contact form — Nice Guy Services</h2>
+<h2 style="margin:0 0 16px;">New contact form — Nice Guy Web Design</h2>
 <table style="border-collapse:collapse;margin-bottom:20px;">
 ${row("Name", data.name)}
 ${row("Email", data.email)}
@@ -129,7 +129,7 @@ export async function POST(request: Request) {
     const to = process.env.CONTACT_TO_EMAIL?.trim() || DEFAULT_TO;
     const from =
         process.env.RESEND_FROM?.trim() ||
-        "Nice Guy Services <onboarding@resend.dev>";
+        "Nice Guy Web Design <onboarding@resend.dev>";
 
     const { text, html } = buildEmailBody(data);
     const subject = `Contact: ${data.name}`;

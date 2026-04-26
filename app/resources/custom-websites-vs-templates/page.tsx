@@ -13,7 +13,7 @@ import ResourceArticleTemplate, {
 } from "@/components/resources/ResourceArticleTemplate";
 
 export const metadata: Metadata = {
-    title: "Custom Websites vs Templates: What Small Businesses Should Know | Nice Guy Services",
+    title: "Custom Websites vs Templates: What Small Businesses Should Know | Nice Guy Web Design",
     description:
         "A practical comparison of custom-built websites versus templates like WordPress or Wix — and how each impacts performance, SEO, and long-term growth.",
 };

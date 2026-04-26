@@ -4,88 +4,96 @@
   },
   "pageHeader": {
     "title": "Website Pricing",
-    "subtitle": "A clear one-time build plus optional ongoing plans — from keeping the lights on to growing traffic and conversions."
+    "subtitle": "Two straightforward packages—upfront plus light monthly, or zero upfront with full ongoing care and growth."
   },
   "hero": {
     "eyebrow": "Transparent pricing",
     "headlineLine1": "Engineered for",
     "headlineGradient": "lasting growth",
-    "subtitle": "Transparent pricing for high-performance websites. Choose between a custom build or ongoing growth strategies."
+    "subtitle": "Pick the package that matches how you want to invest: a lower monthly with upfront ownership, or all-inclusive care with no upfront fee."
   },
-  "websiteBuild": {
-    "sectionTitle": "Website Build",
-    "tierLabel": "One-time",
-    "cardTitle": "Custom Build",
-    "name": "Website Build",
-    "price": "$1,600",
-    "priceUnit": "one-time",
-    "priceEyebrow": "One-time payment",
-    "priceSubtext": "Full custom ownership",
-    "tagline": "A complete launch-ready site you own.",
-    "featureIcon": "check",
-    "features": [
-      "Custom-designed website (up to 5 pages/sections)",
-      "Mobile responsive",
-      "Contact form integration",
-      "SEO-ready structure",
-      "Performance optimized"
-    ],
-    "launchNote": "Note: Every website includes an initial optimization phase to ensure it launches properly.",
-    "buttonLabel": "Start your build"
+  "packagesSection": {
+    "title": "Packages",
+    "sectionEyebrow": "Pricing"
   },
-  "ongoingSection": {
-    "title": "Ongoing Plans"
-  },
-  "ongoingPlans": [
+  "packages": [
     {
-      "id": "starter",
-      "tierLabel": "Ongoing",
-      "name": "Starter",
-      "price": "$20",
-      "priceUnit": "/mo",
-      "tagline": "Keep your site running smoothly and securely.",
-      "featureIcon": "check",
-      "features": [
-        "Maintenance & updates",
-        "Backups + security checks",
-        "Minor content edits"
+      "id": "essential-build",
+      "tierLabel": "Package",
+      "name": "Essential Build",
+      "upfront": "$1,600",
+      "upfrontEyebrow": "Upfront",
+      "monthly": "$20",
+      "monthlyUnit": "/mo",
+      "monthlyEyebrow": "Ongoing",
+      "tagline": "SEO-ready site with domain, hosting, and maintenance—content and design edits are billed hourly.",
+      "includesTitle": "What's included",
+      "includes": [
+        {
+          "icon": "check",
+          "text": "SEO ready architecture"
+        },
+        {
+          "icon": "check",
+          "text": "Custom Domain setup"
+        },
+        {
+          "icon": "check",
+          "text": "Premium Cloud Hosting"
+        },
+        {
+          "icon": "check",
+          "text": "Security Maintenance"
+        },
+        {
+          "icon": "info",
+          "text": "Maintenance: Edits charged at an hourly rate.",
+          "callout": true
+        }
       ],
-      "buttonLabel": "Select Starter"
+      "buttonLabel": "Get started"
     },
     {
-      "id": "growth",
-      "tierLabel": "Ongoing",
-      "name": "Growth",
-      "price": "$100",
-      "priceUnit": "/mo",
-      "tagline": "Help customers find you and grow your reach.",
-      "featureIcon": "bolt",
-      "features": [
-        "Ongoing SEO optimization",
-        "Keyword targeting + content updates",
-        "Performance improvements",
-        "Tracking setup via Google Analytics and Google Search Console",
-        "Basic visibility tracking"
+      "id": "growth-accelerator",
+      "tierLabel": "Package",
+      "name": "Growth Accelerator",
+      "upfront": "$0",
+      "upfrontEyebrow": "Upfront",
+      "monthly": "$150",
+      "monthlyUnit": "/mo",
+      "monthlyEyebrow": "Ongoing",
+      "tagline": "Everything in Essential Build, plus ongoing optimization, reporting, unlimited edits, and always-on support.",
+      "includesTitle": "What's included",
+      "includes": [
+        {
+          "icon": "doneAll",
+          "text": "Everything in Essential Build",
+          "semibold": true
+        },
+        {
+          "icon": "trendingUp",
+          "text": "Ongoing SEO optimization"
+        },
+        {
+          "icon": "bolt",
+          "text": "Conversion optimization (CRO)"
+        },
+        {
+          "icon": "analytics",
+          "text": "Monthly performance insights"
+        },
+        {
+          "icon": "editNote",
+          "text": "Unlimited edits",
+          "semibold": true
+        },
+        {
+          "icon": "supportAgent",
+          "text": "24/7 Priority support"
+        }
       ],
-      "buttonLabel": "Choose Growth",
+      "buttonLabel": "Choose full care",
       "popularBadge": "Most popular"
-    },
-    {
-      "id": "pro",
-      "tierLabel": "Ongoing",
-      "name": "Pro",
-      "price": "$200",
-      "priceUnit": "/mo",
-      "tagline": "Turn visitors into loyal, paying customers.",
-      "featureIcon": "check",
-      "features": [
-        "Everything in Growth",
-        "Conversion optimization (buttons, layout, UX improvements)",
-        "1 landing page or major update per month",
-        "Management of Google Business Profile",
-        "Monthly performance insights + action plan"
-      ],
-      "buttonLabel": "Select Pro"
     }
   ],
   "growthStory": {
@@ -129,39 +137,30 @@
     ]
   },
   "addOns": {
-    "title": "Extend the build",
-    "subtitle": "Modular add-ons as your site grows — pages, design passes, and commerce.",
+    "sectionEyebrow": "Customization",
+    "title": "Add-on Services",
+    "subtitle": "",
     "ctaLabel": "Get a full quote",
     "cards": [
       {
-        "icon": "shield",
-        "iconBg": "primary",
-        "title": "Extra pages",
-        "desc": "Standard, feature-rich, or dynamic — by complexity.",
-        "price": "$80+"
+        "icon": "documentPlus",
+        "title": "Extra Pages",
+        "desc": "Over initial 5 page limit",
+        "priceMain": "$100",
+        "priceSuffix": "/page"
       },
       {
-        "icon": "cpu",
-        "iconBg": "secondary",
-        "title": "Design & themes",
-        "desc": "Variations, campaigns, and landing experiments.",
-        "price": "$100–$600"
-      },
-      {
-        "icon": "circleStack",
-        "iconBg": "primaryContainer",
-        "title": "E-commerce",
-        "desc": "Catalog through full checkout integrations.",
-        "price": "Tiers"
-      },
-      {
-        "icon": "bolt",
-        "iconBg": "surfaceHighest",
-        "title": "Priority blocks",
-        "desc": "Reserved time for launches and urgent fixes.",
-        "price": "Custom"
+        "icon": "clock",
+        "title": "Support/Edits",
+        "desc": "Min 2 hours per session",
+        "priceMain": "$40",
+        "priceSuffix": "/hour"
       }
     ]
+  },
+  "policyNote": {
+    "title": "Important Policy Note",
+    "body": "Under our Managed Service Agreement, the website remains the property of Nice Guy Web Design. In the event of service cancellation, the website will be taken down after a 30-day transition period. Code and assets are not transferable unless a buyout agreement is reached."
   },
   "consultCta": {
     "title": "Need a custom build?",

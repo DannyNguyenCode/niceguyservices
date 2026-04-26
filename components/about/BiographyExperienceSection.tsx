@@ -1,5 +1,6 @@
 "use client";
 
+import { sitePageContentClass } from "@/components/pricing/pricingLayoutConstants";
 import type { EducationHighlight, TimelineEntry } from "./aboutBiographyTypes";
 
 type BiographyExperienceSectionProps = {
@@ -13,7 +14,7 @@ export default function BiographyExperienceSection({
 }: BiographyExperienceSectionProps) {
     return (
         <section className="bg-neutral text-neutral-content py-24">
-            <div className="mx-auto max-w-7xl px-4 md:px-8">
+            <div className={sitePageContentClass}>
                 <div className="grid grid-cols-1 gap-20 md:grid-cols-2">
                     <div>
                         <h2 className="font-pm-headline mb-12 flex items-center gap-4 text-3xl font-bold md:text-4xl">

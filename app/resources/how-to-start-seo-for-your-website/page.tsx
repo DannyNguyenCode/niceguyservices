@@ -5,7 +5,7 @@ import ResourceArticleTemplate, {
 } from "@/components/resources/ResourceArticleTemplate";
 
 export const metadata: Metadata = {
-    title: "How to Start SEO on Your Website (Beginner Guide) | Nice Guy Services",
+    title: "How to Start SEO on Your Website (Beginner Guide) | Nice Guy Web Design",
     description:
         "A beginner-friendly guide to integrating SEO on your website: what to do first, what to avoid, and how to build a solid foundation that leads to more calls and inquiries.",
 };
@@ -71,7 +71,7 @@ export default function HowToStartSEOForBeginnersPage() {
                     <Link
                         href="/services"
                         className="font-medium text-primary underline-offset-4 hover:underline"
-                        aria-label="View Nice Guy Services website services"
+                        aria-label="View Nice Guy Web Design website services"
                     >
                         modern, custom websites
                     </Link>

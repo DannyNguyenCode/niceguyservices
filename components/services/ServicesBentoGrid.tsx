@@ -12,6 +12,7 @@ import {
 import {
     goToContact,
     pricingLayoutHeadline as headline,
+    sitePageContentClass,
 } from "@/components/pricing/pricingLayoutConstants";
 
 const focusRing =
@@ -34,7 +35,7 @@ function activateOnKey(
 
 export default function ServicesBentoGrid({ onOpenService }: ServicesBentoGridProps) {
     return (
-        <section className="mx-auto max-w-7xl px-6 py-12">
+        <section className={`py-12 ${sitePageContentClass}`}>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-6">
                 <div
                     role="button"

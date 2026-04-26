@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowLeftIcon, LightBulbIcon } from "@heroicons/react/24/outline";
+import { sitePageContentClass } from "@/components/pricing/pricingLayoutConstants";
 
 export type ResourceComparisonBar = {
     label: string;
@@ -42,7 +43,7 @@ export default function ResourceArticleTemplate({
 }: ResourceArticleTemplateProps) {
     return (
         <div className="bg-(--pm-surface) font-pm-body text-(--pm-on-surface)">
-            <main className="mx-auto max-w-5xl px-6 pt-28 pb-24 md:px-8">
+            <main className={`pt-28 pb-24 ${sitePageContentClass}`}>
                 <div className="mb-12">
                     <Link
                         href="/resources"

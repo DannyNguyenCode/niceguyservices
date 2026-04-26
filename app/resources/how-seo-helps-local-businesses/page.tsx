@@ -5,7 +5,7 @@ import ResourceArticleTemplate, {
 } from "@/components/resources/ResourceArticleTemplate";
 
 export const metadata: Metadata = {
-    title: "How SEO Helps Small Businesses Get More Calls | Nice Guy Services",
+    title: "How SEO Helps Small Businesses Get More Calls | Nice Guy Web Design",
     description:
         "A simple explanation of how SEO helps small businesses get found by nearby customers — and what actually matters for rankings.",
 };
@@ -70,7 +70,7 @@ export default function HowSEOHelpsLocalServiceBusinessesPage() {
                     <Link
                         href="/services"
                         className="font-medium text-primary underline-offset-4 hover:underline"
-                        aria-label="View Nice Guy Services website services"
+                        aria-label="View Nice Guy Web Design website services"
                     >
                         well-structured website
                     </Link>{" "}

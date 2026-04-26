@@ -1,11 +1,16 @@
 "use client";
 
+import AddOnsSection from "./AddOnsSection";
 import ConsultCTA from "./ConsultCTA";
 import PricingGrowthSection from "./PricingGrowthSection";
 import PricingHero from "./PricingHero";
 import PricingPlans from "./PricingPlans";
+import PricingPolicyNote from "./PricingPolicyNote";
 import PricingTrustSection from "./PricingTrustSection";
-import { pricingLayoutBodyFont as bodyFont } from "./pricingLayoutConstants";
+import {
+    pricingLayoutBodyFont as bodyFont,
+    sitePageContentClass,
+} from "./pricingLayoutConstants";
 
 export default function PricingLayout() {
     return (
@@ -23,13 +28,15 @@ export default function PricingLayout() {
             />
 
             <div className="relative z-10">
-                <div className="mx-auto w-full max-w-[1200px] px-6 md:px-8">
+                <div className={sitePageContentClass}>
                     <PricingHero />
                     <PricingPlans />
+                    <PricingPolicyNote />
+                    <AddOnsSection />
                     <PricingGrowthSection />
                 </div>
                 <PricingTrustSection />
-                <div className="mx-auto w-full max-w-[1200px] px-6 md:px-8">
+                <div className={sitePageContentClass}>
                     <ConsultCTA />
                 </div>
             </div>

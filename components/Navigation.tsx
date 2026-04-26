@@ -155,7 +155,7 @@ export default function Navigation() {
                         src={logoSrc}
                         width={160}
                         height={55}
-                        alt="Nice Guy Services"
+                        alt="Nice Guy Web Design"
                         className="h-[55px] w-auto max-w-[160px] object-contain object-left transition"
                     />
                 </Link>
@@ -170,7 +170,7 @@ export default function Navigation() {
                     src={logoSrc}
                     width={160}
                     height={55}
-                    alt="Nice Guy Services"
+                    alt="Nice Guy Web Design"
                     priority
                     className="h-[52px] w-auto max-w-[min(9rem,42vw)] object-contain object-center transition sm:h-[55px] sm:max-w-[140px]"
                 />

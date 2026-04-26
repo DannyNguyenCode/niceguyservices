@@ -6,6 +6,7 @@ import {
     Cog6ToothIcon,
     LightBulbIcon,
 } from "@heroicons/react/24/outline";
+import { sitePageContentClass } from "@/components/pricing/pricingLayoutConstants";
 import type { ComponentType, SVGProps } from "react";
 import type { WorkingWithMeItem } from "./aboutBiographyTypes";
 
@@ -38,7 +39,7 @@ export default function BiographyMethodologySection({
 }: BiographyMethodologySectionProps) {
     return (
         <section className="bg-(--pm-surface) py-24">
-            <div className="mx-auto max-w-7xl px-4 md:px-8">
+            <div className={sitePageContentClass}>
                 <div className="mx-auto mb-20 max-w-3xl text-center">
                     <h2 className="font-pm-headline mb-4 text-4xl font-bold text-(--pm-on-surface)">
                         {sectionTitle}

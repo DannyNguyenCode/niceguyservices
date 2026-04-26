@@ -5,7 +5,7 @@ import ResourceArticleTemplate, {
 } from "@/components/resources/ResourceArticleTemplate";
 
 export const metadata: Metadata = {
-    title: "Why Fast Websites Rank Better (and Convert More Visitors) | Nice Guy Services",
+    title: "Why Fast Websites Rank Better (and Convert More Visitors) | Nice Guy Web Design",
     description:
         "Learn why website speed matters for SEO, user experience, and conversions — and how modern websites outperform bloated templates.",
 };
@@ -134,7 +134,7 @@ export default function WhyFastWebsitesRankBetterPage() {
                     <Link
                         href="/services"
                         className="font-medium text-primary underline-offset-4 hover:underline"
-                        aria-label="View Nice Guy Services website services"
+                        aria-label="View Nice Guy Web Design website services"
                     >
                         custom-built websites
                     </Link>{" "}

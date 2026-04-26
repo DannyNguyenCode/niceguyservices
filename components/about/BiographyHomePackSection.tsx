@@ -2,6 +2,7 @@
 
 import { HeartIcon, PuzzlePieceIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import { sitePageContentClass } from "@/components/pricing/pricingLayoutConstants";
 import type { OutsideWork, PetPortrait } from "./aboutBiographyTypes";
 
 type BiographyHomePackSectionProps = {
@@ -17,7 +18,7 @@ export default function BiographyHomePackSection({
 }: BiographyHomePackSectionProps) {
     return (
         <section className="overflow-hidden py-24">
-            <div className="mx-auto max-w-7xl px-4 md:px-8">
+            <div className={sitePageContentClass}>
                 <div className="mb-16 flex flex-col items-end justify-between gap-6 md:flex-row">
                     <div className="max-w-2xl">
                         <h2 className="font-pm-headline mb-4 text-4xl font-bold tracking-tight">

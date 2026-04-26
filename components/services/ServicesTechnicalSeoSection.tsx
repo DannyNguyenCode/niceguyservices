@@ -5,11 +5,14 @@ import {
     CodeBracketSquareIcon,
     CpuChipIcon,
 } from "@heroicons/react/24/solid";
-import { pricingLayoutHeadline as headline } from "@/components/pricing/pricingLayoutConstants";
+import {
+    pricingLayoutHeadline as headline,
+    sitePageContentClass,
+} from "@/components/pricing/pricingLayoutConstants";
 
 export default function ServicesTechnicalSeoSection() {
     return (
-        <section className="mx-auto max-w-7xl px-6 py-24">
+        <section className={`py-24 ${sitePageContentClass}`}>
             <div className="mb-16 text-center">
                 <span
                     className={`mb-4 block text-xs font-bold tracking-widest uppercase ${headline}`}

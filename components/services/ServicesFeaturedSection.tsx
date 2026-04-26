@@ -6,7 +6,10 @@ import {
     DevicePhoneMobileIcon,
     ShieldCheckIcon,
 } from "@heroicons/react/24/solid";
-import { pricingLayoutHeadline as headline } from "@/components/pricing/pricingLayoutConstants";
+import {
+    pricingLayoutHeadline as headline,
+    sitePageContentClass,
+} from "@/components/pricing/pricingLayoutConstants";
 
 export default function ServicesFeaturedSection() {
     return (
@@ -14,7 +17,7 @@ export default function ServicesFeaturedSection() {
             className="relative mt-20 overflow-hidden py-24"
             style={{ backgroundColor: "var(--pm-trust-section-bg)" }}
         >
-            <div className="relative z-10 mx-auto max-w-7xl px-6">
+            <div className={`relative z-10 ${sitePageContentClass}`}>
                 <div className="grid grid-cols-1 items-start gap-16 lg:grid-cols-2">
                     <div className="space-y-8">
                         <div>

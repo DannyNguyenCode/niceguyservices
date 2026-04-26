@@ -1,5 +1,6 @@
 "use client";
 
+import { sitePageContentClass } from "@/components/pricing/pricingLayoutConstants";
 import type { VitalStat } from "./aboutBiographyTypes";
 
 type BiographyWhoSectionProps = {
@@ -17,7 +18,7 @@ export default function BiographyWhoSection({
 }: BiographyWhoSectionProps) {
     return (
         <section className="bg-(--pm-surface-low) py-24">
-            <div className="mx-auto max-w-7xl px-4 md:px-8">
+            <div className={sitePageContentClass}>
                 <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
                     <div className="space-y-8 md:col-span-2">
                         <h2 className="font-pm-headline text-4xl font-bold tracking-tight text-(--pm-on-surface)">

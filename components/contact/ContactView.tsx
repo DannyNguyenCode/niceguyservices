@@ -9,6 +9,7 @@ import {
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { useState } from "react";
+import { sitePageContentClass } from "@/components/pricing/pricingLayoutConstants";
 import ContactForm from "./ContactForm";
 import ThankYouModal from "./ThankYouModal";
 
@@ -104,7 +105,7 @@ export default function ContactView() {
             className="min-h-[max(884px,100dvh)] bg-(--pm-surface) font-pm-body text-(--pm-on-surface)"
             data-contact-page="modern"
         >
-            <main className="mx-auto max-w-6xl px-6 pb-24 pt-28 md:pt-32">
+            <main className={`pb-24 pt-28 md:pt-32 ${sitePageContentClass}`}>
                 <header className="mb-16 flex flex-col items-baseline gap-6 overflow-hidden md:mb-24 md:flex-row">
                     <h1
                         id="contact-header"

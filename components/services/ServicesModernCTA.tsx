@@ -3,11 +3,12 @@
 import {
     goToContact,
     pricingLayoutHeadline as headline,
+    sitePageContentClass,
 } from "@/components/pricing/pricingLayoutConstants";
 
 export default function ServicesModernCTA() {
     return (
-        <section className="mx-auto max-w-5xl px-6 py-20">
+        <section className={`py-20 ${sitePageContentClass}`}>
             <div
                 className="relative overflow-hidden rounded-3xl p-12 text-center md:p-20"
                 style={{

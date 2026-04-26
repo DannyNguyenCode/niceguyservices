@@ -4,6 +4,7 @@ import pricingContent from "./pricingContent.json";
 import {
     type TrustAccent,
     pricingLayoutHeadline as headline,
+    sitePageContentClass,
 } from "./pricingLayoutConstants";
 import { trustIcons, type TrustIconKey } from "./pricingIconMaps";
 
@@ -16,10 +17,12 @@ export default function PricingTrustSection() {
 
     return (
         <section
-            className="relative overflow-hidden px-4 py-20 sm:px-8"
+            className="relative overflow-hidden py-20"
             style={{ backgroundColor: "var(--pm-trust-section-bg)" }}
         >
-            <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-12 md:grid-cols-3">
+            <div
+                className={`relative z-10 grid grid-cols-1 gap-12 md:grid-cols-3 ${sitePageContentClass}`}
+            >
                 {items.map((item) => {
                     const Icon = trustIcons[item.icon as TrustIconKey];
                     const accent = isTrustAccent(item.accent) ? item.accent : "primary";

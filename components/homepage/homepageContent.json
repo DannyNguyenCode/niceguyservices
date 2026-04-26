@@ -24,11 +24,11 @@
   },
   "pricingTeaser": {
     "title": "Website pricing",
-    "subtitle": "From a one-time custom build to ongoing Starter, Growth, and Pro plans — pick what fits.",
+    "subtitle": "Two packages: $1,600 upfront plus $20/mo for essentials, or $0 upfront and $150/mo for full optimization, reporting, and unlimited edits.",
     "fullPricingHref": "/pricing",
     "fullPricingLabel": "View full pricing breakdown",
     "projectCtaLabel": "Get started",
-    "monthlyCtaLabel": "Choose Growth"
+    "monthlyCtaLabel": "Choose full care"
   },
   "contactTeaser": {
     "headline": "Ready to talk?",

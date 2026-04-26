@@ -1,6 +1,9 @@
 "use client";
 
-import { pricingLayoutHeadline as headline } from "@/components/pricing/pricingLayoutConstants";
+import {
+    pricingLayoutHeadline as headline,
+    sitePageContentClass,
+} from "@/components/pricing/pricingLayoutConstants";
 
 export default function ServicesHero() {
     return (
@@ -17,7 +20,7 @@ export default function ServicesHero() {
                     }}
                 />
             </div>
-            <div className="relative z-10 mx-auto max-w-7xl px-6">
+            <div className={`relative z-10 ${sitePageContentClass}`}>
                 <div className="max-w-3xl">
                     <span
                         className={`mb-4 block text-sm font-bold tracking-[0.2em] uppercase ${headline}`}

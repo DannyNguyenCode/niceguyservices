@@ -1,6 +1,7 @@
 "use client";
 
 import { BuildingOffice2Icon, ClockIcon } from "@heroicons/react/24/outline";
+import { sitePageContentClass } from "@/components/pricing/pricingLayoutConstants";
 import PrivacyFriendlyMap from "./PrivacyFriendlyMap";
 import type { MeetCard } from "./aboutBiographyTypes";
 
@@ -15,7 +16,7 @@ export default function BiographyMeetSection({
 }: BiographyMeetSectionProps) {
     return (
         <section className="bg-(--pm-surface-low) py-24">
-            <div className="mx-auto max-w-7xl px-4 md:px-8">
+            <div className={sitePageContentClass}>
                 <div className="flex flex-col overflow-hidden rounded-[2.5rem] border border-(--pm-outline-variant)/15 bg-(--pm-white) shadow-xl dark:bg-base-100 md:flex-row">
                     <div className="flex flex-col justify-center p-10 md:w-1/3 md:p-12">
                         <div className="font-pm-headline mb-4 text-xs font-black tracking-[0.2em] text-primary uppercase">
