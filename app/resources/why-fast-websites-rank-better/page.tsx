@@ -3,11 +3,15 @@ import Link from "next/link";
 import ResourceArticleTemplate, {
     ResourceSection,
 } from "@/components/resources/ResourceArticleTemplate";
+import { absoluteUrl } from "@/lib/siteConfig";
 
 export const metadata: Metadata = {
     title: "Why Fast Websites Rank Better (and Convert More Visitors) | Nice Guy Web Design",
     description:
         "Learn why website speed matters for SEO, user experience, and conversions — and how modern websites outperform bloated templates.",
+    alternates: {
+        canonical: absoluteUrl("/resources/why-fast-websites-rank-better"),
+    },
 };
 
 export default function WhyFastWebsitesRankBetterPage() {
@@ -56,6 +60,15 @@ export default function WhyFastWebsitesRankBetterPage() {
                 body: "Performance-first builds help SEO, trust, and conversions at the same time.",
                 primary: { href: "/contact", label: "Discuss your project" },
                 secondary: { href: "/services", label: "View services" },
+            }}
+            articleStructuredData={{
+                headline: "Why fast websites rank better (and convert more)",
+                description:
+                    "Learn why website speed matters for SEO, user experience, and conversions — and how modern websites outperform bloated templates.",
+                datePublished: "2025-12-31",
+                dateModified: "2025-12-31",
+                pagePath: "/resources/why-fast-websites-rank-better",
+                heroImageSrc: "/images/Futuristic-tech-abstract.png",
             }}
         >
             <div className="space-y-6 text-lg leading-relaxed text-(--pm-on-surface-variant)">

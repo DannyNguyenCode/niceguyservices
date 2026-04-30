@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "About Us",
-    "subtitle": "Professional, warm, and focused on building clean, modern websites that are easy to maintain and scale."
+    "subtitle": "Nice Guy Web Design is professional, warm, and focused on clean, modern websites that are easy to maintain and scale."
   },
   "intro": {
     "image": {
@@ -9,7 +9,7 @@
       "alt": "Danny Nguyen, web developer based in Toronto"
     },
     "heading": "Who you'll be working with",
-    "leadParagraph": "Hi, I'm Danny — a Toronto-based web developer who builds clean, modern websites that are easy to maintain and simple to scale as your business grows.",
+    "leadParagraph": "Hi, I'm Danny — I run Nice Guy Web Design, helping Toronto-area small businesses with clean, modern websites that are easy to maintain and simple to scale as you grow.",
     "outsideWork": {
       "before": "Outside of work, I'm a big animal lover — I share my home with ",
       "emphasis": "two cats and a dog",
@@ -24,7 +24,7 @@
   "summary": {
     "title": "About Me — Professional, Warm, and Client-Focused",
     "paragraphs": [
-      "I help businesses, nonprofits, and creators transform outdated, slow, or confusing websites into fast, secure, and user-friendly experiences. I specialize in modern frameworks like React, Next.js, Supabase, Python, and Angular — giving you the right balance of speed, flexibility, and long-term reliability.",
+      "I help businesses, nonprofits, and creators to build websites and/or transform outdated, slow, or confusing websites into fast, secure, and user-friendly experiences. I specialize in modern technologies like React, Next.js, Supabase, NodeJS, and Tailwind CSS — giving you the right balance of speed, flexibility, and long-term reliability.",
       "My approach is simple: I build websites that are clean and well-structured so they're easy to maintain. Your site stays future-proof, readable, and inexpensive to update — whether I keep working with you or you bring in another developer later."
     ]
   },
@@ -87,9 +87,9 @@
         "imageSrc": "/profilePicture.png",
         "imageAlt": "Danny Nguyen profile",
         "name": "Gia Bao (Danny) Nguyen",
-        "roleLine": "Web Developer • Frontend & Full-Stack",
+        "roleLine": "Nice Guy Web Design • Web design & development",
         "bioParagraphs": [
-          "Diploma in Computer Programming from Seneca College. Experience in customer service, IT support, and front-end development for a shipping platform.",
+          "Diploma in Computer Programming from Seneca College. Full-time customer service representative; also freelancing as a web designer under Nice Guy Web Design for Toronto-area small businesses. Past experience in IT support and front-end development for a shipping platform.",
           "Loves: two cats, one dog, gaming with friends, learning new tech, and meeting new people."
         ],
         "links": [
@@ -209,6 +209,13 @@
   },
   "background": {
     "experienceTimeline": [
+      {
+        "period": "2025 — Present",
+        "title": "Freelance web designer",
+        "org": "Nice Guy Web Design",
+        "description": "Building and supporting custom websites for small businesses in Toronto and the GTA.",
+        "active": true
+      },
       {
         "period": "2025 — Present",
         "title": "Customer Service Representative",

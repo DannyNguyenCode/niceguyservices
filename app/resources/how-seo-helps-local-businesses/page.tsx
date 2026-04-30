@@ -3,11 +3,15 @@ import Link from "next/link";
 import ResourceArticleTemplate, {
     ResourceSection,
 } from "@/components/resources/ResourceArticleTemplate";
+import { absoluteUrl } from "@/lib/siteConfig";
 
 export const metadata: Metadata = {
     title: "How SEO Helps Small Businesses Get More Calls | Nice Guy Web Design",
     description:
         "A simple explanation of how SEO helps small businesses get found by nearby customers — and what actually matters for rankings.",
+    alternates: {
+        canonical: absoluteUrl("/resources/how-seo-helps-local-businesses"),
+    },
 };
 
 export default function HowSEOHelpsLocalServiceBusinessesPage() {
@@ -51,6 +55,15 @@ export default function HowSEOHelpsLocalServiceBusinessesPage() {
                 body: "Clear service pages, fast performance, and structured content make local SEO far easier to sustain.",
                 primary: { href: "/contact", label: "Get in touch" },
                 secondary: { href: "/services", label: "View services" },
+            }}
+            articleStructuredData={{
+                headline: "How SEO helps small businesses get more calls",
+                description:
+                    "A simple explanation of how SEO helps small businesses get found by nearby customers — and what actually matters for rankings.",
+                datePublished: "2025-12-31",
+                dateModified: "2025-12-31",
+                pagePath: "/resources/how-seo-helps-local-businesses",
+                heroImageSrc: "/images/Toronto-city-map.png",
             }}
         >
             <div className="space-y-6 text-lg leading-relaxed text-(--pm-on-surface-variant)">

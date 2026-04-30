@@ -32,24 +32,24 @@ export default function ServicesHero() {
                         className={`mb-6 max-w-3xl text-5xl leading-[1.1] font-bold tracking-tight md:text-7xl ${headline}`}
                         style={{ color: "var(--pm-on-surface)" }}
                     >
-                        Expert web <br />
+                        Web design &amp; <br />
                         <span
                             className="bg-clip-text text-transparent"
                             style={{
                                 backgroundImage: `linear-gradient(to right, var(--pm-primary), var(--pm-primary-container))`,
                             }}
                         >
-                            Development
+                            development
                         </span>{" "}
                         <br />
-                        services
+                        for small businesses
                     </h1>
                     <p
                         className="max-w-xl text-xl font-light leading-relaxed"
                         style={{ color: "var(--pm-on-surface-variant)" }}
                     >
-                        Expert solutions for scale. Architecting high-performance digital environments
-                        where precision meets a clean, modern aesthetic.
+                        Custom sites that load fast, rank well, and stay easy to maintain — built with
+                        modern stacks and explained in plain language.
                     </p>
                 </div>
             </div>

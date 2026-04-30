@@ -3,11 +3,15 @@ import Link from "next/link";
 import ResourceArticleTemplate, {
     ResourceSection,
 } from "@/components/resources/ResourceArticleTemplate";
+import { absoluteUrl } from "@/lib/siteConfig";
 
 export const metadata: Metadata = {
     title: "How to Start SEO on Your Website (Beginner Guide) | Nice Guy Web Design",
     description:
         "A beginner-friendly guide to integrating SEO on your website: what to do first, what to avoid, and how to build a solid foundation that leads to more calls and inquiries.",
+    alternates: {
+        canonical: absoluteUrl("/resources/how-to-start-seo-for-your-website"),
+    },
 };
 
 export default function HowToStartSEOForBeginnersPage() {
@@ -51,6 +55,15 @@ export default function HowToStartSEOForBeginnersPage() {
                 body: "Clean structure and fast delivery make the beginner checklist much easier to execute.",
                 primary: { href: "/contact", label: "Talk about your site" },
                 secondary: { href: "/pricing", label: "See pricing" },
+            }}
+            articleStructuredData={{
+                headline: "How to start integrating SEO on your own website",
+                description:
+                    "A beginner-friendly guide to integrating SEO on your website: what to do first, what to avoid, and how to build a solid foundation that leads to more calls and inquiries.",
+                datePublished: "2026-01-03",
+                dateModified: "2026-01-03",
+                pagePath: "/resources/how-to-start-seo-for-your-website",
+                heroImageSrc: "/images/Toronto-skyline-dusk.png",
             }}
         >
             <div className="space-y-6 text-lg leading-relaxed text-(--pm-on-surface-variant)">

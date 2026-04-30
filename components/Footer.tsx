@@ -3,12 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "@/components/theme/ThemeProvider";
+import { BUSINESS } from "@/lib/siteConfig";
 
 const pages = [
     { title: "Home", link: "/" },
     { title: "Services", link: "/services" },
     { title: "Pricing", link: "/pricing" },
     { title: "About Us", link: "/about" },
+    { title: "Resources", link: "/resources" },
     { title: "Contact", link: "/contact" },
 ];
 
@@ -38,14 +40,35 @@ export default function Footer() {
                         Custom websites for small businesses in Toronto and the GTA.
                     </p>
 
+                    <address className="not-italic text-sm text-base-content/80">
+                        <span className="sr-only">Contact: </span>
+                        <span className="inline-flex max-w-full flex-wrap items-center gap-x-2 gap-y-1">
+                            <a
+                                href={`tel:${BUSINESS.phoneE164}`}
+                                className="shrink-0 transition-colors hover:text-primary"
+                            >
+                                {BUSINESS.phoneDisplay}
+                            </a>
+                            <span className="text-base-content/40" aria-hidden>
+                                ·
+                            </span>
+                            <a
+                                href={`mailto:${BUSINESS.email}`}
+                                className="min-w-0 break-all transition-colors hover:text-primary"
+                            >
+                                {BUSINESS.email}
+                            </a>
+                        </span>
+                    </address>
+
                     <p className="text-sm text-base-content/70">
                         © {new Date().getFullYear()} Nice Guy Web Design. All rights reserved.
                     </p>
                 </aside>
 
                 {/* RIGHT SIDE — Footer Navigation + Socials */}
-                <nav className="flex flex-col gap-4 md:place-self-center md:justify-self-end" aria-label="Footer navigation">
-                    <ul className="grid grid-flow-col gap-4 text-sm">
+                <nav className="flex flex-col gap-8 md:place-self-center md:justify-self-end" aria-label="Footer navigation">
+                    <ul className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm md:justify-end">
                         {pages.map((page) => (
                             <li key={page.title}>
                                 <Link
@@ -58,12 +81,12 @@ export default function Footer() {
                         ))}
                     </ul>
 
-                    <div className="grid grid-flow-col gap-4 mt-1" aria-label="Social links">
+                    <div className="flex flex-wrap items-center gap-2 mt-1" aria-label="Social links">
                         <a
                             href="https://x.com/BaoGiaNguyen"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-base-content/70 transition-colors hover:text-primary"
+                            className="inline-flex items-center justify-center rounded-lg p-2 text-base-content/70 transition-colors hover:text-primary"
                             aria-label="Nice Guy Web Design on X"
                         >
                             <svg
@@ -79,7 +102,7 @@ export default function Footer() {
                             href="https://github.com/DannyNguyenCode"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-base-content/70 transition-colors hover:text-primary"
+                            className="inline-flex items-center justify-center rounded-lg p-2 text-base-content/70 transition-colors hover:text-primary"
                             aria-label="Danny Nguyen on GitHub"
                         >
                             <svg
@@ -98,7 +121,7 @@ export default function Footer() {
                             href="https://www.linkedin.com/in/gia-bao-danny-nguyen/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-base-content/70 transition-colors hover:text-primary"
+                            className="inline-flex items-center justify-center rounded-lg p-2 text-base-content/70 transition-colors hover:text-primary"
                             aria-label="Nice Guy Web Design on LinkedIn"
                         >
                             <svg

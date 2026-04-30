@@ -16,78 +16,96 @@ import ThankYouModal from "./ThankYouModal";
 export type FormState = {
     name: string;
     email: string;
+    profession: string;
     phone: string;
-    businessName: string;
-    businessType: string;
-    budget: string;
     services: string[];
     message: string;
     wantsMeeting: boolean;
+    primaryObjective: "business" | "portfolio" | "";
 };
 
 export const initialFormState: FormState = {
     name: "",
     email: "",
+    profession: "",
     phone: "",
-    businessName: "",
-    businessType: "",
-    budget: "",
     services: [],
     message: "",
     wantsMeeting: false,
+    primaryObjective: "",
 };
 
 const DECOR_IMG =
     "https://lh3.googleusercontent.com/aida-public/AB6AXuDkx4RUc9rkx0lGeNXvyrasZjBVNtzjkUvejEsuABY_9noKWVYHqnRURylxiikT9s2C-p7Nrf6Gvt4BMVLOAo-HrH0UmFtZbmHjO4DTfzN85GDc4Pr1Nc2ClmAGmvxwzv0_tcNOpBL8BnDEColtxZJbf-q9W4bhwOVD4ZcJDf1NzxzS-wZp3jOBYoePvFH8WkJJ7nvZNTVhTHMQe2tY0Kdj7tJ1shQHI4ruiP-GyapQbEqcS4scy4KT4qL11y6b2YN4zfOPDPVVCqk";
 
+const DEFAULT_CTA = "Detailed Next steps";
+
+const SERVICES_BY_OBJECTIVE: Record<
+    "business" | "portfolio",
+    FormState["services"]
+> = {
+    business: ["Web Design", "Web Development", "E-commerce"],
+    portfolio: ["Web Design", "Landing page / campaign", "SEO"],
+};
+
 export default function ContactView() {
     const [form, setForm] = useState<FormState>(initialFormState);
     const [submitting, setSubmitting] = useState(false);
     const [thankOpen, setThankOpen] = useState(false);
+    const [intakeCta, setIntakeCta] = useState(DEFAULT_CTA);
 
     const handleChange = (field: keyof FormState, value: string | boolean) => {
-        setForm((prev) => ({
-            ...prev,
-            [field]: value,
-        }));
-    };
-
-    const handleServiceToggle = (service: string) => {
         setForm((prev) => {
-            const exists = prev.services.includes(service);
+            if (field === "primaryObjective" && (value === "business" || value === "portfolio")) {
+                return {
+                    ...prev,
+                    primaryObjective: value,
+                    services: SERVICES_BY_OBJECTIVE[value],
+                };
+            }
+            if (field === "primaryObjective" && value === "") {
+                return { ...prev, primaryObjective: "", services: [] };
+            }
             return {
                 ...prev,
-                services: exists
-                    ? prev.services.filter((s) => s !== service)
-                    : [...prev.services, service],
-            };
+                [field]: value,
+            } as FormState;
         });
     };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        if (!form.primaryObjective) {
+            return;
+        }
         setSubmitting(true);
 
         try {
             const res = await fetch("/api/contact", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form),
+                body: JSON.stringify({
+                    name: form.name,
+                    email: form.email,
+                    profession: form.profession,
+                    phone: form.phone,
+                    services: form.services,
+                    message: form.message,
+                    wantsMeeting: form.wantsMeeting,
+                }),
             });
 
-            const payload = (await res.json().catch(() => ({}))) as {
-                error?: string;
-            };
+            const json = (await res.json().catch(() => ({}))) as { error?: string };
 
             if (!res.ok) {
                 throw new Error(
-                    payload.error ||
-                    "Something went wrong sending your message."
+                    json.error || "Something went wrong sending your message."
                 );
             }
 
             setThankOpen(true);
             setForm(initialFormState);
+            setIntakeCta(DEFAULT_CTA);
         } catch (error) {
             console.error("Error submitting contact form:", error);
             const message =
@@ -177,8 +195,9 @@ export default function ContactView() {
                         <ContactForm
                             form={form}
                             submitting={submitting}
+                            ctaText={intakeCta}
+                            onCtaTextChange={setIntakeCta}
                             onChange={handleChange}
-                            onServiceToggle={handleServiceToggle}
                             onSubmit={handleSubmit}
                         />
                     </section>
@@ -197,7 +216,7 @@ export default function ContactView() {
                                 </span>
                                 <a
                                     className="font-pm-headline text-2xl font-bold tracking-tighter transition-colors hover:text-secondary"
-                                    href="tel:+15551234567"
+                                    href="tel:+16477603458"
                                 >
                                     (647) 760-3458
                                 </a>
@@ -217,7 +236,7 @@ export default function ContactView() {
                                 </span>
                                 <a
                                     className="break-all font-pm-headline text-xl font-bold tracking-tighter transition-colors hover:text-primary sm:text-2xl"
-                                    href="mailto:hello@example.com"
+                                    href="mailto:gbnguyenw@gmail.com"
                                 >
                                     gbnguyenw@gmail.com
                                 </a>
@@ -232,7 +251,7 @@ export default function ContactView() {
                                 className="object-cover opacity-40 brightness-125 grayscale transition-transform duration-700 group-hover:scale-105"
                                 sizes="(max-width: 1024px) 100vw, 33vw"
                             />
-                            <div className="absolute inset-0 flex items-end bg-linear-to-t from-(--pm-surface)/80 to-transparent p-8">
+                            <div className="absolute inset-0 flex items-end bg-gradient-to-t from-(--pm-surface)/80 to-transparent p-8">
                                 <div className="space-y-1">
                                     <div className="flex items-center gap-2">
                                         <div className="h-2 w-2 animate-pulse rounded-full bg-secondary" />

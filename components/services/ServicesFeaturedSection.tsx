@@ -31,9 +31,9 @@ export default function ServicesFeaturedSection() {
                                 className="mb-8 text-lg leading-relaxed"
                                 style={{ color: "var(--pm-on-surface-variant)" }}
                             >
-                                We don&apos;t just build websites; we engineer digital destinations —
-                                semantic code, fast load times, and design that differentiates you from
-                                the noise.
+                                At Nice Guy Web Design we don&apos;t just ship pages — we build fast,
+                                semantic sites with load times and UX that help you stand out from
+                                template-looking competitors.
                             </p>
                         </div>
                         <div>

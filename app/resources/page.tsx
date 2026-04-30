@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { sitePageContentClass } from "@/components/pricing/pricingLayoutConstants";
+import { absoluteUrl } from "@/lib/siteConfig";
 import {
     AcademicCapIcon,
-    ArrowLongRightIcon,
     ArrowRightIcon,
     ArrowUpRightIcon,
     BoltIcon,
@@ -13,9 +13,12 @@ import {
 } from "@heroicons/react/24/outline";
 
 export const metadata: Metadata = {
-    title: "Resources | Nice Guy Web Design",
+    title: "Web Design & SEO Resources for Toronto Small Businesses | Nice Guy Web Design",
     description:
-        "Short, practical guides explaining how modern websites help small businesses rank better, load faster, and turn visitors into customers.",
+        "Short, practical guides for Toronto and GTA small businesses: SEO, site speed, and how to get more leads from your website.",
+    alternates: {
+        canonical: absoluteUrl("/resources"),
+    },
 };
 
 const resources = {
@@ -36,13 +39,6 @@ const resources = {
         imageAlt:
             "Abstract visualization suggesting performance and technical metrics",
     },
-    customVsTemplates: {
-        module: "Module 03",
-        title: "Custom Websites vs Templates",
-        description:
-            "A practical comparison to help small business owners decide between custom-built sites and templates like WordPress or Wix.",
-        href: "/resources/custom-websites-vs-templates",
-    },
     beginnerSeo: {
         module: "Foundation series",
         title: "How to Start SEO on Your Website (Beginner Guide)",
@@ -50,10 +46,19 @@ const resources = {
             "A beginner-friendly guide to starting SEO on your own website. Practical steps you can take today without a technical degree.",
         href: "/resources/how-to-start-seo-for-your-website",
     },
+    /* Hidden from hub — internal process article; restore when ready to publish.
+    aiWorkflow: {
+        module: "Process",
+        title: "AI as a tool in web design",
+        description:
+            "Cursor for code and SEO hygiene, Google Stitch for UX exploration, ChatGPT for copy — in moderation, with humans reviewing every ship.",
+        href: "/resources/ai-tools-web-design-workflow",
+    },
+    */
 };
 
 export default function ResourcesPage() {
-    const { localSeo, speed, customVsTemplates, beginnerSeo } = resources;
+    const { localSeo, speed, beginnerSeo } = resources;
 
     return (
         <div className="bg-(--pm-surface) font-pm-body text-(--pm-on-surface)">
@@ -142,47 +147,8 @@ export default function ResourcesPage() {
                         </div>
                     </Link>
 
-                    {/* Custom vs templates — compare */}
-                    <div className="flex min-h-[400px] flex-col justify-between rounded-xl bg-(--pm-surface-high) p-8 md:col-span-5">
-                        <div>
-                            <div className="mb-6 flex gap-1">
-                                <span className="h-2 w-2 rounded-full bg-primary" />
-                                <span className="bg-(--pm-outline-variant) h-2 w-2 rounded-full" />
-                                <span className="bg-(--pm-outline-variant) h-2 w-2 rounded-full" />
-                            </div>
-                            <h2 className="mb-4 text-3xl leading-none font-bold tracking-tight">
-                                {customVsTemplates.title}
-                            </h2>
-                            <p className="leading-relaxed text-(--pm-on-surface-variant)">
-                                {customVsTemplates.description}
-                            </p>
-                        </div>
-                        <div className="space-y-4">
-                            <div className="flex items-center justify-between rounded bg-(--pm-white) p-3 font-pm-headline text-xs uppercase dark:bg-base-100">
-                                <span>Flexibility</span>
-                                <span className="text-primary">Custom wins</span>
-                            </div>
-                            <div className="flex items-center justify-between rounded bg-(--pm-white) p-3 font-pm-headline text-xs uppercase dark:bg-base-100">
-                                <span>Performance</span>
-                                <span className="text-primary">Tunable</span>
-                            </div>
-                            <Link
-                                href={customVsTemplates.href}
-                                className="mt-6 inline-flex items-center gap-2 font-medium text-primary transition-transform hover:translate-x-1"
-                            >
-                                <span className="font-pm-headline text-sm tracking-wider uppercase">
-                                    Read more
-                                </span>
-                                <ArrowLongRightIcon
-                                    className="h-5 w-5"
-                                    aria-hidden
-                                />
-                            </Link>
-                        </div>
-                    </div>
-
                     {/* Beginner SEO — featured */}
-                    <div className="flex min-h-[400px] flex-col items-center gap-8 rounded-xl border border-(--pm-outline-variant)/15 bg-(--pm-white) p-8 md:col-span-7 md:flex-row dark:bg-base-100">
+                    <div className="flex min-h-[400px] flex-col items-center gap-8 rounded-xl border border-(--pm-outline-variant)/15 bg-(--pm-white) p-8 md:col-span-12 md:flex-row dark:bg-base-100">
                         <div className="flex-1">
                             <div className="mb-6">
                                 <span className="inline-block rounded-full bg-tertiary/15 px-3 py-1 font-pm-headline text-[10px] font-bold tracking-widest text-tertiary uppercase">
@@ -219,6 +185,8 @@ export default function ResourcesPage() {
                             </div>
                         </div>
                     </div>
+
+                    {/* AI workflow article omitted from hub (private); restore aiWorkflow in resources + sitemap + card when publishing. */}
                 </section>
 
                 <section className="relative mt-32 overflow-hidden rounded-3xl bg-neutral p-12 text-center md:p-20">
@@ -238,16 +206,24 @@ export default function ResourcesPage() {
                             Skip the trial and error. Get a site that loads fast, reads
                             clearly, and is built to grow with your business.
                         </p>
-                        <Link
-                            href="/services"
-                            className="group bg-(--pm-white) font-pm-headline inline-flex items-center gap-4 rounded-full px-10 py-4 text-lg font-bold text-neutral transition-all duration-300 hover:bg-primary hover:text-primary-content"
-                        >
-                            Explore services
-                            <ArrowUpRightIcon
-                                className="h-6 w-6 transition-transform group-hover:rotate-45"
-                                aria-hidden
-                            />
-                        </Link>
+                        <div className="flex flex-wrap items-center justify-center gap-4">
+                            <Link
+                                href="/services"
+                                className="group bg-(--pm-white) font-pm-headline inline-flex items-center gap-4 rounded-full px-10 py-4 text-lg font-bold text-neutral transition-all duration-300 hover:bg-primary hover:text-primary-content"
+                            >
+                                Explore services
+                                <ArrowUpRightIcon
+                                    className="h-6 w-6 transition-transform group-hover:rotate-45"
+                                    aria-hidden
+                                />
+                            </Link>
+                            <Link
+                                href="/contact"
+                                className="font-pm-headline text-sm font-semibold text-neutral-content/90 underline-offset-4 transition-colors hover:text-neutral-content hover:underline"
+                            >
+                                Contact — Toronto &amp; GTA
+                            </Link>
+                        </div>
                     </div>
                 </section>
             </main>

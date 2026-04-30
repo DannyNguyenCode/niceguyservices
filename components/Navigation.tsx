@@ -12,8 +12,8 @@ const pages = [
     { title: "Services", link: "/services" },
     { title: "Pricing", link: "/pricing" },
     { title: "About Us", link: "/about" },
-    { title: "Contact", link: "/contact" },
     { title: "Resources", link: "/resources" },
+    { title: "Contact", link: "/contact" },
 ];
 
 function isNavActive(pathname: string, href: string): boolean {

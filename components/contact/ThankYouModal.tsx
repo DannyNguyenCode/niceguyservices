@@ -1,7 +1,7 @@
 "use client";
 
+import { EnvelopeOpenIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef } from "react";
-
 interface ThankYouModalProps {
     open: boolean;
     onClose: () => void;
@@ -44,13 +44,17 @@ export default function ThankYouModal({ open, onClose }: ThankYouModalProps) {
             <div className="modal-box">
                 <h3
                     id="thank-you-title"
-                    className="font-bold text-lg mb-2"
+                    className="mb-2 flex items-center gap-2 font-bold text-lg"
                 >
+                    <EnvelopeOpenIcon
+                        className="h-7 w-7 shrink-0 text-primary"
+                        aria-hidden
+                    />
                     Thank you for reaching out
                 </h3>
                 <p className="text-sm text-base-content  mb-2">
-                    I&apos;ve received your message and will get back to you within 24
-                    hours.
+                    Thanks for contacting Nice Guy Web Design — I&apos;ve received your
+                    message and will get back to you within 24 hours.
                 </p>
                 <p className="text-sm text-base-content">
                     If you requested a meeting, I&apos;ll include a few available time
@@ -60,7 +64,11 @@ export default function ThankYouModal({ open, onClose }: ThankYouModalProps) {
 
                 <div className="modal-action">
                     <form method="dialog">
-                        <button className="btn" onClick={onClose}>
+                        <button
+                            className="btn inline-flex items-center gap-1.5"
+                            onClick={onClose}
+                        >
+                            <XMarkIcon className="h-5 w-5" aria-hidden />
                             Close
                         </button>
                     </form>

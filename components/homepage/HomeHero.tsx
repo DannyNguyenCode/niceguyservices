@@ -7,7 +7,10 @@ export default function HomeHero() {
     const { hero } = homepageContent;
 
     return (
-        <section className="mx-auto flex max-w-7xl flex-col items-center px-4 text-center">
+        <section
+            className="mx-auto flex min-h-[calc(100dvh-4rem)] w-full max-w-7xl flex-col items-center justify-center px-4 py-12 text-center md:py-16"
+            aria-labelledby="home-hero-heading"
+        >
             <div className="mb-8 inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 font-pm-headline text-xs font-bold tracking-widest text-secondary-content uppercase">
                 <span
                     className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-secondary-content"
@@ -15,7 +18,10 @@ export default function HomeHero() {
                 />
                 {hero.availabilityBadge}
             </div>
-            <h1 className="font-pm-headline mb-10 text-5xl leading-none font-bold tracking-tighter text-(--pm-on-surface) md:text-7xl lg:text-8xl">
+            <h1
+                id="home-hero-heading"
+                className="font-pm-headline mb-10 text-5xl leading-none font-bold tracking-tighter text-(--pm-on-surface) md:text-7xl lg:text-8xl"
+            >
                 {hero.headlineBefore}{" "}
                 <span className="bg-linear-to-r from-primary to-(--pm-primary-container) bg-clip-text text-transparent">
                     {hero.headlineGradient}

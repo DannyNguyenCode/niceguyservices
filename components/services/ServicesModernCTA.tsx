@@ -28,8 +28,8 @@ export default function ServicesModernCTA() {
                         className={`mb-8 text-3xl leading-tight font-bold md:text-5xl ${headline}`}
                         style={{ color: "var(--pm-on-primary)" }}
                     >
-                        Ready to architect your <br className="hidden md:block" />
-                        next digital project?
+                        Ready for your next site <br className="hidden md:block" />
+                        with Nice Guy Web Design?
                     </h2>
                     <div className="flex justify-center">
                         <button

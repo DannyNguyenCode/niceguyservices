@@ -8,10 +8,8 @@ const DEFAULT_TO = "gbnguyenw@gmail.com";
 type ContactPayload = {
     name: string;
     email: string;
+    profession: string;
     phone: string;
-    businessName: string;
-    businessType: string;
-    budget: string;
     services: string[];
     message: string;
     wantsMeeting: boolean;
@@ -37,10 +35,8 @@ function buildEmailBody(data: ContactPayload): { text: string; html: string } {
     const lines = [
         `Name: ${data.name}`,
         `Email: ${data.email}`,
+        `Profession: ${data.profession || "—"}`,
         `Phone: ${data.phone || "—"}`,
-        `Business name: ${data.businessName || "—"}`,
-        `Business type: ${data.businessType || "—"}`,
-        `Budget: ${data.budget || "—"}`,
         `Services: ${data.services.length ? data.services.join(", ") : "—"}`,
         `Wants meeting: ${data.wantsMeeting ? "Yes" : "No"}`,
         "",
@@ -57,10 +53,8 @@ function buildEmailBody(data: ContactPayload): { text: string; html: string } {
 <table style="border-collapse:collapse;margin-bottom:20px;">
 ${row("Name", data.name)}
 ${row("Email", data.email)}
+${row("Profession", data.profession || "—")}
 ${row("Phone", data.phone || "—")}
-${row("Business name", data.businessName || "—")}
-${row("Business type", data.businessType || "—")}
-${row("Budget", data.budget || "—")}
 ${row("Services", data.services.length ? data.services.join(", ") : "—")}
 ${row("Wants meeting", data.wantsMeeting ? "Yes" : "No")}
 </table>
@@ -95,10 +89,8 @@ export async function POST(request: Request) {
     const name = p.name;
     const email = p.email;
     const message = p.message;
+    const profession = typeof p.profession === "string" ? p.profession : "";
     const phone = typeof p.phone === "string" ? p.phone : "";
-    const businessName = typeof p.businessName === "string" ? p.businessName : "";
-    const businessType = typeof p.businessType === "string" ? p.businessType : "";
-    const budget = typeof p.budget === "string" ? p.budget : "";
     const services = isStringArray(p.services) ? p.services : [];
     const wantsMeeting = p.wantsMeeting === true;
 
@@ -117,10 +109,8 @@ export async function POST(request: Request) {
     const data: ContactPayload = {
         name: name.trim(),
         email: email.trim(),
+        profession: profession.trim(),
         phone,
-        businessName,
-        businessType,
-        budget,
         services,
         message: message.trim(),
         wantsMeeting,

@@ -3,9 +3,11 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import SiteJsonLd from "@/components/seo/SiteJsonLd";
 import { cookies } from "next/headers";
 import ThemeProvider from "@/components/theme/ThemeProvider";
 import { parseStoredColorMode } from "@/lib/themes/siteTheme";
+import { BUSINESS, getSiteUrl } from "@/lib/siteConfig";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,12 +19,35 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = getSiteUrl();
+
 export const metadata: Metadata = {
-  title: "Nice Guy Web Design",
-  description: "Building and maintaining clean, modern websites giving you more time to focus on what matters.",
+  metadataBase: new URL(siteUrl),
+  title: "Nice Guy Web Design — Toronto & GTA small business websites",
+  description:
+    "Nice Guy Web Design — custom websites for small businesses in Toronto and the GTA. Fast, maintainable builds with clear communication and ongoing support.",
   verification: {
-    google: 'SVu4bQTn5qjJHWHKw6pz34Ob__tmftRjWWFkMecbU_Q'
-  }
+    google: "SVu4bQTn5qjJHWHKw6pz34Ob__tmftRjWWFkMecbU_Q",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_CA",
+    url: siteUrl,
+    siteName: BUSINESS.name,
+    title: "Nice Guy Web Design — Toronto & GTA small business websites",
+    description:
+      "Custom websites for small businesses in Toronto and the GTA — fast, SEO-ready, and fully supported.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nice Guy Web Design",
+    description:
+      "Custom websites for small businesses in Toronto and the GTA — fast, SEO-ready, and fully supported.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default async function RootLayout({
@@ -40,6 +65,7 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <SiteJsonLd />
         <ThemeProvider initialTheme={initialColorMode}>
           <Navigation />
           <main id="content-container">

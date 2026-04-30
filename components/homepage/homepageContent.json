@@ -3,7 +3,7 @@
     "availabilityBadge": "Available for new projects",
     "headlineBefore": "Crafting digital solutions with",
     "headlineGradient": "clarity & care.",
-    "subtitle": "A Toronto-based studio focused on fast, maintainable websites for small businesses — technical precision without the jargon.",
+    "subtitle": "Nice Guy Web Design is a Toronto-based practice focused on fast, maintainable websites for small businesses — technical precision without the jargon.",
     "primaryCta": { "label": "Start a project", "href": "/contact" },
     "heroImage": {
       "src": "/images/Futuristic-tech-abstract.png",
@@ -32,7 +32,7 @@
   },
   "contactTeaser": {
     "headline": "Ready to talk?",
-    "body": "Tell me what you need — I’ll reply with a clear next step and honest scope. Currently taking new small-business projects in Toronto and remote.",
+    "body": "Get in touch with Nice Guy Web Design — tell me what you need and I’ll reply with a clear next step and honest scope. Currently taking new small-business projects in Toronto and remote.",
     "primaryCtaLabel": "Contact",
     "responseNote": "I usually reply within one business day"
   },

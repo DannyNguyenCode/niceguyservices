@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowLeftIcon, LightBulbIcon } from "@heroicons/react/24/outline";
 import { sitePageContentClass } from "@/components/pricing/pricingLayoutConstants";
+import ArticleJsonLd, { type ArticleJsonLdInput } from "@/components/seo/ArticleJsonLd";
 
 export type ResourceComparisonBar = {
     label: string;
@@ -27,6 +28,8 @@ type ResourceArticleTemplateProps = {
         primary: { href: string; label: string };
         secondary?: { href: string; label: string };
     };
+    /** Plain-text headline for Article JSON-LD (can differ from decorative `title` JSX). */
+    articleStructuredData?: ArticleJsonLdInput;
 };
 
 export default function ResourceArticleTemplate({
@@ -40,9 +43,20 @@ export default function ResourceArticleTemplate({
     comparisonBars,
     expertTip,
     cta,
+    articleStructuredData,
 }: ResourceArticleTemplateProps) {
     return (
         <div className="bg-(--pm-surface) font-pm-body text-(--pm-on-surface)">
+            {articleStructuredData ? (
+                <ArticleJsonLd
+                    headline={articleStructuredData.headline}
+                    description={articleStructuredData.description}
+                    datePublished={articleStructuredData.datePublished}
+                    dateModified={articleStructuredData.dateModified}
+                    pagePath={articleStructuredData.pagePath}
+                    heroImageSrc={articleStructuredData.heroImageSrc}
+                />
+            ) : null}
             <main className={`pt-28 pb-24 ${sitePageContentClass}`}>
                 <div className="mb-12">
                     <Link
@@ -119,7 +133,7 @@ export default function ResourceArticleTemplate({
                                                 <span
                                                     className={
                                                         row.variant ===
-                                                        "secondary"
+                                                            "secondary"
                                                             ? "text-secondary"
                                                             : "text-primary"
                                                     }
@@ -129,12 +143,11 @@ export default function ResourceArticleTemplate({
                                             </div>
                                             <div className="h-1 w-full overflow-hidden rounded-full bg-(--pm-surface-container)">
                                                 <div
-                                                    className={`h-full rounded-full ${
-                                                        row.variant ===
-                                                        "secondary"
+                                                    className={`h-full rounded-full ${row.variant ===
+                                                            "secondary"
                                                             ? "bg-secondary"
                                                             : "bg-primary"
-                                                    }`}
+                                                        }`}
                                                     style={{
                                                         width: `${Math.min(100, Math.max(0, row.fillPercent))}%`,
                                                     }}
