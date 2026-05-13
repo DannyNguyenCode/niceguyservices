@@ -80,7 +80,7 @@ export function NeopetsAdventureBody() {
                 <input
                   type="search"
                   placeholder="Search last seen location..."
-                  className="min-w-0 flex-grow rounded-xl border-2 border-[#c0c7cf] bg-[#fff8f2] px-4 py-3 text-base outline-none ring-[#8fd3ff] focus:ring-4"
+                  className="min-w-0 grow rounded-xl border-2 border-[#c0c7cf] bg-[#fff8f2] px-4 py-3 text-base outline-none ring-[#8fd3ff] focus:ring-4"
                   aria-label="Search map"
                 />
                 <button type="button" className="np-pressable-btn shrink-0 rounded-xl border-b-4 border-[#004c6b] bg-[#0d658c] px-6 py-3 font-bold text-white">
@@ -103,7 +103,7 @@ export function NeopetsAdventureBody() {
               </Link>
             </div>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <div className="rotate-[-1deg] rounded-[24px] border-2 border-[#ebe1d5] bg-white p-4 shadow-sm transition-transform hover:rotate-0">
+              <div className="-rotate-1 rounded-[24px] border-2 border-[#ebe1d5] bg-white p-4 shadow-sm transition-transform hover:rotate-0">
                 <div className="relative mb-4 h-48 w-full overflow-hidden rounded-xl">
                   <Image src={BEAGLE} alt="Buddy" fill className="object-cover" sizes="400px" />
                   <div className="absolute right-2 top-2 rotate-3 rounded bg-[#ba1a1a] px-2 py-1 text-xs font-bold text-white shadow-sm">

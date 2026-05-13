@@ -98,7 +98,7 @@ export function NeopetsQuestsBody() {
             >
               {m.title}
             </h3>
-            <p className="relative z-10 mb-8 flex-grow text-base text-[#40484e]">{m.body}</p>
+            <p className="relative z-10 mb-8 grow text-base text-[#40484e]">{m.body}</p>
             <div className="relative z-10 mb-6 flex flex-wrap gap-2">
               <span className="rounded bg-[#adf19e] px-2 py-0.5 text-[10px] font-bold uppercase italic tracking-wider text-[#326f2d]">
                 REWARD: XP
@@ -124,7 +124,7 @@ export function NeopetsQuestsBody() {
             alt="Puppies playing"
             width={600}
             height={400}
-            className="h-[400px] w-full rotate-[-1deg] rounded-[24px] border-4 border-[#005c80] object-cover shadow-lg"
+            className="h-[400px] w-full -rotate-1 rounded-[24px] border-4 border-[#005c80] object-cover shadow-lg"
           />
         </div>
         <div className="w-full md:w-1/2">

@@ -11,7 +11,7 @@ export function NeopetsSuccessStoriesBody() {
       <div className="mx-auto max-w-[1200px] px-4 py-12 md:px-16">
         <div className="relative mb-16 text-center">
           <span
-            className="mb-2 block rotate-[-2deg] text-4xl text-[#2e6b29]"
+            className="mb-2 block -rotate-2 text-4xl text-[#2e6b29]"
             style={{ fontFamily: "var(--font-np-handwritten), cursive" }}
           >
             Tail-Wagging Tales
@@ -32,7 +32,7 @@ export function NeopetsSuccessStoriesBody() {
           <div className="group relative">
             <div className="np-polaroid-rotate-left rounded-[24px] border-2 border-[#ebe1d5] bg-white p-6 shadow-lg transition-transform duration-300 group-hover:rotate-0">
               <div className="relative mb-6 overflow-hidden rounded-lg">
-                <div className="relative aspect-[4/5] w-full">
+                <div className="relative aspect-4/5 w-full">
                   <Image src={BUSTER} alt="Buster before and after" fill className="object-cover grayscale transition-all duration-500 group-hover:grayscale-0" sizes="400px" />
                 </div>
                 <div className="np-paper-edge absolute right-4 top-4 rounded-full bg-[#eec750] px-4 py-1 text-sm font-semibold text-[#695300] shadow-sm">

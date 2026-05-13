@@ -42,7 +42,7 @@ export function NeopetsAboutBody() {
           </div>
           <div className="relative flex-1">
             <div className="mx-auto max-w-sm rotate-3 rounded-xl border border-[#c0c7cf] bg-white p-4 shadow-xl md:max-w-md">
-              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg">
+              <div className="relative aspect-4/5 w-full overflow-hidden rounded-lg">
                 <Image src={HEART} alt="Community love" fill className="object-cover grayscale-[0.2] contrast-[1.1]" sizes="400px" />
               </div>
               <div className="pt-4 text-center">

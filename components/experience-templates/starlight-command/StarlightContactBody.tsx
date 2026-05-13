@@ -56,7 +56,7 @@ export function StarlightContactBody() {
                 </a>
               </div>
 
-              <div className="relative h-64 min-h-[16rem] w-full overflow-hidden border-4 border-[#594238] bg-[#2a2a2a] md:h-auto md:min-h-[20rem]">
+              <div className="relative h-64 min-h-64 w-full overflow-hidden border-4 border-[#594238] bg-[#2a2a2a] md:h-auto md:min-h-80">
                 <Image
                   src={SC_IMG.contactMap}
                   alt="Stylized night map of Toronto service sectors (demo art)"

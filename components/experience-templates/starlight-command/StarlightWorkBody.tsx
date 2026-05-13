@@ -118,7 +118,7 @@ export function StarlightWorkBody() {
             <div className="absolute left-0 top-0 z-10 h-1 w-full bg-[#ee671c] shadow-[0_0_10px_#ee671c]" />
             <div className="grid grid-cols-1 md:grid-cols-2">
               <div className="group/image relative overflow-hidden border-b-2 border-[#594238] md:border-b-0 md:border-r-2">
-                <div className="relative h-64 w-full md:h-full md:min-h-[16rem]">
+                <div className="relative h-64 w-full md:h-full md:min-h-64">
                   <Image
                     src={p.before}
                     alt={`${p.title} — before (demo)`}
@@ -132,7 +132,7 @@ export function StarlightWorkBody() {
                 </div>
               </div>
               <div className="group/image relative overflow-hidden">
-                <div className="relative h-64 w-full md:h-full md:min-h-[16rem]">
+                <div className="relative h-64 w-full md:h-full md:min-h-64">
                   <Image
                     src={p.after}
                     alt={`${p.title} — after (demo)`}
@@ -149,7 +149,7 @@ export function StarlightWorkBody() {
             <div className="relative bg-[#2a2a2a] p-4 sm:p-6">
               <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div className="min-w-0 flex-1">
-                  <h2 className="mb-1 break-words font-['var(--font-sc-display),ui-sans-serif] text-lg font-semibold uppercase text-[#e5e2e1] sm:text-xl md:text-2xl">
+                  <h2 className="mb-1 wrap-break-word font-['var(--font-sc-display),ui-sans-serif] text-lg font-semibold uppercase text-[#e5e2e1] sm:text-xl md:text-2xl">
                     {p.title}
                   </h2>
                   <div className="flex flex-wrap gap-2">

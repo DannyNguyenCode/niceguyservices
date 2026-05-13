@@ -83,14 +83,14 @@ export function NeopetsLibraryBody() {
         <div className="grid w-full grid-cols-1 gap-6 pb-8 md:grid-cols-2 lg:w-2/3">
           <div className="np-pokedex-card flex flex-col overflow-hidden rounded-[24px] bg-white shadow-[0_8px_0_0_rgba(13,101,140,0.05)]">
             <div className="relative h-48 w-full">
-                <Image src={ARTICLE} alt="Golden retriever puppy in a bright living room" fill className="object-cover" sizes="(max-width:768px) 100vw, 50vw" />
+              <Image src={ARTICLE} alt="Golden retriever puppy in a bright living room" fill className="object-cover" sizes="(max-width:768px) 100vw, 50vw" />
               <div className="absolute left-4 top-4">
                 <span className="flex items-center gap-1 rounded-lg bg-[#adf19e] px-3 py-1 text-xs font-bold text-[#326f2d] shadow-sm">
                   <span className="material-symbols-outlined text-sm">verified</span> NEW
                 </span>
               </div>
             </div>
-            <div className="flex flex-grow flex-col p-6">
+            <div className="flex grow flex-col p-6">
               <div className="mb-3 flex items-center gap-2">
                 <span className="material-symbols-outlined text-[#745b00]">restaurant</span>
                 <span className="text-sm font-semibold uppercase tracking-widest text-[#745b00]">Diet</span>
@@ -101,7 +101,7 @@ export function NeopetsLibraryBody() {
               >
                 The Golden Guide to Treats
               </h4>
-              <p className="mb-6 flex-grow text-base text-[#40484e]">
+              <p className="mb-6 grow text-base text-[#40484e]">
                 Which kitchen scraps are safe — and which to keep away from curious noses.
               </p>
               <div className="flex items-center justify-between border-t border-[#ebe1d5] pt-4">

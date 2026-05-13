@@ -252,7 +252,7 @@ export default function ContactView() {
                                 className="object-cover opacity-40 brightness-125 grayscale transition-transform duration-700 group-hover:scale-105"
                                 sizes="(max-width: 1024px) 100vw, 33vw"
                             />
-                            <div className="absolute inset-0 flex items-end bg-gradient-to-t from-(--pm-surface)/80 to-transparent p-8">
+                            <div className="absolute inset-0 flex items-end bg-linear-to-t from-(--pm-surface)/80 to-transparent p-8">
                                 <div className="space-y-1">
                                     <div className="flex items-center gap-2">
                                         <div className="h-2 w-2 animate-pulse rounded-full bg-secondary" />
