@@ -221,10 +221,13 @@ export default function BusinessIntakeWizard() {
                 body: JSON.stringify({
                     data,
                     contact:
-                        contactHint.name || contactHint.email
+                        contactHint.name?.trim() ||
+                        contactHint.email?.trim() ||
+                        contactHint.profession?.trim()
                             ? {
                                 name: contactHint.name,
                                 email: contactHint.email,
+                                profession: contactHint.profession,
                             }
                             : undefined,
                 }),

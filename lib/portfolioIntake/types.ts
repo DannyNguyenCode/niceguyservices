@@ -1,11 +1,5 @@
 export type PortfolioIntakeStep = 1 | 2 | 3 | 4;
 
-export type ImpactMetric = {
-    id: string;
-    label: string;
-    value: string;
-};
-
 export type WorkEntry = {
     id: string;
     jobTitle: string;
@@ -14,8 +8,6 @@ export type WorkEntry = {
     endMonth: string;
     present: boolean;
     description: string;
-    /** Metrics captured from the “Key impacts” panel when this role was added. */
-    impacts: ImpactMetric[];
 };
 
 export type SkillCategory = {
@@ -50,8 +42,6 @@ export type ContactReview = {
 export type PortfolioIntakeData = {
     experience: {
         entries: WorkEntry[];
-        /** Draft key impacts for the role you are about to add (cleared on “Add to timeline”). */
-        impacts: ImpactMetric[];
     };
     skills: {
         categories: SkillCategory[];
@@ -76,7 +66,6 @@ export const emptyWorkEntry = (): WorkEntry => ({
     endMonth: "",
     present: false,
     description: "",
-    impacts: [],
 });
 
 export const emptySkillCategory = (): SkillCategory => ({
@@ -101,8 +90,6 @@ export function defaultPortfolioIntakeData(): PortfolioIntakeData {
     return {
         experience: {
             entries: [],
-            impacts: [
-            ],
         },
         skills: { categories: [] },
         education: { entries: [emptyEducation()] },

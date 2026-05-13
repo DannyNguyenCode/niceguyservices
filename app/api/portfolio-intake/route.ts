@@ -9,7 +9,7 @@ const DEFAULT_TO = "gbnguyenw@gmail.com";
 
 type Body = {
     data: PortfolioIntakeData;
-    contact?: { name?: string; email?: string };
+    contact?: { name?: string; email?: string; profession?: string };
 };
 
 function escapeHtml(s: string): string {
@@ -63,24 +63,9 @@ function formatData(d: PortfolioIntakeData): string {
             `${i + 1}. ${e.jobTitle} at ${e.company} (${range})`,
             e.description
         );
-        if (e.impacts.length) {
-            lines.push("  Key impacts:");
-            e.impacts.forEach((m) => {
-                lines.push(`    ${m.value} — ${m.label}`);
-            });
-        }
     });
     if (d.experience.entries.length === 0) {
         lines.push("— (none provided)");
-    }
-    if (d.experience.impacts.length > 0) {
-        lines.push(
-            "",
-            "Key impacts (not yet on a role — from add form):",
-            ...d.experience.impacts.map(
-                (m) => `  ${m.value} — ${m.label}`
-            )
-        );
     }
     lines.push("", "== Skills ==");
     d.skills.categories.forEach((s, i) => {
@@ -138,8 +123,10 @@ export async function POST(request: Request) {
 
     const d = p.data;
     const text = [
-        p.contact?.name && `Referrer: ${p.contact.name}`,
-        p.contact?.email && `Contact prefill: ${p.contact.email}`,
+        p.contact?.name && `Referrer name: ${p.contact.name}`,
+        p.contact?.email && `Referrer email (contact page): ${p.contact.email}`,
+        p.contact?.profession?.trim() &&
+            `Referrer profession (contact page): ${p.contact.profession.trim()}`,
         "",
         formatData(d),
     ]

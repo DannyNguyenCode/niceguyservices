@@ -5,7 +5,6 @@ import {
     ArrowLeftIcon,
     BriefcaseIcon,
     BuildingStorefrontIcon,
-    ChartBarIcon,
     CheckCircleIcon,
     ClockIcon,
     EnvelopeIcon,
@@ -66,8 +65,6 @@ export default function PortfolioIntakeWizard() {
     const [step, setStep] = useState<PortfolioIntakeStep>(1);
     const [data, setData] = useState<PortfolioIntakeData>(() => defaultPortfolioIntakeData());
     const [roleDraft, setRoleDraft] = useState<WorkEntry>(() => emptyWorkEntry());
-    const [newImpactLabel, setNewImpactLabel] = useState("");
-    const [newImpactValue, setNewImpactValue] = useState("");
     const [skillDraft, setSkillDraft] = useState(() => ({
         ...emptySkillCategory(),
     }));
@@ -130,16 +127,15 @@ export default function PortfolioIntakeWizard() {
                 setData({
                     ...loaded,
                     experience: {
-                        ...loaded.experience,
                         entries: loaded.experience.entries.map((e) => ({
-                            ...e,
-                            impacts: Array.isArray(
-                                (e as WorkEntry & { impacts?: unknown }).impacts
-                            )
-                                ? (e as WorkEntry).impacts
-                                : [],
+                            id: e.id,
+                            jobTitle: e.jobTitle,
+                            company: e.company,
+                            startMonth: e.startMonth,
+                            endMonth: e.endMonth,
+                            present: e.present,
+                            description: e.description,
                         })),
-                        impacts: loaded.experience.impacts ?? [],
                     },
                 });
             }
@@ -209,19 +205,10 @@ export default function PortfolioIntakeWizard() {
             ...d,
             experience: {
                 ...d.experience,
-                entries: [
-                    {
-                        ...roleDraft,
-                        impacts: d.experience.impacts.map((m) => ({ ...m })),
-                    },
-                    ...d.experience.entries,
-                ],
-                impacts: [],
+                entries: [{ ...roleDraft }, ...d.experience.entries],
             },
         }));
         setRoleDraft(emptyWorkEntry());
-        setNewImpactValue("");
-        setNewImpactLabel("");
     };
 
     const submit = async () => {
@@ -248,10 +235,13 @@ export default function PortfolioIntakeWizard() {
                 body: JSON.stringify({
                     data,
                     contact:
-                        contactHint.name || contactHint.email
+                        contactHint.name?.trim() ||
+                        contactHint.email?.trim() ||
+                        contactHint.profession?.trim()
                             ? {
                                 name: contactHint.name,
                                 email: contactHint.email,
+                                profession: contactHint.profession,
                             }
                             : undefined,
                 }),
@@ -433,336 +423,200 @@ export default function PortfolioIntakeWizard() {
                                         proud of.
                                     </p>
                                 </header>
-                                <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12">
-                                    <div className="space-y-6 lg:col-span-7">
-                                        <section className="rounded-xl border border-base-300/70 bg-(--pm-surface-low) p-5 sm:p-7">
-                                            <div className="mb-6 flex items-center gap-3">
-                                                <div className="bg-primary/15 text-primary flex h-11 w-11 items-center justify-center rounded-lg">
-                                                    <BuildingStorefrontIcon
-                                                        className="h-6 w-6"
-                                                        aria-hidden
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <h3 className="font-pm-headline text-lg font-bold">
-                                                        Add a role
-                                                    </h3>
-                                                    <p className="text-sm text-(--pm-on-surface-variant)">
-                                                        Start with the most recent position.
-                                                    </p>
-                                                </div>
+                                <div className="space-y-6">
+                                    <section className="rounded-xl border border-base-300/70 bg-(--pm-surface-low) p-5 sm:p-7">
+                                        <div className="mb-6 flex items-center gap-3">
+                                            <div className="bg-primary/15 text-primary flex h-11 w-11 items-center justify-center rounded-lg">
+                                                <BuildingStorefrontIcon
+                                                    className="h-6 w-6"
+                                                    aria-hidden
+                                                />
                                             </div>
-                                            <div className="space-y-4">
-                                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                                    <div>
-                                                        <label className={caps} htmlFor="r-title">
-                                                            Job title
-                                                        </label>
-                                                        <input
-                                                            id="r-title"
-                                                            className="intake-border-bottom w-full"
-                                                            value={roleDraft.jobTitle}
-                                                            onChange={(e) =>
-                                                                setRoleDraft((r) => ({
-                                                                    ...r,
-                                                                    jobTitle: e.target.value,
-                                                                }))
-                                                            }
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <label className={caps} htmlFor="r-comp">
-                                                            Company
-                                                        </label>
-                                                        <input
-                                                            id="r-comp"
-                                                            className="intake-border-bottom w-full"
-                                                            value={roleDraft.company}
-                                                            onChange={(e) =>
-                                                                setRoleDraft((r) => ({
-                                                                    ...r,
-                                                                    company: e.target.value,
-                                                                }))
-                                                            }
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                                    <div>
-                                                        <label className={caps} htmlFor="r-s">
-                                                            Start
-                                                        </label>
-                                                        <input
-                                                            id="r-s"
-                                                            className="intake-border-bottom w-full"
-                                                            type="month"
-                                                            value={roleDraft.startMonth}
-                                                            onChange={(e) =>
-                                                                setRoleDraft((r) => ({
-                                                                    ...r,
-                                                                    startMonth: e.target.value,
-                                                                }))
-                                                            }
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <div className="mb-1 flex items-center justify-between">
-                                                            <span className={caps}>End</span>
-                                                        </div>
-                                                        <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
-                                                            <input
-                                                                className="intake-border-bottom w-full"
-                                                                type="month"
-                                                                disabled={roleDraft.present}
-                                                                value={roleDraft.endMonth}
-                                                                onChange={(e) =>
-                                                                    setRoleDraft((r) => ({
-                                                                        ...r,
-                                                                        endMonth: e.target.value,
-                                                                    }))
-                                                                }
-                                                            />
-                                                            <label className="flex cursor-pointer items-center gap-2 whitespace-nowrap text-sm text-(--pm-on-surface-variant)">
-                                                                <input
-                                                                    type="checkbox"
-                                                                    className="checkbox checkbox-sm checkbox-primary"
-                                                                    checked={roleDraft.present}
-                                                                    onChange={(e) =>
-                                                                        setRoleDraft((r) => ({
-                                                                            ...r,
-                                                                            present: e.target.checked,
-                                                                        }))
-                                                                    }
-                                                                />
-                                                                Now
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div>
+                                                <h3 className="font-pm-headline text-lg font-bold">
+                                                    Add a role
+                                                </h3>
+                                                <p className="text-sm text-(--pm-on-surface-variant)">
+                                                    Start with the most recent position.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-4">
+                                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                                 <div>
-                                                    <label className={caps} htmlFor="r-d">
-                                                        Role description
+                                                    <label className={caps} htmlFor="r-title">
+                                                        Job title
                                                     </label>
-                                                    <textarea
-                                                        id="r-d"
-                                                        className="intake-border-bottom w-full min-h-24 resize-none"
-                                                        rows={4}
-                                                        value={roleDraft.description}
+                                                    <input
+                                                        id="r-title"
+                                                        className="intake-border-bottom w-full"
+                                                        value={roleDraft.jobTitle}
                                                         onChange={(e) =>
                                                             setRoleDraft((r) => ({
                                                                 ...r,
-                                                                description: e.target.value,
+                                                                jobTitle: e.target.value,
                                                             }))
                                                         }
                                                     />
                                                 </div>
-                                                <button
-                                                    type="button"
-                                                    onClick={addWorkEntry}
-                                                    className="btn btn-primary"
-                                                >
-                                                    Add to timeline
-                                                </button>
+                                                <div>
+                                                    <label className={caps} htmlFor="r-comp">
+                                                        Company
+                                                    </label>
+                                                    <input
+                                                        id="r-comp"
+                                                        className="intake-border-bottom w-full"
+                                                        value={roleDraft.company}
+                                                        onChange={(e) =>
+                                                            setRoleDraft((r) => ({
+                                                                ...r,
+                                                                company: e.target.value,
+                                                            }))
+                                                        }
+                                                    />
+                                                </div>
                                             </div>
-                                        </section>
-                                        {data.experience.entries.length > 0 && (
-                                            <section>
-                                                <h3 className="mb-3 font-pm-headline text-lg font-bold px-0.5">
-                                                    Timeline
-                                                </h3>
-                                                <ul className="space-y-3">
-                                                    {data.experience.entries.map((e) => (
-                                                        <li
-                                                            key={e.id}
-                                                            className="intake-glass border-base-300/50 flex gap-3 rounded-xl border p-4"
-                                                        >
-                                                            <div className="bg-secondary/10 text-secondary flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
-                                                                <BriefcaseIcon
-                                                                    className="h-5 w-5"
-                                                                    aria-hidden
-                                                                />
-                                                            </div>
-                                                            <div className="min-w-0 flex-1">
-                                                                <div className="flex items-start justify-between gap-2">
-                                                                    <div className="min-w-0 pr-1">
-                                                                        <h4 className="font-pm-headline wrap-break-word text-base font-bold text-(--pm-on-surface)">
-                                                                            {e.jobTitle}
-                                                                        </h4>
-                                                                        <p className="wrap-break-word text-sm font-semibold text-secondary">
-                                                                            {e.company} —{" "}
-                                                                            {e.present
-                                                                                ? `${e.startMonth} to now`
-                                                                                : `${e.startMonth} to ${e.endMonth || "?"}`}
-                                                                        </p>
-                                                                    </div>
-                                                                    <button
-                                                                        type="button"
-                                                                        onClick={() =>
-                                                                            setData((d) => ({
-                                                                                ...d,
-                                                                                experience: {
-                                                                                    ...d.experience,
-                                                                                    entries:
-                                                                                        d.experience.entries.filter(
-                                                                                            (x) => x.id !== e.id
-                                                                                        ),
-                                                                                },
-                                                                            }))
-                                                                        }
-                                                                        className="text-(--pm-on-surface-variant) hover:text-error"
-                                                                    >
-                                                                        <TrashIcon
-                                                                            className="h-5 w-5"
-                                                                            aria-hidden
-                                                                        />
-                                                                    </button>
-                                                                </div>
-                                                                {e.description ? (
-                                                                    <p className="mt-1 whitespace-pre-wrap wrap-break-word text-sm text-(--pm-on-surface-variant)">
-                                                                        {e.description}
-                                                                    </p>
-                                                                ) : null}
-                                                                {e.impacts.length > 0 && (
-                                                                    <div className="mt-3">
-                                                                        <p className="mb-1.5 text-[0.65rem] font-bold uppercase tracking-[0.08em] text-(--pm-on-surface-variant)">
-                                                                            Key impacts
-                                                                        </p>
-                                                                        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                                                                            {e.impacts.map((m) => (
-                                                                                <div
-                                                                                    key={m.id}
-                                                                                    className="rounded-lg border border-secondary/20 bg-base-100/80 px-2 py-1.5 text-center dark:bg-base-200/40"
-                                                                                >
-                                                                                    <p className="text-base font-extrabold text-primary">
-                                                                                        {m.value}
-                                                                                    </p>
-                                                                                    <p className="text-[0.6rem] font-bold uppercase tracking-wide text-(--pm-on-surface-variant)">
-                                                                                        {m.label}
-                                                                                    </p>
-                                                                                </div>
-                                                                            ))}
-                                                                        </div>
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </section>
-                                        )}
-                                    </div>
-                                    <div className="space-y-5 lg:col-span-5">
-                                        <div className="rounded-2xl border border-secondary/25 bg-secondary/5 p-5 sm:p-6">
-                                            <h3 className="font-pm-headline mb-1 flex items-center gap-2 text-lg font-bold text-secondary">
-                                                <ChartBarIcon
-                                                    className="h-5 w-5"
-                                                    aria-hidden
-                                                />
-                                                Key impacts
-                                            </h3>
-                                            <p className="mb-4 text-sm text-(--pm-on-surface-variant)">
-                                                For the role in the form on the left, add
-                                                quick stats or wins, then &quot;Add to
-                                                timeline&quot; — they are saved on that
-                                                card and the panel below starts fresh for
-                                                the next role.
-                                            </p>
-                                            <div className="grid grid-cols-2 gap-3">
-                                                {data.experience.impacts.map((m) => (
-                                                    <div
-                                                        key={m.id}
-                                                        className="intake-form-canvas flex flex-col items-center gap-0.5 rounded-lg border border-base-300/60 bg-base-100 p-3 text-center dark:bg-base-200/50"
-                                                    >
-                                                        <div className="w-full min-w-0">
+                                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                                <div>
+                                                    <label className={caps} htmlFor="r-s">
+                                                        Start
+                                                    </label>
+                                                    <input
+                                                        id="r-s"
+                                                        className="intake-border-bottom w-full"
+                                                        type="month"
+                                                        value={roleDraft.startMonth}
+                                                        onChange={(e) =>
+                                                            setRoleDraft((r) => ({
+                                                                ...r,
+                                                                startMonth: e.target.value,
+                                                            }))
+                                                        }
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <div className="mb-1 flex items-center justify-between">
+                                                        <span className={caps}>End</span>
+                                                    </div>
+                                                    <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
+                                                        <input
+                                                            className="intake-border-bottom w-full"
+                                                            type="month"
+                                                            disabled={roleDraft.present}
+                                                            value={roleDraft.endMonth}
+                                                            onChange={(e) =>
+                                                                setRoleDraft((r) => ({
+                                                                    ...r,
+                                                                    endMonth: e.target.value,
+                                                                }))
+                                                            }
+                                                        />
+                                                        <label className="flex cursor-pointer items-center gap-2 whitespace-nowrap text-sm text-(--pm-on-surface-variant)">
                                                             <input
-                                                                className="w-full text-center text-xl font-extrabold text-primary"
-                                                                value={m.value}
-                                                                onChange={(e) => {
-                                                                    const v = e.target.value;
-                                                                    setData((d) => ({
-                                                                        ...d,
-                                                                        experience: {
-                                                                            ...d.experience,
-                                                                            impacts:
-                                                                                d.experience.impacts.map(
-                                                                                    (x) =>
-                                                                                        x.id === m.id
-                                                                                            ? {
-                                                                                                ...x,
-                                                                                                value: v,
-                                                                                            }
-                                                                                            : x
-                                                                                ),
-                                                                        },
-                                                                    }));
-                                                                }}
+                                                                type="checkbox"
+                                                                className="checkbox checkbox-sm checkbox-primary"
+                                                                checked={roleDraft.present}
+                                                                onChange={(e) =>
+                                                                    setRoleDraft((r) => ({
+                                                                        ...r,
+                                                                        present: e.target.checked,
+                                                                    }))
+                                                                }
+                                                            />
+                                                            Now
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label className={caps} htmlFor="r-d">
+                                                    Role description
+                                                </label>
+                                                <textarea
+                                                    id="r-d"
+                                                    className="intake-border-bottom w-full min-h-24 resize-none"
+                                                    rows={4}
+                                                    value={roleDraft.description}
+                                                    onChange={(e) =>
+                                                        setRoleDraft((r) => ({
+                                                            ...r,
+                                                            description: e.target.value,
+                                                        }))
+                                                    }
+                                                />
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={addWorkEntry}
+                                                className="btn btn-primary"
+                                            >
+                                                Add to timeline
+                                            </button>
+                                        </div>
+                                    </section>
+                                    {data.experience.entries.length > 0 && (
+                                        <section>
+                                            <h3 className="mb-3 font-pm-headline text-lg font-bold px-0.5">
+                                                Timeline
+                                            </h3>
+                                            <ul className="space-y-3">
+                                                {data.experience.entries.map((e) => (
+                                                    <li
+                                                        key={e.id}
+                                                        className="intake-glass border-base-300/50 flex gap-3 rounded-xl border p-4"
+                                                    >
+                                                        <div className="bg-secondary/10 text-secondary flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
+                                                            <BriefcaseIcon
+                                                                className="h-5 w-5"
+                                                                aria-hidden
                                                             />
                                                         </div>
-                                                        <input
-                                                            className="w-full min-w-0 text-center text-[0.6rem] font-bold uppercase tracking-wide text-(--pm-on-surface-variant)"
-                                                            value={m.label}
-                                                            onChange={(e) => {
-                                                                const v = e.target.value;
-                                                                setData((d) => ({
-                                                                    ...d,
-                                                                    experience: {
-                                                                        ...d.experience,
-                                                                        impacts: d.experience.impacts.map(
-                                                                            (x) =>
-                                                                                x.id === m.id
-                                                                                    ? { ...x, label: v }
-                                                                                    : x
-                                                                        ),
-                                                                    },
-                                                                }));
-                                                            }}
-                                                        />
-                                                    </div>
+                                                        <div className="min-w-0 flex-1">
+                                                            <div className="flex items-start justify-between gap-2">
+                                                                <div className="min-w-0 pr-1">
+                                                                    <h4 className="font-pm-headline wrap-break-word text-base font-bold text-(--pm-on-surface)">
+                                                                        {e.jobTitle}
+                                                                    </h4>
+                                                                    <p className="wrap-break-word text-sm font-semibold text-secondary">
+                                                                        {e.company} —{" "}
+                                                                        {e.present
+                                                                            ? `${e.startMonth} to now`
+                                                                            : `${e.startMonth} to ${e.endMonth || "?"}`}
+                                                                    </p>
+                                                                </div>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() =>
+                                                                        setData((d) => ({
+                                                                            ...d,
+                                                                            experience: {
+                                                                                ...d.experience,
+                                                                                entries:
+                                                                                    d.experience.entries.filter(
+                                                                                        (x) => x.id !== e.id
+                                                                                    ),
+                                                                            },
+                                                                        }))
+                                                                    }
+                                                                    className="text-(--pm-on-surface-variant) hover:text-error"
+                                                                >
+                                                                    <TrashIcon
+                                                                        className="h-5 w-5"
+                                                                        aria-hidden
+                                                                    />
+                                                                </button>
+                                                            </div>
+                                                            {e.description ? (
+                                                                <p className="mt-1 whitespace-pre-wrap wrap-break-word text-sm text-(--pm-on-surface-variant)">
+                                                                    {e.description}
+                                                                </p>
+                                                            ) : null}
+                                                        </div>
+                                                    </li>
                                                 ))}
-                                            </div>
-                                            <div className="mt-3 flex flex-col gap-1 sm:flex-row sm:items-end">
-                                                <input
-                                                    className={inputLg + " sm:flex-1 text-sm"}
-                                                    placeholder="Stat (e.g. 14+)"
-                                                    value={newImpactValue}
-                                                    onChange={(e) => setNewImpactValue(e.target.value)}
-                                                />
-                                                <input
-                                                    className={inputLg + " sm:flex-1 text-sm"}
-                                                    placeholder="Label (e.g. client launches)"
-                                                    value={newImpactLabel}
-                                                    onChange={(e) => setNewImpactLabel(e.target.value)}
-                                                />
-                                                <button
-                                                    type="button"
-                                                    className="btn border border-dashed border-secondary/30 text-secondary h-9 text-xs"
-                                                    onClick={() => {
-                                                        if (!newImpactValue.trim() && !newImpactLabel.trim()) {
-                                                            return;
-                                                        }
-                                                        setData((d) => ({
-                                                            ...d,
-                                                            experience: {
-                                                                ...d.experience,
-                                                                impacts: [
-                                                                    ...d.experience.impacts,
-                                                                    {
-                                                                        id: crypto.randomUUID(),
-                                                                        value: newImpactValue || "—",
-                                                                        label: newImpactLabel || "highlight",
-                                                                    },
-                                                                ],
-                                                            },
-                                                        }));
-                                                        setNewImpactValue("");
-                                                        setNewImpactLabel("");
-                                                    }}
-                                                >
-                                                    Add
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                            </ul>
+                                        </section>
+                                    )}
                                 </div>
                                 <div className="mt-8 flex flex-col justify-end gap-2 border-t border-base-300/50 pt-6 sm:flex-row sm:items-center">
                                     <span />
@@ -1532,21 +1386,7 @@ export default function PortfolioIntakeWizard() {
                                         </div>
                                     </div>
                                     <div className="col-span-12">
-                                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-3">
-                                            {REVIEW_IMGS.map((u, i) => (
-                                                <div
-                                                    key={u + i}
-                                                    className="relative aspect-video w-full overflow-hidden rounded-xl grayscale transition-all hover:grayscale-0"
-                                                >
-                                                    <Image
-                                                        src={u}
-                                                        alt=""
-                                                        fill
-                                                        className="object-cover"
-                                                    />
-                                                </div>
-                                            ))}
-                                        </div>
+
                                     </div>
                                 </div>
                                 <div className="mt-6 flex flex-col border-t border-base-300/50 pt-4 sm:flex-row sm:items-center sm:justify-between">

@@ -92,6 +92,7 @@ export default function ContactView() {
                     services: form.services,
                     message: form.message,
                     wantsMeeting: form.wantsMeeting,
+                    primaryObjective: form.primaryObjective,
                 }),
             });
 

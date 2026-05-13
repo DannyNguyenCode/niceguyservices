@@ -12,6 +12,7 @@ type Body = {
     contact?: {
         name?: string;
         email?: string;
+        profession?: string;
     };
 };
 
@@ -127,8 +128,13 @@ export async function POST(request: Request) {
         "",
     ];
     if (p.contact?.name) textLines.push(`From contact: ${p.contact.name}`);
-    if (p.contact?.email) textLines.push(`Email: ${p.contact.email}`);
-    if (p.contact?.name || p.contact?.email) textLines.push("");
+    if (p.contact?.email) textLines.push(`Email (from contact page): ${p.contact.email}`);
+    if (p.contact?.profession?.trim()) {
+        textLines.push(`Profession (from contact page): ${p.contact.profession.trim()}`);
+    }
+    if (p.contact?.name || p.contact?.email || p.contact?.profession?.trim()) {
+        textLines.push("");
+    }
     textLines.push(
         "Company",
         `  Name: ${d.company.businessName}`,
@@ -151,14 +157,33 @@ export async function POST(request: Request) {
     const row = (label: string, value: string) =>
         `<tr><td style="padding:6px 12px 6px 0;font-weight:600;vertical-align:top;white-space:nowrap;">${escapeHtml(label)}</td><td style="padding:6px 0;">${escapeHtml(value)}</td></tr>`;
 
+    const contactHintHtml = (() => {
+        const lines: string[] = [];
+        if (p.contact?.name?.trim()) {
+            lines.push(
+                `<p style="margin:0 0 4px;"><strong>Name</strong> ${escapeHtml(p.contact.name.trim())}</p>`
+            );
+        }
+        if (p.contact?.email?.trim()) {
+            lines.push(
+                `<p style="margin:0 0 4px;"><strong>Email</strong> ${escapeHtml(p.contact.email.trim())}</p>`
+            );
+        }
+        if (p.contact?.profession?.trim()) {
+            lines.push(
+                `<p style="margin:0 0 4px;"><strong>Profession</strong> ${escapeHtml(p.contact.profession.trim())}</p>`
+            );
+        }
+        if (!lines.length) return "";
+        return `<div style="margin:0 0 16px;padding:12px;background:#f5f5f5;border-radius:8px;font-size:14px;">
+<p style="margin:0 0 8px;font-weight:600;">From main contact form</p>
+${lines.join("")}
+</div>`;
+    })();
+
     const html = `<!DOCTYPE html><html><body style="font-family:system-ui,sans-serif;line-height:1.5;color:#2c2f30;">
 <h2 style="margin:0 0 16px;">Business website intake</h2>
-${p.contact?.name || p.contact?.email
-            ? `<p style="margin:0 0 8px;">${[p.contact?.name, p.contact?.email]
-                .filter((v): v is string => Boolean(v && typeof v === "string"))
-                .map(escapeHtml)
-                .join(" — ")}</p>`
-            : ""}
+${contactHintHtml}
 <table style="border-collapse:collapse;margin-bottom:20px;max-width:100%;">
 ${row("Business", d.company.businessName)}
 ${row("Industry", d.company.industry)}
@@ -188,6 +213,12 @@ ${d.additionalPages.length
         "Nice Guy Web Design <onboarding@resend.dev>";
     const subject = `Business intake: ${d.company.businessName}`;
 
+    const replyToPrefill =
+        typeof p.contact?.email === "string" &&
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.contact.email.trim())
+            ? p.contact.email.trim()
+            : undefined;
+
     const resend = new Resend(apiKey);
     const { data: sendData, error } = await resend.emails.send({
         from,
@@ -195,6 +226,7 @@ ${d.additionalPages.length
         subject,
         text,
         html,
+        replyTo: replyToPrefill,
     });
 
     if (error) {

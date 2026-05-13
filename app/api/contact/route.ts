@@ -13,6 +13,7 @@ type ContactPayload = {
     services: string[];
     message: string;
     wantsMeeting: boolean;
+    primaryObjective: "business" | "portfolio";
 };
 
 function isNonEmptyString(v: unknown): v is string {
@@ -31,10 +32,16 @@ function escapeHtml(s: string): string {
         .replace(/"/g, "&quot;");
 }
 
+function primaryGoalLabel(goal: ContactPayload["primaryObjective"]): string {
+    if (goal === "business") return "Business website";
+    return "Portfolio or showcase";
+}
+
 function buildEmailBody(data: ContactPayload): { text: string; html: string } {
     const lines = [
         `Name: ${data.name}`,
         `Email: ${data.email}`,
+        `Primary goal: ${primaryGoalLabel(data.primaryObjective)}`,
         `Profession: ${data.profession || "—"}`,
         `Phone: ${data.phone || "—"}`,
         `Services: ${data.services.length ? data.services.join(", ") : "—"}`,
@@ -53,6 +60,7 @@ function buildEmailBody(data: ContactPayload): { text: string; html: string } {
 <table style="border-collapse:collapse;margin-bottom:20px;">
 ${row("Name", data.name)}
 ${row("Email", data.email)}
+${row("Primary goal", primaryGoalLabel(data.primaryObjective))}
 ${row("Profession", data.profession || "—")}
 ${row("Phone", data.phone || "—")}
 ${row("Services", data.services.length ? data.services.join(", ") : "—")}
@@ -93,6 +101,11 @@ export async function POST(request: Request) {
     const phone = typeof p.phone === "string" ? p.phone : "";
     const services = isStringArray(p.services) ? p.services : [];
     const wantsMeeting = p.wantsMeeting === true;
+    const rawObjective = p.primaryObjective;
+    const primaryObjective =
+        rawObjective === "business" || rawObjective === "portfolio"
+            ? rawObjective
+            : null;
 
     if (!isNonEmptyString(name) || !isNonEmptyString(email) || !isNonEmptyString(message)) {
         return NextResponse.json(
@@ -106,6 +119,13 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "Invalid email address." }, { status: 400 });
     }
 
+    if (!primaryObjective) {
+        return NextResponse.json(
+            { error: "Primary goal (business or portfolio) is required." },
+            { status: 400 }
+        );
+    }
+
     const data: ContactPayload = {
         name: name.trim(),
         email: email.trim(),
@@ -114,6 +134,7 @@ export async function POST(request: Request) {
         services,
         message: message.trim(),
         wantsMeeting,
+        primaryObjective,
     };
 
     const to = process.env.CONTACT_TO_EMAIL?.trim() || DEFAULT_TO;
