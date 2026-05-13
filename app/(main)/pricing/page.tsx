@@ -5,7 +5,7 @@ import { absoluteUrl } from "@/lib/siteConfig";
 export const metadata: Metadata = {
     title: "Website Pricing for Small Businesses | Nice Guy Web Design",
     description:
-        "Two website packages: $1,600 upfront plus $20/mo (SEO-ready, domain, hosting, maintenance), or $0 upfront and $150/mo with ongoing SEO, CRO, reporting, unlimited edits, and 24/7 support. Add-ons for extra pages and hourly work.",
+        "Starter Website $500 one-time (responsive, SEO-ready, contact form, performance, deployment, you own the site). Hosting & Reports $20/mo. Growth & Optimization $200/mo with SEO, CTA work, copy, landing pages, and monthly recommendations — designed to improve lead generation, not guaranteed. Custom quotes for booking, e-commerce, and integrations.",
     alternates: {
         canonical: absoluteUrl("/pricing"),
     },

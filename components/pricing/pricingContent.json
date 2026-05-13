@@ -1,16 +1,16 @@
 {
   "meta": {
-    "contactHref": "/contact"
+    "contactHref": "/contact#intake-form"
   },
   "pageHeader": {
     "title": "Website Pricing",
-    "subtitle": "Two straightforward packages—upfront plus light monthly, or zero upfront with full ongoing care and growth."
+    "subtitle": "Three clear options: a one-time starter build, reliable hosting with monthly reports, or ongoing growth work designed to improve lead generation and customer engagement."
   },
   "hero": {
     "eyebrow": "Transparent pricing",
-    "headlineLine1": "Engineered for",
-    "headlineGradient": "lasting growth",
-    "subtitle": "Pick the package that matches how you want to invest: a lower monthly with upfront ownership, or all-inclusive care with no upfront fee."
+    "headlineLine1": "Simple plans,",
+    "headlineGradient": "serious results",
+    "subtitle": "Choose a one-time website, add hosting and insights, or invest in ongoing optimization with conversion-focused improvements — no jargon, no surprise fees on what's listed here."
   },
   "packagesSection": {
     "title": "Packages",
@@ -18,82 +18,123 @@
   },
   "packages": [
     {
-      "id": "essential-build",
+      "id": "starter-website",
       "tierLabel": "Package",
-      "name": "Essential Build",
-      "upfront": "$1,600",
-      "upfrontEyebrow": "Upfront",
-      "monthly": "$20",
-      "monthlyUnit": "/mo",
-      "monthlyEyebrow": "Ongoing",
-      "tagline": "SEO-ready site with domain, hosting, and maintenance—content and design edits are billed hourly.",
-      "includesTitle": "What's included",
+      "name": "Starter Website",
+      "upfront": "$500",
+      "upfrontEyebrow": "One-time",
+      "monthly": "",
+      "monthlyUnit": "",
+      "monthlyEyebrow": "",
+      "tagline": "Perfect for businesses that need a clean, professional online presence without ongoing commitments.",
+      "includesTitle": "Includes",
       "includes": [
         {
           "icon": "check",
-          "text": "SEO ready architecture"
+          "text": "Custom modern website"
         },
         {
           "icon": "check",
-          "text": "Custom Domain setup"
+          "text": "Mobile responsive design"
         },
         {
           "icon": "check",
-          "text": "Premium Cloud Hosting"
+          "text": "SEO-ready structure"
         },
         {
           "icon": "check",
-          "text": "Security Maintenance"
+          "text": "Contact form integration"
         },
         {
-          "icon": "info",
-          "text": "Maintenance: Edits charged at an hourly rate.",
-          "callout": true
+          "icon": "check",
+          "text": "Fast performance optimization"
+        },
+        {
+          "icon": "check",
+          "text": "Deployment assistance"
+        },
+        {
+          "icon": "check",
+          "text": "You fully own the website after launch"
         }
       ],
-      "buttonLabel": "Get started"
+      "buttonLabel": "Start your build"
     },
     {
-      "id": "growth-accelerator",
+      "id": "hosting-reports",
       "tierLabel": "Package",
-      "name": "Growth Accelerator",
-      "upfront": "$0",
-      "upfrontEyebrow": "Upfront",
-      "monthly": "$150",
-      "monthlyUnit": "/mo",
-      "monthlyEyebrow": "Ongoing",
-      "tagline": "Everything in Essential Build, plus ongoing optimization, reporting, unlimited edits, and always-on support.",
-      "includesTitle": "What's included",
+      "name": "Hosting & Reports",
+      "upfront": "$20",
+      "upfrontEyebrow": "per month",
+      "monthly": "",
+      "monthlyUnit": "",
+      "monthlyEyebrow": "",
+      "tagline": "For businesses that want reliable hosting and simple monthly insights.",
+      "includesTitle": "Includes",
       "includes": [
         {
-          "icon": "doneAll",
-          "text": "Everything in Essential Build",
-          "semibold": true
+          "icon": "check",
+          "text": "Website hosting"
         },
         {
-          "icon": "trendingUp",
-          "text": "Ongoing SEO optimization"
+          "icon": "check",
+          "text": "Domain connection support"
         },
         {
-          "icon": "bolt",
-          "text": "Conversion optimization (CRO)"
+          "icon": "check",
+          "text": "Basic website maintenance"
         },
         {
           "icon": "analytics",
-          "text": "Monthly performance insights"
+          "text": "Monthly Google Search Console reports"
         },
         {
-          "icon": "editNote",
-          "text": "Unlimited edits",
+          "icon": "bolt",
+          "text": "Uptime monitoring"
+        }
+      ],
+      "buttonLabel": "Add hosting & reports"
+    },
+    {
+      "id": "growth-optimization",
+      "tierLabel": "Package",
+      "name": "Growth & Optimization",
+      "upfront": "$200",
+      "upfrontEyebrow": "per month",
+      "monthly": "",
+      "monthlyUnit": "",
+      "monthlyEyebrow": "",
+      "tagline": "For businesses focused on generating more traction over time — ongoing work designed to improve lead generation, optimize for more inquiries, and improve customer engagement (results vary by market and offer).",
+      "includesTitle": "Includes",
+      "includes": [
+        {
+          "icon": "doneAll",
+          "text": "Everything in Hosting & Reports",
           "semibold": true
         },
         {
-          "icon": "supportAgent",
-          "text": "24/7 Priority support"
+          "icon": "analytics",
+          "text": "Google Search Console analysis"
+        },
+        {
+          "icon": "trendingUp",
+          "text": "SEO improvements"
+        },
+        {
+          "icon": "bolt",
+          "text": "Conversion-focused adjustments"
+        },
+        {
+          "icon": "analytics",
+          "text": "Performance monitoring"
+        },
+        {
+          "icon": "editNote",
+          "text": "Ongoing website updates"
         }
       ],
-      "buttonLabel": "Choose full care",
-      "popularBadge": "Most popular"
+      "buttonLabel": "Discuss Growth & Optimization",
+      "popularBadge": "Best value"
     }
   ],
   "growthStory": {
@@ -139,32 +180,28 @@
   "addOns": {
     "sectionEyebrow": "Customization",
     "title": "Add-on Services",
-    "subtitle": "",
+    "subtitle": "Need more than the starter scope? Layer on pages, integrations, or hourly support.",
     "ctaLabel": "Get a full quote",
     "cards": [
       {
         "icon": "documentPlus",
         "title": "Extra Pages",
-        "desc": "Over initial 5 page limit",
+        "desc": "Beyond the standard starter scope",
         "priceMain": "$100",
         "priceSuffix": "/page"
       },
       {
         "icon": "clock",
-        "title": "Support/Edits",
+        "title": "Support / Edits",
         "desc": "Min 2 hours per session",
         "priceMain": "$40",
         "priceSuffix": "/hour"
       }
     ]
   },
-  "policyNote": {
-    "title": "Important Policy Note",
-    "body": "Under our Managed Service Agreement, the website remains the property of Nice Guy Web Design. In the event of service cancellation, the website will be taken down after a 30-day transition period. Code and assets are not transferable unless a buyout agreement is reached."
-  },
   "consultCta": {
-    "title": "Need a custom build?",
-    "body": "Tell me what you sell, who you serve, and what's broken today — I'll recommend a simple path and honest pricing.",
-    "buttonLabel": "Get a free consult"
+    "title": "Need Something Custom?",
+    "body": "Every business is different. If you need booking systems, e-commerce, advanced SEO, custom integrations, or additional pages, we can build a custom solution tailored to your goals.",
+    "buttonLabel": "Get a Free Quote"
   }
 }

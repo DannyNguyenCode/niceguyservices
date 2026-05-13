@@ -24,11 +24,11 @@
   },
   "pricingTeaser": {
     "title": "Website pricing",
-    "subtitle": "Two packages: $1,600 upfront plus $20/mo for essentials, or $0 upfront and $150/mo for full optimization, reporting, and unlimited edits.",
+    "subtitle": "Starter Website from $500 one-time, Hosting & Reports at $20/mo, or Growth & Optimization at $200/mo — designed to improve lead generation and engagement over time.",
     "fullPricingHref": "/pricing",
     "fullPricingLabel": "View full pricing breakdown",
-    "projectCtaLabel": "Get started",
-    "monthlyCtaLabel": "Choose full care"
+    "projectCtaLabel": "Start with Starter",
+    "monthlyCtaLabel": "Explore Growth plan"
   },
   "contactTeaser": {
     "headline": "Ready to talk?",

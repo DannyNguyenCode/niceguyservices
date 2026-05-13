@@ -9,18 +9,24 @@ function stripMoney(raw: string) {
     return raw.replace(/^\$/, "").replace(/,/g, "");
 }
 
+function hasMonthlyPrice(monthly: string | undefined) {
+    return typeof monthly === "string" && monthly.trim().length > 0;
+}
+
 export default function HomePricing() {
     const { pricingTeaser } = homepageContent;
     const { packages } = pricingContent;
     const contactHref = pricingContent.meta.contactHref;
-    const [firstPkg, secondPkg] = packages;
 
-    if (!firstPkg || !secondPkg) {
+    const starter = packages.find((p) => p.id === "starter-website");
+    const growth = packages.find((p) => p.id === "growth-optimization");
+
+    if (!starter || !growth) {
         return null;
     }
 
-    const firstUpfrontWord = firstPkg.upfrontEyebrow.toLowerCase();
-    const secondUpfrontWord = secondPkg.upfrontEyebrow.toLowerCase();
+    const starterUpfrontWord = starter.upfrontEyebrow.toLowerCase();
+    const growthUpfrontWord = growth.upfrontEyebrow.toLowerCase();
 
     return (
         <section className="mx-auto max-w-7xl px-4 md:px-8">
@@ -31,86 +37,86 @@ export default function HomePricing() {
                 <p className="text-(--pm-on-surface-variant)">{pricingTeaser.subtitle}</p>
             </div>
             <div className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
-                <div className="flex flex-col rounded-2xl border border-(--pm-outline-variant)/15 bg-base-100/60 p-10 backdrop-blur-xl dark:bg-base-100/40">
+                <div className="flex flex-col rounded-2xl border border-(--pm-outline-variant)/15 bg-base-100/60 p-8 backdrop-blur-xl sm:p-10 dark:bg-base-100/40">
                     <h3 className="font-pm-headline mb-2 text-2xl font-bold text-(--pm-on-surface) md:text-3xl">
-                        {firstPkg.name}
+                        {starter.name}
                     </h3>
                     <p className="mb-6 text-sm leading-relaxed text-(--pm-on-surface-variant) md:text-base">
-                        {firstPkg.tagline}
+                        {starter.tagline}
                     </p>
                     <div className="mb-6">
                         <div className="flex flex-wrap items-baseline gap-1">
                             <span className="text-lg font-medium text-(--pm-on-surface)">$</span>
                             <span className="text-4xl font-bold tracking-tighter text-(--pm-on-surface) md:text-5xl">
-                                {stripMoney(firstPkg.upfront)}
+                                {stripMoney(starter.upfront)}
                             </span>
                             <span className="text-base font-medium text-(--pm-on-surface-variant)">
-                                {firstUpfrontWord}
+                                {starterUpfrontWord}
                             </span>
                         </div>
-                        <p className="mt-1 text-lg font-bold text-primary">
-                            + ${stripMoney(firstPkg.monthly)}
-                            {firstPkg.monthlyUnit}
-                        </p>
+                        {hasMonthlyPrice(starter.monthly) ? (
+                            <p className="mt-1 text-lg font-bold text-primary">
+                                + ${stripMoney(starter.monthly)}
+                                {starter.monthlyUnit}
+                            </p>
+                        ) : null}
                     </div>
                     <div className="mb-12 grow">
                         <PackageIncludesList
-                            items={firstPkg.includes}
+                            items={starter.includes}
                             tone="homeLight"
-                            title={firstPkg.includesTitle}
+                            title={starter.includesTitle}
                             layout="home"
                             maxRegular={4}
                         />
                     </div>
                     <Link
                         href={contactHref}
-                        className="mt-auto w-full rounded-xl border border-primary/20 py-4 text-center font-pm-headline font-bold text-primary transition-colors hover:bg-primary hover:text-primary-content"
+                        className="mt-auto flex min-h-12 w-full items-center justify-center rounded-xl border border-primary/20 py-4 text-center font-pm-headline font-bold text-primary transition-colors hover:bg-primary hover:text-primary-content sm:min-h-14"
                     >
                         {pricingTeaser.projectCtaLabel}
                     </Link>
                 </div>
 
-                <div className="relative flex flex-col overflow-hidden rounded-2xl bg-neutral p-10 text-neutral-content">
-                    {secondPkg.popularBadge ? (
-                        <div className="absolute top-0 right-0 rounded-bl-xl bg-primary px-5 py-1.5">
+                <div className="relative flex flex-col overflow-hidden rounded-2xl bg-neutral p-8 text-neutral-content sm:p-10">
+                    {growth.popularBadge ? (
+                        <div className="absolute top-0 right-0 rounded-bl-xl bg-primary px-4 py-1.5 sm:px-5">
                             <span className="text-[10px] font-bold tracking-widest text-primary-content uppercase">
-                                {secondPkg.popularBadge}
+                                {growth.popularBadge}
                             </span>
                         </div>
                     ) : null}
-                    <h3 className="font-pm-headline mb-2 pt-2 text-2xl font-bold md:text-3xl">
-                        {secondPkg.name}
-                    </h3>
+                    <h3 className="font-pm-headline mb-2 pt-2 text-2xl font-bold md:text-3xl">{growth.name}</h3>
                     <p className="mb-6 text-sm leading-relaxed text-neutral-content/80 md:text-base">
-                        {secondPkg.tagline}
+                        {growth.tagline}
                     </p>
                     <div className="mb-6">
                         <div className="flex flex-wrap items-baseline gap-1">
                             <span className="text-lg font-medium">$</span>
                             <span className="text-4xl font-bold tracking-tighter md:text-5xl">
-                                {stripMoney(secondPkg.upfront)}
+                                {stripMoney(growth.upfront)}
                             </span>
-                            <span className="text-base font-medium text-neutral-content/60">
-                                {secondUpfrontWord}
-                            </span>
+                            <span className="text-base font-medium text-neutral-content/60">{growthUpfrontWord}</span>
                         </div>
-                        <p className="mt-1 text-2xl font-bold text-secondary md:text-3xl">
-                            ${stripMoney(secondPkg.monthly)}
-                            {secondPkg.monthlyUnit}
-                        </p>
+                        {hasMonthlyPrice(growth.monthly) ? (
+                            <p className="mt-1 text-2xl font-bold text-secondary md:text-3xl">
+                                ${stripMoney(growth.monthly)}
+                                {growth.monthlyUnit}
+                            </p>
+                        ) : null}
                     </div>
                     <div className="mb-12 grow">
                         <PackageIncludesList
-                            items={secondPkg.includes}
+                            items={growth.includes}
                             tone="homeDark"
-                            title={secondPkg.includesTitle}
+                            title={growth.includesTitle}
                             layout="home"
                             maxRegular={4}
                         />
                     </div>
                     <Link
                         href={contactHref}
-                        className="mt-auto w-full rounded-xl bg-primary py-4 text-center font-pm-headline font-bold text-primary-content transition-colors hover:bg-(--pm-primary-dim)"
+                        className="mt-auto flex min-h-12 w-full items-center justify-center rounded-xl bg-primary py-4 text-center font-pm-headline font-bold text-primary-content transition-colors hover:bg-(--pm-primary-dim) sm:min-h-14"
                     >
                         {pricingTeaser.monthlyCtaLabel}
                     </Link>

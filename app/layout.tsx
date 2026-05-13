@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
 import SiteJsonLd from "@/components/seo/SiteJsonLd";
 import { cookies } from "next/headers";
 import ThemeProvider from "@/components/theme/ThemeProvider";
@@ -66,13 +64,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SiteJsonLd />
-        <ThemeProvider initialTheme={initialColorMode}>
-          <Navigation />
-          <main id="content-container">
-            {children}
-          </main>
-          <Footer />
-        </ThemeProvider>
+        <ThemeProvider initialTheme={initialColorMode}>{children}</ThemeProvider>
 
       </body>
     </html>

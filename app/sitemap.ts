@@ -14,6 +14,7 @@ const routes: Array<{
     { path: "/contact/business-intake", changeFrequency: "yearly", priority: 0.45 },
     { path: "/contact/portfolio-intake", changeFrequency: "yearly", priority: 0.45 },
     { path: "/resources", changeFrequency: "weekly", priority: 0.75 },
+    { path: "/template", changeFrequency: "monthly", priority: 0.5 },
     {
         path: "/resources/how-seo-helps-local-businesses",
         changeFrequency: "monthly",

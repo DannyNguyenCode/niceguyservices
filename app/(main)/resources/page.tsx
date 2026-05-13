@@ -185,8 +185,6 @@ export default function ResourcesPage() {
                             </div>
                         </div>
                     </div>
-
-                    {/* AI workflow article omitted from hub (private); restore aiWorkflow in resources + sitemap + card when publishing. */}
                 </section>
 
                 <section className="relative mt-32 overflow-hidden rounded-3xl bg-neutral p-12 text-center md:p-20">

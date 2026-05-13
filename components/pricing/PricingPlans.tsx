@@ -1,11 +1,16 @@
 "use client";
 
 import { Squares2X2Icon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 import pricingContent from "./pricingContent.json";
-import { goToContact, pricingLayoutHeadline as headline } from "./pricingLayoutConstants";
+import { pricingLayoutHeadline as headline } from "./pricingLayoutConstants";
 import { PackageIncludesList } from "./PackageIncludesList";
 
 type Package = (typeof pricingContent.packages)[number];
+
+function hasMonthlyPrice(pkg: Package) {
+    return typeof pkg.monthly === "string" && pkg.monthly.trim().length > 0;
+}
 
 export default function PricingPlans() {
     const { packagesSection, packages } = pricingContent;
@@ -39,7 +44,7 @@ export default function PricingPlans() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:items-stretch">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:items-stretch">
                     {packages.map((pkg) => (
                         <PackageCard key={pkg.id} pkg={pkg} />
                     ))}
@@ -52,11 +57,12 @@ export default function PricingPlans() {
 function PackageCard({ pkg }: { pkg: Package }) {
     const featured = Boolean(pkg.popularBadge);
     const upfrontWord = pkg.upfrontEyebrow.toLowerCase();
+    const showMonthlyRow = hasMonthlyPrice(pkg);
 
     return (
         <div
-            className={`relative flex flex-col overflow-hidden rounded-xl border p-8 pt-10 transition-all duration-300 ${featured
-                ? "z-10 border-2 shadow-xl hover:-translate-y-0.5 md:scale-[1.02]"
+            className={`relative flex flex-col overflow-hidden rounded-xl border p-6 pt-9 transition-all duration-300 sm:p-8 sm:pt-10 ${featured
+                ? "z-10 border-2 shadow-xl hover:-translate-y-0.5 lg:scale-[1.02]"
                 : "shadow-sm hover:shadow-lg"
                 }`}
             style={{
@@ -66,7 +72,7 @@ function PackageCard({ pkg }: { pkg: Package }) {
         >
             {pkg.popularBadge ? (
                 <div
-                    className={`absolute top-0 right-0 rounded-bl-xl px-5 py-1.5 text-[10px] font-black tracking-widest uppercase ${headline}`}
+                    className={`absolute top-0 right-0 rounded-bl-xl px-4 py-1.5 text-[10px] font-black tracking-widest uppercase sm:px-5 ${headline}`}
                     style={{
                         backgroundColor: "var(--pm-primary)",
                         color: "var(--pm-on-primary)",
@@ -76,46 +82,54 @@ function PackageCard({ pkg }: { pkg: Package }) {
                 </div>
             ) : null}
 
-            <div className="mb-8">
+            <div className="mb-6 sm:mb-8">
                 <h3
-                    className={`mb-2 text-2xl font-bold tracking-tight md:text-3xl ${headline}`}
+                    className={`mb-2 text-xl font-bold tracking-tight sm:text-2xl md:text-3xl ${headline}`}
                     style={{ color: "var(--pm-on-surface)" }}
                 >
                     {pkg.name}
                 </h3>
-                <p className="text-sm leading-relaxed md:text-base" style={{ color: "var(--pm-on-surface-variant)" }}>
+                <p
+                    className="text-sm leading-relaxed sm:text-base"
+                    style={{ color: "var(--pm-on-surface-variant)" }}
+                >
                     {pkg.tagline}
                 </p>
             </div>
 
-            <div className="mb-8">
+            <div className="mb-6 sm:mb-8">
                 <div className="flex flex-wrap items-baseline gap-1">
                     <span
-                        className={`text-4xl font-black tracking-tight md:text-5xl ${headline}`}
-                        style={{ color: "var(--pm-on-surface)" }}
+                        className={`text-3xl font-black tracking-tight sm:text-4xl md:text-5xl ${headline}`}
+                        style={{
+                            color:
+                                featured && !showMonthlyRow ? "var(--pm-primary)" : "var(--pm-on-surface)",
+                        }}
                     >
                         {pkg.upfront}
                     </span>
-                    <span className="text-base font-medium" style={{ color: "var(--pm-on-surface-variant)" }}>
+                    <span className="text-sm font-medium sm:text-base" style={{ color: "var(--pm-on-surface-variant)" }}>
                         {upfrontWord}
                     </span>
                 </div>
-                <p
-                    className={`mt-1 font-black ${headline} ${featured ? "text-2xl md:text-3xl" : "text-lg md:text-xl"}`}
-                    style={{ color: "var(--pm-primary)" }}
-                >
-                    {featured ? (
-                        <>
-                            {pkg.monthly}
-                            {pkg.monthlyUnit}
-                        </>
-                    ) : (
-                        <>
-                            + {pkg.monthly}
-                            {pkg.monthlyUnit}
-                        </>
-                    )}
-                </p>
+                {showMonthlyRow ? (
+                    <p
+                        className={`mt-1 font-black ${headline} ${featured ? "text-xl sm:text-2xl md:text-3xl" : "text-lg sm:text-xl md:text-2xl"}`}
+                        style={{ color: "var(--pm-primary)" }}
+                    >
+                        {featured ? (
+                            <>
+                                {pkg.monthly}
+                                {pkg.monthlyUnit}
+                            </>
+                        ) : (
+                            <>
+                                + {pkg.monthly}
+                                {pkg.monthlyUnit}
+                            </>
+                        )}
+                    </p>
+                ) : null}
             </div>
 
             <PackageIncludesList
@@ -125,10 +139,9 @@ function PackageCard({ pkg }: { pkg: Package }) {
                 layout="sequential"
             />
 
-            <button
-                type="button"
-                onClick={goToContact}
-                className={`mt-auto w-full rounded-lg py-3 text-base font-bold transition-all active:scale-[0.98] md:py-4 ${headline}`}
+            <Link
+                href={pricingContent.meta.contactHref}
+                className={`mt-auto flex min-h-12 w-full items-center justify-center rounded-lg py-3 text-center text-base font-bold transition-all active:scale-[0.98] sm:min-h-14 sm:py-4 ${headline}`}
                 style={
                     featured
                         ? {
@@ -144,23 +157,9 @@ function PackageCard({ pkg }: { pkg: Package }) {
                             backgroundColor: "transparent",
                         }
                 }
-                onMouseEnter={
-                    featured
-                        ? undefined
-                        : (e) => {
-                            e.currentTarget.style.backgroundColor = "var(--pm-surface-container)";
-                        }
-                }
-                onMouseLeave={
-                    featured
-                        ? undefined
-                        : (e) => {
-                            e.currentTarget.style.backgroundColor = "transparent";
-                        }
-                }
             >
                 {pkg.buttonLabel}
-            </button>
+            </Link>
         </div>
     );
 }

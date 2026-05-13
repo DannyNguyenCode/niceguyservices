@@ -75,7 +75,6 @@ export default function ThankYouModal({ open, onClose }: ThankYouModalProps) {
                 </div>
             </div>
 
-            {/* Backdrop */}
             <form method="dialog" className="modal-backdrop">
                 <button aria-label="Close" onClick={onClose} />
             </form>

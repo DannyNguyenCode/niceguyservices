@@ -5,7 +5,6 @@ import ConsultCTA from "./ConsultCTA";
 import PricingGrowthSection from "./PricingGrowthSection";
 import PricingHero from "./PricingHero";
 import PricingPlans from "./PricingPlans";
-import PricingPolicyNote from "./PricingPolicyNote";
 import PricingTrustSection from "./PricingTrustSection";
 import {
     pricingLayoutBodyFont as bodyFont,
@@ -31,14 +30,11 @@ export default function PricingLayout() {
                 <div className={sitePageContentClass}>
                     <PricingHero />
                     <PricingPlans />
-                    <PricingPolicyNote />
+                    <ConsultCTA />
                     <AddOnsSection />
                     <PricingGrowthSection />
                 </div>
                 <PricingTrustSection />
-                <div className={sitePageContentClass}>
-                    <ConsultCTA />
-                </div>
             </div>
         </div>
     );
