@@ -11,7 +11,8 @@ const pages = [
     { title: "Pricing", link: "/pricing" },
     { title: "About Us", link: "/about" },
     { title: "Resources", link: "/resources" },
-    { title: "Templates", link: "/template" },
+    // Future: Work (client websites). Was Templates → /template gallery.
+    // { title: "Templates", link: "/template" },
     { title: "Contact", link: "/contact" },
 ];
 

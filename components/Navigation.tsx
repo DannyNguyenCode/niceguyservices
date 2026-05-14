@@ -13,15 +13,16 @@ const pages = [
     { title: "Pricing", link: "/pricing" },
     { title: "About Us", link: "/about" },
     { title: "Resources", link: "/resources" },
-    { title: "Templates", link: "/template" },
+    // Future: Work (client websites). Was Templates → /template gallery.
+    // { title: "Templates", link: "/template" },
     { title: "Contact", link: "/contact" },
 ];
 
 function isNavActive(pathname: string, href: string): boolean {
     if (href === "/") return pathname === "/";
-    if (href === "/template") {
-        return pathname === "/template" || pathname.startsWith("/template/");
-    }
+    // if (href === "/template") {
+    //     return pathname === "/template" || pathname.startsWith("/template/");
+    // }
     return pathname === href || pathname.startsWith(`${href}/`);
 }
 
