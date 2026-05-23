@@ -21,26 +21,41 @@ const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Nice Guy Web Design — Toronto & GTA small business websites",
+  title: {
+    default: "Nice Guy Web Design | Toronto Small Business Websites",
+    template: "%s | Nice Guy Web Design",
+  },
   description:
-    "Nice Guy Web Design — custom websites for small businesses in Toronto and the GTA. Fast, maintainable builds with clear communication and ongoing support.",
+    "Custom websites and SEO-ready builds for Toronto and GTA small businesses. Fast, maintainable websites designed to improve visibility, generate leads, and support long-term growth.",
   verification: {
     google: "SVu4bQTn5qjJHWHKw6pz34Ob__tmftRjWWFkMecbU_Q",
+  },
+  alternates: {
+    canonical: siteUrl,
   },
   openGraph: {
     type: "website",
     locale: "en_CA",
     url: siteUrl,
     siteName: BUSINESS.name,
-    title: "Nice Guy Web Design — Toronto & GTA small business websites",
+    title: "Nice Guy Web Design | Toronto Small Business Websites",
     description:
-      "Custom websites for small businesses in Toronto and the GTA — fast, SEO-ready, and fully supported.",
+      "Custom websites and SEO-ready builds for Toronto and GTA small businesses — designed to improve visibility, generate leads, and stay easy to maintain.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Nice Guy Web Design — Toronto small business websites",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nice Guy Web Design",
+    title: "Nice Guy Web Design | Toronto Small Business Websites",
     description:
-      "Custom websites for small businesses in Toronto and the GTA — fast, SEO-ready, and fully supported.",
+      "Custom websites and SEO-ready builds for Toronto and GTA small businesses.",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,

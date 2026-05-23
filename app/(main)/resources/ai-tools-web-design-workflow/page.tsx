@@ -9,7 +9,7 @@ import { absoluteUrl } from "@/lib/siteConfig";
 
 export const metadata: Metadata = {
     title:
-        "Using AI as a Tool in Web Design (Cursor, Stitch, ChatGPT) | Nice Guy Web Design",
+        "Using AI as a Tool in Web Design (Cursor, Stitch, ChatGPT)",
     description:
         "How I use AI in moderation to save time on code and SEO, brainstorm UI with Google Stitch, and draft copy with ChatGPT — without handing the site over to a machine.",
     alternates: {

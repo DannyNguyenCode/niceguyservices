@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import HomeAbout from "./HomeAbout";
 import HomeContact from "./HomeContact";
+import HomeFaq from "./HomeFaq";
 import HomeHero from "./HomeHero";
 import HomePricing from "./HomePricing";
 import HomeServices from "./HomeServices";
@@ -22,22 +22,15 @@ export default function Homepage() {
                     Areas we serve
                 </h2>
                 <p className="text-base leading-relaxed text-(--pm-on-surface-variant) md:text-lg">
-                    Nice Guy Web Design works with small businesses based in{" "}
-                    <strong className="font-semibold text-(--pm-on-surface)">Toronto</strong>{" "}
-                    and across the{" "}
-                    <strong className="font-semibold text-(--pm-on-surface)">GTA</strong>
-                    , and takes select remote projects elsewhere in Canada. Prefer to meet in
-                    person when it helps — video works too.{" "}
-                    <Link href="/contact" className="font-medium text-primary underline-offset-4 hover:underline">
-                        Get in touch
-                    </Link>
-                    .
+                    Nice Guy Web Design works with contractors, creators, and small businesses
+                    across Toronto and the GTA, with select remote projects throughout Canada.
                 </p>
             </section>
             <div className="relative space-y-24 overflow-hidden pb-24 pt-24 md:space-y-32 md:pb-32 md:pt-28">
                 <HomeServices />
                 <HomeAbout />
                 <HomePricing />
+                <HomeFaq />
                 <HomeContact />
             </div>
         </div>

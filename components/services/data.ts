@@ -30,7 +30,7 @@ export const serviceCards: Service[] = [
             "E-commerce websites",
             "Legacy → modern migrations",
         ],
-        description: "Custom website builds from concept to launch — fast, modern, and SEO-ready.",
+        description: "Fast, modern websites designed to improve visibility, build trust, and support lead generation.",
         details: {
             headline: "Modern, fast, maintainable websites.",
             description:

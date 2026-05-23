@@ -48,14 +48,7 @@ export default function ResourceArticleTemplate({
     return (
         <div className="bg-(--pm-surface) font-pm-body text-(--pm-on-surface)">
             {articleStructuredData ? (
-                <ArticleJsonLd
-                    headline={articleStructuredData.headline}
-                    description={articleStructuredData.description}
-                    datePublished={articleStructuredData.datePublished}
-                    dateModified={articleStructuredData.dateModified}
-                    pagePath={articleStructuredData.pagePath}
-                    heroImageSrc={articleStructuredData.heroImageSrc}
-                />
+                <ArticleJsonLd {...articleStructuredData} />
             ) : null}
             <main className={`pt-28 pb-24 ${sitePageContentClass}`}>
                 <div className="mb-12">

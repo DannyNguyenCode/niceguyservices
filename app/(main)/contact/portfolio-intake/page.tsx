@@ -3,11 +3,15 @@ import PortfolioIntakeWizard from "@/components/contact/portfolioIntake/Portfoli
 import { absoluteUrl } from "@/lib/siteConfig";
 
 export const metadata: Metadata = {
-    title: "Portfolio & showcase project brief | Nice Guy Web Design",
+    title: "Portfolio & showcase project brief",
     description:
         "Four-step creative brief for a portfolio or showcase site: experience, skills, education, and contact. Nice Guy Web Design, Toronto and GTA.",
     alternates: {
         canonical: absoluteUrl("/contact/portfolio-intake"),
+    },
+    robots: {
+        index: false,
+        follow: false,
     },
 };
 

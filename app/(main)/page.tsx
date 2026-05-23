@@ -1,16 +1,24 @@
 import type { Metadata } from "next";
 import Content from "@/components/Content";
+import FaqJsonLd from "@/components/seo/FaqJsonLd";
 import { absoluteUrl } from "@/lib/siteConfig";
 
 export const metadata: Metadata = {
-  title: "Web Design for Small Businesses in Toronto | Nice Guy Web Design",
+  title: {
+    absolute: "Nice Guy Web Design | Toronto Small Business Websites",
+  },
   description:
-    "Nice Guy Web Design builds fast, custom websites for small businesses in Toronto and the GTA — SEO-ready, mobile-friendly, and fully supported.",
+    "Custom websites and SEO-ready builds for Toronto and GTA small businesses. Fast, maintainable websites designed to improve visibility, generate leads, and support long-term growth.",
   alternates: {
     canonical: absoluteUrl("/"),
   },
 };
 
 export default function Home() {
-  return <Content />;
+  return (
+    <>
+      <FaqJsonLd />
+      <Content />
+    </>
+  );
 }

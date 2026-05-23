@@ -1,9 +1,9 @@
 {
   "hero": {
     "availabilityBadge": "Available for new projects",
-    "headlineBefore": "Crafting digital solutions with",
+    "headlineBefore": "Custom websites for Toronto small businesses — built with",
     "headlineGradient": "clarity & care.",
-    "subtitle": "Nice Guy Web Design is a Toronto-based practice focused on fast, maintainable websites for small businesses — technical precision without the jargon.",
+    "subtitle": "Nice Guy Web Design builds fast, modern websites for Toronto small businesses — designed to improve visibility, generate leads, and stay easy to maintain as your business grows.",
     "primaryCta": { "label": "Start a project", "href": "/contact" },
     "heroImage": {
       "src": "/images/Futuristic-tech-abstract.png",
@@ -30,9 +30,35 @@
     "projectCtaLabel": "Start with Starter",
     "monthlyCtaLabel": "Explore Growth plan"
   },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about starting your project.",
+    "items": [
+      {
+        "question": "Do you work with Toronto small businesses?",
+        "answer": "Yes. Nice Guy Web Design specializes in websites for Toronto and GTA small businesses, contractors, creators, and service-based businesses."
+      },
+      {
+        "question": "Do you offer SEO optimization?",
+        "answer": "Yes. SEO optimization, Google Search Console reporting, and conversion-focused improvements are available through ongoing monthly plans."
+      },
+      {
+        "question": "Can I start with just a website?",
+        "answer": "Yes. Businesses can start with a one-time website project and later upgrade to hosting, reporting, or SEO optimization services."
+      },
+      {
+        "question": "Do you only work locally?",
+        "answer": "Most clients are based in Toronto and the GTA, though remote projects across Canada are also available."
+      },
+      {
+        "question": "What types of businesses do you work with?",
+        "answer": "Nice Guy Web Design works with local businesses, contractors, cafés, nonprofits, creators, and service-based businesses looking for modern, easy-to-maintain websites."
+      }
+    ]
+  },
   "contactTeaser": {
-    "headline": "Ready to talk?",
-    "body": "Get in touch with Nice Guy Web Design — tell me what you need and I’ll reply with a clear next step and honest scope. Currently taking new small-business projects in Toronto and remote.",
+    "headline": "Need a website that works harder for your business?",
+    "body": "Get in touch with Nice Guy Web Design to discuss a custom website, SEO improvements, or growth-focused updates for your Toronto business.",
     "primaryCtaLabel": "Contact",
     "responseNote": "I usually reply within one business day"
   },

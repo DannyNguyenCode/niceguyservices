@@ -1,0 +1,77 @@
+.digital-craftsman-page {
+    --font-ga-body: var(--font-ga-body-loaded), "DM Sans", system-ui, sans-serif;
+    --font-ga-display: var(--font-ga-display-loaded), "Newsreader", Georgia, serif;
+    --font-ga-code: var(--font-ga-code-loaded), "JetBrains Mono", ui-monospace, monospace;
+    min-height: 100dvh;
+    background-color: #fbf9f8;
+    background-image:
+        linear-gradient(to right, #e5e2da 1px, transparent 1px),
+        linear-gradient(to bottom, #e5e2da 1px, transparent 1px);
+    background-size: 24px 24px;
+    color: #1b1c1c;
+    font-family: var(--font-ga-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+.dc-display {
+    font-family: var(--font-ga-display);
+}
+
+.dc-code {
+    font-family: var(--font-ga-code);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.digital-craftsman-page .material-symbols-outlined {
+    font-family: "Material Symbols Outlined";
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.digital-craftsman-page .dc-dotted-line {
+    flex-grow: 1;
+    margin: 0 8px 4px;
+    border-bottom: 1px dotted #717975;
+}
+
+.digital-craftsman-page .dc-desktop-main .dc-dotted-line {
+    height: 14px;
+    margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+    .digital-craftsman-page {
+        background-color: #faf9f6;
+        background-image: radial-gradient(#e5e2da 1px, transparent 1px);
+        background-size: 24px 24px;
+    }
+}
+
+.dc-hard-offset {
+    box-shadow: none;
+}
+
+.dc-hard-offset:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 2px 2px 0 0 #1b1c1c;
+}
+
+.dc-audit-btn {
+    box-shadow: none;
+}
+
+.dc-audit-btn:hover {
+    box-shadow: 2px 2px 0 0 #414845;
+}

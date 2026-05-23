@@ -1,0 +1,60 @@
+{
+  "resourceCategories": [
+    {
+      "id": "seo-ai-search",
+      "title": "SEO and AI Search",
+      "description": "Learn how Google Search, AI Search, Search Console, and local SEO visibility work for small businesses.",
+      "articles": [
+        {
+          "title": "What Google AI Search Means for Small Businesses",
+          "category": "SEO Education",
+          "slug": "/resources/what-google-ai-search-means-for-small-businesses",
+          "description": "How AI Overviews change search — and what Toronto and GTA small businesses should focus on so Google understands and recommends you.",
+          "imageSrc": "/images/Futuristic-tech-abstract.png",
+          "imageAlt": "Abstract visualization suggesting AI and search technology",
+          "mutedImage": true
+        },
+        {
+          "title": "SEO Basics for Local Businesses",
+          "category": "Local SEO",
+          "slug": "/resources/seo-basics-for-local-businesses",
+          "description": "How local businesses appear on Google — SEO foundations, Google Business Profile, helpful content, and mistakes to avoid.",
+          "imageSrc": "/images/Toronto-city-map.png",
+          "imageAlt": "Map suggesting local service areas and search visibility"
+        },
+        {
+          "title": "How Google Search Console Helps Small Businesses",
+          "category": "SEO Tools",
+          "slug": "/resources/how-google-search-console-helps-small-businesses",
+          "description": "Understand search queries, clicks, indexing, and mobile usability after your site goes live — without expensive analytics software.",
+          "imageSrc": "/images/Futuristic-tech-abstract.png",
+          "imageAlt": "Abstract visualization suggesting search performance and analytics"
+        }
+      ]
+    },
+    {
+      "id": "websites-business-growth",
+      "title": "Websites and Business Growth",
+      "description": "Understand how websites support trust, lead generation, branding, and smarter business decisions.",
+      "articles": [
+        {
+          "title": "How Websites Generate Leads for Local Businesses",
+          "category": "Lead Generation",
+          "slug": "/resources/how-websites-generate-leads-for-local-businesses",
+          "description": "Turn your site into more than a brochure — clear messaging, CTAs, trust signals, and mobile performance that drive calls and quotes.",
+          "imageSrc": "/images/Toronto-skyline-dusk.png",
+          "imageAlt": "Toronto skyline suggesting local business growth",
+          "mutedImage": true
+        },
+        {
+          "title": "Understanding Custom vs Template Websites",
+          "category": "Web Strategy",
+          "slug": "/resources/custom-vs-template-websites",
+          "description": "Compare template and custom approaches — budget, timeline, branding, SEO, and how to choose the right fit for your business.",
+          "imageSrc": "/images/imageheader.png",
+          "imageAlt": "Desk with monitor showing a website layout mockup beside code, illustrating custom vs template design"
+        }
+      ]
+    }
+  ]
+}

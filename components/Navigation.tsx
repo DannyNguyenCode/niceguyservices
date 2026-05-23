@@ -13,16 +13,11 @@ const pages = [
     { title: "Pricing", link: "/pricing" },
     { title: "About Us", link: "/about" },
     { title: "Resources", link: "/resources" },
-    // Future: Work (client websites). Was Templates → /template gallery.
-    // { title: "Templates", link: "/template" },
     { title: "Contact", link: "/contact" },
 ];
 
 function isNavActive(pathname: string, href: string): boolean {
     if (href === "/") return pathname === "/";
-    // if (href === "/template") {
-    //     return pathname === "/template" || pathname.startsWith("/template/");
-    // }
     return pathname === href || pathname.startsWith(`${href}/`);
 }
 
