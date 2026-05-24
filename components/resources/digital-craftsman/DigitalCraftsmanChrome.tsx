@@ -4,7 +4,6 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { BUSINESS } from "@/lib/siteConfig";
-import MaterialIcon from "./MaterialIcon";
 
 const LOGO_SRC = "/blue_logo_test.png";
 const BRAND_NAME = "Nice Guy Web Design";
@@ -50,15 +49,8 @@ function BrandMark({ showName = true }: { showName?: boolean }) {
 export function DigitalCraftsmanHeader() {
     return (
         <header className="sticky top-0 z-50 w-full border-b border-[#c1c8c4] bg-[#fbf9f8]">
-            <div className="mx-auto flex h-16 max-w-[1120px] items-center justify-between px-4 md:px-6">
+            <div className="mx-auto flex h-16 max-w-[1120px] items-center px-4 md:px-6">
                 <BrandMark />
-                <button
-                    type="button"
-                    className="rounded-full p-2 text-[#416359] transition-colors hover:bg-[#f6f3f2] md:hidden"
-                    aria-label="Open menu"
-                >
-                    <MaterialIcon name="menu" />
-                </button>
             </div>
         </header>
     );
