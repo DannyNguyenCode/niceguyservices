@@ -34,7 +34,7 @@ export default function HomeContact() {
                     <div className="flex flex-col items-center justify-center gap-4 md:flex-row">
                         <Link
                             href={contactHref}
-                            className="rounded-full bg-(--pm-white) px-12 py-5 font-pm-headline text-lg font-bold text-primary shadow-xl transition-transform hover:scale-105"
+                            className="rounded-full bg-(--pm-white) px-12 py-5 font-pm-headline text-lg font-bold text-[#8c00d8] shadow-xl transition-transform hover:scale-105"
                         >
                             {contactTeaser.primaryCtaLabel}
                         </Link>
