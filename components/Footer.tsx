@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "@/components/theme/ThemeProvider";
-import { BUSINESS } from "@/lib/siteConfig";
+import { BUSINESS, getSiteLogoForTheme } from "@/lib/siteConfig";
 
 const pages = [
     { title: "Home", link: "/" },
@@ -16,8 +16,7 @@ const pages = [
 
 export default function Footer() {
     const { theme } = useTheme();
-    const logoSrc =
-        theme === "dark" ? "/logoNiceGuyServices.svg" : "/blue_logo_test.png";
+    const logoSrc = getSiteLogoForTheme(theme);
 
     return (
         <footer
@@ -30,7 +29,7 @@ export default function Footer() {
                         <Image
                             src={logoSrc}
                             width={160}
-                            height={50}
+                            height={160}
                             alt="Nice Guy Web Design"
                             className="h-[50px] w-auto max-w-[160px] object-contain object-left"
                         />

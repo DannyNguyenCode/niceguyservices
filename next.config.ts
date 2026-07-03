@@ -1,6 +1,25 @@
 import type { NextConfig } from "next";
 
+const reactPdfBrowserEntry =
+  "./node_modules/@react-pdf/renderer/lib/react-pdf.browser.js";
+
 const nextConfig: NextConfig = {
+  turbopack: {
+    resolveAlias: {
+      "@react-pdf/renderer": reactPdfBrowserEntry,
+    },
+  },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        "@react-pdf/renderer": require.resolve(
+          "@react-pdf/renderer/lib/react-pdf.browser.js",
+        ),
+      };
+    }
+    return config;
+  },
   async redirects() {
     return [
       {

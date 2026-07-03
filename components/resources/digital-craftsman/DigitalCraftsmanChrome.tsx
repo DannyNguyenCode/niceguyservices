@@ -3,9 +3,7 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { BUSINESS } from "@/lib/siteConfig";
-
-const LOGO_SRC = "/blue_logo_test.png";
+import { BUSINESS, SITE_LOGO } from "@/lib/siteConfig";
 const BRAND_NAME = "Nice Guy Web Design";
 
 const FOOTER_PAGES = [
@@ -30,7 +28,7 @@ function BrandMark({ showName = true }: { showName?: boolean }) {
             aria-label={`${BRAND_NAME} home`}
         >
             <Image
-                src={LOGO_SRC}
+                src={SITE_LOGO}
                 width={160}
                 height={55}
                 alt="Nice Guy Services"
@@ -65,7 +63,7 @@ export function DigitalCraftsmanFooter() {
                 <aside className="flex flex-col items-start gap-2">
                     <Link href="/" className="flex items-center" aria-label="Go to homepage">
                         <Image
-                            src={LOGO_SRC}
+                            src={SITE_LOGO}
                             width={160}
                             height={50}
                             alt={BUSINESS.name}

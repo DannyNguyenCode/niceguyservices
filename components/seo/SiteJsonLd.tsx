@@ -1,4 +1,4 @@
-import { absoluteUrl, BUSINESS, getSiteUrl } from "@/lib/siteConfig";
+import { absoluteUrl, BUSINESS, getSiteUrl, SITE_LOGO } from "@/lib/siteConfig";
 
 /**
  * WebSite + ProfessionalService graph for brand, local, and offer signals.
@@ -6,7 +6,7 @@ import { absoluteUrl, BUSINESS, getSiteUrl } from "@/lib/siteConfig";
  */
 export default function SiteJsonLd() {
     const url = getSiteUrl();
-    const logoUrl = absoluteUrl("/blue_logo_test.png");
+    const logoUrl = absoluteUrl(SITE_LOGO);
 
     const payload = {
         "@context": "https://schema.org",

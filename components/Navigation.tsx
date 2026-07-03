@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import ThemeToggleBtn from "./ThemeToggleBtn";
 import { useTheme } from "@/components/theme/ThemeProvider";
+import { getSiteLogoForTheme } from "@/lib/siteConfig";
 
 const pages = [
     { title: "Home", link: "/" },
@@ -27,8 +28,7 @@ export default function Navigation() {
     const navRef = useRef<HTMLDivElement>(null);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [menuTopPx, setMenuTopPx] = useState(0);
-    const logoSrc =
-        theme === "dark" ? "/logoNiceGuyServices.svg" : "/blue_logo_test.png";
+    const logoSrc = getSiteLogoForTheme(theme);
 
     useLayoutEffect(() => {
         if (!mobileOpen || !navRef.current) return;
@@ -69,7 +69,7 @@ export default function Navigation() {
     return (
         <div
             ref={navRef}
-            className="navbar sticky top-0 z-50 min-h-16 flex-nowrap items-center gap-4 border-b border-base-300/60 bg-base-100/80 px-6 text-base-content shadow-sm backdrop-blur-md transition-[background-color,border-color,color] duration-200 sm:px-10 md:px-12 lg:px-16 xl:px-20"
+            className="navbar sticky top-0 z-50 h-16 min-h-16 flex-nowrap items-center gap-4 border-b border-base-300/60 bg-base-100/80 px-6 text-base-content shadow-sm backdrop-blur-md transition-[background-color,border-color,color] duration-200 sm:px-10 md:px-12 lg:px-16 xl:px-20"
             id="nav"
         >
             <div className="navbar-start z-20 flex min-w-0 shrink-0 items-center lg:z-auto lg:gap-3">
@@ -148,31 +148,31 @@ export default function Navigation() {
 
                 <Link
                     href="/"
-                    className="hidden items-center pl-1 pr-2 lg:flex"
+                    className="hidden h-16 items-center pl-1 pr-2 lg:flex"
                     aria-label="Go to homepage"
                 >
                     <Image
                         src={logoSrc}
                         width={160}
-                        height={55}
+                        height={160}
                         alt="Nice Guy Web Design"
-                        className="h-[55px] w-auto max-w-[160px] object-contain object-left transition"
+                        className="h-16 w-auto origin-left scale-[1.12] object-contain object-left transition"
                     />
                 </Link>
             </div>
 
             <Link
                 href="/"
-                className="absolute top-1/2 left-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 items-center lg:hidden"
+                className="absolute top-1/2 left-1/2 z-10 flex h-16 -translate-x-1/2 -translate-y-1/2 items-center lg:hidden"
                 aria-label="Go to homepage"
             >
                 <Image
                     src={logoSrc}
                     width={160}
-                    height={55}
+                    height={160}
                     alt="Nice Guy Web Design"
                     priority
-                    className="h-[52px] w-auto max-w-[min(9rem,42vw)] object-contain object-center transition sm:h-[55px] sm:max-w-[140px]"
+                    className="h-16 w-auto origin-center scale-[1.12] object-contain object-center transition"
                 />
             </Link>
 

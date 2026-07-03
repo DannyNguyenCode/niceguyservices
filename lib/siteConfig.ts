@@ -3,6 +3,17 @@
  * Set NEXT_PUBLIC_SITE_URL on production (e.g. https://yourdomain.com) so
  * sitemap, robots, Open Graph, and JSON-LD stay aligned with Search Console.
  */
+import type { SiteColorMode } from "@/lib/themes/siteTheme";
+
+export const SITE_LOGO_LIGHT = "/niceguywebdesignlogo.png" as const;
+export const SITE_LOGO_DARK = "/niceguywebdesignlogodark.png" as const;
+/** Default logo for SEO and static contexts. */
+export const SITE_LOGO = SITE_LOGO_LIGHT;
+
+export function getSiteLogoForTheme(theme: SiteColorMode): string {
+    return theme === "dark" ? SITE_LOGO_DARK : SITE_LOGO_LIGHT;
+}
+
 export const BUSINESS = {
     name: "Nice Guy Web Design",
     phoneDisplay: "(647) 760-3458",
