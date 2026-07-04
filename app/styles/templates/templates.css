@@ -1,0 +1,30 @@
+/**
+ * Experience template demos — shared style entry.
+ * Import once from templates/app/template/layout.tsx (or app/globals.css in a templates-only project).
+ */
+@import "./neopets-theme.css";
+@import "./tmnt-theme.css";
+@import "./looneytoons-theme.css";
+@import "./starlight-theme.css";
+@import "./party-smile-dental-theme.css";
+@import "./companion-pet-theme.css";
+@import "./pawsome-theme.css";
+@import "./evergreen-theme.css";
+@import "./lumina-landscapes-theme.css";
+@import "./pawsmatch-rescue-theme.css";
+@import "./luxe-co-theme.css";
+@import "./home-restoration-theme.css";
+@import "./liquid-occasions-theme.css";
+@import "./kinship-capital-theme.css";
+@import "./saturday-pet-market-theme.css";
+@import "./skyline-designs-theme.css";
+@import "./valley-interlocking-theme.css";
+
+/* Fixed/sticky template navs sit flush at the top of the viewport */
+.template-demo-fixed-nav {
+  top: 0;
+}
+
+.template-demo-sticky-nav {
+  top: 0;
+}

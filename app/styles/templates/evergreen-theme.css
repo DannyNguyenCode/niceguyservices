@@ -1,0 +1,88 @@
+/* EverGreen & Alpine — premium property stewardship demo */
+
+.eg-hero-overlay {
+  background-color: rgba(1, 45, 29, 0.55);
+}
+
+.eg-season-overlay {
+  background-color: rgba(1, 45, 29, 0.72);
+}
+
+.eg-snow-overlay {
+  background-color: rgba(23, 27, 43, 0.88);
+}
+
+.eg-process-line {
+  background-color: #c1c8c2;
+}
+
+.eg-map-pin {
+  animation: eg-pin-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes eg-pin-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.85;
+  }
+}
+
+.eg-modal-backdrop {
+  background-color: rgba(1, 45, 29, 0.55);
+  backdrop-filter: blur(4px);
+}
+
+.eg-modal-panel {
+  box-shadow: 0 24px 48px rgba(1, 45, 29, 0.2);
+}
+
+.eg-nav-link {
+  position: relative;
+}
+
+.eg-nav-link--active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.35rem;
+  height: 2px;
+  border-radius: 9999px;
+  background-color: #012d1d;
+}
+
+.eg-season-dropdown {
+  animation: eg-dropdown-in 0.15s ease-out;
+}
+
+.eg-focus-ring {
+  border-radius: 0.25rem;
+  outline-offset: 3px;
+}
+
+.eg-focus-ring:focus-visible {
+  outline: 2px solid #012d1d;
+  outline-offset: 3px;
+}
+
+@keyframes eg-dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eg-season-dropdown {
+    animation: none;
+  }
+}

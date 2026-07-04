@@ -1,0 +1,1 @@
+export const LOONEY_TUNES_DEFAULT_PAGE_SIZE = 24;

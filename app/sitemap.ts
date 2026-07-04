@@ -15,8 +15,11 @@ const staticRoutes: SitemapRoute[] = [
     { path: "/services", changeFrequency: "monthly", priority: 0.9 },
     { path: "/pricing", changeFrequency: "monthly", priority: 0.85 },
     { path: "/about", changeFrequency: "yearly", priority: 0.65 },
+    { path: "/featured-work", changeFrequency: "monthly", priority: 0.7 },
+    { path: "/featured-work/jackie-portfolio", changeFrequency: "monthly", priority: 0.68 },
+    { path: "/website-inspirations", changeFrequency: "monthly", priority: 0.65 },
     { path: "/contact", changeFrequency: "yearly", priority: 0.75 },
-    { path: "/client-discovery-workbook", changeFrequency: "yearly", priority: 0.5 },
+    // { path: "/client-discovery-workbook", changeFrequency: "yearly", priority: 0.5 },
     { path: "/resources", changeFrequency: "weekly", priority: 0.75 },
     { path: "/testimonials", changeFrequency: "monthly", priority: 0.55 },
 ];

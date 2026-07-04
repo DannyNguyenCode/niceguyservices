@@ -5,6 +5,7 @@ import type { BusinessIntakeData, ScopeLine } from "@/lib/businessIntake/types";
 
 export const dynamic = "force-dynamic";
 
+const BUSINESS_INTAKE_ENABLED = false;
 const DEFAULT_TO = "gbnguyenw@gmail.com";
 
 type Body = {
@@ -88,6 +89,14 @@ function formatGoals(goals: BusinessIntakeData["goals"]): string {
 }
 
 export async function POST(request: Request) {
+    // Business intake wizard temporarily disabled
+    if (!BUSINESS_INTAKE_ENABLED) {
+        return NextResponse.json(
+            { error: "Business intake is temporarily unavailable." },
+            { status: 503 },
+        );
+    }
+
     const apiKey = process.env.RESEND_API_KEY?.trim();
     if (!apiKey) {
         return NextResponse.json(
@@ -127,8 +136,8 @@ export async function POST(request: Request) {
         "Business website intake (3-step form)",
         "",
     ];
-    if (p.contact?.name) textLines.push(`From contact: ${p.contact.name}`);
-    if (p.contact?.email) textLines.push(`Email (from contact page): ${p.contact.email}`);
+    if (p.contact?.name) textLines.push(`From contact: ${p.contact?.name}`);
+    if (p.contact?.email) textLines.push(`Email (from contact page): ${p.contact?.email}`);
     if (p.contact?.profession?.trim()) {
         textLines.push(`Profession (from contact page): ${p.contact.profession.trim()}`);
     }

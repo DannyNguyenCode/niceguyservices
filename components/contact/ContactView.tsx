@@ -38,34 +38,37 @@ export const initialFormState: FormState = {
 const DECOR_IMG =
     "https://lh3.googleusercontent.com/aida-public/AB6AXuDkx4RUc9rkx0lGeNXvyrasZjBVNtzjkUvejEsuABY_9noKWVYHqnRURylxiikT9s2C-p7Nrf6Gvt4BMVLOAo-HrH0UmFtZbmHjO4DTfzN85GDc4Pr1Nc2ClmAGmvxwzv0_tcNOpBL8BnDEColtxZJbf-q9W4bhwOVD4ZcJDf1NzxzS-wZp3jOBYoePvFH8WkJJ7nvZNTVhTHMQe2tY0Kdj7tJ1shQHI4ruiP-GyapQbEqcS4scy4KT4qL11y6b2YN4zfOPDPVVCqk";
 
-const DEFAULT_CTA = "Detailed Next steps";
+// const DEFAULT_CTA = "Detailed Next steps";
 
-const SERVICES_BY_OBJECTIVE: Record<
-    "business" | "portfolio",
-    FormState["services"]
-> = {
-    business: ["Web Design", "Web Development", "E-commerce"],
-    portfolio: ["Web Design", "Landing page / campaign", "SEO"],
-};
+// Intake wizard temporarily disabled
+// const SERVICES_BY_OBJECTIVE: Record<
+//     "business" | "portfolio",
+//     FormState["services"]
+// > = {
+//     business: ["Web Design", "Web Development", "E-commerce"],
+//     portfolio: ["Web Design", "Landing page / campaign", "SEO"],
+// };
 
 export default function ContactView() {
     const [form, setForm] = useState<FormState>(initialFormState);
     const [submitting, setSubmitting] = useState(false);
     const [thankOpen, setThankOpen] = useState(false);
-    const [intakeCta, setIntakeCta] = useState(DEFAULT_CTA);
+    // Intake wizard temporarily disabled
+    // const [intakeCta, setIntakeCta] = useState(DEFAULT_CTA);
 
     const handleChange = (field: keyof FormState, value: string | boolean) => {
         setForm((prev) => {
-            if (field === "primaryObjective" && (value === "business" || value === "portfolio")) {
-                return {
-                    ...prev,
-                    primaryObjective: value,
-                    services: SERVICES_BY_OBJECTIVE[value],
-                };
-            }
-            if (field === "primaryObjective" && value === "") {
-                return { ...prev, primaryObjective: "", services: [] };
-            }
+            // Intake primary goal temporarily disabled
+            // if (field === "primaryObjective" && (value === "business" || value === "portfolio")) {
+            //     return {
+            //         ...prev,
+            //         primaryObjective: value,
+            //         services: SERVICES_BY_OBJECTIVE[value],
+            //     };
+            // }
+            // if (field === "primaryObjective" && value === "") {
+            //     return { ...prev, primaryObjective: "", services: [] };
+            // }
             return {
                 ...prev,
                 [field]: value,
@@ -75,9 +78,6 @@ export default function ContactView() {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (!form.primaryObjective) {
-            return;
-        }
         setSubmitting(true);
 
         try {
@@ -92,7 +92,9 @@ export default function ContactView() {
                     services: form.services,
                     message: form.message,
                     wantsMeeting: form.wantsMeeting,
-                    primaryObjective: form.primaryObjective,
+                    ...(form.primaryObjective
+                        ? { primaryObjective: form.primaryObjective }
+                        : {}),
                 }),
             });
 
@@ -106,7 +108,7 @@ export default function ContactView() {
 
             setThankOpen(true);
             setForm(initialFormState);
-            setIntakeCta(DEFAULT_CTA);
+            // setIntakeCta(DEFAULT_CTA);
         } catch (error) {
             console.error("Error submitting contact form:", error);
             const message =
@@ -196,8 +198,6 @@ export default function ContactView() {
                         <ContactForm
                             form={form}
                             submitting={submitting}
-                            ctaText={intakeCta}
-                            onCtaTextChange={setIntakeCta}
                             onChange={handleChange}
                             onSubmit={handleSubmit}
                         />

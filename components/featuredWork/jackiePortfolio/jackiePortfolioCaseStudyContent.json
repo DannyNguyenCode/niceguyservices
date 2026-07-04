@@ -1,0 +1,247 @@
+{
+  "meta": {
+    "slug": "jackie-portfolio",
+    "contactHref": "/contact#contact-form",
+    "featuredWorkHref": "/featured-work",
+    "projectUrl": "https://jackie-portfolio-nu.vercel.app/",
+    "projectDetailsHref": "#project-snapshot",
+    "heroImageSrc": "/jackieportfoliocasestudy/homepage.png",
+    "heroImageAlt": "JackiePortfolio homepage with hero section, navigation, and portfolio entry points.",
+    "heroImageWidth": 1918,
+    "heroImageHeight": 921
+  },
+  "hero": {
+    "eyebrow": "Client Case Study",
+    "title": "JackiePortfolio",
+    "subtitle": "Responsive portfolio website for a creative professional",
+    "tags": [
+      "Portfolio Website",
+      "Responsive Design",
+      "SEO Foundation",
+      "Next.js",
+      "React",
+      "Tailwind CSS"
+    ],
+    "visitWebsiteCta": "Visit Website",
+    "projectDetailsCta": "View Project Details"
+  },
+  "snapshot": {
+    "title": "Project snapshot",
+    "items": [
+      { "label": "Client type", "value": "Creative professional / portfolio client" },
+      { "label": "Project type", "value": "Portfolio and business website" },
+      { "label": "Timeline", "value": "April 2026 – July 2026" },
+      { "label": "Status", "value": "Live" },
+      {
+        "label": "Services",
+        "value": "UX design, frontend development, responsive design, SEO setup, contact form integration"
+      },
+      {
+        "label": "Technology",
+        "value": "Next.js, React, TypeScript, Tailwind CSS, Resend"
+      }
+    ]
+  },
+  "challenge": {
+    "title": "The challenge",
+    "intro": "The client needed a polished online presence that could support real creative work—not just look good in a mockup.",
+    "points": [
+      "Present video and campaign work clearly",
+      "Make portfolio browsing easier for visitors",
+      "Support professional credibility with a cohesive layout",
+      "Work well across mobile and desktop",
+      "Provide a clear way for visitors to get in touch",
+      "Support future content updates without rebuilding the UI each time"
+    ]
+  },
+  "strategy": {
+    "title": "Strategy",
+    "intro": "Before writing large blocks of new code, the focus was on structure, content, and how people would actually use the site.",
+    "points": [
+      "Start with the client’s content and goals",
+      "Build a structure that makes work easy to browse",
+      "Prioritize responsive layouts from the beginning",
+      "Keep the gallery media experience central",
+      "Use reusable components instead of one-off layouts",
+      "Improve details gradually through iteration",
+      "Build with maintainability in mind for future updates"
+    ]
+  },
+  "uxDecisions": {
+    "title": "UX and design decisions",
+    "intro": "The site is media-heavy, so usability and clarity mattered more than decorative effects.",
+    "items": [
+      {
+        "title": "Gallery-first experience",
+        "description": "Visual work leads the page so visitors can scan campaigns and video projects quickly."
+      },
+      {
+        "title": "Larger media previews",
+        "description": "Videos and stills open in a more immersive enlarge view with responsive sizing caps."
+      },
+      {
+        "title": "Expandable project details",
+        "description": "Gallery cards include collapsible detail sections so users can learn more without leaving the gallery."
+      },
+      {
+        "title": "Responsive spacing refinements",
+        "description": "Padding, breakpoints, and layout spacing were adjusted through focused commits rather than large risky rewrites."
+      },
+      {
+        "title": "Mobile navigation improvements",
+        "description": "Bottom navigation and dialog behavior were refined for smaller screens and clearer access."
+      },
+      {
+        "title": "Back-to-top for long pages",
+        "description": "A back-to-top control helps visitors return to the top after browsing a long portfolio page."
+      },
+      {
+        "title": "Accessible carousel controls",
+        "description": "The Creative Council carousel uses scroll snapping with labeled next and previous controls."
+      },
+      {
+        "title": "Purposeful micro-interactions",
+        "description": "Hover states and small motion support usability without overwhelming the content."
+      }
+    ]
+  },
+  "technical": {
+    "title": "Technical implementation",
+    "intro": "The build uses a modern frontend stack with a content structure that stays manageable as the portfolio grows.",
+    "points": [
+      "Built with Next.js, React, and TypeScript",
+      "Styled with Tailwind CSS",
+      "Centralized gallery metadata in a typed data file",
+      "Added gallery video entries and poster metadata for campaigns",
+      "Built reusable UI components across gallery, journey, and contact areas",
+      "Added CreativeCouncilCarousel with scroll snapping and accessible next/previous controls",
+      "Added GalleryCardDetailsFooter with expandable details and masonry relayout support",
+      "Implemented larger gallery media dialogs for images and videos",
+      "Used responsive CSS with modern viewport units to improve media scaling on different devices",
+      "Implemented a contact API route with Resend for production email delivery",
+      "Added environment variable checks so missing email config fails safely in development",
+      "Added input sanitization for contact form content",
+      "Added graceful fallback behavior when email configuration is not set",
+      "Updated resume PDF configuration and journey/resume content structure"
+    ]
+  },
+  "seo": {
+    "title": "SEO, discoverability, and trust",
+    "intro": "The goal was a solid foundation—not inflated claims about rankings or traffic.",
+    "points": [
+      "Semantic page structure with clear headings",
+      "Descriptive project and section content",
+      "SEO-friendly metadata on key pages",
+      "Responsive design that works across common devices",
+      "Fast, maintainable frontend structure",
+      "Content organized so visitors and AI search systems can understand what the site offers",
+      "Honest case study language without fake performance metrics"
+    ]
+  },
+  "challengesSolutions": {
+    "title": "Challenges and solutions",
+    "pairs": [
+      {
+        "challenge": "The portfolio relied heavily on visual media, so the gallery needed to feel immersive without breaking on smaller screens.",
+        "solution": "Media sizing was refined with responsive CSS, viewport-based caps, and improved enlarge dialog behavior."
+      },
+      {
+        "challenge": "The contact form needed to be production-ready but safe during development.",
+        "solution": "The API route checks for required Resend environment variables and returns a safe placeholder response when configuration is missing."
+      },
+      {
+        "challenge": "Gallery content needed to be updated without rewriting layout code.",
+        "solution": "Media data was centralized in a typed gallery file so new campaigns and metadata could be added cleanly."
+      },
+      {
+        "challenge": "Small spacing and mobile issues affected polish across the site.",
+        "solution": "The site was refined through many focused commits instead of risky large changes."
+      }
+    ]
+  },
+  "outcome": {
+    "title": "Outcome",
+    "intro": "This project delivered practical improvements the client can build on—without inventing traffic or revenue numbers.",
+    "points": [
+      "A more polished professional portfolio experience",
+      "Stronger gallery browsing experience for video and campaign work",
+      "Improved mobile usability across navigation and media views",
+      "Clearer contact flow for inquiries",
+      "Maintainable content structure for future portfolio updates",
+      "More production-ready email handling with safe development fallbacks",
+      "Better foundation for SEO and AI-search discoverability",
+      "A project that demonstrates design thinking, frontend development, and client-focused problem solving"
+    ]
+  },
+  "lessons": {
+    "title": "Lessons learned",
+    "points": [
+      "Real client projects require iteration—not one perfect launch",
+      "Small UX details add up to a more trustworthy experience",
+      "Media-heavy websites need careful responsive testing",
+      "Contact forms need safe production handling and clear developer fallbacks",
+      "Case studies should explain decisions, not just show screenshots",
+      "Maintainable structure matters even for smaller client websites"
+    ]
+  },
+  "visuals": {
+    "title": "Visual walkthrough",
+    "intro": "Screenshots from the live JackiePortfolio site showing gallery browsing, media previews, mobile layout, and contact flow.",
+    "screenshots": [
+      {
+        "label": "Homepage",
+        "description": "Hero, navigation, and primary portfolio entry points",
+        "imageSrc": "/jackieportfoliocasestudy/homepage.png",
+        "imageAlt": "JackiePortfolio homepage with hero messaging and site navigation.",
+        "imageWidth": 1918,
+        "imageHeight": 921
+      },
+      {
+        "label": "Gallery",
+        "description": "Campaign and video work in the masonry gallery layout",
+        "imageSrc": "/jackieportfoliocasestudy/Gallery.png",
+        "imageAlt": "JackiePortfolio gallery page with campaign and video work in a masonry layout.",
+        "imageWidth": 1915,
+        "imageHeight": 917
+      },
+      {
+        "label": "Enlarged media modal",
+        "description": "Full-size image and video preview experience",
+        "imageSrc": "/jackieportfoliocasestudy/enlargedmediamodal.png",
+        "imageAlt": "JackiePortfolio enlarged media modal showing a full-size gallery preview.",
+        "imageWidth": 1914,
+        "imageHeight": 912
+      },
+      {
+        "label": "Mobile navigation",
+        "description": "Bottom nav and mobile-friendly access patterns",
+        "imageSrc": "/jackieportfoliocasestudy/mobilenavigation.png",
+        "imageAlt": "JackiePortfolio mobile bottom navigation on a phone-sized viewport.",
+        "imageWidth": 403,
+        "imageHeight": 873
+      },
+      {
+        "label": "Contact form",
+        "description": "Inquiry flow with validated submission handling",
+        "imageSrc": "/jackieportfoliocasestudy/contactform.png",
+        "imageAlt": "JackiePortfolio contact form with inquiry fields and submit button.",
+        "imageWidth": 1913,
+        "imageHeight": 920
+      },
+      {
+        "label": "Responsive mobile view",
+        "description": "Layout and spacing on smaller viewports",
+        "imageSrc": "/jackieportfoliocasestudy/responsivemobileview.png",
+        "imageAlt": "JackiePortfolio responsive mobile layout with adjusted spacing and content flow.",
+        "imageWidth": 401,
+        "imageHeight": 873
+      }
+    ]
+  },
+  "cta": {
+    "title": "Need a website that does more than look good?",
+    "description": "I build websites that are designed around your goals, your customers, and the way people actually use the web.",
+    "primaryCta": "Start a Project",
+    "secondaryCta": "View pricing"
+  }
+}

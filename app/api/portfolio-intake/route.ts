@@ -5,6 +5,7 @@ import type { PortfolioIntakeData } from "@/lib/portfolioIntake/types";
 
 export const dynamic = "force-dynamic";
 
+const PORTFOLIO_INTAKE_ENABLED = false;
 const DEFAULT_TO = "gbnguyenw@gmail.com";
 
 type Body = {
@@ -94,6 +95,14 @@ function formatData(d: PortfolioIntakeData): string {
 }
 
 export async function POST(request: Request) {
+    // Portfolio intake wizard temporarily disabled
+    if (!PORTFOLIO_INTAKE_ENABLED) {
+        return NextResponse.json(
+            { error: "Portfolio intake is temporarily unavailable." },
+            { status: 503 },
+        );
+    }
+
     const apiKey = process.env.RESEND_API_KEY?.trim();
     if (!apiKey) {
         return NextResponse.json(

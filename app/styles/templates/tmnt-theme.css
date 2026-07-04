@@ -1,0 +1,114 @@
+/* TMNT trades theme utilities — light industrial palette (fictional demo) */
+
+.tmnt-tactical-border {
+  border: 1px solid #bfc9be;
+  position: relative;
+}
+
+.tmnt-tactical-border::before,
+.tmnt-tactical-border::after {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #216b41;
+}
+
+.tmnt-tactical-border::before {
+  top: -1px;
+  left: -1px;
+}
+
+.tmnt-tactical-border::after {
+  bottom: -1px;
+  right: -1px;
+}
+
+.tmnt-sewer-grate {
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 10px,
+    rgba(191, 201, 190, 0.6) 10px,
+    rgba(191, 201, 190, 0.6) 12px
+  );
+}
+
+.tmnt-sewer-grate-vertical {
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 11px,
+    rgba(191, 201, 190, 0.25) 11px,
+    rgba(191, 201, 190, 0.25) 13px
+  );
+}
+
+.tmnt-comic-panel-clip {
+  clip-path: polygon(0 0, 100% 5%, 100% 100%, 0 95%);
+}
+
+.tmnt-comic-panel {
+  clip-path: polygon(0 0, 100% 0, 98% 100%, 2% 100%);
+}
+
+.tmnt-diagonal-break {
+  clip-path: polygon(0 0, 100% 5%, 100% 100%, 0 95%);
+}
+
+.tmnt-diagonal-break-alt {
+  clip-path: polygon(0 15%, 100% 0, 100% 85%, 0 100%);
+}
+
+.tmnt-inner-glow-emerald {
+  box-shadow: inset 0 0 20px rgba(33, 107, 65, 0.12);
+}
+
+.tmnt-concrete-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+}
+
+.tmnt-stone-texture {
+  background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDFCEuKq50LPcu4kO5T8kA6JEAnfXsn6snrknyBtgJkVwGtEdhptqMuiStQi_WAgGtWeHqF7QExabXqOKA-sPRRcLh_T-zy_XQwt5SpaSU3yFDjOCkCYzPISJlp-QELo2i4u0P_pt5BRTrOU4XJiGhxi5p98M6k9U-cU-WLSqXOCjeU0lA8f-r-8zARMVv2nkWp7G9_zT3FUa0d23Qjc8F5ZPuTz-Rogp-DYE57XDeijLAoPTe66WQ8E_o6r3xjSgCnS-bIleh8nXzB");
+  background-blend-mode: overlay;
+}
+
+.tmnt-comic-border {
+  border: 1px solid #bfc9be;
+  box-shadow: 4px 4px 0 rgba(33, 107, 65, 0.35);
+}
+
+.tmnt-inner-glow-primary {
+  box-shadow: inset 0 0 10px rgba(33, 107, 65, 0.12);
+}
+
+.tmnt-comic-panel-clip-rev {
+  clip-path: polygon(2% 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.tmnt-stone-texture-v2 {
+  background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDnK5bDr9c2q-d2QWRYdp_CJGiYbQjxYQPn3sQgVVFJ_cFtt6ZvtLFT_U6CZZfxzF-uhpo5f0CqO1JkROumalmHi8yRMOUdjI3496r8NBQwLK9bXTYIgIqnwymdLq6bN1NTx15VXCzSdu-KEt256V6jc76iG2a8a6Q02QMd5CZGHhfhbUx3FxhugRSpHRUao_0UnBmPOlGbLZbcLkXJsIS9nccrQVD5ZPw0U01JwrpoGxJpNt0t9w-Mt88j8Vrqsncu0BNVwnxzuUvp");
+  background-blend-mode: overlay;
+}
+
+.tmnt-sewer-grate-divider {
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 10px,
+    #bfc9be 10px,
+    #bfc9be 12px
+  );
+}
+
+.tmnt-comic-panel-shadow {
+  box-shadow: 8px 8px 0 0 rgba(24, 29, 25, 0.15);
+}
+
+.tmnt-inner-glow-focus:focus-within {
+  box-shadow: inset 0 0 10px rgba(33, 107, 65, 0.12);
+}
+
+.tmnt-diagonal-break-services {
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+}

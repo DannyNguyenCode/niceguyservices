@@ -1,0 +1,106 @@
+{
+  "templates": [
+    {
+      "slug": "neopets-nonprofit",
+      "title": "Neopets",
+      "description": "Toronto Adopt-A-Pet (fictional) — Scrapbook-soft nonprofit demo with rescue alerts, explorer cards, quests, and lost-and-found — playful Neopets-era energy, all fictional Toronto shelter copy.",
+      "link": "/template/demo/neopets-nonprofit"
+    },
+    {
+      "slug": "tmnt-trades",
+      "title": "TMNT",
+      "description": "Tactical turf & patch crew (fictional) — Six emerald-tinted routes from home base to contact — walk the walk through comic panels, faux project logs, and mission chatter that is all hat and no cattle (demo turf, not a real yard).",
+      "link": "/template/demo/tmnt-trades"
+    },
+    {
+      "slug": "looneytunes-services",
+      "title": "LooneyTunes",
+      "description": "Comic-brutalist cafe shop (fictional) — MongoDB-backed drink retail demo — comic-brutalist shop, menu catalog from looney_tunes, client cart, checkout, rewards login, and admin browse; all placeholder copy.",
+      "link": "/template/demo/looneytunes-services"
+    },
+    {
+      "slug": "party-smile-dental",
+      "title": "Party Board",
+      "description": "Smile Board Family Dental (fictional) — Eight-route family dental demo — board-game journey home, dentist tiles, service cards, forms hub, testimonials, FAQ accordion, and multi-step booking flow; playful N64-party energy without licensed assets.",
+      "link": "/template/demo/party-smile-dental"
+    },
+    {
+      "slug": "companion-pet",
+      "title": "Companion",
+      "description": "Premium pet supply ecosystem (fictional) — Six-route premium pet retail demo — live MongoDB shop, rewards login, guest checkout with 15-minute holds, and order confirmation.",
+      "link": "/template/demo/companion-pet"
+    },
+    {
+      "slug": "pawsome",
+      "title": "Pawsome",
+      "description": "Premium pet wellness ecosystem (fictional) — Material Design 3 multi-route pet retail demo — live MongoDB shop, rewards login, guest checkout with 15-minute holds, and order confirmation.",
+      "link": "/template/demo/pawsome"
+    },
+    {
+      "slug": "starlight-command",
+      "title": "Arcade",
+      "description": "Industrial command deck (fictional) — Seven routes from command home to contact — CRT chrome, mission cards, services hub with FAQ, stage-select portfolio filters, reputation leaderboard, and mission log about page; demo brand Arcade Trades, Toronto placeholder copy only.",
+      "link": "/template/demo/starlight-command"
+    },
+    {
+      "slug": "evergreen-alpine",
+      "title": "EverGreen",
+      "description": "Year-round property stewardship (fictional) — Premium landscaping demo — split-image hero, seasonal command overview, four-season journey centerpiece, challenge cards, masonry portfolio, dark winter section, process roadmap, testimonials, service map, and closing CTA; homeowner-focused, not generic contractor.",
+      "link": "/template/demo/evergreen-alpine"
+    },
+    {
+      "slug": "lumina-landscapes",
+      "title": "Lumina Landscapes",
+      "description": "Landscape architecture studio (fictional) — Single-page premium landscape studio demo — cinematic outdoor retreats, blueprint design process, material library, resort experiences, case-study portfolio, and consultation intake; all placeholder copy.",
+      "link": "/template/demo/lumina-landscapes"
+    },
+    {
+      "slug": "pawsmatch-rescue",
+      "title": "PawsMatch Rescue",
+      "description": "Premium pet adoption matching (fictional) — Single-page pet adoption demo — compatibility matching hero, filterable adoptable pets, adoption journey timeline, rescue story, volunteer board, donation pantry, storybook success stories, FAQ, and pet profile modal; all placeholder copy.",
+      "link": "/template/demo/pawsmatch-rescue"
+    },
+    {
+      "slug": "luxe-co",
+      "title": "LUXE & CO.",
+      "description": "Premium real estate concierge (fictional) — Single-page premium real estate demo — editorial hero, lifestyle matching, neighborhood city guide, curated property collection, market intelligence, buyer/seller roadmap, and story-based testimonials; all placeholder copy.",
+      "link": "/template/demo/luxe-co"
+    },
+    {
+      "slug": "home-restoration",
+      "title": "Home Restoration",
+      "description": "Premium residential concierge (fictional) — Single-page luxury home restoration demo — editorial hero with arch motif, sanctuary storytelling, curated space services with magazine modals, restoration journey timeline, before/after sliders, hospitality tiers, client stories, and multi-step concierge booking; all placeholder copy.",
+      "link": "/template/demo/home-restoration"
+    },
+    {
+      "slug": "liquid-occasions",
+      "title": "Liquid Occasions",
+      "description": "Premium event planning studio (fictional) — Five-route premium event planning demo — dream hero with circular clusters, liquid path milestones, multi-step journey intake, experience showcases, portfolio case studies, and five-stage process timeline; MD3 palette with yellow path motif; all placeholder copy.",
+      "link": "/template/demo/liquid-occasions"
+    },
+    {
+      "slug": "kinship-capital",
+      "title": "Kinship & Capital",
+      "description": "Heritage Financial family wealth (fictional) — Six-route premium family wealth demo — home, services marketplace, pricing tiers, FAQ accordion, about story, and contact consultation form; MD3 blue palette with concierge financial copy; all placeholder.",
+      "link": "/template/demo/kinship-capital"
+    },
+    {
+      "slug": "saturday-pet-market",
+      "title": "Saturday Pet Market",
+      "description": "Full-stack neighborhood pet store (fictional) — Twelve-route retro pet retail demo with MongoDB inventory, cart, 15-minute checkout holds, admin CRUD, and Stripe-ready webhooks — cream/teal/cherry MD3 palette; all placeholder copy.",
+      "link": "/template/demo/saturday-pet-market"
+    },
+    {
+      "slug": "skyline-designs",
+      "title": "Skyline Designs",
+      "description": "Toronto digital craftsman (fictional) — Five-route ethereal portfolio demo — home hero with cloud motifs, skills bento grid, education timeline, agency experience journey, and contact form with Toronto map; sky-blue MD3 palette; all placeholder copy.",
+      "link": "/template/demo/skyline-designs"
+    },
+    {
+      "slug": "valley-interlocking",
+      "title": "Valley Interlocking",
+      "description": "Premium interlocking & landscaping (fictional) — Multi-route hardscape demo — home, Toronto & Edmonton location hubs, services bento with patio, lawn care, and interlocking detail pages, about, and contact; MD3 stone palette; all placeholder copy.",
+      "link": "/template/demo/valley-interlocking"
+    }
+  ]
+}

@@ -9,6 +9,8 @@ const pages = [
     { title: "Home", link: "/" },
     { title: "Services", link: "/services" },
     { title: "Pricing", link: "/pricing" },
+    { title: "Featured Work", link: "/featured-work" },
+    { title: "Website Inspirations", link: "/website-inspirations" },
     { title: "About Us", link: "/about" },
     { title: "Resources", link: "/resources" },
     { title: "Contact", link: "/contact" },

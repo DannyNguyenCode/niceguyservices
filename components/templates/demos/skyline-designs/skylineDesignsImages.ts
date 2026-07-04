@@ -1,0 +1,34 @@
+export const SD_IMG = {
+  home: {
+    hero: "https://lh3.googleusercontent.com/aida-public/AB6AXuDsMTAC49PXhKry9HfiSB2_VZRQ-dLTmmmB947fqXc75PKKfFQsRApZ6tKCKsPmga_YfsYtFnTk1ANuK0lYUFKjyf5O7UhK5ViwQB-1bAYVnSmhtKlpAktm23dnKiYFAoUb_OeNhBbvAA6EpATsJQJlKXFjGTThKojj1b-4E97B_Fyt_vqj3RAXv8W2uxV4rQXGn0WjB-kU3OOzQHCA5nzuSg7yOZWlG7QeQWFimCNChBhhHHUcNKSoyf6hx4G70CF0e8OY0UPz25-_",
+    projectSkylineEstates:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuBfMqQIFf0sGt_a5RcYxwkq-8XAGz3Bi5doHBjJNE-xRkNOHlD4qqyfaKixXgpej5Kp7bBnPBjJX9DCLNIiWJc0B7O_EfbNPiUXDZBY6XuGKGnmbbSkFCs66ng8yljQtpuhVCQo-Jq-r_WmJa0v7i5iKOdBZtHgSxw2tk2PPwu0XEx_gT6vZl1hyrVubt3thPoEgyc66N3hbVhADW2ys25Hz5ctvP7vDRGP7mUi-MrUuYS4i4LTVbDuNzqXcZmWld7Me4RgLY4w2lRp",
+    projectNexusSaas:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuBMzKJ71SYhkq4L6Jb_8YSO6WcpumXgUrr0X7ZL_8G_ALFcL1FolK1W6pUs6E3aIz9n-fdFjExLDkehif3m7wnFa-NkVXsWNlKSKhePINlORVJXo5AAmeWvwtKgJygWsADg6umCgWFoIomKL7tPjaX8NZQI-6YtdRcW0y4DEMpKIMtdk6FjGbfycMafUYFqhGpyillpfkQKH7Z889x76hAgJoIEtQXgKYI9y9D6eWN2nbO4My7tmPvj4O5GnbVmZBhJx1rCf8aniSu_",
+  },
+  experience: {
+    office:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuB-WjTIx7b2_Jz4vNgJdaGl_FeoirMIbgIvqjDu0cXHrMbLLsk3VMucon8X6ZNAGcKf97npPFSqWQDLLS4pls3GkgvWreO6Z3iF_LYjoDR4jB9sk67khntFyQ3KAk5Od5JE3XjIApv92wv0ZU7EuTI4rJiwO2II01aS45MMS75PegPzXUSiumeQNieM-CaVZsu7KozOmZUWD6ZPshDVORhrRTDmeqhVe56hFImuS9XGqZ2Sq11FwdNrhM9xlZlni3nYQn1W6yVmq9_A",
+    keyboard:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuAchym6-LpIEe1hRjKzBSw6w_T7mdjf6g9SbcDIWDrk3MJj9mUrPdPAAQKBWYzH6sZCo-hijEZcjT4ygfp9ytVJ-V_CiYMDx8iJtB02at5DrV2-DzxcVRpalt3oMP-zHNVUF2SqbH08MyBOcYYIJIacGK5YpVEn2FsrtJgBx1JmaDcbLvQNoht1gyXLTIFeL_LtQlPTHlQTU7fLy99lM9vnjn0xCySvT6HASA24LSg9JYWzWxZwBUi-M2cPC4olv2i_1NF_E8LlK7ON",
+  },
+  education: {
+    campus:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuBmwm0mwlnCpRHhwOcvN-KWN7nPKPZhwSRbpueIe9_d2hJGDpMhvHikSrnsyLzzA_vzTf8lFZYEHauKXv8kPdqTU-dY05bsra3_nrNv6dA12Nt72agcb1sfXMVijni7CvW0kJV6J4W6a0e8jTFG0GesOwAmng-69K69hF3To83qTs1ZMiuE7H1u_lKA4fQATgPqXFOtGYVBqcL1ecB1hPW1puisyFEGm6TBD_lvhfRfJ5_y0Zxn8YU_zhMCeVbTZ05TNmAIaQL9_8N3",
+    workspace:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuDaI0JlnLl2Yc4YgUaI9wrqFb8anV24zrgddyB8RTEucWHgUy3Z8yLh-WuYzCxHLqVGoyAe3cKw04O6Xb38lm5XDq8WJkVdg26s0JG1EUXBdVnKQy22t5NjvdmLsIUNecvl_eqeZtQKAcWVmfp-szsEuug8xTY5eh9JJLC75cp8NIPocKBxlSc4Yk_NDYN-EGQPpOUk39LKvQ2kNfXIHOHTjnkw4k3VXHD_CqkZ7L6KUHfGDGdxdWJYwhFx7XEj9LcWy7-plWcPb9Gi",
+    code:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuDL2fwaNJ-A-MVxZrlcHw11iw5vBWhvdB7Np6uY1NkfVc_iRybhVvLwNRix66R-xD3iaKnSoGFZoE0fzNxozBiL88jjAlaUSgZYRVOs69kT8u_dhU1nIv54R_xSV6swqVNP0GNVvlPUmJpzN7wmzlkBD1Nt3qO-zs1uTFdmyApnOZ3lThcooDadBHc1dQaZ9k8dIfjLpFhmCzgXYb5TBtKO5ExRPSBZcAG7JRjWHQjhUuEKdq529k096VXhoLKC4LuJ91-2kcUg3nrX",
+    books:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuD-bc-1XQba028YwI3BhRfhaDyizEGgVfP17M528ED1sMXTkQunyNLC4pu4_o9WgudHmZKWzc24ouaPX7gvdZn09x7l7qVmQcxU42ofpmswIhMSGbBpDYCtNcmy-ln6qLTfP0KdJlG_PjJSUWTDUaqtSxPMcFtJ8ukB_xwkfcMfo8CVHNg-M_ztBbBPRHUXVV4JQHcQKDzT7QgdRwhEavrpSgSd7bx8ZktHpnWtcbutnL9OMYPxh8OiSHqOSKxPbEOAFkVCkeV2-V0F",
+  },
+  skills: {
+    code:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuDUjnIa9EjMjYc7a6okC98jyAt2GPpQ1qjERVTV7uCdkQDyebQgQiMdTyweOUtYGBVr9cjTuEpIUZtbJOo7DFGQT7M_gIyalnoz81PCPEm5mFJYtzKjQpmSNOSOniqbRLPoTXhscHH9cibso5-04XMcr5V1pzFFBu1wVRKVZtXD4fUFrLoRzRvNaz8HdapVcKPUuzNPykQGw73X6ILtQyegH6VnPTC8hhyOWGSyowcl0rFZSlZPsNRH0AmT3YuGFCroRsl5M7WuVYdW",
+    sphere:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuDbondRImcLDe2EOz0ROWwFI3RlBKvkxYO5U8zjTnJqVrbP98UlRhAs4poxSR-_fAbGOiotNMJL0qt5F0d6G_JufgRRL3hWjbaNicAXPhIxPgYlaQ5FqrWboykRlP17V2IOodZex-gP1l0cYUF0w5sga2OBHVjKCA7eJ8kAu1jV9h0tMHW4jYkvdNwRHVEkL_eOnNnAJaSDJZCuv-31_K84TQHge4wIKMyXTkRwRr87UuA1v2S3VXSGRQ-3g7CcaZUz750wyuhlAyTr",
+  },
+  contact: {
+    map: "https://lh3.googleusercontent.com/aida-public/AB6AXuCV8KFRG27Llw4p-F7D7mCQgC3_RiF2NYMVVlMSOBrmf9nPfhzDoKmfAK6mXJsgLzVIkqtwTpJlUYzTkkg8cgyBAizba-VWIOoUQ7kqc7sq2nJ6e4DZlcnrmlP2WsZThWetDjy9VJ02iyFMlKjELABJyxQ6DdHpnBLJOGymLyst2GKJMeVed-CeiuzD9svgBqMcXDuAUEZsW3NBRflrVO3VPhfFIh0vMO5AcgWDUL5Umbq-I_zeaVYMQLSDst9ji0zpZPKYDOULE6LM",
+  },
+} as const;

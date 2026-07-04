@@ -23,6 +23,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/templates",
+        destination: "/website-inspirations",
+        permanent: true,
+      },
+      {
         source: "/resources/custom-websites-vs-templates",
         destination: "/resources",
         permanent: true,
@@ -44,16 +49,6 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/resources/understanding-custom-vs-template-websites",
-        destination: "/resources/custom-vs-template-websites",
-        permanent: true,
-      },
-      {
-        source: "/template",
-        destination: "/resources/custom-vs-template-websites",
-        permanent: true,
-      },
-      {
-        source: "/template/:path*",
         destination: "/resources/custom-vs-template-websites",
         permanent: true,
       },

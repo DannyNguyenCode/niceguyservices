@@ -13,7 +13,7 @@ type ContactPayload = {
     services: string[];
     message: string;
     wantsMeeting: boolean;
-    primaryObjective: "business" | "portfolio";
+    primaryObjective?: "business" | "portfolio";
 };
 
 function isNonEmptyString(v: unknown): v is string {
@@ -34,7 +34,8 @@ function escapeHtml(s: string): string {
 
 function primaryGoalLabel(goal: ContactPayload["primaryObjective"]): string {
     if (goal === "business") return "Business website";
-    return "Portfolio or showcase";
+    if (goal === "portfolio") return "Portfolio or showcase";
+    return "—";
 }
 
 function buildEmailBody(data: ContactPayload): { text: string; html: string } {
@@ -120,10 +121,11 @@ export async function POST(request: Request) {
     }
 
     if (!primaryObjective) {
-        return NextResponse.json(
-            { error: "Primary goal (business or portfolio) is required." },
-            { status: 400 }
-        );
+        // Intake primary goal temporarily disabled — goal is optional on contact form.
+        // return NextResponse.json(
+        //     { error: "Primary goal (business or portfolio) is required." },
+        //     { status: 400 }
+        // );
     }
 
     const data: ContactPayload = {
@@ -134,7 +136,7 @@ export async function POST(request: Request) {
         services,
         message: message.trim(),
         wantsMeeting,
-        primaryObjective,
+        ...(primaryObjective ? { primaryObjective } : {}),
     };
 
     const to = process.env.CONTACT_TO_EMAIL?.trim() || DEFAULT_TO;

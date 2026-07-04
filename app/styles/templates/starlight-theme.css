@@ -1,0 +1,117 @@
+/* Arcade Trades industrial demo — scoped chrome (wrap layout root with .sc-root) */
+.sc-root {
+  --sc-primary-container: #ee671c;
+  --sc-on-primary-fixed: #351000;
+  --sc-on-surface-variant: #e0c0b2;
+  --sc-surface-container: #20201f;
+  --sc-surface-container-low: #1c1b1b;
+  --sc-surface: #131313;
+  --sc-surface-variant: #353535;
+  --sc-on-surface: #e5e2e1;
+  --sc-primary: #ffb595;
+  --sc-outline-variant: #594238;
+  --sc-error-container: #93000a;
+  --sc-on-error-container: #ffdad6;
+  --sc-secondary: #ffdd74;
+  --sc-surface-container-high: #2a2a2a;
+  --sc-surface-container-lowest: #0e0e0e;
+  --sc-on-primary-container: #4c1a00;
+}
+
+.sc-crt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  background-size:
+    100% 4px,
+    3px 100%;
+}
+
+.sc-glow-amber {
+  box-shadow:
+    inset 0 0 15px rgba(238, 103, 28, 0.2),
+    0 0 10px rgba(238, 103, 28, 0.1);
+}
+
+.sc-inner-glow-amber {
+  box-shadow: inset 0 0 15px rgba(238, 103, 28, 0.2);
+}
+
+.sc-hud-scan {
+  background: linear-gradient(180deg, transparent 0%, rgba(238, 103, 28, 0.05) 50%, transparent 100%);
+  background-size: 100% 4px;
+}
+
+.sc-ladder-border-left {
+  border-left: 4px solid #594238;
+  position: relative;
+}
+
+.sc-ladder-border-left::after {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  background-image: repeating-linear-gradient(0deg, #594238, #594238 4px, transparent 4px, transparent 24px);
+}
+
+.sc-ladder-connector {
+  background-image: linear-gradient(to bottom, #594238 4px, transparent 4px);
+  background-size: 100% 24px;
+  width: 20px;
+  height: 100%;
+  border-left: 2px solid #594238;
+  border-right: 2px solid #594238;
+}
+
+.sc-glowing-text {
+  text-shadow: 0 0 12px rgba(238, 103, 28, 0.6);
+}
+
+.sc-root ::-webkit-scrollbar {
+  width: 12px;
+}
+
+.sc-root ::-webkit-scrollbar-track {
+  background: #131313;
+  border-left: 2px solid #594238;
+}
+
+.sc-root ::-webkit-scrollbar-thumb {
+  background: #ee671c;
+  border: 2px solid #131313;
+  box-shadow: 0 0 10px #ee671c;
+}
+
+.sc-stage-card {
+  transition:
+    filter 0.3s ease,
+    transform 0.3s ease;
+}
+
+.sc-stage-card:hover {
+  filter: brightness(1.08);
+  transform: scale(1.01);
+}
+
+.sc-material {
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 500,
+    "GRAD" 0,
+    "opsz" 24;
+}
+
+.sc-material-fill {
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 500,
+    "GRAD" 0,
+    "opsz" 24;
+}

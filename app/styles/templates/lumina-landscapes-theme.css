@@ -1,0 +1,190 @@
+/* Lumina Landscapes — premium landscape architecture studio theme */
+
+.lumina-root {
+  --lumina-bg: #121412;
+  --lumina-bg-elevated: #1a1c1a;
+  --lumina-bg-surface: #222422;
+  --lumina-cream: #f4efe6;
+  --lumina-cream-muted: #c8c0b4;
+  --lumina-green: #6b7f62;
+  --lumina-green-muted: #4a5644;
+  --lumina-bronze: #b8956a;
+  --lumina-bronze-dim: #8a7355;
+  --lumina-line: rgba(244, 239, 230, 0.08);
+  --lumina-line-strong: rgba(184, 149, 106, 0.35);
+  --lumina-container: 1280px;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lumina-root {
+    scroll-behavior: auto;
+  }
+}
+
+.lumina-root .material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+  vertical-align: middle;
+}
+
+.lumina-blueprint-grid {
+  background-image:
+    linear-gradient(var(--lumina-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--lumina-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.lumina-blueprint-grid-fine {
+  background-image:
+    linear-gradient(rgba(244, 239, 230, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(244, 239, 230, 0.04) 1px, transparent 1px);
+  background-size: 12px 12px;
+}
+
+.lumina-stone-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+.lumina-label {
+  font-family: var(--font-lumina-label), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  font-weight: 500;
+}
+
+.lumina-nav-link {
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.lumina-nav-link--active {
+  color: var(--lumina-cream);
+}
+
+.lumina-nav-link--active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.45rem;
+  height: 1px;
+  background: var(--lumina-bronze);
+}
+
+.lumina-nav-link--active-mobile {
+  color: var(--lumina-cream);
+  background: var(--lumina-bg-elevated);
+  box-shadow: inset 3px 0 0 var(--lumina-bronze);
+}
+
+.lumina-btn-primary.lumina-nav-consult--active {
+  box-shadow: inset 0 0 0 1px rgba(244, 239, 230, 0.35);
+}
+
+.lumina-display {
+  font-family: var(--font-lumina-display), ui-serif, Georgia, serif;
+}
+
+.lumina-body-text {
+  font-family: var(--font-lumina-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+.lumina-material-tile {
+  transition:
+    transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lumina-material-tile:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+}
+
+.lumina-material-tile:hover .lumina-material-overlay {
+  opacity: 1;
+}
+
+.lumina-material-overlay {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.lumina-experience-block {
+  width: 100%;
+}
+
+.lumina-experience-block:hover .lumina-experience-image {
+  transform: scale(1.04);
+}
+
+.lumina-experience-image {
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lumina-experience-title {
+  line-height: 1.15;
+  overflow: visible;
+  padding-block: 0.08em;
+}
+
+.lumina-process-dot {
+  box-shadow: 0 0 0 4px var(--lumina-bg), 0 0 0 6px var(--lumina-bronze-dim);
+}
+
+.lumina-process-dot-active {
+  box-shadow: 0 0 0 4px var(--lumina-bg), 0 0 0 6px var(--lumina-bronze);
+  background-color: var(--lumina-bronze);
+}
+
+.lumina-input {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--lumina-line);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lumina-input:focus {
+  outline: none;
+  border-color: var(--lumina-bronze-dim);
+  box-shadow: 0 0 0 1px rgba(184, 149, 106, 0.2);
+}
+
+.lumina-btn-primary {
+  background: var(--lumina-bronze);
+  color: var(--lumina-bg);
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.lumina-btn-primary:hover {
+  background: #c9a67a;
+}
+
+.lumina-btn-primary:active {
+  transform: scale(0.98);
+}
+
+.lumina-btn-outline {
+  border: 1px solid rgba(244, 239, 230, 0.35);
+  color: var(--lumina-cream);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.lumina-btn-outline:hover {
+  border-color: var(--lumina-cream-muted);
+  background: rgba(244, 239, 230, 0.05);
+}
+
+.lumina-section-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--lumina-line-strong) 20%,
+    var(--lumina-line-strong) 80%,
+    transparent
+  );
+}
+
+.lumina-case-accent {
+  background: linear-gradient(180deg, var(--lumina-bronze), transparent);
+}

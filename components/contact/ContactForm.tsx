@@ -1,16 +1,13 @@
 "use client";
 
 import {
-    ArrowRightIcon,
     BriefcaseIcon,
     ChatBubbleLeftRightIcon,
-    ClockIcon,
     EnvelopeIcon,
     PaperAirplaneIcon,
     PhoneIcon,
     UserIcon,
 } from "@heroicons/react/24/outline";
-import Link from "next/link";
 import type { FormEvent } from "react";
 import type { FormState } from "../Contact";
 
@@ -25,8 +22,8 @@ const fieldUnderlineClass =
 interface ContactFormProps {
     form: FormState;
     submitting: boolean;
-    ctaText: string;
-    onCtaTextChange: (t: string) => void;
+    // ctaText: string;
+    // onCtaTextChange: (t: string) => void;
     onChange: (field: keyof FormState, value: string | boolean) => void;
     onSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }
@@ -34,13 +31,13 @@ interface ContactFormProps {
 export default function ContactForm({
     form,
     submitting,
-    ctaText,
-    onCtaTextChange,
+    // ctaText,
+    // onCtaTextChange,
     onChange,
     onSubmit,
 }: ContactFormProps) {
     return (
-        <form id="intake-form" onSubmit={onSubmit} className="space-y-10">
+        <form id="contact-form" onSubmit={onSubmit} className="space-y-10">
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                 <div className="flex flex-col">
                     <label className={labelCapsClass} htmlFor="contact-name">
@@ -133,6 +130,7 @@ export default function ContactForm({
                 </div>
             </div>
 
+            {/* Intake primary goal temporarily disabled
             <fieldset className="flex flex-col border border-base-300 bg-(--pm-surface-low) p-8">
                 <legend className="mb-6 flex w-full items-center gap-2 font-pm-body text-xs font-bold tracking-[0.15em] text-primary uppercase">
                     Select primary goal
@@ -148,9 +146,6 @@ export default function ContactForm({
                             checked={form.primaryObjective === "business"}
                             onChange={() => {
                                 onChange("primaryObjective", "business");
-                                onCtaTextChange(
-                                    "Project details",
-                                );
                             }}
                         />
                         <div className="ml-2 flex min-w-0 flex-1 flex-col sm:ml-3">
@@ -171,19 +166,20 @@ export default function ContactForm({
                             checked={form.primaryObjective === "portfolio"}
                             onChange={() => {
                                 onChange("primaryObjective", "portfolio");
-                                onCtaTextChange("Creative brief");
                             }}
                         />
                         <div className="ml-2 flex min-w-0 flex-1 flex-col sm:ml-3">
                             <span className="flex items-center gap-1.5 text-sm font-bold tracking-wider text-(--pm-on-surface) uppercase group-hover:text-primary">
                                 Portfolio or showcase
-                            </span>                            <span className="mt-1 block text-xs text-(--pm-on-surface-variant)">
+                            </span>
+                            <span className="mt-1 block text-xs text-(--pm-on-surface-variant)">
                                 A polished, image-forward presence for your work
                             </span>
                         </div>
                     </label>
                 </div>
             </fieldset>
+            */}
 
             <div className="flex flex-col">
                 <label className={labelCapsClass} htmlFor="contact-message">
@@ -238,6 +234,7 @@ export default function ContactForm({
                         </span>
                     )}
                 </button>
+                {/* Intake wizard temporarily disabled
                 <Link
                     href={
                         form.primaryObjective === "business"
@@ -264,7 +261,6 @@ export default function ContactForm({
                                 })
                             );
                         } catch {
-                            /* ignore */
                         }
                     }}
                 >
@@ -274,14 +270,15 @@ export default function ContactForm({
                         aria-hidden
                     />
                 </Link>
+                */}
             </div>
-            <p className="mt-4 flex items-center justify-center gap-1 text-center text-[0.65rem] tracking-[0.2em] text-(--pm-on-surface-variant) uppercase opacity-60 md:justify-end">
+            {/* <p className="mt-4 flex items-center justify-center gap-1 text-center text-[0.65rem] tracking-[0.2em] text-(--pm-on-surface-variant) uppercase opacity-60 md:justify-end">
                 <ClockIcon
                     className="h-3.5 w-3.5 shrink-0 opacity-80"
                     aria-hidden
                 />
                 Avg. time to complete: 3–4 minutes
-            </p>
+            </p> */}
         </form>
     );
 }

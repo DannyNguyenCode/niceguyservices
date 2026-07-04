@@ -1,0 +1,136 @@
+.cp-root {
+  --cp-white: #fafaf9;
+  --cp-warm-gray: #f0eeeb;
+  --cp-charcoal: #1c1c1e;
+  --cp-slate: #64748b;
+  --cp-blue: #5b8def;
+  --cp-blue-muted: #e8f0fe;
+  --cp-orange: #e8954c;
+  --cp-orange-muted: #fef3e8;
+  --cp-green: #6bbf8a;
+  --cp-green-muted: #ecf7f0;
+  --cp-border: rgba(28, 28, 30, 0.08);
+  --cp-shadow: 0 4px 24px rgba(28, 28, 30, 0.06);
+  --cp-shadow-lg: 0 12px 40px rgba(28, 28, 30, 0.1);
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cp-root {
+    scroll-behavior: auto;
+  }
+  .cp-card:hover,
+  .cp-product-card:hover,
+  .cp-float:hover {
+    transform: none;
+  }
+  .cp-faq-panel {
+    transition: none;
+  }
+}
+
+.cp-card {
+  background: var(--cp-white);
+  border: 1px solid var(--cp-border);
+  border-radius: 1rem;
+  box-shadow: var(--cp-shadow);
+  transition:
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cp-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--cp-shadow-lg);
+}
+
+.cp-glass {
+  background: rgba(250, 250, 249, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--cp-border);
+}
+
+.cp-product-card {
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cp-product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--cp-shadow-lg);
+}
+
+.cp-float {
+  animation: cp-float 6s ease-in-out infinite;
+}
+
+.cp-float-delay-1 {
+  animation-delay: -1.5s;
+}
+
+.cp-float-delay-2 {
+  animation-delay: -3s;
+}
+
+@keyframes cp-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.cp-faq-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cp-faq-panel-open {
+  grid-template-rows: 1fr;
+}
+
+.cp-faq-panel-inner {
+  overflow: hidden;
+}
+
+.cp-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--cp-warm-gray) 0%,
+    #f8f7f5 50%,
+    var(--cp-warm-gray) 100%
+  );
+  background-size: 200% 100%;
+  animation: cp-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes cp-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.cp-progress-ring {
+  transform: rotate(-90deg);
+}
+
+.cp-chip {
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.cp-chip-active {
+  background: var(--cp-charcoal);
+  color: var(--cp-white);
+  border-color: var(--cp-charcoal);
+}

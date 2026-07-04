@@ -1,0 +1,244 @@
+/* LUXE & CO. — premium editorial real estate theme */
+
+.lc-root {
+  --lc-bg: #f9f8f3;
+  --lc-bg-warm: #f3f0e8;
+  --lc-bg-elevated: #fffdf9;
+  --lc-charcoal: #1a1a1a;
+  --lc-charcoal-muted: #5c5c5c;
+  --lc-charcoal-light: #8a8a8a;
+  --lc-beige: #e5e1d8;
+  --lc-beige-dark: #d4cfc4;
+  --lc-gold: #c5a059;
+  --lc-gold-dim: #a88644;
+  --lc-gold-light: #e8d5a8;
+  --lc-line: rgba(26, 26, 26, 0.1);
+  --lc-line-strong: rgba(197, 160, 89, 0.4);
+  --lc-container: 1280px;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lc-root {
+    scroll-behavior: auto;
+  }
+}
+
+.lc-root .material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+  vertical-align: middle;
+}
+
+.lc-root .material-symbols-outlined.lc-icon-filled {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.lc-display {
+  font-family: var(--font-lc-display), ui-serif, Georgia, serif;
+}
+
+.lc-body-text {
+  font-family: var(--font-lc-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+.lc-label {
+  font-family: var(--font-lc-body), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  font-weight: 500;
+}
+
+.lc-btn-primary {
+  background: var(--lc-charcoal);
+  color: var(--lc-bg-elevated);
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.lc-btn-primary:hover {
+  background: #2e2e2e;
+}
+
+.lc-btn-primary:active {
+  transform: scale(0.98);
+}
+
+.lc-btn-outline {
+  border: 1px solid var(--lc-charcoal);
+  color: var(--lc-charcoal);
+  background: transparent;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.lc-btn-outline:hover {
+  background: rgba(26, 26, 26, 0.04);
+}
+
+.lc-btn-ghost {
+  color: var(--lc-charcoal);
+  border-bottom: 1px solid var(--lc-gold);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.lc-btn-ghost:hover {
+  color: var(--lc-gold-dim);
+  border-color: var(--lc-gold-dim);
+}
+
+.lc-focus-ring:focus-visible {
+  outline: 2px solid var(--lc-gold);
+  outline-offset: 3px;
+}
+
+.lc-nav-scrolled {
+  border-bottom: 1px solid var(--lc-line);
+  background: rgba(249, 248, 243, 0.95);
+  backdrop-filter: blur(12px);
+}
+
+.lc-section-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--lc-line-strong) 20%,
+    var(--lc-line-strong) 80%,
+    transparent
+  );
+}
+
+.lc-gold-rule {
+  width: 48px;
+  height: 1px;
+  background: var(--lc-gold);
+}
+
+.lc-map-grid {
+  background-image:
+    radial-gradient(circle, var(--lc-beige-dark) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.lc-route-line {
+  stroke: var(--lc-beige-dark);
+  stroke-width: 1;
+  stroke-dasharray: 4 6;
+  fill: none;
+}
+
+.lc-lifestyle-card {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lc-lifestyle-card:hover {
+  transform: translateY(-4px);
+}
+
+.lc-lifestyle-card:hover .lc-lifestyle-image {
+  transform: scale(1.03);
+}
+
+.lc-lifestyle-image {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lc-neighborhood-card {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lc-neighborhood-card:hover {
+  border-color: var(--lc-gold);
+  box-shadow: 0 12px 40px rgba(26, 26, 26, 0.06);
+}
+
+.lc-property-card:hover .lc-property-image {
+  transform: scale(1.02);
+}
+
+.lc-property-image {
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lc-roadmap-step {
+  position: relative;
+}
+
+.lc-roadmap-step::after {
+  content: "";
+  position: absolute;
+  top: 1.25rem;
+  left: calc(100% + 0.5rem);
+  width: calc(100% - 1rem);
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--lc-beige-dark) 0,
+    var(--lc-beige-dark) 4px,
+    transparent 4px,
+    transparent 10px
+  );
+}
+
+.lc-roadmap-step:last-child::after {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .lc-roadmap-step::after {
+    display: none;
+  }
+}
+
+.lc-testimonial-card {
+  transition: border-color 0.3s ease;
+}
+
+.lc-testimonial-card:hover {
+  border-color: var(--lc-gold);
+}
+
+.lc-star {
+  color: var(--lc-gold);
+}
+
+.lc-cta-block {
+  background: var(--lc-charcoal);
+  color: var(--lc-bg-elevated);
+}
+
+.lc-modal-backdrop {
+  background-color: rgba(26, 26, 26, 0.65);
+  backdrop-filter: blur(4px);
+}
+
+.lc-modal-panel {
+  box-shadow: 0 24px 48px rgba(26, 26, 26, 0.35);
+}
+
+.lc-pin-pulse {
+  animation: lc-pin-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes lc-pin-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.15);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lc-pin-pulse {
+    animation: none;
+  }
+
+  .lc-lifestyle-card:hover,
+  .lc-lifestyle-card:hover .lc-lifestyle-image,
+  .lc-property-card:hover .lc-property-image {
+    transform: none;
+  }
+}

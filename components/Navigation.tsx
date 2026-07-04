@@ -12,6 +12,8 @@ const pages = [
     { title: "Home", link: "/" },
     { title: "Services", link: "/services" },
     { title: "Pricing", link: "/pricing" },
+    { title: "Featured Work", link: "/featured-work" },
+    { title: "Website Inspirations", link: "/website-inspirations" },
     { title: "About Us", link: "/about" },
     { title: "Resources", link: "/resources" },
     { title: "Contact", link: "/contact" },
@@ -29,6 +31,7 @@ export default function Navigation() {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [menuTopPx, setMenuTopPx] = useState(0);
     const logoSrc = getSiteLogoForTheme(theme);
+    const logoBlendClass = theme === "dark" ? "mix-blend-lighten" : "";
 
     useLayoutEffect(() => {
         if (!mobileOpen || !navRef.current) return;
@@ -148,7 +151,7 @@ export default function Navigation() {
 
                 <Link
                     href="/"
-                    className="hidden h-16 items-center pl-1 pr-2 lg:flex"
+                    className="hidden h-16 items-center bg-transparent pl-1 pr-2 hover:bg-transparent lg:flex"
                     aria-label="Go to homepage"
                 >
                     <Image
@@ -156,14 +159,14 @@ export default function Navigation() {
                         width={160}
                         height={160}
                         alt="Nice Guy Web Design"
-                        className="h-16 w-auto origin-left scale-[1.12] object-contain object-left transition"
+                        className={`h-14 w-auto origin-left scale-[1.06] bg-transparent object-contain object-left transition ${logoBlendClass}`}
                     />
                 </Link>
             </div>
 
             <Link
                 href="/"
-                className="absolute top-1/2 left-1/2 z-10 flex h-16 -translate-x-1/2 -translate-y-1/2 items-center lg:hidden"
+                className="absolute top-1/2 left-1/2 z-10 flex h-16 -translate-x-1/2 -translate-y-1/2 items-center bg-transparent hover:bg-transparent lg:hidden"
                 aria-label="Go to homepage"
             >
                 <Image
@@ -172,7 +175,7 @@ export default function Navigation() {
                     height={160}
                     alt="Nice Guy Web Design"
                     priority
-                    className="h-16 w-auto origin-center scale-[1.12] object-contain object-center transition"
+                    className={`h-14 w-auto origin-center scale-[1.06] bg-transparent object-contain object-center transition ${logoBlendClass}`}
                 />
             </Link>
 

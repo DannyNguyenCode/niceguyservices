@@ -173,10 +173,14 @@
     html[data-theme="niceguys-light"]:has([data-pricing-page="modern"]) main#content-container,
     html[data-theme="niceguys-light"]:has([data-services-page="modern"]) body,
     html[data-theme="niceguys-light"]:has([data-services-page="modern"]) main#content-container,
+    html[data-theme="niceguys-light"]:has([data-featured-work-page=""]) body,
+    html[data-theme="niceguys-light"]:has([data-featured-work-page=""]) main#content-container,
     html[data-theme="niceguys-dark"]:has([data-pricing-page="modern"]) body,
     html[data-theme="niceguys-dark"]:has([data-pricing-page="modern"]) main#content-container,
     html[data-theme="niceguys-dark"]:has([data-services-page="modern"]) body,
-    html[data-theme="niceguys-dark"]:has([data-services-page="modern"]) main#content-container {
+    html[data-theme="niceguys-dark"]:has([data-services-page="modern"]) main#content-container,
+    html[data-theme="niceguys-dark"]:has([data-featured-work-page=""]) body,
+    html[data-theme="niceguys-dark"]:has([data-featured-work-page=""]) main#content-container {
         background-color: var(--pm-surface);
     }
 

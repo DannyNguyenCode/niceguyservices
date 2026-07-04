@@ -4,6 +4,7 @@ import { WORKBOOK_CONTENT } from "@/lib/clientDiscoveryWorkbook/content";
 
 export const dynamic = "force-dynamic";
 
+const WORKBOOK_ENABLED = false;
 const DEFAULT_TO = "gbnguyenw@gmail.com";
 
 type Body = {
@@ -87,6 +88,14 @@ ${htmlSections.join("")}
 }
 
 export async function POST(request: Request) {
+    // Client discovery workbook temporarily disabled
+    if (!WORKBOOK_ENABLED) {
+        return NextResponse.json(
+            { error: "Client discovery workbook is temporarily unavailable." },
+            { status: 503 },
+        );
+    }
+
     const apiKey = process.env.RESEND_API_KEY?.trim();
     if (!apiKey) {
         return NextResponse.json(

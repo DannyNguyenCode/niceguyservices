@@ -1,0 +1,18 @@
+export const HR_IMAGES = {
+  hero: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
+  sanctuary: "https://images.unsplash.com/photo-1600210492493-0946911123ea?w=900&q=80",
+  kitchen: "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=900&q=80",
+  bathroom: "https://images.unsplash.com/photo-1620626011761-996317b8d101?w=900&q=80",
+  livingRoom: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=900&q=80",
+  bedroom: "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=900&q=80",
+  kitchenBefore: "https://images.unsplash.com/photo-1556912173-46c336c7fd55?w=1000&q=80",
+  kitchenAfter: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=1000&q=80",
+  bathroomBefore: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=1000&q=80",
+  bathroomAfter: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1000&q=80",
+  livingBefore: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=1000&q=80",
+  livingAfter: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1000&q=80",
+  storyOne: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1000&q=80",
+  storyTwo: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1000&q=80",
+  storyThree: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=1000&q=80",
+  booking: "https://images.unsplash.com/photo-1600210492493-0946911123ea?w=800&q=80",
+} as const;
