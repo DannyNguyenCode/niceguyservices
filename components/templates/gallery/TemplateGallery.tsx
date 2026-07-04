@@ -22,7 +22,7 @@ export function TemplateGallery() {
   const [activeFilter, setActiveFilter] = useState<GalleryFilterId>("all");
   const [expandedRow, setExpandedRow] = useState<InspirationRowId | null>(null);
   const expandedRefs = useRef<Partial<Record<InspirationRowId, HTMLElement | null>>>({});
-  const contentRef = useRef<HTMLElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   const isBrowseAll = activeFilter === "all";
 
