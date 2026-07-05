@@ -49,7 +49,7 @@
   --color-inverse-on-surface: #313030;
   --color-on-error: #690005;
 
-  --spacing-gutter: 32px;
+  --spacing-gutter: clamp(2.25rem, 4vw + 0.75rem, 3rem);
   --spacing-section-padding: 120px;
   --spacing-stack-sm: 16px;
   --spacing-container-max: 1440px;

@@ -107,6 +107,12 @@
       "title": "Power Pellet Electric",
       "description": "Retro arcade electrician (fictional) — Multi-route demo with home, services grid, panel upgrade detail, about values maze, resource articles, and contact command form; neon yellow/pink MD3 palette with mobile bottom nav; all placeholder copy.",
       "link": "/template/demo/power-pellet-electric"
+    },
+    {
+      "slug": "comfortflow-hvac",
+      "title": "ComfortFlow HVAC",
+      "description": "Precision engineered comfort (fictional) — Multi-route HVAC demo with home network map, maintenance plans, heating, cooling, air quality, water heaters, comfort systems, resources, and contact booking; Geist light-mode MD3 palette; all placeholder copy.",
+      "link": "/template/demo/comfortflow-hvac"
     }
   ]
 }

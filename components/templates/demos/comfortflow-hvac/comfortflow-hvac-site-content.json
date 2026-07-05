@@ -1,0 +1,557 @@
+{
+  "site": {
+    "name": "ComfortFlow HVAC",
+    "tagline": "Precision Engineered Comfort",
+    "copyright": "© 2024 ComfortFlow HVAC. Precision Engineered Comfort.",
+    "phone": "416-555-0199",
+    "phoneHref": "tel:4165550199",
+    "email": "support@comfortflow.io",
+    "address": "123 Commerce Way, Suite 400, Toronto, ON M5V 3B1",
+    "primaryCTA": {
+      "label": "Book Service",
+      "href": "/contact"
+    }
+  },
+  "navigation": [
+    { "key": "home", "label": "Home", "href": "/" },
+    { "key": "services", "label": "Services", "href": "/services/maintenance-plans" },
+    { "key": "about", "label": "About", "href": "/about" },
+    { "key": "resources", "label": "Resources", "href": "/resources" },
+    { "key": "contact", "label": "Contact", "href": "/contact" }
+  ],
+  "footer": {
+    "columns": [
+      {
+        "title": "Services",
+        "links": [
+          { "label": "Heating", "href": "/services/heating" },
+          { "label": "Cooling", "href": "/services/cooling" },
+          { "label": "Air Quality", "href": "/services/air-quality" },
+          { "label": "Maintenance", "href": "/services/maintenance-plans" }
+        ]
+      },
+      {
+        "title": "Resources",
+        "links": [
+          { "label": "Knowledge Base", "href": "/resources" },
+          { "label": "Privacy Policy", "href": "#" },
+          { "label": "Terms of Service", "href": "#" },
+          { "label": "Emergency Support", "href": "/contact", "highlight": true }
+        ]
+      },
+      {
+        "title": "Headquarters",
+        "links": [
+          { "label": "123 Commerce Way, Suite 400", "href": "#" },
+          { "label": "Toronto, ON M5V 3B1", "href": "#" },
+          { "label": "416-555-0199", "href": "tel:4165550199" },
+          { "label": "support@comfortflow.io", "href": "mailto:support@comfortflow.io" }
+        ]
+      }
+    ],
+    "copyright": "© 2024 ComfortFlow HVAC. Precision Engineered Comfort."
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Toronto Home Comfort Specialists",
+      "headline": "Every System In Your Home, Working Together",
+      "body": "Heating, cooling, water heating, air quality, ductwork, thermostats, and maintenance connected through one smarter comfort network.",
+      "primaryCTA": { "label": "Book Service", "href": "/contact" },
+      "secondaryCTA": { "label": "Explore Services", "href": "/services/maintenance-plans" },
+      "mapImageKey": "networkMap",
+      "mapAlt": "Home Comfort Network cutaway diagram with rooms, ducts, vents, thermostat, furnace, AC unit, water heater, filter, humidifier, and plumbing"
+    },
+    "servicePills": [
+      { "key": "cooling", "label": "Cooling", "href": "/services/cooling" },
+      { "key": "heating", "label": "Heating", "href": "/services/heating" },
+      { "key": "water-heaters", "label": "Water Heaters", "href": "/services/water-heaters" },
+      { "key": "air-quality", "label": "Air Quality", "href": "/services/air-quality" },
+      { "key": "smart-thermostats", "label": "Thermostats", "href": "/services/smart-thermostats" },
+      { "key": "maintenance-plans", "label": "Maintenance", "href": "/services/maintenance-plans" }
+    ],
+    "serviceBento": [
+      {
+        "icon": "ac_unit",
+        "badge": "Cooling",
+        "title": "Precision Cooling",
+        "description": "Advanced AC systems designed for the unique humidity profiles of Ontario summers.",
+        "href": "/services/cooling",
+        "cta": "Learn more",
+        "tags": ["Energy Star", "Smart Ready"],
+        "span": "large"
+      },
+      {
+        "icon": "heat_pump",
+        "badge": "Heating",
+        "title": "Hybrid Heating",
+        "description": "Ultra-efficient heat pumps that thrive in sub-zero temperatures.",
+        "href": "/services/heating",
+        "cta": "View systems",
+        "span": "default"
+      },
+      {
+        "icon": "water_drop",
+        "badge": "Water Heaters",
+        "title": "Water Heating",
+        "description": "Tankless and hybrid solutions for endless comfort.",
+        "href": "/services/water-heaters",
+        "cta": "Configure",
+        "span": "default"
+      },
+      {
+        "icon": "air",
+        "badge": "Air Quality",
+        "title": "Indoor Air Quality",
+        "description": "HEPA filtration and UV purification systems that integrate directly with your existing ducts.",
+        "href": "/services/air-quality",
+        "cta": "Health analysis",
+        "span": "wide"
+      }
+    ],
+    "processSteps": {
+      "eyebrow": "The Engineering Process",
+      "title": "How the Comfort Network Works",
+      "steps": [
+        {
+          "icon": "analytics",
+          "title": "System Audit",
+          "description": "We map your home's thermal footprint and existing infrastructure to identify efficiency gaps."
+        },
+        {
+          "icon": "hub",
+          "title": "Network Integration",
+          "description": "We unify your HVAC components through a central smart hub for seamless communication."
+        },
+        {
+          "icon": "monitoring",
+          "title": "Proactive Tuning",
+          "description": "Our sensors monitor performance 24/7, adjusting output based on real-time external conditions."
+        }
+      ]
+    },
+    "emergency": {
+      "icon": "e911_emergency",
+      "title": "No Heat or A/C?",
+      "body": "Emergency repair crews available 24/7 across the GTA.",
+      "cta": { "label": "Call 416-555-0199", "href": "tel:4165550199" }
+    },
+    "membership": {
+      "eyebrow": "Peace of Mind",
+      "title": "The Precision Care Membership",
+      "body": "Preventative maintenance that extends equipment life by up to 30% and keeps your utility bills predictable.",
+      "benefits": [
+        "Bi-annual System Optimization",
+        "15% Off All Repairs & Parts",
+        "Zero Service Call Fees"
+      ],
+      "memberPerks": [
+        { "icon": "bolt", "title": "Priority Dispatch", "description": "Under 4 hour response" },
+        { "icon": "history", "title": "Digital Records", "description": "Full service history" }
+      ],
+      "primaryCTA": { "label": "Join the Network", "href": "/services/maintenance-plans" },
+      "imageKey": "tuneUp"
+    },
+    "testimonials": [
+      {
+        "quote": "Finally an HVAC company that uses modern tech to solve old problems.",
+        "author": "David S.",
+        "location": "The Annex"
+      },
+      {
+        "quote": "Our energy bill dropped by 20% after they tuned our network.",
+        "author": "Linda M.",
+        "location": "Etobicoke"
+      },
+      {
+        "quote": "Seamless integration between our smart home and furnace.",
+        "author": "Marcus K.",
+        "location": "Rosedale"
+      }
+    ],
+    "resourceGuides": {
+      "eyebrow": "System Guides",
+      "title": "Knowledge Base",
+      "viewAll": { "label": "View all resources", "href": "/resources" },
+      "guides": [
+        {
+          "title": "When to Replace Your Furnace",
+          "excerpt": "Understanding the lifecycle of your heating system can save thousands in emergency repairs.",
+          "href": "/resources/when-to-replace-furnace",
+          "imageKey": "homeGuide1"
+        },
+        {
+          "title": "Signs Your AC Needs Repair",
+          "excerpt": "Early detection of refrigerant leaks or compressor strain is vital for system longevity.",
+          "href": "/resources/signs-ac-needs-repair",
+          "imageKey": "homeGuide2"
+        },
+        {
+          "title": "HVAC Maintenance Checklist",
+          "excerpt": "Essential service points every homeowner should monitor quarterly.",
+          "href": "/resources/hvac-maintenance-checklist",
+          "imageKey": "homeGuide3"
+        }
+      ]
+    },
+    "serviceSnippets": {
+      "eyebrow": "Our Services",
+      "title": "Whole-Home HVAC for Toronto & the GTA",
+      "intro": "ComfortFlow connects heating, cooling, water heating, air quality, smart thermostats, ductwork, and preventative maintenance into one precision comfort network.",
+      "items": [
+        {
+          "icon": "ac_unit",
+          "title": "Cooling & Air Conditioning",
+          "description": "High-efficiency AC installation, repair, and tune-ups built for Ontario humidity and summer heat loads.",
+          "href": "/services/cooling"
+        },
+        {
+          "icon": "local_fire_department",
+          "title": "Heating & Furnace Services",
+          "description": "Furnace repair, heat pump integration, and combustion tuning to keep your home warm through Toronto winters.",
+          "href": "/services/heating"
+        },
+        {
+          "icon": "water_drop",
+          "title": "Water Heaters",
+          "description": "Tankless, hybrid, and conventional water heater installs with flow-rate analysis for reliable hot water.",
+          "href": "/services/water-heaters"
+        },
+        {
+          "icon": "air",
+          "title": "Indoor Air Quality",
+          "description": "HEPA filtration, UV purification, and humidity control integrated with your existing duct network.",
+          "href": "/services/air-quality"
+        },
+        {
+          "icon": "thermostat",
+          "title": "Smart Thermostats",
+          "description": "Precision climate control, zoning, and remote diagnostics that sync every system in your home.",
+          "href": "/services/smart-thermostats"
+        },
+        {
+          "icon": "build",
+          "title": "Maintenance & Ductwork",
+          "description": "Bi-annual tune-ups, duct sealing, and vent care that extend equipment life and lower energy bills.",
+          "href": "/services/maintenance-plans"
+        }
+      ]
+    },
+    "aboutPreview": {
+      "eyebrow": "About ComfortFlow",
+      "title": "Engineering the Pulse of Modern Living",
+      "body": "We don't just repair machines — we manage the invisible infrastructure of your home. From our Toronto workshop roots to a connected comfort network across the GTA, ComfortFlow bridges traditional HVAC with smart, proactive home care.",
+      "highlights": [
+        "Licensed, NATE-certified technicians",
+        "Same-day and emergency dispatch across the GTA",
+        "Transparent digital diagnostics on every visit"
+      ],
+      "href": "/about",
+      "linkLabel": "Meet the team",
+      "imageKey": "aboutWorkshop"
+    },
+    "seoAeo": {
+      "eyebrow": "Quick Answers",
+      "title": "Toronto HVAC Service — What Homeowners Ask Us",
+      "intro": "Straight answers about heating, cooling, and home comfort in the Greater Toronto Area. Need a specific quote? Our dispatch team is ready to help.",
+      "items": [
+        {
+          "question": "Who provides HVAC service in Toronto?",
+          "answer": "ComfortFlow HVAC is a Toronto-based home comfort company serving the GTA with heating, cooling, water heating, air quality, smart thermostat, and maintenance services. We offer scheduled tune-ups and same-day emergency repair."
+        },
+        {
+          "question": "How much does HVAC maintenance cost in Ontario?",
+          "answer": "Preventative maintenance plans at ComfortFlow start at $19 per month for bi-annual tune-ups, with Gold and Platinum tiers that add priority dispatch, repair discounts, and duct care. Request a quote for a plan matched to your home's systems."
+        },
+        {
+          "question": "When should I replace my furnace or air conditioner?",
+          "answer": "Most furnaces last 15–20 years and central AC units 12–15 years. Rising energy bills, uneven temperatures, frequent repairs, or units older than 15 years are signs to schedule a professional assessment before peak season."
+        },
+        {
+          "question": "Do you offer emergency heating and cooling repair?",
+          "answer": "Yes. ComfortFlow provides 24/7 emergency HVAC repair across the GTA for no-heat and no-cool situations. Maintenance plan members receive priority dispatch with guaranteed response windows."
+        }
+      ],
+      "cta": {
+        "label": "Request a Free Quote",
+        "href": "/contact"
+      },
+      "secondaryCta": {
+        "label": "Schedule a Home Comfort Audit",
+        "href": "/contact"
+      }
+    },
+    "finalCta": {
+      "title": "Ready to Upgrade Your Home's IQ?",
+      "body": "Experience the difference of a precision-engineered comfort network. Schedule your diagnostic audit today.",
+      "primaryCTA": { "label": "Book Your Audit", "href": "/contact" },
+      "secondaryCTA": { "label": "Speak with an Engineer", "href": "/contact" }
+    }
+  },
+  "about": {
+    "hero": {
+      "eyebrow": "Our Mission",
+      "headline": "Engineering the Pulse of Modern Living.",
+      "body": "At ComfortFlow, we don't just repair machines; we manage the invisible infrastructure of your home. We bridge the gap between traditional HVAC and the smart, connected future.",
+      "imageKey": "aboutWorkshop"
+    },
+    "story": {
+      "eyebrow": "The Story",
+      "title": "Born from Precision",
+      "body": "ComfortFlow began as a small Toronto workshop obsessed with thermal efficiency. Today, we operate as a high-tech utility partner, ensuring every vent, sensor, and unit in your home works in perfect, silent harmony.",
+      "imageKey": "serviceMap"
+    },
+    "philosophy": {
+      "eyebrow": "The Philosophy",
+      "title": "The Connected Advantage",
+      "pillars": [
+        {
+          "icon": "sensors",
+          "title": "Predictive Insight",
+          "description": "We utilize smart sensors to detect anomalies before they become failures, transitioning from reactive repair to proactive management."
+        },
+        {
+          "icon": "hub",
+          "title": "Unified Network",
+          "description": "Your HVAC system isn't an island. We integrate it with your broader home ecosystem for optimal performance and energy savings."
+        },
+        {
+          "icon": "energy_savings_leaf",
+          "title": "Adaptive Efficiency",
+          "description": "Our systems learn your lifestyle patterns, adjusting temperature and air quality dynamically to minimize your carbon footprint."
+        }
+      ]
+    },
+    "values": {
+      "eyebrow": "Our People",
+      "title": "The Precision Protocol",
+      "intro": "Every technician undergoes 500+ hours of \"Connected Comfort\" training annually.",
+      "items": [
+        {
+          "number": "01",
+          "label": "Radiant Service",
+          "title": "Transparent Diagnostics",
+          "description": "We provide full digital reports with video proof of every diagnosis. No hidden jargon."
+        },
+        {
+          "number": "02",
+          "label": "Silent Precision",
+          "title": "White-Glove Respect",
+          "description": "Our technicians respect the sanctity of your home with noise-minimization protocols."
+        },
+        {
+          "number": "03",
+          "label": "Data Integrity",
+          "title": "Cyber-Secure Setup",
+          "description": "We treat your home network with the same security rigor as a corporate enterprise."
+        },
+        {
+          "number": "04",
+          "label": "Legacy Support",
+          "title": "Post-Service Pulse",
+          "description": "We monitor your system's performance for 72 hours post-repair to ensure stability."
+        }
+      ]
+    },
+    "serviceAreas": {
+      "eyebrow": "Availability",
+      "title": "Our Growing Network",
+      "body": "ComfortFlow is rapidly expanding across the Greater Toronto Area. Each pulse on the map represents a dedicated service hub optimized for 60-minute emergency response times.",
+      "primaryHubs": ["Downtown Toronto", "North York", "Tech Corridor"],
+      "secondaryNodes": ["Etobicoke", "Scarborough", "Mississauga"],
+      "imageKey": "serviceMap"
+    },
+    "certifications": {
+      "title": "Certified by the Industry Leaders in Precision",
+      "items": [
+        { "icon": "verified", "label": "NATE Certified" },
+        { "icon": "energy_savings_leaf", "label": "Energy Star Partner" },
+        { "icon": "settings_applications", "label": "ACCA Member" },
+        { "icon": "home_repair_service", "label": "BBB Accredited A+" }
+      ]
+    },
+    "cta": {
+      "title": "Ready to Upgrade Your Environment?",
+      "body": "Join the thousands of GTA homeowners experiencing the peak of connected HVAC technology. Professional engineering is only a click away.",
+      "primaryCTA": { "label": "Book a Technical Audit", "href": "/contact" },
+      "secondaryCTA": { "label": "Explore Maintenance Plans", "href": "/services/maintenance-plans" }
+    }
+  },
+  "contact": {
+    "hero": {
+      "eyebrow": "Precision Scheduling",
+      "title": "Request Service",
+      "body": "Provide your system details below. Our engineering dispatch will coordinate the optimal service window for your home network."
+    },
+    "form": {
+      "fields": [
+        { "name": "fullName", "label": "Full Name", "type": "text", "required": true },
+        { "name": "email", "label": "Email Address", "type": "email", "required": true },
+        { "name": "phone", "label": "Phone Number", "type": "tel", "required": true },
+        {
+          "name": "serviceType",
+          "label": "Service Type",
+          "type": "select",
+          "required": true,
+          "options": [
+            "HVAC Maintenance",
+            "Emergency Repair",
+            "System Upgrade",
+            "Air Quality Analysis"
+          ]
+        },
+        { "name": "preferredDate", "label": "Preferred Date", "type": "date", "required": false }
+      ],
+      "submitLabel": "Confirm Booking"
+    },
+    "contactCards": [
+      {
+        "icon": "location_on",
+        "title": "Corporate HQ",
+        "lines": ["123 Commerce Way, Suite 400", "Toronto, ON M5V 3B1"]
+      },
+      {
+        "icon": "phone",
+        "title": "Phone & Hours",
+        "lines": ["416-555-0199", "Mon–Fri 7am–7pm", "Sat 8am–4pm"]
+      },
+      {
+        "icon": "mail",
+        "title": "Email",
+        "lines": ["support@comfortflow.io"]
+      }
+    ],
+    "emergencyBanner": {
+      "icon": "e911_emergency",
+      "title": "Emergency Service Request",
+      "body": "System failure or critical comfort issue requiring immediate attention.",
+      "cta": { "label": "Call 416-555-0199", "href": "tel:4165550199" }
+    }
+  },
+  "resources": {
+    "hero": {
+      "eyebrow": "Educational Portal",
+      "title": "Expert HVAC Knowledge for Every Home",
+      "body": "Stay informed about your home's vital systems with our collection of precision-engineered guides and expert advice."
+    },
+    "filters": [
+      { "key": "all", "label": "All Articles" },
+      { "key": "heating", "label": "Heating" },
+      { "key": "cooling", "label": "Cooling" },
+      { "key": "maintenance", "label": "Maintenance" },
+      { "key": "air-quality", "label": "Air Quality" },
+      { "key": "plumbing", "label": "Plumbing" }
+    ],
+    "articles": [
+      {
+        "slug": "when-to-replace-furnace",
+        "category": "Heating",
+        "title": "When to replace your furnace",
+        "excerpt": "Understanding the lifecycle of your heating system can save thousands in emergency repairs. Learn the technical benchmarks for replacement.",
+        "imageKey": "resourceFurnace"
+      },
+      {
+        "slug": "signs-ac-needs-repair",
+        "category": "Cooling",
+        "title": "Signs your AC needs repair",
+        "excerpt": "Early detection of refrigerant leaks or compressor strain is vital for system longevity. Spot the subtle symptoms before they become failures.",
+        "imageKey": "resourceAc"
+      },
+      {
+        "slug": "tank-vs-tankless-water-heaters",
+        "category": "Plumbing",
+        "title": "Tank vs tankless water heaters",
+        "excerpt": "A technical deep dive into water heating efficiency. We analyze the flow rates, energy consumption, and installation requirements of both systems.",
+        "imageKey": "resourceWater"
+      },
+      {
+        "slug": "humidity-affects-comfort",
+        "category": "Air Quality",
+        "title": "How humidity affects comfort",
+        "excerpt": "Thermodynamics beyond just temperature. Explore how moisture levels impact perceived warmth and respiratory health in your home.",
+        "imageKey": "resourceHumidity"
+      },
+      {
+        "slug": "why-ductwork-matters",
+        "category": "Infrastructure",
+        "title": "Why ductwork matters",
+        "excerpt": "Your HVAC system is only as good as its distribution network. Learn why static pressure and seal integrity are the keys to efficiency.",
+        "imageKey": "resourceDuctwork"
+      },
+      {
+        "slug": "hvac-maintenance-checklist",
+        "category": "Maintenance",
+        "title": "HVAC maintenance checklist",
+        "excerpt": "A comprehensive guide to the essential service points every homeowner should monitor quarterly to prevent system degradation.",
+        "imageKey": "resourceMaintenance"
+      }
+    ],
+    "newsletter": {
+      "title": "Stay Synchronized",
+      "body": "Get seasonal maintenance alerts and efficiency tips delivered directly to your inbox. Precision advice for home comfort.",
+      "cta": "Subscribe Now",
+      "placeholder": "Enter your email"
+    }
+  },
+  "resourceArticles": {
+    "when-to-replace-furnace": {
+      "title": "When to replace your furnace",
+      "category": "Heating",
+      "body": [
+        "A furnace is the thermal heart of your home network. Like any high-performance system, it has a finite operational lifecycle. Understanding when to upgrade rather than repair can save thousands in emergency costs and energy waste.",
+        "Most modern high-efficiency furnaces are engineered for 15–20 years of reliable service. Beyond that threshold, combustion efficiency drops, heat exchangers develop micro-fractures, and replacement parts become scarce. If your unit is over 15 years old and requiring frequent repairs, a replacement audit is the prudent path.",
+        "Key technical benchmarks include AFUE ratings below 80%, uneven heating across zones, rising carbon monoxide readings during combustion analysis, and blower motors that cycle excessively. Our diagnostic protocol maps each of these indicators against your home's thermal footprint.",
+        "Ontario homeowners may qualify for heat pump and high-efficiency furnace rebates. ComfortFlow engineers can model your ROI across repair-versus-replace scenarios, factoring in current incentive programs and projected energy savings over a 10-year horizon."
+      ]
+    },
+    "signs-ac-needs-repair": {
+      "title": "Signs your AC needs repair",
+      "category": "Cooling",
+      "body": [
+        "Ontario summers demand reliable cooling networks. Subtle symptoms often precede catastrophic compressor failure by weeks or months—if you know what to monitor.",
+        "Weak airflow across vents typically indicates blower motor degradation, clogged filters, or duct restriction. If some rooms cool while others remain warm, the issue may be zone damper failure or refrigerant imbalance rather than a simple filter change.",
+        "Unusual sounds—grinding, squealing, or rhythmic clicking—signal mechanical friction, failing bearings, or electrical relay problems. These acoustic anomalies should trigger an immediate diagnostic call before secondary damage occurs.",
+        "Excess indoor humidity during cooling season suggests evaporator coil inefficiency or improper refrigerant charge. Short-cycling, where the system turns on and off rapidly, stresses components and inflates energy bills. ComfortFlow's 24/7 GTA dispatch can perform same-day diagnostics when these symptoms appear."
+      ]
+    },
+    "tank-vs-tankless-water-heaters": {
+      "title": "Tank vs tankless water heaters",
+      "category": "Plumbing",
+      "body": [
+        "Your hot water network is an often-overlooked pillar of home comfort. The choice between tank and tankless systems affects flow rates, energy consumption, installation footprint, and long-term maintenance costs.",
+        "Conventional tank water heaters store 40–75 gallons of heated water, providing consistent flow for multiple fixtures but incurring standby heat loss around the clock. They are typically less expensive upfront and simpler to install in existing utility spaces.",
+        "Tankless (on-demand) systems heat water as it flows, eliminating standby loss and delivering endless hot water for high-demand households. However, they require adequate gas line capacity or electrical service upgrades and may struggle with simultaneous multi-fixture demand without proper sizing.",
+        "ComfortFlow engineers analyze your household's peak flow requirements, available utility infrastructure, and usage patterns to recommend the optimal configuration—whether a hybrid heat-pump water heater, condensing tankless unit, or high-efficiency storage tank."
+      ]
+    },
+    "humidity-affects-comfort": {
+      "title": "How humidity affects comfort",
+      "category": "Air Quality",
+      "body": [
+        "Thermal comfort is not solely about temperature. Relative humidity profoundly affects how warm or cool a space feels, the health of your respiratory system, and the longevity of wood furnishings and musical instruments.",
+        "In winter, heated air drops below 30% relative humidity, causing static shocks, dry sinuses, and cracked wood. In summer, excess moisture above 60% makes cooling systems work harder and promotes mold growth in ductwork and wall cavities.",
+        "The human comfort zone typically sits between 40–50% relative humidity year-round. Whole-home humidifiers and dehumidifiers integrated with your HVAC network maintain this balance automatically, adjusting output based on outdoor conditions and indoor occupancy.",
+        "ComfortFlow's air quality audits use laser-precise particulate and humidity monitoring across multiple zones to engineer a custom IAQ stack—whether steam humidification, energy recovery ventilation, or active dehumidification tied to your existing air handler."
+      ]
+    },
+    "why-ductwork-matters": {
+      "title": "Why ductwork matters",
+      "category": "Infrastructure",
+      "body": [
+        "Your HVAC equipment is only as effective as its distribution network. Ductwork is the invisible infrastructure that delivers conditioned air to every room—and poorly designed or sealed ducts can waste 20–30% of your system's output.",
+        "Static pressure, measured in inches of water column, determines how hard your blower must work to move air. Excessive static pressure from undersized ducts, sharp bends, or collapsed flex runs reduces airflow and accelerates motor wear.",
+        "Seal integrity is equally critical. Leaky ducts in unconditioned spaces—attics, crawlspaces, garages—lose heated or cooled air before it reaches living areas. Aeroseal and manual mastic sealing can recover significant efficiency gains.",
+        "ComfortFlow's ductwork services include flow optimization, sealing and insulation upgrades, and engineered redesigns for renovations or additions. We treat your duct network as a precision airflow system, not an afterthought."
+      ]
+    },
+    "hvac-maintenance-checklist": {
+      "title": "HVAC maintenance checklist",
+      "category": "Maintenance",
+      "body": [
+        "Preventative maintenance is the foundation of the Comfort Network philosophy. A quarterly homeowner checklist, combined with bi-annual professional tune-ups, extends equipment life by up to 30% and keeps utility bills predictable.",
+        "Monthly tasks include checking and replacing air filters, ensuring supply and return vents are unobstructed, and listening for unusual sounds during system operation. Smart thermostat users should review energy reports for anomalies.",
+        "Seasonal tasks before heating season include testing carbon monoxide detectors, inspecting the flue and venting, and verifying thermostat calibration. Before cooling season, clear debris from outdoor condenser units and check condensate drain lines for blockages.",
+        "ComfortFlow's Precision Care Membership automates this schedule with bi-annual system optimization visits, priority dispatch, digital service records, and discounted repairs. Our 25-point inspection protocol covers airflow, electrical load, combustion analysis, refrigerant charge, and sensor calibration."
+      ]
+    }
+  }
+}

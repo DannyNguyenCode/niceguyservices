@@ -62,6 +62,15 @@
           "description": "Compare template and custom approaches — budget, timeline, branding, SEO, and how to choose the right fit for your business.",
           "imageSrc": "/images/imageheader.png",
           "imageAlt": "Desk with monitor showing a website layout mockup beside code, illustrating custom vs template design"
+        },
+        {
+          "title": "Why Responsive Web Design Matters More Than Ever",
+          "category": "Web Design",
+          "slug": "/resources/why-responsive-web-design-matters",
+          "description": "Why your website should work on every screen — mobile traffic, first impressions, SEO, AI search, accessibility, and building trust across devices.",
+          "imageSrc": "/images/Futuristic-tech-abstract.png",
+          "imageAlt": "Abstract visualization suggesting connected devices and modern responsive web design",
+          "mutedImage": true
         }
       ]
     }

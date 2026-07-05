@@ -1,0 +1,442 @@
+{
+  "servicePages": [
+    {
+      "slug": "maintenance-plans",
+      "title": "Maintenance Plans",
+      "accent": "indigo",
+      "hero": {
+        "eyebrow": "The Comfort Network Advantage",
+        "headline": "Maintenance Plans.",
+        "body": "Our precision maintenance program treats your home like a high-performance system — scheduled tune-ups, duct sealing, and vent care to eliminate emergency failures.",
+        "primaryCTA": { "label": "Explore Tiers", "href": "#tiers" },
+        "secondaryCTA": { "label": "Compare Benefits", "href": "#benefits" },
+        "imageKey": "maintenanceHero"
+      },
+      "sections": [
+        {
+          "type": "tiers",
+          "id": "tiers",
+          "title": "System Integrity Tiers",
+          "subtitle": "Select the level of protection that fits your home's ecosystem.",
+          "items": [
+            {
+              "tier": "Foundation",
+              "name": "Silver Plan",
+              "price": "$19",
+              "period": "/mo",
+              "description": "Essential bi-annual tune-ups for standard efficiency systems.",
+              "features": [
+                { "text": "2 Seasonal Tune-ups", "included": true },
+                { "text": "10% Repair Discount", "included": true },
+                { "text": "No Priority Service", "included": false }
+              ],
+              "cta": { "label": "Start Silver", "href": "/contact" }
+            },
+            {
+              "tier": "Precision",
+              "name": "Gold Plan",
+              "price": "$29",
+              "period": "/mo",
+              "description": "Comprehensive protection including priority diagnostics.",
+              "highlight": true,
+              "features": [
+                { "text": "15% Repair Discount", "included": true },
+                { "text": "48-Hour Service Guarantee", "included": true },
+                { "text": "No Trip Charges", "included": true }
+              ],
+              "cta": { "label": "Select Gold", "href": "/contact" }
+            },
+            {
+              "tier": "Network Elite",
+              "name": "Platinum Plan",
+              "price": "$45",
+              "period": "/mo",
+              "description": "Zero-worry maintenance for high-end residential networks.",
+              "features": [
+                { "text": "Unlimited Service Calls", "included": true },
+                { "text": "20% Repair Discount", "included": true },
+                { "text": "24-Hour Service Guarantee", "included": true },
+                { "text": "Annual Duct Sanitization", "included": true }
+              ],
+              "cta": { "label": "Go Platinum", "href": "/contact" }
+            }
+          ]
+        },
+        {
+          "type": "inspection",
+          "eyebrow": "25-Point Inspection",
+          "title": "Standard Network Protocol",
+          "subtitle": "Seasonal System Synchronization",
+          "body": "Every six months, our specialists perform a complete infrastructure audit to ensure your system operates at peak thermal efficiency.",
+          "items": [
+            {
+              "icon": "filter_alt",
+              "title": "Air Flow Optimization",
+              "description": "Filter replacement and duct integrity check to maximize cubic feet per minute (CFM)."
+            },
+            {
+              "icon": "air",
+              "title": "Duct & Vent Integrity",
+              "description": "Supply and return path inspection, sealing leaks, and vent clearing to restore balanced airflow room to room."
+            },
+            {
+              "icon": "bolt",
+              "title": "Electrical Load Testing",
+              "description": "Detailed amperage and voltage draw analysis on motors to prevent component failure."
+            }
+          ]
+        },
+        {
+          "type": "benefits",
+          "id": "benefits",
+          "icon": "verified_user",
+          "title": "The Priority Pipeline.",
+          "body": "As a plan member, you bypass the standard service queue. Your comfort is our priority infrastructure project.",
+          "tags": ["Emergency Response", "Interest Financing", "Lifetime Repair Discount", "Direct Dispatch Line"]
+        }
+      ]
+    },
+    {
+      "slug": "heating",
+      "title": "Heating & Furnace Services",
+      "accent": "heating",
+      "hero": {
+        "eyebrow": "Precision Thermal Comfort",
+        "headline": "Heating & Furnace Services",
+        "body": "Engineered for efficiency. Designed for comfort. Our advanced heating solutions maintain optimal home performance through the coldest seasons.",
+        "primaryCTA": { "label": "Schedule Inspection", "href": "/contact" },
+        "secondaryCTA": { "label": "View Pricing", "href": "/services/maintenance-plans" },
+        "imageKey": "furnaceBurner"
+      },
+      "sections": [
+        {
+          "type": "diagnostics",
+          "title": "Signs Your System Needs Attention",
+          "items": [
+            {
+              "icon": "ac_unit",
+              "label": "Uneven Warmth",
+              "title": "Thermal Inconsistency",
+              "description": "Noticeable cold spots or rooms that refuse to reach set temperature indicate ducting or blower issues."
+            },
+            {
+              "icon": "warning",
+              "label": "Critical Failure",
+              "title": "Ignition & Burner Issues",
+              "description": "Flickering pilot lights, yellow flames, or repeated cycling are symptoms of combustion inefficiency that require immediate expert calibration."
+            },
+            {
+              "icon": "noise_control_off",
+              "label": "Acoustic Anomalies",
+              "title": "Mechanical Noise",
+              "description": "Rattling, squealing, or thumping sounds often signal belt wear or motor bearing failure before a total breakdown occurs."
+            },
+            {
+              "icon": "payments",
+              "label": "Efficiency Loss",
+              "title": "Spiking Energy Bills",
+              "description": "A sudden increase in fuel or electricity consumption suggests your heating unit is overworking due to internal friction or leaks."
+            }
+          ]
+        },
+        {
+          "type": "network",
+          "eyebrow": "Network Visualization",
+          "title": "The Heart of Your Home Network",
+          "body": "Your furnace isn't just a box; it's the central hub of a complex thermal network. We optimize the entire path from combustion to air delivery.",
+          "features": [
+            { "icon": "check_circle", "title": "Burner Calibration", "description": "Optimizing gas flow for 98% AFUE efficiency." },
+            { "icon": "check_circle", "title": "Airflow Filtration", "description": "HEPA-grade protection for your respiratory health." }
+          ],
+          "imageKey": "furnaceBurner"
+        },
+        {
+          "type": "cta",
+          "title": "Precision Maintenance Plans",
+          "body": "Subscription-based comfort for uninterrupted reliability.",
+          "cta": { "label": "Explore Plans", "href": "/services/maintenance-plans" }
+        }
+      ]
+    },
+    {
+      "slug": "cooling",
+      "title": "Air Conditioning Services",
+      "accent": "cooling",
+      "hero": {
+        "eyebrow": "Precision Cooling Systems",
+        "headline": "Air Conditioning Services",
+        "body": "Advanced cooling systems engineered for Ontario's humidity profiles. Reliable performance when Toronto summers demand peak output.",
+        "primaryCTA": { "label": "Schedule Service", "href": "/contact" },
+        "secondaryCTA": { "label": "Emergency Repair", "href": "/contact" },
+        "imageKey": "acUnit"
+      },
+      "sections": [
+        {
+          "type": "diagnostics",
+          "title": "System Diagnostics",
+          "subtitle": "Identify symptoms in your home's cooling network before they lead to critical failure.",
+          "items": [
+            {
+              "code": "SYMPTOM 01",
+              "title": "Weak Airflow",
+              "description": "Inconsistent pressure across vents suggests blockage or fan motor degradation.",
+              "link": { "label": "Diagnostic Guide", "href": "/resources/signs-ac-needs-repair" }
+            },
+            {
+              "code": "SYMPTOM 02",
+              "icon": "volume_up",
+              "title": "Strange Noises",
+              "description": "Grinding or squealing sounds often indicate mechanical friction or belt failure.",
+              "link": { "label": "Sound Library", "href": "/resources" }
+            },
+            {
+              "code": "SYMPTOM 03",
+              "icon": "water_drop",
+              "title": "Excess Humidity",
+              "description": "Moisture buildup suggests the evaporator coil is failing to dehumidify effectively.",
+              "link": { "label": "Moisture Risk", "href": "/resources/humidity-affects-comfort" }
+            },
+            {
+              "code": "SYMPTOM 04",
+              "icon": "thermostat",
+              "title": "Cycling Errors",
+              "description": "Frequent on/off cycles (short-cycling) stress components and waste energy.",
+              "link": { "label": "System Efficiency", "href": "/resources" }
+            }
+          ]
+        },
+        {
+          "type": "modules",
+          "title": "Service Modules",
+          "subtitle": "We provide end-to-end lifecycle management for residential cooling hardware.",
+          "items": ["Residential", "Commercial", "Multi-Zone", "Smart Integration"]
+        },
+        {
+          "type": "gallery",
+          "images": [
+            { "imageKey": "coolingThermostat", "alt": "Smart thermostat controlling precision cooling system" },
+            { "imageKey": "coolingLiving", "alt": "Modern living room with efficient air conditioning" }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "air-quality",
+      "title": "Indoor Air Quality Services",
+      "accent": "air",
+      "hero": {
+        "eyebrow": "Medical-Grade Precision",
+        "headline": "Indoor Air Quality",
+        "body": "Hospital-grade purification integrated into your existing ductwork for whole-home protection against allergens, VOCs, and pathogens.",
+        "primaryCTA": { "label": "Free Air Audit", "href": "/contact" },
+        "secondaryCTA": { "label": "View System Specs", "href": "#ecosystem" },
+        "imageKey": "resourceHumidity"
+      },
+      "sections": [
+        {
+          "type": "diagnostics",
+          "title": "Recognizing Air Quality Decay",
+          "items": [
+            {
+              "code": "SYMPTOM: 01",
+              "title": "Excessive Dust Accumulation",
+              "description": "Visible dust on surfaces shortly after cleaning indicates a failure in your HVAC system's filtration cycle."
+            },
+            {
+              "code": "SYMPTOM: 02",
+              "title": "Static & Dry Respiratory",
+              "description": "Dry winter air causes static shocks and irritated sinuses. This suggests your humidity control is offline."
+            },
+            {
+              "code": "SYMPTOM: 03",
+              "title": "Lingering Household Odors",
+              "description": "Stale air or cooking smells that won't dissipate indicate poor ventilation and lack of active carbon scrubbing."
+            }
+          ]
+        },
+        {
+          "type": "ecosystem",
+          "id": "ecosystem",
+          "title": "Purification Ecosystem",
+          "subtitle": "We integrate hospital-grade technology directly into your existing ductwork for whole-home protection.",
+          "items": [
+            {
+              "icon": "air_purifier_gen",
+              "title": "Whole-Home Air Purifiers",
+              "description": "Our HEPA-active filtration systems capture microscopic pathogens, allergens, and VOCs before they ever reach your rooms.",
+              "specs": ["MERV 16", "UV-C Light"]
+            },
+            {
+              "icon": "humidity_mid",
+              "title": "Humidifiers",
+              "description": "Steam and evaporative systems to protect your wood floors, musical instruments, and respiratory health.",
+              "cta": { "label": "Learn about Balance", "href": "/resources/humidity-affects-comfort" }
+            },
+            {
+              "icon": "cyclone",
+              "title": "Energy Recovery Ventilators",
+              "description": "Fresh outdoor air without losing heat or cooling. The lungs of your modern, airtight home.",
+              "cta": { "label": "Explore ERV Tech", "href": "/contact" }
+            }
+          ]
+        },
+        {
+          "type": "process",
+          "title": "The Integration Process",
+          "subtitle": "How we upgrade your existing infrastructure to a high-performance air network.",
+          "steps": [
+            { "title": "Assessment", "description": "Laser-precise monitoring of particulate matter and humidity across multiple zones." },
+            { "title": "Configuration", "description": "Engineering a custom component stack that interfaces seamlessly with your air handler." },
+            { "title": "Validation", "description": "Post-install testing to verify the new IAQ levels meet our medical-grade standards." }
+          ]
+        },
+        {
+          "type": "faq",
+          "title": "System Intelligence FAQ",
+          "items": [
+            {
+              "question": "Can these systems be added to my current furnace?",
+              "answer": "Yes. Our IAQ modules are designed as universal retrofits that attach to the return air plenum of almost any forced-air heating and cooling system."
+            },
+            {
+              "question": "How often do filters need to be changed?",
+              "answer": "Standard high-capacity media filters typically require replacement every 6 to 12 months, depending on your household environment and usage levels."
+            },
+            {
+              "question": "Does UV-C light produce ozone?",
+              "answer": "No. We exclusively install ozone-free UV-C lamps that operate at specific nanometer wavelengths designed to neutralize DNA without generating harmful byproducts."
+            }
+          ]
+        },
+        {
+          "type": "cta",
+          "title": "Ready for a System Upgrade?",
+          "body": "Schedule a comprehensive air quality audit today and take the first step toward a healthier home network.",
+          "primaryCTA": { "label": "Schedule Audit", "href": "/contact" },
+          "secondaryCTA": { "label": "Talk to an Engineer", "href": "/contact" }
+        }
+      ]
+    },
+    {
+      "slug": "water-heaters",
+      "title": "Water Heater Services",
+      "accent": "water",
+      "hero": {
+        "eyebrow": "Plumbing & Water",
+        "headline": "Water Heater Services",
+        "body": "Precision engineering for your home's hot water network. From smart tankless upgrades to high-capacity storage, we ensure your comfort flow is never interrupted.",
+        "primaryCTA": { "label": "Schedule Repair", "href": "/contact" },
+        "secondaryCTA": { "label": "Compare Options", "href": "/resources/tank-vs-tankless-water-heaters" },
+        "imageKey": "tankless"
+      },
+      "sections": [
+        {
+          "type": "options",
+          "title": "Hot Water Network Options",
+          "subtitle": "Engineered solutions for every household demand profile.",
+          "items": [
+            {
+              "icon": "water_heater",
+              "title": "Tank Storage Systems",
+              "description": "High-efficiency storage tanks with advanced insulation and smart leak detection for reliable whole-home hot water."
+            },
+            {
+              "icon": "bolt",
+              "title": "Tankless On-Demand",
+              "description": "Endless hot water with zero standby loss. Ideal for high-demand households and space-constrained utility rooms."
+            },
+            {
+              "icon": "heat_pump",
+              "title": "Hybrid Heat Pump",
+              "description": "The most efficient water heating technology available, leveraging ambient air energy for dramatic utility savings."
+            }
+          ]
+        },
+        {
+          "type": "diagnostics",
+          "title": "When to Call for Service",
+          "items": [
+            {
+              "title": "Inconsistent Temperature",
+              "description": "Fluctuating hot water output suggests thermostat failure, sediment buildup, or heating element degradation."
+            },
+            {
+              "title": "Discolored Water",
+              "description": "Rusty or cloudy hot water indicates anode rod failure or tank corrosion requiring immediate attention."
+            },
+            {
+              "title": "Unusual Sounds",
+              "description": "Popping or rumbling from the tank signals sediment accumulation reducing efficiency and accelerating wear."
+            }
+          ]
+        },
+        {
+          "type": "cta",
+          "title": "Upgrade Your Hot Water Network",
+          "body": "ComfortFlow engineers analyze flow rates, utility capacity, and household demand to recommend the optimal water heating configuration.",
+          "cta": { "label": "Book a Consultation", "href": "/contact" }
+        }
+      ]
+    },
+    {
+      "slug": "smart-thermostats",
+      "title": "Smart Thermostats",
+      "accent": "thermostat",
+      "hero": {
+        "eyebrow": "Precision Climate Control",
+        "headline": "Smart Thermostats.",
+        "body": "Next-generation sensors and adaptive learning that track occupancy, humidity, and air quality to hold your exact set-point within half a degree.",
+        "primaryCTA": { "label": "Explore Features", "href": "#pillars" },
+        "secondaryCTA": { "label": "Schedule Install", "href": "/contact" },
+        "imageKey": "serviceMap"
+      },
+      "sections": [
+        {
+          "type": "pillars",
+          "id": "pillars",
+          "title": "Whole-Home Control",
+          "subtitle": "The interface layer of your comfort network — precise, responsive, and always in sync with every system.",
+          "items": [
+            {
+              "icon": "thermostat",
+              "category": "Interface",
+              "title": "Precision Thermostats",
+              "description": "Next-generation sensors that track occupancy, humidity, and air quality to maintain your exact set-point within 0.5 degrees.",
+              "features": ["Adaptive Learning", "Remote Diagnostics"]
+            },
+            {
+              "icon": "smart_toy",
+              "category": "Intelligence",
+              "title": "Smart Automation",
+              "description": "Centralized logic that balances whole-home systems against energy pricing and outdoor weather shifts.",
+              "features": ["Automated Zoning", "Energy Harvesting"]
+            },
+            {
+              "icon": "phone_iphone",
+              "category": "Access",
+              "title": "Remote Control",
+              "description": "Adjust schedules, monitor usage, and receive maintenance alerts from anywhere through a single app dashboard.",
+              "features": ["Geo-Fencing", "Usage Reports"]
+            }
+          ]
+        },
+        {
+          "type": "dashboard",
+          "title": "System Dashboard",
+          "status": "Active",
+          "metrics": [
+            { "icon": "cyclone", "value": "74%", "label": "Flow" },
+            { "value": "72°F", "label": "Set" },
+            { "value": "Eco-Mode", "label": "Status" }
+          ]
+        },
+        {
+          "type": "cta",
+          "title": "Upgrade Your Climate Interface",
+          "body": "From smart thermostat installs to full-home zoning, ComfortFlow engineers precise control for every room.",
+          "cta": { "label": "Schedule an Audit", "href": "/contact" }
+        }
+      ]
+    }
+  ]
+}

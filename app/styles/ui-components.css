@@ -3,6 +3,7 @@
  * Uses daisyUI theme tokens (`--color-*`) from `niceguys-theme.css`.
  */
 @layer components {
+
     /* Contact page: executive-style card shadow (theme primary, not a fixed hex) */
     .contact-structured-shadow {
         box-shadow: 20px 20px 0 0 color-mix(in srgb, var(--color-primary) 7%, transparent);
@@ -23,11 +24,9 @@
     }
 
     .intake-progress-gradient {
-        background: linear-gradient(
-            90deg,
-            var(--color-primary) 0%,
-            color-mix(in srgb, var(--color-secondary) 80%, var(--color-primary) 20%) 100%
-        );
+        background: linear-gradient(90deg,
+                var(--color-primary) 0%,
+                color-mix(in srgb, var(--color-secondary) 80%, var(--color-primary) 20%) 100%);
     }
 
     .intake-form-canvas {
@@ -353,8 +352,8 @@
     }
 
     .menu :where(li > *),
-    .menu li > a,
-    .menu li > button {
+    .menu li>a,
+    .menu li>button {
         border-radius: 0.5rem;
     }
 
@@ -363,14 +362,14 @@
         font-size: 0.875rem;
     }
 
-    .menu li > a {
+    .menu li>a {
         display: block;
         padding: 0.5rem 0.75rem;
         color: inherit;
         text-decoration: none;
     }
 
-    .menu li > a:hover {
+    .menu li>a:hover {
         background-color: color-mix(in srgb, var(--color-base-content) 6%, transparent);
     }
 
@@ -439,11 +438,9 @@
     }
 
     dialog.modal.service-detail-dialog::backdrop {
-        background-color: color-mix(
-            in srgb,
-            var(--pm-on-surface, var(--color-base-content)) 20%,
-            transparent
-        );
+        background-color: color-mix(in srgb,
+                var(--pm-on-surface, var(--color-base-content)) 20%,
+                transparent);
         backdrop-filter: blur(6px);
     }
 

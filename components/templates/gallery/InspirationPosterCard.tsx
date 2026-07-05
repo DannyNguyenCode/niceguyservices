@@ -11,6 +11,74 @@ type InspirationPosterCardProps = {
   layout?: "row" | "grid";
 };
 
+const HEX_TOKEN = /^#[0-9a-fA-F]{3,8}$/;
+
+function hexLuminance(hex: string): number {
+  const normalized = hex.replace("#", "");
+  const full =
+    normalized.length === 3
+      ? normalized
+          .split("")
+          .map((channel) => channel + channel)
+          .join("")
+      : normalized.slice(0, 6);
+  const channels = [0, 2, 4].map((index) => parseInt(full.slice(index, index + 2), 16) / 255);
+  const [r, g, b] = channels.map((channel) =>
+    channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4,
+  );
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+function HexColorLabel({ value }: { value: string }) {
+  const isDark = hexLuminance(value) < 0.35;
+
+  return (
+    <span
+      className="font-mono"
+      style={{
+        color: value,
+        textShadow: isDark ? "0 0 6px rgba(255,255,255,0.35), 0 0 1px rgba(255,255,255,0.65)" : undefined,
+      }}
+    >
+      {value}
+    </span>
+  );
+}
+
+function InspirationPaletteText({
+  text,
+  themeColors,
+}: {
+  text: string;
+  themeColors: string[];
+}) {
+  const hasHex = /#[0-9a-fA-F]{3,8}\b/.test(text);
+
+  if (!hasHex) {
+    return (
+      <span className="flex flex-wrap gap-x-2 gap-y-0.5">
+        {themeColors.map((hex) => (
+          <HexColorLabel key={hex} value={hex} />
+        ))}
+      </span>
+    );
+  }
+
+  const parts = text.split(/(#[0-9a-fA-F]{3,8}\b)/g);
+
+  return (
+    <>
+      {parts.map((part, index) =>
+        HEX_TOKEN.test(part) ? (
+          <HexColorLabel key={`${part}-${index}`} value={part} />
+        ) : (
+          <span key={`${part}-${index}`}>{part}</span>
+        ),
+      )}
+    </>
+  );
+}
+
 export function InspirationPosterCard({
   template,
   meta,
@@ -53,6 +121,34 @@ export function InspirationPosterCard({
           </span>
         </div>
       </article>
+
+      {meta?.inspiration ? (
+        <dl className="mt-3 space-y-2 font-[family-name:var(--font-gallery)] text-sm leading-snug text-on-surface-variant">
+          <div>
+            <dt className="text-[length:var(--text-label-caps)] leading-[var(--text-label-caps--line-height)] font-[number:var(--text-label-caps--font-weight)] tracking-[var(--text-label-caps--letter-spacing)] uppercase text-primary-fixed">
+              Theme
+            </dt>
+            <dd className="mt-0.5">{meta.inspiration.theme}</dd>
+          </div>
+          <div>
+            <dt className="text-[length:var(--text-label-caps)] leading-[var(--text-label-caps--line-height)] font-[number:var(--text-label-caps--font-weight)] tracking-[var(--text-label-caps--letter-spacing)] uppercase text-primary-fixed">
+              Palette
+            </dt>
+            <dd className="mt-0.5">
+              <InspirationPaletteText
+                text={meta.inspiration.colorPalette}
+                themeColors={meta.themeColors}
+              />
+            </dd>
+          </div>
+          <div>
+            <dt className="text-[length:var(--text-label-caps)] leading-[var(--text-label-caps--line-height)] font-[number:var(--text-label-caps--font-weight)] tracking-[var(--text-label-caps--letter-spacing)] uppercase text-primary-fixed">
+              Layout
+            </dt>
+            <dd className="mt-0.5">{meta.inspiration.layout}</dd>
+          </div>
+        </dl>
+      ) : null}
     </Link>
   );
 }

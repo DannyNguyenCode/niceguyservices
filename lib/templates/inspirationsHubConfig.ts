@@ -16,10 +16,10 @@ export const INSPIRATION_ROWS: InspirationRowConfig[] = [
     title: "Business Websites",
     filterId: "services",
     featuredSlugs: [
+      "comfortflow-hvac",
       "hardscape-landscaping",
       "pawsmatch-rescue",
       "home-restoration",
-      "kinship-capital",
     ],
   },
   {

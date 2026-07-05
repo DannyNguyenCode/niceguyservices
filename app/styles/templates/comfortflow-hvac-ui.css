@@ -1,0 +1,75 @@
+/**
+ * ComfortFlow HVAC — shadcn/ui tokens + hero illustration utilities.
+ * Loaded only from app/template/demo/comfortflow-hvac/layout.tsx.
+ * Colors align with --cfh-* tokens in comfortflow-hvac-theme.css and CFH_HOME_PALETTE.
+ */
+
+@theme inline {
+  --color-background: #fcfcfd;
+  --color-foreground: #1f2937;
+  --color-card: #ffffff;
+  --color-card-foreground: #1f2937;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #1f2937;
+  --color-primary: #38bdf8;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f5f7fa;
+  --color-secondary-foreground: #1f2937;
+  --color-muted: #f5f7fa;
+  --color-muted-foreground: #1f2937;
+  --color-accent: #f5f7fa;
+  --color-accent-foreground: #1f2937;
+  --color-destructive: #ba1a1a;
+  --color-destructive-foreground: #ffffff;
+  --color-border: #e5e7eb;
+  --color-input: #e5e7eb;
+  --color-ring: #38bdf8;
+  --color-hero-surface: #fcfcfd;
+  --color-hero-surface-2: #f5f7fa;
+}
+
+/* Override site-wide purple tokens inside the ComfortFlow demo shell */
+.cfh-root {
+  --color-background: #fcfcfd;
+  --color-foreground: #1f2937;
+  --color-card: #ffffff;
+  --color-card-foreground: #1f2937;
+  --color-primary: #38bdf8;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f5f7fa;
+  --color-secondary-foreground: #1f2937;
+  --color-muted: #f5f7fa;
+  --color-muted-foreground: color-mix(in srgb, #1f2937 68%, #ffffff);
+  --color-accent: #f5f7fa;
+  --color-accent-foreground: #1f2937;
+  --color-border: #e5e7eb;
+  --color-input: #e5e7eb;
+  --color-ring: #38bdf8;
+}
+
+@keyframes cfh-flow-dash {
+  to {
+    stroke-dashoffset: -32;
+  }
+}
+
+@keyframes cfh-soft-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@layer utilities {
+  .flow-dash {
+    stroke-dasharray: 6 10;
+    animation: cfh-flow-dash 1.4s linear infinite;
+  }
+
+  .soft-pulse {
+    animation: cfh-soft-pulse 2.2s ease-in-out infinite;
+  }
+}

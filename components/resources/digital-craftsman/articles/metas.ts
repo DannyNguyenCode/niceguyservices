@@ -3,6 +3,11 @@ import { CUSTOM_VS_TEMPLATE_PATH, CUSTOM_VS_TEMPLATE_TOC, CUSTOM_VS_TEMPLATE_REL
 import { GEO_PATH, GEO_RELATED, GEO_TOC } from "../geoConfig";
 import { LOCAL_SEO_BASICS_PATH, LOCAL_SEO_BASICS_TOC, LOCAL_SEO_BASICS_RELATED, LOCAL_SEO_BASICS_TAKEAWAYS } from "../localSeoBasicsConfig";
 import { SEARCH_CONSOLE_PATH, SEARCH_CONSOLE_TOC, SEARCH_CONSOLE_RELATED, SEARCH_CONSOLE_TAKEAWAYS } from "../searchConsoleConfig";
+import {
+    RESPONSIVE_WEB_DESIGN_PATH,
+    RESPONSIVE_WEB_DESIGN_RELATED,
+    RESPONSIVE_WEB_DESIGN_TOC,
+} from "../responsiveWebDesignConfig";
 import { WEBSITE_LEADS_PATH, WEBSITE_LEADS_TOC, WEBSITE_LEADS_RELATED, WEBSITE_LEADS_TAKEAWAYS } from "../websiteLeadsConfig";
 
 const GOOGLE_AI_PATH = "/resources/what-google-ai-search-means-for-small-businesses";
@@ -147,6 +152,28 @@ export const customVsTemplateMeta: DcArticleMeta = {
     },
 };
 
+export const responsiveWebDesignMeta: DcArticleMeta = {
+    path: RESPONSIVE_WEB_DESIGN_PATH,
+    headline: "Why Responsive Web Design Matters More Than Ever",
+    description:
+        "Why responsive web design matters for local businesses — mobile traffic, first impressions, SEO, AI search, accessibility, and building trust across every screen size.",
+    datePublished: "2026-07-05",
+    dateModified: "2026-07-05",
+    heroImageSrc: "/images/Futuristic-tech-abstract.png",
+    badge: "Resource / Web Design",
+    readTime: "11 min read",
+    title: "Why Responsive Web Design Matters More Than Ever",
+    subtitle: "A Website Should Work Everywhere",
+    desktopCategory: "Web Design",
+    toc: RESPONSIVE_WEB_DESIGN_TOC,
+    related: RESPONSIVE_WEB_DESIGN_RELATED,
+    ctaLabel: "Discuss Your Website",
+    sidebarCta: {
+        title: "Need a mobile-ready site?",
+        body: "Websites built to work on every screen — clear, fast, and easy to use.",
+    },
+};
+
 /** Published Digital Craftsman articles — used by sitemap and hub. */
 export const RESOURCE_ARTICLE_METAS = [
     geoMeta,
@@ -155,6 +182,7 @@ export const RESOURCE_ARTICLE_METAS = [
     searchConsoleMeta,
     websiteLeadsMeta,
     customVsTemplateMeta,
+    responsiveWebDesignMeta,
 ] as const;
 
 /** Re-export takeaway arrays used by content modules */

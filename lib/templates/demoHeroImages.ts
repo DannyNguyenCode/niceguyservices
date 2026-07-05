@@ -11,6 +11,7 @@ import { KC_IMG } from "@/components/templates/demos/kinship-capital/kinshipCapi
 import { SD_IMG } from "@/components/templates/demos/skyline-designs/skylineDesignsImages";
 import { VI_IMG } from "@/components/templates/demos/valley-interlocking/valleyInterlockingImages";
 import { PPE_IMG } from "@/components/templates/demos/power-pellet-electric/powerPelletElectricImages";
+import { CFH_IMG } from "@/components/templates/demos/comfortflow-hvac/comfortflowHvacImages";
 import { TMNT_IMAGES } from "@/components/templates/demos/tmnt-construction/tmntConfig";
 
 export type DemoHeroMeta = {
@@ -75,5 +76,9 @@ export const DEMO_HERO_BY_SLUG: Record<string, DemoHeroMeta> = {
   "power-pellet-electric": {
     src: PPE_IMG.panelCloseup,
     alt: "Organized electrical panel with neon yellow arcade lighting — Power Pellet Electric demo hero",
+  },
+  "comfortflow-hvac": {
+    src: CFH_IMG.networkMap,
+    alt: "Smart home HVAC network map with connected comfort nodes — ComfortFlow HVAC demo hero",
   },
 };
