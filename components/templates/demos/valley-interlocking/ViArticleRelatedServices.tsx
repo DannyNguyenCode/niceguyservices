@@ -19,7 +19,7 @@ export function ViArticleRelatedServices({ services, className }: ViArticleRelat
     <div className={className}>
       <p className="vi-label-md mb-6 uppercase tracking-widest text-[var(--vi-on-surface)]">Related Services</p>
       <div className="space-y-6">
-        {services.map((service) => (
+        {services.map((service: any) => (
           <div key={service.href} className="group">
             <Link href={service.href} className="block">
               <p className="vi-body-md text-[var(--vi-on-surface)] transition-colors group-hover:text-[var(--vi-secondary)]">

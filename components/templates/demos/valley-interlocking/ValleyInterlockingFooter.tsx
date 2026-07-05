@@ -16,8 +16,7 @@ const footerHeadingClass =
   "vi-label-md uppercase tracking-wider text-[var(--vi-primary)]";
 
 export function ViFooter() {
-  const toronto = VI_OFFICES[0];
-  const edmonton = VI_OFFICES[1];
+  const [eastOffice, westOffice] = VI_OFFICES;
 
   return (
     <footer className="vi-footer">
@@ -36,46 +35,29 @@ export function ViFooter() {
         <div className="vi-footer__grid grid grid-cols-1 gap-[var(--vi-stack-lg)] md:grid-cols-4 md:gap-[var(--vi-stack-lg)]">
           <div className="space-y-[var(--vi-stack-md)]">
             <h4 className={footerHeadingClass}>Contact</h4>
-            <div className="flex gap-[var(--vi-stack-sm)]">
-              <ViIcon name="location_on" className="shrink-0 text-[var(--vi-primary)]" />
-              <div className="text-sm text-[var(--vi-on-surface-variant)]">
-                <p className="font-bold text-[var(--vi-on-surface)]">Toronto</p>
-                <p>
-                  3701 Chesswood Dr Suit 308,
-                  <br />
-                  North York, ON, M3J 2P6
-                </p>
+            {[eastOffice, westOffice].map((office: any) => (
+              <div key={office.id}>
+                <div className="flex gap-[var(--vi-stack-sm)]">
+                  <ViIcon name="location_on" className="shrink-0 text-[var(--vi-primary)]" />
+                  <div className="text-sm text-[var(--vi-on-surface-variant)]">
+                    <p className="font-bold text-[var(--vi-on-surface)]">{office.name}</p>
+                    <p>
+                      {office.address[0]},
+                      <br />
+                      {office.address[1]}
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-3 flex gap-[var(--vi-stack-sm)]">
+                  <ViIcon name="call" className="shrink-0 text-[var(--vi-primary)]" />
+                  <div className="text-sm text-[var(--vi-on-surface-variant)]">
+                    <a href={office.phoneHref} className="transition-colors hover:text-[var(--vi-primary)]">
+                      {office.phone}
+                    </a>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="flex gap-[var(--vi-stack-sm)]">
-              <ViIcon name="call" className="shrink-0 text-[var(--vi-primary)]" />
-              <div className="text-sm text-[var(--vi-on-surface-variant)]">
-                <p className="font-bold text-[var(--vi-on-surface)]">Toronto:</p>
-                <a href={toronto.phoneHref} className="transition-colors hover:text-[var(--vi-primary)]">
-                  {toronto.phone}
-                </a>
-              </div>
-            </div>
-            <div className="flex gap-[var(--vi-stack-sm)]">
-              <ViIcon name="location_on" className="shrink-0 text-[var(--vi-primary)]" />
-              <div className="text-sm text-[var(--vi-on-surface-variant)]">
-                <p className="font-bold text-[var(--vi-on-surface)]">Edmonton</p>
-                <p>
-                  {edmonton.address[0]},
-                  <br />
-                  {edmonton.address[1]}
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-[var(--vi-stack-sm)]">
-              <ViIcon name="call" className="shrink-0 text-[var(--vi-primary)]" />
-              <div className="text-sm text-[var(--vi-on-surface-variant)]">
-                <p className="font-bold text-[var(--vi-on-surface)]">Edmonton:</p>
-                <a href={edmonton.phoneHref} className="transition-colors hover:text-[var(--vi-primary)]">
-                  {edmonton.phone}
-                </a>
-              </div>
-            </div>
+            ))}
             <div className="flex gap-[var(--vi-stack-sm)]">
               <ViIcon name="mail" className="shrink-0 text-[var(--vi-primary)]" />
               <a
@@ -95,7 +77,7 @@ export function ViFooter() {
                   {VI_FOOTER_SERVICE_AREAS.toronto.title}
                 </p>
                 <ul className="grid grid-cols-2 gap-1 text-sm text-[var(--vi-on-surface-variant)]">
-                  {VI_FOOTER_SERVICE_AREAS.toronto.areas.map((area) => (
+                  {VI_FOOTER_SERVICE_AREAS.toronto.areas.map((area: any) => (
                     <li key={area}>{area}</li>
                   ))}
                 </ul>
@@ -105,7 +87,7 @@ export function ViFooter() {
                   {VI_FOOTER_SERVICE_AREAS.edmonton.title}
                 </p>
                 <ul className="grid grid-cols-2 gap-1 text-sm text-[var(--vi-on-surface-variant)]">
-                  {VI_FOOTER_SERVICE_AREAS.edmonton.areas.map((area) => (
+                  {VI_FOOTER_SERVICE_AREAS.edmonton.areas.map((area: any) => (
                     <li key={area}>{area}</li>
                   ))}
                 </ul>
@@ -117,7 +99,7 @@ export function ViFooter() {
             <div>
               <h4 className={`${footerHeadingClass} mb-[var(--vi-stack-md)]`}>Our Hours</h4>
               <ul className="space-y-1 text-sm text-[var(--vi-on-surface-variant)]">
-                {VI_FOOTER_HOURS.map((row) => (
+                {VI_FOOTER_HOURS.map((row: any) => (
                   <li key={row.day} className="flex justify-between gap-4">
                     <span>{row.day}</span>
                     <span>{row.hours}</span>
@@ -128,7 +110,7 @@ export function ViFooter() {
             <div>
               <h4 className={`${footerHeadingClass} mb-[var(--vi-stack-sm)]`}>Quick Links</h4>
               <div className="flex flex-wrap gap-x-[var(--vi-stack-md)] gap-y-1 text-sm text-[var(--vi-on-surface-variant)]">
-                {VI_FOOTER_QUICK_LINKS.map((item) => (
+                {VI_FOOTER_QUICK_LINKS.map((item: any) => (
                   <Link
                     key={item.key}
                     href={item.href}

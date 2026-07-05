@@ -26,7 +26,7 @@ export function ViServiceBodyCopySection({
             &ldquo;{content.quote}&rdquo;
           </blockquote>
           <div className="space-y-6">
-            {content.paragraphs.map((paragraph) => (
+            {content.paragraphs.map((paragraph: any) => (
               <p key={paragraph} className="vi-body-md leading-relaxed text-[var(--vi-on-surface-variant)]">
                 {paragraph}
               </p>
@@ -142,7 +142,7 @@ export function ViServiceHero({
           <ViHeroContentPanel>
             <h1 className="vi-service-hero__title vi-display-lg mb-6">{heading}</h1>
             <div className={`space-y-4 ${ctas?.length ? "mb-8" : ""}`}>
-              {introParagraphs.map((paragraph, index) => (
+              {introParagraphs.map((paragraph: any, index: any) => (
                 <p key={index} className="vi-service-hero__intro vi-body-lg leading-relaxed">
                   {paragraph}
                 </p>
@@ -178,7 +178,7 @@ export function ViServiceHeroIntroContinued({
   return (
     <section className="bg-[var(--vi-surface-container-low)] py-[var(--vi-stack-lg)]">
       <ViContainer className={`${revealClass} max-w-3xl space-y-4`}>
-        {paragraphs.map((paragraph) => (
+        {paragraphs.map((paragraph: any) => (
           <p key={paragraph} className="vi-body-md text-[var(--vi-on-surface-variant)]">
             {paragraph}
           </p>
@@ -191,7 +191,7 @@ export function ViServiceHeroIntroContinued({
 export function ViServiceCtas({ ctas }: { ctas: readonly ViServiceCta[] }) {
   return (
     <div className="mt-8 flex flex-wrap gap-4">
-      {ctas.map((cta) => (
+      {ctas.map((cta: any) => (
         <Link
           key={`${cta.label}-${cta.url}`}
           href={viJsonServicePath(cta.url)}
@@ -207,7 +207,7 @@ export function ViServiceCtas({ ctas }: { ctas: readonly ViServiceCta[] }) {
 export function ViServiceContentParagraphs({ content }: { content: readonly string[] }) {
   return (
     <div className="space-y-4">
-      {content.map((paragraph) => (
+      {content.map((paragraph: any) => (
         <p key={paragraph} className="vi-body-md text-[var(--vi-on-surface-variant)]">
           {paragraph}
         </p>
@@ -242,7 +242,7 @@ export function ViServiceTextSection({
         {children}
         {bullets ? (
           <ul className="mt-6 list-disc space-y-2 pl-6 vi-body-md text-[var(--vi-on-surface-variant)]">
-            {bullets.map((bullet) => (
+            {bullets.map((bullet: any) => (
               <li key={bullet}>{bullet}</li>
             ))}
           </ul>
@@ -267,13 +267,13 @@ export function ViCustomerTestimonialsSection({ revealClass }: { revealClass?: s
           </div>
         </div>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {testimonials.map((testimonial) => (
+          {testimonials.map((testimonial: any) => (
             <blockquote
               key={testimonial.name}
               className="flex h-full flex-col rounded-xl border border-[color-mix(in_srgb,var(--vi-outline-variant)_20%,transparent)] bg-white p-8 vi-ambient-shadow"
             >
               <div className="mb-4 flex" aria-hidden>
-                {Array.from({ length: 5 }).map((_, index) => (
+                {Array.from({ length: 5 }).map((_: any, index: any) => (
                   <ViIcon key={index} name="star" className="text-[var(--vi-secondary)]" fill />
                 ))}
               </div>
@@ -302,7 +302,7 @@ export function ViAllAspectsCoveredSection({ revealClass }: { revealClass?: stri
       <ViContainer className={revealClass}>
         <h2 className="vi-headline-lg mb-12 text-center text-[var(--vi-primary)]">{heading}</h2>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {items.map((item) => (
+          {items.map((item: any) => (
             <div key={item} className="flex gap-6 rounded-xl bg-[var(--vi-background)] p-6 shadow-sm">
               <ViIcon name={VI_ASPECT_ICONS[item] ?? "check_circle"} className="shrink-0 text-3xl text-[var(--vi-tertiary)]" />
               <div>
@@ -322,7 +322,7 @@ export function ViServiceAspectsList({ heading, items, ctas, altBg }: { heading:
       <ViContainer>
         <h2 className="vi-headline-lg mb-8 text-[var(--vi-primary)]">{heading}</h2>
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((item) => (
+          {items.map((item: any) => (
             <li
               key={item}
               className="flex items-center gap-3 rounded-lg bg-white p-6 vi-ambient-shadow vi-body-md text-[var(--vi-on-surface-variant)]"
@@ -369,7 +369,7 @@ export function ViServiceTitleContentGrid({
       <ViContainer>
         <h2 className="vi-headline-lg mb-8 text-[var(--vi-primary)]">{heading}</h2>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((item) => (
+          {items.map((item: any) => (
             <article key={item.title} className="rounded-lg bg-white p-6 vi-ambient-shadow">
               <h3 className="vi-headline-md mb-3 text-[var(--vi-primary)]">{item.title}</h3>
               <p className="vi-body-md text-[var(--vi-on-surface-variant)]">{item.content}</p>
@@ -429,7 +429,7 @@ export function ViFaqAccordion({
 
   return (
     <div className={wrapperClass} role="region" aria-label="Frequently asked questions">
-      {faqs.map((item, index) => (
+      {faqs.map((item: any, index: any) => (
         <details
           key={item.question}
           className={`vi-faq-accordion vi-faq-item vi-reveal group cursor-pointer ${itemClass}`}
@@ -445,7 +445,7 @@ export function ViFaqAccordion({
           <div className="vi-faq-answer-shell">
             <div className="vi-faq-answer-inner">
               <div className={contentClass}>
-                {item.answer.map((paragraph) => (
+                {item.answer.map((paragraph: any) => (
                   <p key={paragraph} className="vi-body-md text-[var(--vi-on-surface-variant)]">
                     {paragraph}
                   </p>

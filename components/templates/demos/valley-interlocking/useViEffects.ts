@@ -7,12 +7,12 @@ export function useViFaqReveal(selector = ".vi-faq-item") {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const nodes = document.querySelectorAll(selector);
     if (prefersReduced) {
-      nodes.forEach((el) => el.classList.add("vi-reveal-visible"));
+      nodes.forEach((el: any) => el.classList.add("vi-reveal-visible"));
       return;
     }
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
+        entries.forEach((entry: any) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("vi-reveal-visible");
             observer.unobserve(entry.target);
@@ -21,7 +21,7 @@ export function useViFaqReveal(selector = ".vi-faq-item") {
       },
       { threshold: 0.08, rootMargin: "0px 0px -5% 0px" },
     );
-    nodes.forEach((el) => observer.observe(el));
+    nodes.forEach((el: any) => observer.observe(el));
     return () => observer.disconnect();
   }, [selector]);
 }
@@ -31,12 +31,12 @@ export function useViReveal(selector = ".vi-reveal") {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const nodes = document.querySelectorAll(selector);
     if (prefersReduced) {
-      nodes.forEach((el) => el.classList.add("vi-reveal-visible"));
+      nodes.forEach((el: any) => el.classList.add("vi-reveal-visible"));
       return;
     }
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
+        entries.forEach((entry: any) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("vi-reveal-visible");
             observer.unobserve(entry.target);
@@ -45,7 +45,7 @@ export function useViReveal(selector = ".vi-reveal") {
       },
       { threshold: 0.1 },
     );
-    nodes.forEach((el) => observer.observe(el));
+    nodes.forEach((el: any) => observer.observe(el));
     return () => observer.disconnect();
   }, [selector]);
 }
@@ -56,7 +56,7 @@ export function useViFormLabelFocus(formId?: string) {
     if (!root) return;
     const inputs = root.querySelectorAll("input, textarea");
     const handlers: { el: Element; focus: () => void; blur: () => void }[] = [];
-    inputs.forEach((input) => {
+    inputs.forEach((input: any) => {
       const label = input.previousElementSibling;
       if (!label || label.tagName !== "LABEL") return;
       const focus = () => label.classList.add("text-[var(--vi-primary)]");
@@ -79,15 +79,15 @@ export function useViFaqAccordion(selector = ".vi-faq-accordion") {
     const details = document.querySelectorAll<HTMLDetailsElement>(selector);
     const onToggle = (target: HTMLDetailsElement) => {
       if (!target.open) return;
-      details.forEach((detail) => {
+      details.forEach((detail: any) => {
         if (detail !== target) detail.removeAttribute("open");
       });
     };
-    details.forEach((detail) => {
+    details.forEach((detail: any) => {
       detail.addEventListener("toggle", () => onToggle(detail));
     });
     return () => {
-      details.forEach((detail) => {
+      details.forEach((detail: any) => {
         detail.replaceWith(detail.cloneNode(true));
       });
     };
@@ -146,13 +146,13 @@ export function useViSectionReveal(selector = "main section") {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const nodes = document.querySelectorAll(selector);
     if (prefersReduced) {
-      nodes.forEach((el) => el.classList.add("vi-reveal-visible"));
+      nodes.forEach((el: any) => el.classList.add("vi-reveal-visible"));
       return;
     }
-    nodes.forEach((el) => el.classList.add("vi-section-reveal"));
+    nodes.forEach((el: any) => el.classList.add("vi-section-reveal"));
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
+        entries.forEach((entry: any) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("vi-reveal-visible");
             observer.unobserve(entry.target);
@@ -161,7 +161,7 @@ export function useViSectionReveal(selector = "main section") {
       },
       { threshold: 0.1 },
     );
-    nodes.forEach((el) => observer.observe(el));
+    nodes.forEach((el: any) => observer.observe(el));
     return () => observer.disconnect();
   }, [selector]);
 }

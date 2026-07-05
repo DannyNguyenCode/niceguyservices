@@ -27,7 +27,7 @@ export function ViDrivewayPavingBenefitsSection({
             </span>
             <h2 className="vi-display-lg mb-[var(--vi-stack-sm)] text-[var(--vi-primary)]">{benefits.heading}</h2>
             <div className="vi-body-lg max-w-2xl space-y-6 text-[var(--vi-on-surface-variant)]">
-              {benefits.content.map((paragraph) => (
+              {benefits.content.map((paragraph: any) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
@@ -56,7 +56,7 @@ export function ViDrivewayPavingBenefitsSection({
         />
 
         <div className={`${revealClass} grid grid-cols-1 gap-x-[var(--vi-gutter)] gap-y-[var(--vi-stack-md)] md:grid-cols-2 lg:grid-cols-3`}>
-          {benefits.items.map((item) => (
+          {benefits.items.map((item: any) => (
             <article
               key={item.title}
               className="group border border-transparent p-[var(--vi-base)] transition-all duration-300 hover:border-[color-mix(in_srgb,var(--vi-outline-variant)_20%,transparent)]"

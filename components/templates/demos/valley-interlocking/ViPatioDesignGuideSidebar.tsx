@@ -12,7 +12,7 @@ export function ViPatioDesignGuideSidebar() {
         <div className="border-b border-[color-mix(in_srgb,var(--vi-outline-variant)_20%,transparent)] pb-8">
           <p className="vi-label-md mb-6 text-[var(--vi-on-surface)]">Article Overview</p>
           <ul className="space-y-4">
-            {article.navSections.map((section, index) => (
+            {article.navSections.map((section: any, index: any) => (
               <li key={section.href}>
                 <a
                   href={section.href}

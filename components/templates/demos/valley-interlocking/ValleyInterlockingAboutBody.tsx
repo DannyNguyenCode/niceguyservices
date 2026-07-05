@@ -4,6 +4,7 @@ import Link from "next/link";
 import { VI_PATHS, viJsonServicePath } from "./valleyInterlockingConfig";
 import { VI_ABOUT_CTA_AFTER_MISSION, VI_ABOUT_PAGE } from "./valleyInterlockingAboutContent";
 import { VI_IMG } from "./valleyInterlockingImages";
+import { VI_HOME_PAGE } from "./valleyInterlockingSiteContent";
 import { ViAboutCtaBanner } from "./ViAboutCtaBanner";
 import { ViContainer, ViIcon, ViImg, ViHeroContentPanel, VI_HERO_CTA_PRIMARY } from "./ValleyInterlockingShared";
 import { useViNavScroll, useViReveal } from "./useViEffects";
@@ -34,17 +35,20 @@ export function ValleyInterlockingAboutBody() {
           <ViHeroContentPanel>
             <h1 className="vi-display-lg mb-6 leading-tight">{VI_ABOUT_PAGE.name}</h1>
             <div className="vi-body-lg mb-8 space-y-4">
-              {about.content.map((paragraph) => (
+              {about.content.map((paragraph: string) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
             <div className="flex flex-wrap gap-4">
-              <Link href={VI_PATHS.toronto} className={VI_HERO_CTA_PRIMARY}>
-                Explore Toronto
-              </Link>
-              <Link href={VI_PATHS.edmonton} className={VI_HERO_CTA_PRIMARY}>
-                Explore Edmonton
-              </Link>
+              {VI_HOME_PAGE.hero.ctas.map((cta: any) => (
+                <Link
+                  key={cta.pathKey}
+                  href={VI_PATHS[cta.pathKey as "toronto" | "edmonton"]}
+                  className={VI_HERO_CTA_PRIMARY}
+                >
+                  {cta.label}
+                </Link>
+              ))}
             </div>
           </ViHeroContentPanel>
         </ViContainer>
@@ -54,7 +58,7 @@ export function ValleyInterlockingAboutBody() {
         <ViContainer className="vi-about-reveal mx-auto max-w-4xl text-center">
           <h2 className="vi-headline-lg mb-8 text-[var(--vi-primary)]">{mission.heading}</h2>
           <div className="vi-body-lg space-y-4 leading-relaxed text-[var(--vi-on-surface-variant)]">
-            {mission.content.map((paragraph) => (
+            {mission.content.map((paragraph: string) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
           </div>
@@ -65,7 +69,7 @@ export function ValleyInterlockingAboutBody() {
         <ViContainer className="vi-about-reveal mx-auto max-w-4xl">
           <h2 className="vi-headline-lg mb-8 text-center text-[var(--vi-primary)]">{whyChooseUs.heading}</h2>
           <div className="vi-body-lg space-y-4 leading-relaxed text-[var(--vi-on-surface-variant)]">
-            {whyChooseUs.content.map((paragraph) => (
+            {whyChooseUs.content.map((paragraph: string) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
           </div>
@@ -91,7 +95,7 @@ export function ValleyInterlockingAboutBody() {
             <div>
               <h2 className="vi-headline-lg mb-12 text-[var(--vi-primary)]">{experience.heading}</h2>
               <div className="space-y-10">
-                {experience.subsections.map((subsection, index) => (
+                {experience.subsections.map((subsection: { heading: string; content: string[] }, index: number) => (
                   <div key={subsection.heading} className="flex gap-6">
                     <ViIcon
                       name={EXPERIENCE_ICONS[index] ?? "handshake"}
@@ -115,20 +119,22 @@ export function ValleyInterlockingAboutBody() {
             <div className="md:col-span-6">
               <h2 className="vi-headline-lg mb-8 text-[var(--vi-primary)]">{services.heading}</h2>
               <div className="vi-body-lg mb-8 space-y-4 leading-relaxed text-[var(--vi-on-surface-variant)]">
-                {services.content.map((paragraph) => (
+                {services.content.map((paragraph: string) => (
                   <p key={paragraph}>{paragraph}</p>
                 ))}
               </div>
-              <Link
-                href={viJsonServicePath(services.ctas[0].url)}
-                className="inline-flex items-center gap-2 rounded-lg border-2 border-[var(--vi-primary)] px-8 py-4 vi-label-md text-[var(--vi-primary)] transition-all hover:bg-[var(--vi-primary)] hover:text-[var(--vi-on-primary)]"
-              >
-                {services.ctas[0].label}
-              </Link>
+              {services.ctas[0] ? (
+                <Link
+                  href={viJsonServicePath(services.ctas[0].url)}
+                  className="inline-flex items-center gap-2 rounded-lg border-2 border-[var(--vi-primary)] px-8 py-4 vi-label-md text-[var(--vi-primary)] transition-all hover:bg-[var(--vi-primary)] hover:text-[var(--vi-on-primary)]"
+                >
+                  {services.ctas[0].label}
+                </Link>
+              ) : null}
             </div>
             <div className="rounded-xl border border-[color-mix(in_srgb,var(--vi-outline-variant)_30%,transparent)] bg-[var(--vi-surface-container-low)] p-8 md:col-span-6">
               <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-x-12">
-                {services.services.map((service) => (
+                {services.services.map((service: string) => (
                   <li key={service} className="flex items-center gap-2 vi-body-md text-[var(--vi-on-surface)]">
                     <ViIcon name="check_circle" className="text-[var(--vi-primary)]" />
                     {service}

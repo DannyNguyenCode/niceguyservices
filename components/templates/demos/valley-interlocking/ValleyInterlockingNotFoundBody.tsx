@@ -14,7 +14,7 @@ export function ValleyInterlockingNotFoundBody() {
   const normalizedQuery = query.trim().toLowerCase();
   const searchResults =
     normalizedQuery.length > 0
-      ? VI_NOT_FOUND_LINKS.filter((link) => link.label.toLowerCase().includes(normalizedQuery))
+      ? VI_NOT_FOUND_LINKS.filter((link: any) => link.label.toLowerCase().includes(normalizedQuery))
       : [];
 
   const [searchMessage, setSearchMessage] = useState("");
@@ -81,7 +81,7 @@ export function ValleyInterlockingNotFoundBody() {
         )}
 
         <div className="mb-10 flex flex-wrap justify-center gap-3">
-          {(searchResults.length > 0 ? searchResults : VI_NOT_FOUND_LINKS).map((link) => (
+          {(searchResults.length > 0 ? searchResults : VI_NOT_FOUND_LINKS).map((link: any) => (
             <Link
               key={link.href}
               href={link.href}

@@ -52,6 +52,16 @@ const nextConfig: NextConfig = {
         destination: "/resources/custom-vs-template-websites",
         permanent: true,
       },
+      {
+        source: "/template/demo/valley-interlocking",
+        destination: "/template/demo/hardscape-landscaping",
+        permanent: true,
+      },
+      {
+        source: "/template/demo/valley-interlocking/:path*",
+        destination: "/template/demo/hardscape-landscaping/:path*",
+        permanent: true,
+      },
     ];
   },
   images: {

@@ -6,6 +6,15 @@
       "description": "Learn how Google Search, AI Search, Search Console, and local SEO visibility work for small businesses.",
       "articles": [
         {
+          "title": "Understanding GEO (Generative Engine Optimization)",
+          "category": "SEO & AI",
+          "slug": "/resources/understanding-generative-engine-optimization",
+          "description": "What GEO is, how AI search is changing discovery, and how small businesses can prepare — explained in plain English without hype.",
+          "imageSrc": "/images/Futuristic-tech-abstract.png",
+          "imageAlt": "Abstract visualization suggesting AI-assisted search and online discovery",
+          "mutedImage": true
+        },
+        {
           "title": "What Google AI Search Means for Small Businesses",
           "category": "SEO Education",
           "slug": "/resources/what-google-ai-search-means-for-small-businesses",

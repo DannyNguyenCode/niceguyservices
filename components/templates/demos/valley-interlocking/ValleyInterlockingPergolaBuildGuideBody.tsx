@@ -125,7 +125,7 @@ export function ValleyInterlockingPergolaBuildGuideBody() {
               <SectionHeading number={article.materials.number} title={article.materials.title} />
               <p className="vi-body-md mb-6 leading-relaxed text-[var(--vi-on-surface-variant)]">{article.materials.body}</p>
               <ul className="space-y-4">
-                {article.materials.items.map((item) => (
+                {article.materials.items.map((item: any) => (
                   <li key={item.label} className="flex items-start gap-4">
                     <ViIcon name="check_circle" className="mt-1 shrink-0 text-[var(--vi-secondary)]" />
                     <span className="vi-body-md text-[var(--vi-on-surface-variant)]">
@@ -140,7 +140,7 @@ export function ValleyInterlockingPergolaBuildGuideBody() {
               <SectionHeading number={article.roofing.number} title={article.roofing.title} />
               <p className="vi-body-md mb-6 leading-relaxed text-[var(--vi-on-surface-variant)]">{article.roofing.body}</p>
               <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {article.roofing.options.map((option) => (
+                {article.roofing.options.map((option: any) => (
                   <li key={option} className="flex items-start gap-3">
                     <ViIcon name="check" className="mt-1 shrink-0 text-[var(--vi-tertiary)]" />
                     <span className="vi-body-md text-[var(--vi-on-surface-variant)]">{option}</span>
@@ -157,7 +157,7 @@ export function ValleyInterlockingPergolaBuildGuideBody() {
               <div className="rounded-xl bg-[var(--vi-surface-container-low)] p-8">
                 <h3 className="vi-headline-sm mb-6 text-[var(--vi-on-surface)]">Planning Checklist</h3>
                 <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  {article.futurePlanning.planningConsiderations.map((item) => (
+                  {article.futurePlanning.planningConsiderations.map((item: any) => (
                     <li key={item} className="flex items-start gap-3">
                       <ViIcon name="check" className="shrink-0 text-[var(--vi-tertiary)]" />
                       <span className="vi-body-md text-[var(--vi-on-surface-variant)]">{item}</span>

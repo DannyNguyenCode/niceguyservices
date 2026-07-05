@@ -170,11 +170,17 @@ export const GALLERY_CARD_META: Record<string, GalleryCardMeta> = {
     iconClassName: "text-primary-fixed",
     gradientClassName: "bg-linear-to-br from-[#0c6780]/30 to-[#e3efff]",
   }),
-  "valley-interlocking": servicesCard("valley-interlocking", {
+  "hardscape-landscaping": servicesCard("hardscape-landscaping", {
     themeColors: ["#0A6847", "#0D7A52", "#4A9D7A", "#f9f9f9", "#1a1c1c", "#5f5e5e"],
     icon: "landscape",
     iconClassName: "text-primary-fixed",
     gradientClassName: "bg-linear-to-br from-[#0A6847]/30 to-[#121212]",
+  }),
+  "power-pellet-electric": servicesCard("power-pellet-electric", {
+    themeColors: ["#e9ea00", "#ffaaf7", "#006d8d", "#141408", "#e6e3ce", "#791a7b"],
+    icon: "bolt",
+    iconClassName: "text-primary-fixed",
+    gradientClassName: "bg-linear-to-br from-[#e9ea00]/25 to-[#0f0f04]",
   }),
 };
 

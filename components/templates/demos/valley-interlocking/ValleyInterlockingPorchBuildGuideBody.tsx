@@ -109,7 +109,7 @@ export function ValleyInterlockingPorchBuildGuideBody() {
               <SectionHeading number={article.materials.number} title={article.materials.title} />
               <p className="vi-body-md mb-6 leading-relaxed text-[var(--vi-on-surface-variant)]">{article.materials.body}</p>
               <ul className="space-y-4">
-                {article.materials.items.map((item) => (
+                {article.materials.items.map((item: any) => (
                   <li key={item.label} className="flex items-start gap-4">
                     <ViIcon name="check_circle" className="mt-1 shrink-0 text-[var(--vi-secondary)]" />
                     <span className="vi-body-md text-[var(--vi-on-surface-variant)]">

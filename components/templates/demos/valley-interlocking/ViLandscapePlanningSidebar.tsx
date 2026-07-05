@@ -11,7 +11,7 @@ export function ViLandscapePlanningSidebar() {
         <div className="rounded-lg border border-dashed border-[var(--vi-outline)] bg-[var(--vi-surface-container-high)] p-4">
           <p className="vi-caption mb-3 font-bold uppercase text-[var(--vi-on-surface)]">Guide Overview</p>
           <ol className="space-y-2">
-            {article.serviceStepTitles.map((title, index) => (
+            {article.serviceStepTitles.map((title: any, index: any) => (
               <li key={title} className="vi-caption flex gap-2 text-[var(--vi-on-surface-variant)]">
                 <span className="vi-step-number font-bold text-[var(--vi-primary)]">
                   {String(index + 1).padStart(2, "0")}

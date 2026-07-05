@@ -105,7 +105,7 @@ export function ValleyInterlockingLandscapingBody() {
               />
             </figure>
             <div className="space-y-4 text-[var(--vi-on-surface-variant)]">
-              {ideas.content.map((paragraph) => (
+              {ideas.content.map((paragraph: any) => (
                 <p key={paragraph} className="vi-body-md leading-relaxed">
                   {paragraph}
                 </p>
@@ -133,7 +133,7 @@ export function ValleyInterlockingLandscapingBody() {
 
               <div className="space-y-4 text-[var(--vi-on-surface-variant)]">
 
-                {paths.content.map((paragraph) => (
+                {paths.content.map((paragraph: any) => (
 
                   <p key={paragraph} className="vi-body-md leading-relaxed">
 
@@ -189,7 +189,7 @@ export function ValleyInterlockingLandscapingBody() {
 
           <div className="vi-landscaping-reveal grid grid-cols-1 gap-8 md:grid-cols-2">
 
-            {overlooked.items.map((item, index) => (
+            {overlooked.items.map((item: any, index: any) => (
 
               <article
 
@@ -217,7 +217,7 @@ export function ValleyInterlockingLandscapingBody() {
 
                   <div className="mt-6 grid grid-cols-2 gap-3">
 
-                    {item.options.map((option) => (
+                    {item.options.map((option: any) => (
 
                       <div key={option} className="vi-label-md flex items-center gap-2 text-[var(--vi-secondary)]">
 
@@ -253,7 +253,7 @@ export function ValleyInterlockingLandscapingBody() {
               <p className="vi-body-md mb-4 text-[var(--vi-on-surface-variant)]">{faq.content[0]}</p>
               <p className="vi-body-md mb-8 text-[var(--vi-on-surface-variant)]">{planningGuide.serviceSummary}</p>
               <ol className="mb-8 space-y-3">
-                {planningGuide.serviceStepTitles.map((title, index) => (
+                {planningGuide.serviceStepTitles.map((title: any, index: any) => (
                   <li key={title} className="flex items-center gap-4">
                     <span className="vi-step-number vi-label-md flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--vi-primary)] text-[var(--vi-primary)]">
                       {String(index + 1).padStart(2, "0")}

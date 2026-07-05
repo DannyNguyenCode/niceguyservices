@@ -47,7 +47,7 @@ export function normalizeViQuoteInquiry(input: ViQuoteInquiryInput): ViQuoteInqu
   if (!EMAIL_PATTERN.test(email)) throw new Error("Email must be valid");
 
   const location = requireField(input.location, "Project location");
-  const allowedLocations = VI_QUOTE_LOCATIONS.map((item) => item.id);
+  const allowedLocations = VI_QUOTE_LOCATIONS.map((item: { id: string; label: string; detail: string }) => item.id);
   if (!allowedLocations.includes(location as (typeof allowedLocations)[number])) {
     throw new Error("Project location is invalid");
   }
@@ -66,7 +66,7 @@ export function normalizeViQuoteInquiry(input: ViQuoteInquiryInput): ViQuoteInqu
 }
 
 export function viQuoteLocationLabel(locationId: string): string {
-  return VI_QUOTE_LOCATIONS.find((item) => item.id === locationId)?.label ?? locationId;
+  return VI_QUOTE_LOCATIONS.find((item: { id: string; label: string; detail: string }) => item.id === locationId)?.label ?? locationId;
 }
 
 export function escapeViEmailHtml(value: string): string {

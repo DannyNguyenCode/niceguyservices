@@ -1,11 +1,28 @@
-export const VI_BASE = "/template/demo/valley-interlocking" as const;
+export const VI_BASE = "/template/demo/hardscape-landscaping" as const;
 
-export const VI_SITE_LINE1 = "Valley Interlocking";
-export const VI_SITE_LINE2 = "& Landscaping";
-export const VI_SITE = `${VI_SITE_LINE1} ${VI_SITE_LINE2}`;
-export const VI_TAGLINE = "Premium outdoor craftsmanship";
-export const VI_EMAIL = "info@valleyinterlock.com";
-export const VI_DOMAIN = "https://valleyinterlock.com";
+export {
+  VI_SITE,
+  VI_SITE_LINE1,
+  VI_SITE_LINE2,
+  VI_TAGLINE,
+  VI_EMAIL,
+  VI_DOMAIN,
+  VI_SOCIAL_LINKS,
+  VI_OFFICES,
+  VI_BUSINESS_HOURS,
+  VI_FOOTER_HOURS,
+  VI_REVIEWS,
+  VI_FOOTER_SERVICE_AREAS,
+  VI_NAV_ITEMS,
+  VI_NAV_SERVICES,
+  VI_FOOTER_QUICK_LINKS,
+  VI_NOT_FOUND_LINKS,
+  viDemoMetadataTitle,
+  viDemoPageTitle,
+  viRouteMetadata,
+} from "./valleyInterlockingSiteContent";
+
+import { VI_NAV_ITEMS, VI_OFFICES } from "./valleyInterlockingSiteContent";
 
 /** Production SEO paths preserved under the demo base. */
 export const VI_PATHS = {
@@ -131,7 +148,7 @@ export const VI_SERVICE_PAGE_PATHS = [
 
 export function isViServicePath(pathname: string): boolean {
   const path = pathname.replace(/\/$/, "") || "/";
-  return VI_SERVICE_PAGE_PATHS.some((href) => path === href);
+  return VI_SERVICE_PAGE_PATHS.some((href: any) => path === href);
 }
 
 export function isViLocationPath(pathname: string): boolean {
@@ -141,42 +158,6 @@ export function isViLocationPath(pathname: string): boolean {
 
 export type ViNavKey = "home" | "about" | "locations" | "services" | "gallery" | "resources" | "contact" | "quote";
 
-export const VI_NAV_ITEMS: { key: ViNavKey; href: string; label: string }[] = [
-  { key: "home", href: VI_PATHS.home, label: "Home" },
-  { key: "about", href: VI_PATHS.about, label: "About" },
-  { key: "locations", href: VI_PATHS.locations, label: "Locations" },
-  { key: "services", href: VI_PATHS.services, label: "Services" },
-  { key: "gallery", href: VI_PATHS.gallery, label: "Gallery" },
-  { key: "resources", href: VI_PATHS.resources, label: "Resources" },
-  { key: "contact", href: VI_PATHS.contact, label: "Contact Us" },
-  { key: "quote", href: VI_PATHS.quote, label: "Get A Quote" },
-];
-
-/** Individual service pages shown in the nav dropdown (hub is the Services nav label). */
-export const VI_NAV_SERVICES: { label: string; href: string }[] = [
-  { label: "Interlocking & Paving", href: VI_PATHS.interlocking },
-  { label: "Landscaping", href: VI_PATHS.landscaping },
-  { label: "Landscape Lighting", href: VI_PATHS.lighting },
-  { label: "Patio", href: VI_PATHS.patio },
-  { label: "Porch", href: VI_PATHS.porch },
-  { label: "Pergolas", href: VI_PATHS.pergolas },
-  { label: "Driveway Paving", href: VI_PATHS.driveway },
-  { label: "Lawn Care & Turf", href: VI_PATHS.lawnCare },
-  { label: "Backyard Landscaping", href: VI_PATHS.backyard },
-];
-
-export const VI_NOT_FOUND_LINKS: { label: string; href: string }[] = [
-  { label: "Home", href: VI_PATHS.home },
-  { label: "About", href: VI_PATHS.about },
-  { label: "Toronto", href: VI_PATHS.toronto },
-  { label: "Edmonton", href: VI_PATHS.edmonton },
-  { label: "Services", href: VI_PATHS.services },
-  { label: "Gallery", href: VI_PATHS.gallery },
-  { label: "Resources", href: VI_PATHS.resources },
-  { label: "Contact Us", href: VI_PATHS.contact },
-  { label: "Get A Quote", href: VI_PATHS.quote },
-];
-
 export function isViNavActive(pathname: string, key: ViNavKey): boolean {
   const path = pathname.replace(/\/$/, "") || "/";
   if (key === "locations") return isViLocationPath(path);
@@ -184,94 +165,11 @@ export function isViNavActive(pathname: string, key: ViNavKey): boolean {
   if (key === "resources") return path === VI_PATHS.resources || path.startsWith(`${VI_PATHS.resources}/`);
   if (key === "services") return path === VI_PATHS.services || isViServicePath(path);
   if (key === "quote") return path === VI_PATHS.quote;
-  const href = VI_NAV_ITEMS.find((item) => item.key === key)?.href ?? VI_BASE;
+  const href = VI_NAV_ITEMS.find((item: any) => item.key === key)?.href ?? VI_BASE;
   const target = href.replace(/\/$/, "") || "/";
   if (target === VI_BASE) return path === VI_BASE;
   return path === target;
 }
 
-export const VI_OFFICES = [
-  {
-    id: "toronto",
-    name: "Toronto Office",
-    address: ["3701 Chesswood Dr, Suite 308", "North York, ON M3J 2P6"],
-    phone: "(647) 571-4680",
-    phoneHref: "tel:+16475714680",
-    email: VI_EMAIL,
-    mapLabel: "View Toronto Office",
-    mapLocation: "Toronto, Canada",
-  },
-  {
-    id: "edmonton",
-    name: "Edmonton Office",
-    address: ["6307 Elston Gate, Suite 504", "Edmonton, AB T6M 1L8"],
-    phone: "(780) 202-6100",
-    phoneHref: "tel:+17802026100",
-    email: VI_EMAIL,
-    mapLabel: "View Edmonton Office",
-    mapLocation: "Edmonton, Canada",
-  },
-] as const;
-
 export const VI_PRIMARY_PHONE = VI_OFFICES[0].phone;
 export const VI_PRIMARY_PHONE_HREF = VI_OFFICES[0].phoneHref;
-
-export const VI_SOCIAL_LINKS = {
-  facebook: "https://www.facebook.com/valleyinterlocklandscaping",
-  instagram: "https://www.instagram.com/valleyinterlocklandscaping",
-} as const;
-
-export const VI_FOOTER_HOURS = [
-  { day: "Monday", hours: "8:30 am – 4:30 pm" },
-  { day: "Tuesday", hours: "8:30 am – 4:30 pm" },
-  { day: "Wednesday", hours: "8:30 am – 4:30 pm" },
-  { day: "Thursday", hours: "8:30 am – 4:30 pm" },
-  { day: "Friday", hours: "8:30 am – 4:30 pm" },
-  { day: "Saturday", hours: "8:30 am – 2:30 pm" },
-  { day: "Sunday", hours: "Closed" },
-] as const;
-
-export const VI_BUSINESS_HOURS = VI_FOOTER_HOURS;
-
-export const VI_REVIEWS = {
-  source: "Google",
-  ratingLabel: "Excellent",
-  rating: 5,
-  reviewCount: 42,
-} as const;
-
-export const VI_FOOTER_SERVICE_AREAS = {
-  toronto: {
-    title: "Toronto Area",
-    areas: [
-      "Ajax",
-      "Mississauga",
-      "Brampton",
-      "Newmarket",
-      "Burlington",
-      "Oakville",
-      "Guelph",
-      "Richmond Hill",
-      "Hamilton",
-      "Toronto",
-      "Markham",
-      "Vaughan",
-    ],
-  },
-  edmonton: {
-    title: "Edmonton",
-    areas: [
-      "St. Albert",
-      "Edgemont",
-      "Sherwood Park",
-      "Beaumont",
-      "Stony Plain",
-      "Devon",
-      "Spruce Grove",
-      "Leduc",
-      "Fort Saskatchewan",
-    ],
-  },
-} as const;
-
-export const VI_FOOTER_QUICK_LINKS = VI_NAV_ITEMS.filter((item) => item.key !== "quote");

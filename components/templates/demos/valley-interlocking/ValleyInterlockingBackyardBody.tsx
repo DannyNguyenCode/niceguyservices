@@ -91,7 +91,7 @@ export function ValleyInterlockingBackyardBody() {
               </div>
             </div>
             <div className="flex w-full flex-col gap-6 lg:w-2/5">
-              {SMALL_BACKYARD_IMAGES.map((image) => (
+              {SMALL_BACKYARD_IMAGES.map((image: any) => (
                 <ViImg
                   key={image.alt}
                   src={image.src}
@@ -114,7 +114,7 @@ export function ValleyInterlockingBackyardBody() {
               <h2 className="vi-headline-lg mb-6 text-(--vi-primary)">{howToGuide.serviceTitle}</h2>
               <p className="vi-body-md mb-8 text-(--vi-on-surface-variant)">{howToGuide.serviceSummary}</p>
               <ol className="mb-8 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
-                {howToGuide.serviceStepTitles.map((title, index) => (
+                {howToGuide.serviceStepTitles.map((title: any, index: any) => (
                   <li key={title} className="flex items-start gap-4">
                     <span className="vi-step-number vi-label-md flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-(--vi-primary) text-(--vi-primary)">
                       {String(index + 1).padStart(2, "0")}

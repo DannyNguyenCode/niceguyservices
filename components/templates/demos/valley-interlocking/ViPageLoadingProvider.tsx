@@ -46,7 +46,7 @@ function isViInternalHref(href: string, origin: string) {
 }
 
 async function waitForImageElements(imgs: HTMLImageElement[]): Promise<void> {
-  const pending = imgs.filter((img) => !img.complete);
+  const pending = imgs.filter((img: any) => !img.complete);
   if (!pending.length) return;
   await Promise.all(
     pending.map(
@@ -59,7 +59,7 @@ async function waitForImageElements(imgs: HTMLImageElement[]): Promise<void> {
     ),
   );
   await Promise.all(
-    imgs.map((img) => img.decode?.().catch(() => undefined) ?? Promise.resolve()),
+    imgs.map((img: any) => img.decode?.().catch(() => undefined) ?? Promise.resolve()),
   );
 }
 

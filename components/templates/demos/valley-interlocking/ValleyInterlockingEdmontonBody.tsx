@@ -72,7 +72,7 @@ export function ValleyInterlockingEdmontonBody() {
               <div className="space-y-4">
                 <h3 className="vi-headline-md text-[var(--vi-primary)]">{whyChooseUs.title}</h3>
                 <ul className="space-y-3 vi-body-md text-[var(--vi-on-surface-variant)]">
-                  {whyChooseUs.items.map((item, index) => (
+                  {whyChooseUs.items.map((item: any, index: any) => (
                     <li key={item.title} className="flex gap-3">
                       <ViIcon name={WHY_CHOOSE_ICONS[index] ?? "check_circle"} className="shrink-0 text-[var(--vi-primary)]" />
                       <span>
@@ -86,7 +86,7 @@ export function ValleyInterlockingEdmontonBody() {
             <div className="relative min-h-[280px] overflow-hidden rounded-xl shadow-xl md:min-h-[500px]">
               <ViImg
                 src={VI_IMG.edmonton.landscape}
-                alt="Edmonton premium landscaping"
+                alt={`Premium landscaping in the West Region — ${VI_EDMONTON_LOCATION.title}`}
                 width={800}
                 height={500}
                 className="h-full w-full object-cover"
@@ -104,7 +104,7 @@ export function ValleyInterlockingEdmontonBody() {
             <p className="vi-body-md mx-auto max-w-2xl text-[var(--vi-on-surface-variant)]">{services.introduction}</p>
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {services.items.map((service) => (
+            {services.items.map((service: any) => (
               <article
                 key={service.name}
                 className="rounded-xl border border-[color-mix(in_srgb,var(--vi-outline-variant)_30%,transparent)] bg-white p-8 vi-ambient-shadow transition-transform hover:-translate-y-1"

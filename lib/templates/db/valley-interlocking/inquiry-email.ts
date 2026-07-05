@@ -35,7 +35,7 @@ export async function sendViInquiryEmail(
   payload: ViInquiryEmailPayload,
 ): Promise<SendViInquiryEmailResult> {
   await deliverTemplateDemoEmail({
-    demo: "valley-interlocking",
+    demo: "hardscape-landscaping",
     from: getFromAddress(),
     to: payload.to,
     subject: payload.subject,

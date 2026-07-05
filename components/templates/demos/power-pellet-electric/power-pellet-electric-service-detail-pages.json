@@ -1,0 +1,554 @@
+{
+  "serviceDetailPages": [
+    {
+      "slug": "residential-electrical-service",
+      "title": "Residential Electrical Service",
+      "powerLabel": "Home Power",
+      "levelLabel": "Service Tech Level 01",
+      "status": "Home Circuit Ready",
+      "heroImageAlt": "Electrician working on residential electrical wiring",
+      "heroCaption": "Keep your home powered safely with repairs, upgrades, troubleshooting, and clean electrical installations.",
+      "missionTitle": "The Mission",
+      "mission": "Your home depends on safe electrical systems every day. Residential electrical service helps solve common household issues such as dead outlets, flickering lights, tripping breakers, outdated switches, unsafe wiring, and new installation needs. The goal is to make your home safer, more reliable, and ready for modern electrical demand.",
+      "technicalSpec": ["Outlets", "Switches", "Lighting", "Circuits", "Smoke Detectors", "Home Electrical Repairs"],
+      "featureCards": [
+        {
+          "title": "Restore Power",
+          "description": "Fix dead outlets, faulty switches, and rooms where power is unreliable or not working properly."
+        },
+        {
+          "title": "Upgrade Fixtures",
+          "description": "Install new lighting, ceiling fixtures, dimmers, smart switches, and safer electrical devices."
+        },
+        {
+          "title": "Solve Breaker Trips",
+          "description": "Identify overloaded circuits, faulty devices, or wiring issues that cause repeated breaker problems."
+        },
+        {
+          "title": "Improve Safety",
+          "description": "Check electrical warning signs such as buzzing, warm outlets, flickering, sparks, or damaged wiring."
+        }
+      ],
+      "primaryCTA": {
+        "label": "Start Residential Quote",
+        "href": "/contact"
+      },
+      "secondaryCTA": {
+        "label": "Emergency Call",
+        "href": "/contact"
+      },
+      "executionSequence": [
+        {
+          "step": "01",
+          "title": "Home Electrical Review",
+          "description": "We review the problem, affected rooms, devices, outlets, switches, panels, and customer concerns."
+        },
+        {
+          "step": "02",
+          "title": "Safe Diagnosis",
+          "description": "The issue is traced carefully to understand whether it is device-related, circuit-related, or wiring-related."
+        },
+        {
+          "step": "03",
+          "title": "Repair or Install",
+          "description": "Electrical work is completed cleanly with attention to safety, function, and long-term reliability."
+        }
+      ]
+    },
+    {
+      "slug": "commercial-electrical-service",
+      "title": "Commercial Electrical Service",
+      "powerLabel": "Business Power",
+      "levelLabel": "Service Tech Level 02",
+      "status": "Business Voltage Ready",
+      "heroImageAlt": "Commercial electrical panel and wiring in a business space",
+      "heroCaption": "Support your business with reliable electrical work for offices, storefronts, clinics, studios, and commercial spaces.",
+      "missionTitle": "The Mission",
+      "mission": "Commercial electrical service helps businesses stay safe, functional, and ready for daily operations. Whether the space needs lighting improvements, outlet placement, troubleshooting, maintenance, wiring changes, or electrical support for equipment, the work should reduce downtime and keep the business environment dependable.",
+      "technicalSpec": ["Office Wiring", "Storefront Lighting", "Outlet Placement", "Troubleshooting", "Maintenance", "Small Commercial Spaces"],
+      "featureCards": [
+        {
+          "title": "Keep Operations Running",
+          "description": "Resolve electrical issues that interfere with lighting, equipment, outlets, customer areas, or staff workspaces."
+        },
+        {
+          "title": "Support Business Layouts",
+          "description": "Add or adjust electrical access for desks, displays, counters, treatment rooms, workstations, or equipment zones."
+        },
+        {
+          "title": "Upgrade Lighting",
+          "description": "Improve interior, exterior, security, display, or task lighting for better visibility and customer experience."
+        },
+        {
+          "title": "Reduce Electrical Risk",
+          "description": "Identify unsafe wiring, overloaded circuits, damaged devices, or electrical conditions that need attention."
+        }
+      ],
+      "primaryCTA": {
+        "label": "Start Commercial Quote",
+        "href": "/contact"
+      },
+      "secondaryCTA": {
+        "label": "Emergency Call",
+        "href": "/contact"
+      },
+      "executionSequence": [
+        {
+          "step": "01",
+          "title": "Business Needs Review",
+          "description": "We review the space, electrical issue, business hours, equipment needs, and any operational concerns."
+        },
+        {
+          "step": "02",
+          "title": "Service Planning",
+          "description": "The work is planned to support safety, function, and minimal disruption where possible."
+        },
+        {
+          "step": "03",
+          "title": "Commercial Power Sync",
+          "description": "Electrical work is completed with clean installation, testing, and practical communication."
+        }
+      ]
+    },
+    {
+      "slug": "panel-upgrades",
+      "title": "Panel Upgrades",
+      "powerLabel": "Power Boost",
+      "levelLabel": "Service Tech Level 03",
+      "status": "High Voltage Ready",
+      "heroImageAlt": "Modern electrical panel with organized breakers and wiring",
+      "heroCaption": "Eliminate flickering lights, limited capacity, and overloaded circuits with a safer modern electrical panel.",
+      "missionTitle": "The Mission",
+      "mission": "Your electrical panel is the motherboard of your home or business. Like an aging console running a modern arcade, outdated panels can't always handle today's power demand. Panel upgrades help support renovations, EV chargers, new appliances, basement units, additions, and safer everyday electrical use.",
+      "technicalSpec": ["200 Amp Standard", "Surge Protected", "Smart Meter Compatible", "EV Charger Ready", "Renovation Ready"],
+      "featureCards": [
+        {
+          "title": "Max Capacity",
+          "description": "Scale your power supply to handle EVs, home theatres, appliances, additions, and high-performance everyday electrical use."
+        },
+        {
+          "title": "Circuit Armor",
+          "description": "Integrated whole-home protection helps support safer power flow and reduce electrical stress."
+        },
+        {
+          "title": "Clear Feed",
+          "description": "Organized panel work helps eliminate confusing circuits and improves future maintenance."
+        },
+        {
+          "title": "Zero Faults",
+          "description": "Replace hazardous old stock breakers, outdated equipment, and overloaded panels."
+        }
+      ],
+      "primaryCTA": {
+        "label": "Start Upgrade Quote",
+        "href": "/contact"
+      },
+      "secondaryCTA": {
+        "label": "Emergency Call",
+        "href": "/contact"
+      },
+      "executionSequence": [
+        {
+          "step": "01",
+          "title": "Diagnostic Scan",
+          "description": "A full review of current electrical load, panel condition, and future power needs."
+        },
+        {
+          "step": "02",
+          "title": "Core Installation",
+          "description": "Professional panel replacement or upgrade with clean wiring and safe setup."
+        },
+        {
+          "step": "03",
+          "title": "Final Sync",
+          "description": "Testing and circuit balancing to confirm safe panel performance."
+        }
+      ]
+    },
+    {
+      "slug": "breaker-circuit-troubleshooting",
+      "title": "Breaker and Circuit Troubleshooting",
+      "powerLabel": "Problem Solver",
+      "levelLabel": "Service Tech Level 04",
+      "status": "Fault Detection Ready",
+      "heroImageAlt": "Electrician inspecting circuit breakers",
+      "heroCaption": "Find the cause of tripping breakers, dead outlets, buzzing switches, and unreliable circuits.",
+      "missionTitle": "The Mission",
+      "mission": "Breaker and circuit problems are warning signs. A breaker may trip because of overloaded circuits, faulty appliances, damaged wiring, failing devices, loose connections, or unsafe electrical conditions. Troubleshooting helps identify the real source instead of repeatedly resetting the breaker and hoping the issue disappears.",
+      "technicalSpec": ["Breaker Trips", "Dead Outlets", "Overloaded Circuits", "Faulty Devices", "Buzzing Switches", "Circuit Testing"],
+      "featureCards": [
+        {
+          "title": "Find the Fault",
+          "description": "Trace the issue back to the circuit, device, wiring, breaker, or load problem."
+        },
+        {
+          "title": "Stop Repeat Trips",
+          "description": "Identify why the breaker keeps shutting off and recommend the right fix."
+        },
+        {
+          "title": "Protect Devices",
+          "description": "Reduce the risk of electrical damage to appliances, electronics, and connected equipment."
+        },
+        {
+          "title": "Restore Confidence",
+          "description": "Make the affected circuit safer, clearer, and more dependable."
+        }
+      ],
+      "primaryCTA": {
+        "label": "Troubleshoot My Breaker",
+        "href": "/contact"
+      },
+      "secondaryCTA": {
+        "label": "Emergency Call",
+        "href": "/contact"
+      },
+      "executionSequence": [
+        {
+          "step": "01",
+          "title": "Symptom Scan",
+          "description": "We review when the breaker trips, what is plugged in, and which rooms or devices are affected."
+        },
+        {
+          "step": "02",
+          "title": "Circuit Investigation",
+          "description": "The circuit is checked to locate overloads, faulty devices, wiring issues, or breaker concerns."
+        },
+        {
+          "step": "03",
+          "title": "Stable Power Restore",
+          "description": "The issue is repaired or clearly explained so the circuit can operate safely again."
+        }
+      ]
+    },
+    {
+      "slug": "lighting-installation",
+      "title": "Lighting Installation",
+      "powerLabel": "Bright Path",
+      "levelLabel": "Service Tech Level 05",
+      "status": "Light Grid Ready",
+      "heroImageAlt": "Modern installed lighting in a home interior",
+      "heroCaption": "Upgrade your space with clean lighting installation for homes, offices, exteriors, and feature areas.",
+      "missionTitle": "The Mission",
+      "mission": "Lighting affects safety, comfort, design, productivity, and curb appeal. Lighting installation can include recessed lights, ceiling fixtures, dimmers, outdoor lights, security lighting, garage lighting, office lighting, and feature lighting. The goal is to place light where it works best while keeping the wiring safe and the finished look clean.",
+      "technicalSpec": ["Recessed Lighting", "Outdoor Lighting", "Security Lights", "Dimmers", "Ceiling Fixtures", "Feature Lighting"],
+      "featureCards": [
+        {
+          "title": "Better Visibility",
+          "description": "Improve dark rooms, work areas, entrances, garages, basements, kitchens, and exterior spaces."
+        },
+        {
+          "title": "Clean Installation",
+          "description": "Install fixtures, switches, and wiring with care for the final appearance of the space."
+        },
+        {
+          "title": "Mood Control",
+          "description": "Add dimmers, zones, and lighting plans that support different uses throughout the day."
+        },
+        {
+          "title": "Exterior Safety",
+          "description": "Support walkways, driveways, entrances, yards, and security areas with proper lighting."
+        }
+      ],
+      "primaryCTA": {
+        "label": "Plan Lighting Work",
+        "href": "/contact"
+      },
+      "secondaryCTA": {
+        "label": "Emergency Call",
+        "href": "/contact"
+      },
+      "executionSequence": [
+        {
+          "step": "01",
+          "title": "Lighting Map",
+          "description": "We review the space, purpose, fixture locations, switch placement, and desired brightness."
+        },
+        {
+          "step": "02",
+          "title": "Wire Route",
+          "description": "The installation path is planned for safe wiring, clean finish, and practical control."
+        },
+        {
+          "step": "03",
+          "title": "Glow Test",
+          "description": "Fixtures are installed, tested, adjusted, and reviewed for proper function."
+        }
+      ]
+    },
+    {
+      "slug": "ev-charger-installation-prep",
+      "title": "EV Charger Installation Prep",
+      "powerLabel": "Charge Ready",
+      "levelLabel": "Service Tech Level 06",
+      "status": "EV Circuit Ready",
+      "heroImageAlt": "Electric vehicle charger installed in a garage",
+      "heroCaption": "Prepare your home or business for EV charging with safe planning, dedicated circuits, and charger-ready wiring.",
+      "missionTitle": "The Mission",
+      "mission": "EV charger installation prep helps make sure your electrical system can safely support charging demand. This may include reviewing panel capacity, planning a dedicated circuit, choosing charger placement, checking wiring path options, and preparing the property for reliable everyday charging.",
+      "technicalSpec": ["Panel Capacity Review", "Dedicated Circuit", "Garage Charging", "Outdoor Charger Prep", "Load Planning", "Charger Placement"],
+      "featureCards": [
+        {
+          "title": "Load Check",
+          "description": "Review whether the existing electrical panel can support EV charging demand."
+        },
+        {
+          "title": "Dedicated Circuit",
+          "description": "Plan a dedicated circuit to support safer and more reliable charger performance."
+        },
+        {
+          "title": "Smart Placement",
+          "description": "Choose charger locations based on parking layout, cable reach, protection, and convenience."
+        },
+        {
+          "title": "Future Ready",
+          "description": "Prepare the electrical system for current and future electric vehicle needs."
+        }
+      ],
+      "primaryCTA": {
+        "label": "Prepare for EV Charging",
+        "href": "/contact"
+      },
+      "secondaryCTA": {
+        "label": "Emergency Call",
+        "href": "/contact"
+      },
+      "executionSequence": [
+        {
+          "step": "01",
+          "title": "Capacity Scan",
+          "description": "We review panel size, available capacity, charger needs, and property layout."
+        },
+        {
+          "step": "02",
+          "title": "Charge Route",
+          "description": "The safest wiring route and charger placement are planned."
+        },
+        {
+          "step": "03",
+          "title": "Ready Dock",
+          "description": "The property is prepared for reliable EV charger use."
+        }
+      ]
+    },
+    {
+      "slug": "electrical-safety-inspections",
+      "title": "Electrical Safety Inspections",
+      "powerLabel": "Safety Check",
+      "levelLabel": "Service Tech Level 07",
+      "status": "Safety Scan Ready",
+      "heroImageAlt": "Electrician inspecting outlets and wiring for safety",
+      "heroCaption": "Check your electrical system for warning signs, unsafe conditions, outdated wiring, and potential risks.",
+      "missionTitle": "The Mission",
+      "mission": "Electrical safety inspections help identify issues before they become dangerous. A safety inspection may review outlets, switches, panels, wiring, grounding, overloaded circuits, damaged devices, GFCI protection, smoke detector wiring, and visible warning signs such as heat, buzzing, sparks, flickering, or burning smells.",
+      "technicalSpec": ["Outlet Review", "Panel Review", "GFCI Check", "Wiring Concerns", "Overload Risk", "Visible Safety Issues"],
+      "featureCards": [
+        {
+          "title": "Spot Warning Signs",
+          "description": "Look for heat, buzzing, flickering, damaged devices, exposed wiring, or unsafe conditions."
+        },
+        {
+          "title": "Check Protection",
+          "description": "Review GFCI protection, grounding concerns, panel condition, and basic safety coverage."
+        },
+        {
+          "title": "Reduce Risk",
+          "description": "Identify issues that could lead to shock hazards, fire risks, or equipment damage."
+        },
+        {
+          "title": "Plan Fixes",
+          "description": "Turn inspection findings into clear next steps for repair, upgrade, or monitoring."
+        }
+      ],
+      "primaryCTA": {
+        "label": "Book a Safety Review",
+        "href": "/contact"
+      },
+      "secondaryCTA": {
+        "label": "Emergency Call",
+        "href": "/contact"
+      },
+      "executionSequence": [
+        {
+          "step": "01",
+          "title": "Safety Walkthrough",
+          "description": "We review the areas of concern, visible devices, panel condition, and reported warning signs."
+        },
+        {
+          "step": "02",
+          "title": "Hazard Scan",
+          "description": "Potential risks are identified and separated by urgency and importance."
+        },
+        {
+          "step": "03",
+          "title": "Action Plan",
+          "description": "You receive clear recommendations for safety repairs, upgrades, or further investigation."
+        }
+      ]
+    },
+    {
+      "slug": "surge-protection",
+      "title": "Surge Protection",
+      "powerLabel": "Shield Mode",
+      "levelLabel": "Service Tech Level 08",
+      "status": "Surge Shield Ready",
+      "heroImageAlt": "Electrical surge protection device near a panel",
+      "heroCaption": "Protect appliances, electronics, office equipment, and smart home devices from damaging voltage spikes.",
+      "missionTitle": "The Mission",
+      "mission": "Surge protection helps reduce the risk of damage from sudden voltage spikes. These spikes can come from utility changes, storms, large appliances cycling, electrical faults, or other power disturbances. Whole-home or business surge protection adds another layer of defense for expensive connected equipment.",
+      "technicalSpec": ["Whole-Home Protection", "Appliance Protection", "Smart Device Protection", "Panel Protection", "Office Equipment", "Voltage Spike Defense"],
+      "featureCards": [
+        {
+          "title": "Protect Electronics",
+          "description": "Help defend TVs, computers, smart devices, routers, appliances, and office equipment."
+        },
+        {
+          "title": "Panel-Level Shield",
+          "description": "Add protection at the electrical panel to support the entire property."
+        },
+        {
+          "title": "Storm Defense",
+          "description": "Reduce risk from voltage spikes related to storms and utility disturbances."
+        },
+        {
+          "title": "Equipment Confidence",
+          "description": "Support long-term reliability for sensitive connected devices."
+        }
+      ],
+      "primaryCTA": {
+        "label": "Ask About Surge Protection",
+        "href": "/contact"
+      },
+      "secondaryCTA": {
+        "label": "Emergency Call",
+        "href": "/contact"
+      },
+      "executionSequence": [
+        {
+          "step": "01",
+          "title": "Equipment Review",
+          "description": "We review the property, panel, connected devices, and protection goals."
+        },
+        {
+          "step": "02",
+          "title": "Shield Selection",
+          "description": "The right surge protection approach is recommended based on property needs."
+        },
+        {
+          "step": "03",
+          "title": "Protection Install",
+          "description": "Surge protection is installed and reviewed for proper setup."
+        }
+      ]
+    },
+    {
+      "slug": "wiring-rewiring",
+      "title": "Wiring and Rewiring",
+      "powerLabel": "Clean Lines",
+      "levelLabel": "Service Tech Level 09",
+      "status": "Wire Route Ready",
+      "heroImageAlt": "Organized electrical wiring installation",
+      "heroCaption": "Support renovations, additions, appliances, basements, and safer upgrades with clean wiring work.",
+      "missionTitle": "The Mission",
+      "mission": "Wiring and rewiring services support new installations, renovation work, damaged wiring replacement, basement finishing, appliance circuits, office layouts, and safety upgrades. Good wiring should be safe, organized, practical, and built around the way the space will actually be used.",
+      "technicalSpec": ["New Circuits", "Renovation Wiring", "Basement Wiring", "Appliance Circuits", "Damaged Wire Replacement", "Office Layouts"],
+      "featureCards": [
+        {
+          "title": "New Power Paths",
+          "description": "Add wiring for new rooms, appliances, workspaces, lighting, outlets, or equipment."
+        },
+        {
+          "title": "Replace Unsafe Wiring",
+          "description": "Address damaged, outdated, overloaded, or unreliable wiring."
+        },
+        {
+          "title": "Support Renovations",
+          "description": "Plan wiring around finished basements, remodels, additions, and layout changes."
+        },
+        {
+          "title": "Organized Install",
+          "description": "Keep wiring clean, practical, and serviceable for future electrical needs."
+        }
+      ],
+      "primaryCTA": {
+        "label": "Request Wiring Help",
+        "href": "/contact"
+      },
+      "secondaryCTA": {
+        "label": "Emergency Call",
+        "href": "/contact"
+      },
+      "executionSequence": [
+        {
+          "step": "01",
+          "title": "Route Planning",
+          "description": "We review the space, electrical demand, device locations, and best wiring path."
+        },
+        {
+          "step": "02",
+          "title": "Circuit Build",
+          "description": "Wiring is installed or replaced with attention to safety and clean routing."
+        },
+        {
+          "step": "03",
+          "title": "Power Test",
+          "description": "The completed wiring is tested and reviewed for reliable operation."
+        }
+      ]
+    },
+    {
+      "slug": "emergency-electrical-support",
+      "title": "Emergency Electrical Support",
+      "powerLabel": "Urgent",
+      "levelLabel": "Service Tech Level 10",
+      "status": "Critical Alert",
+      "heroImageAlt": "Emergency electrical repair support",
+      "heroCaption": "Get help with urgent electrical warning signs such as sparks, burning smells, power loss, warm outlets, and exposed wiring.",
+      "missionTitle": "The Mission",
+      "mission": "Emergency electrical support is for urgent warning signs that may affect safety or property function. These issues can include burning smells, sparks, smoke, sudden power loss, repeated breaker trips, buzzing panels, warm outlets, exposed wires, or unsafe electrical conditions. The priority is to reduce danger, understand the issue, and guide the next safe step.",
+      "technicalSpec": ["Sparks", "Burning Smells", "Power Loss", "Warm Outlets", "Buzzing Panels", "Exposed Wires"],
+      "featureCards": [
+        {
+          "title": "Safety First",
+          "description": "Urgent electrical signs are treated seriously because they may point to fire, shock, or wiring hazards."
+        },
+        {
+          "title": "Fast Triage",
+          "description": "The issue is reviewed quickly to understand the risk and recommend the safest next step."
+        },
+        {
+          "title": "Fault Isolation",
+          "description": "Problem areas are identified so unsafe circuits or devices can be addressed."
+        },
+        {
+          "title": "Power Recovery",
+          "description": "The goal is to restore safe function where possible and explain any required follow-up work."
+        }
+      ],
+      "primaryCTA": {
+        "label": "Contact for Urgent Help",
+        "href": "/contact"
+      },
+      "secondaryCTA": {
+        "label": "Emergency Call",
+        "href": "/contact"
+      },
+      "executionSequence": [
+        {
+          "step": "01",
+          "title": "Critical Signal",
+          "description": "We review the urgent symptom, location, timing, and immediate safety concerns."
+        },
+        {
+          "step": "02",
+          "title": "Risk Control",
+          "description": "The affected area or circuit is assessed so danger can be reduced."
+        },
+        {
+          "step": "03",
+          "title": "Restore or Stabilize",
+          "description": "Electrical function is restored where safe, or a clear repair path is recommended."
+        }
+      ]
+    }
+  ]
+}

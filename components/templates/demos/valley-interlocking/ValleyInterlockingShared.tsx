@@ -23,6 +23,7 @@ import {
   VI_SITE_LINE2,
   type ViNavKey,
 } from "./valleyInterlockingConfig";
+import { VI_HOME_PAGE } from "./valleyInterlockingSiteContent";
 import { useViFocusTrap } from "./useViEffects";
 import { ViMobileNavGroup, ViNavDropdown } from "./ViNavDropdown";
 
@@ -49,8 +50,9 @@ export function ViIcon({
 }) {
   return (
     <span
-      className={`material-symbols-outlined ${className}`}
+      className={`material-symbols-outlined notranslate ${className}`}
       style={{
+        fontFamily: '"Material Symbols Outlined", sans-serif',
         fontVariationSettings: `'FILL' ${fill ? 1 : 0}, 'wght' ${weight}, 'GRAD' 0, 'opsz' 24`,
       }}
       aria-hidden
@@ -136,7 +138,7 @@ export function ViGoogleReviewBadge({ className = "", light = false }: { classNa
       aria-label="5 out of 5 stars on Google, 42 reviews, rated Excellent"
     >
       <div className="flex" aria-hidden>
-        {Array.from({ length: 5 }).map((_, i) => (
+        {Array.from({ length: 5 }).map((_: any, i: any) => (
           <ViIcon key={i} name="star" className={starClass} fill />
         ))}
       </div>
@@ -221,12 +223,12 @@ export function ViNav({ activeKey }: { activeKey?: ViNavKey }) {
   const navItems = VI_NAV_ITEMS.filter(
     (item) => item.key !== "locations" && item.key !== "services" && item.key !== "quote",
   );
-  const quoteNav = VI_NAV_ITEMS.find((item) => item.key === "quote")!;
+  const quoteNav = VI_NAV_ITEMS.find((item: any) => item.key === "quote")!;
   const path = pathname.replace(/\/$/, "") || "/";
-  const locationLinks = [
-    { label: "Toronto", href: VI_PATHS.toronto },
-    { label: "Edmonton", href: VI_PATHS.edmonton },
-  ];
+  const locationLinks = VI_HOME_PAGE.hero.ctas.map((cta: any) => ({
+    label: cta.label.replace(/^Explore /, ""),
+    href: VI_PATHS[cta.pathKey as "toronto" | "edmonton"],
+  }));
   const servicesActive = activeKey ? activeKey === "services" : isViNavActive(pathname, "services");
   const quoteActive = activeKey ? activeKey === "quote" : isViNavActive(pathname, "quote");
   const locationsActive = activeKey ? activeKey === "locations" : isViLocationPath(pathname);
@@ -282,7 +284,7 @@ export function ViNav({ activeKey }: { activeKey?: ViNavKey }) {
           </Link>
 
           <div className="order-4 hidden min-w-0 flex-1 items-center justify-center gap-4 xl:order-none xl:flex xl:gap-5">
-            {navItems.map((item) => {
+            {navItems.map((item: any) => {
               const active = activeKey ? item.key === activeKey : isViNavActive(pathname, item.key);
               if (item.key === "gallery") {
                 return (
@@ -346,7 +348,7 @@ export function ViNav({ activeKey }: { activeKey?: ViNavKey }) {
             aria-label="Main navigation"
           >
             <ul className="flex flex-col gap-2">
-              {navItems.map((item) => {
+              {navItems.map((item: any) => {
                 const active = activeKey ? item.key === activeKey : isViNavActive(pathname, item.key);
                 if (item.key === "gallery") {
                   return (

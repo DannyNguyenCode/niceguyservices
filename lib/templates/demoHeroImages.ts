@@ -10,6 +10,7 @@ import { SPM_IMG } from "@/components/templates/demos/saturday-pet-market/saturd
 import { KC_IMG } from "@/components/templates/demos/kinship-capital/kinshipCapitalImages";
 import { SD_IMG } from "@/components/templates/demos/skyline-designs/skylineDesignsImages";
 import { VI_IMG } from "@/components/templates/demos/valley-interlocking/valleyInterlockingImages";
+import { PPE_IMG } from "@/components/templates/demos/power-pellet-electric/powerPelletElectricImages";
 import { TMNT_IMAGES } from "@/components/templates/demos/tmnt-construction/tmntConfig";
 
 export type DemoHeroMeta = {
@@ -67,8 +68,12 @@ export const DEMO_HERO_BY_SLUG: Record<string, DemoHeroMeta> = {
     src: SD_IMG.home.hero,
     alt: "Toronto web designer in a bright studio with CN Tower skyline — Skyline Designs demo hero",
   },
-  "valley-interlocking": {
+  "hardscape-landscaping": {
     src: VI_IMG.home.hero,
-    alt: "Luxurious residential backyard with interlocking stone and outdoor fire pit — Valley Interlocking demo hero",
+    alt: "Luxurious residential backyard with interlocking stone and outdoor fire pit — Demo Hardscape Co. demo hero",
+  },
+  "power-pellet-electric": {
+    src: PPE_IMG.panelCloseup,
+    alt: "Organized electrical panel with neon yellow arcade lighting — Power Pellet Electric demo hero",
   },
 };

@@ -11,7 +11,7 @@ export function ViLawnCareMaintenanceGuideSidebar() {
         <div>
           <h4 className="vi-label-md mb-6 uppercase tracking-[0.2em] text-[var(--vi-secondary)]">Article Overview</h4>
           <ul className="space-y-4">
-            {article.navSections.map((section) => (
+            {article.navSections.map((section: any) => (
               <li key={section.href}>
                 <a
                   href={section.href}
@@ -33,7 +33,7 @@ export function ViLawnCareMaintenanceGuideSidebar() {
         <div>
           <h4 className="vi-label-md mb-6 uppercase tracking-[0.2em] text-[var(--vi-secondary)]">Related Services</h4>
           <div className="space-y-4">
-            {article.sidebarServices.map((service) => (
+            {article.sidebarServices.map((service: any) => (
               <Link
                 key={service.href}
                 href={service.href}

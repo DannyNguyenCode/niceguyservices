@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState, type FormEvent } from "react";
-import { VI_EMAIL } from "./valleyInterlockingConfig";
+import { VI_EMAIL, VI_SITE } from "./valleyInterlockingConfig";
 import { useViPageLoading } from "./ViPageLoadingProvider";
 
 type QuoteForm = {
@@ -14,7 +14,7 @@ type QuoteForm = {
 
 function buildMailtoHref(form: QuoteForm): string {
   const body = [
-    "Edmonton site visit request (Valley Interlocking demo)",
+    "West Region site visit request (Demo Hardscape Co. demo)",
     "",
     `Name: ${form.name.trim()}`,
     `Phone: ${form.phone.trim()}`,
@@ -24,16 +24,16 @@ function buildMailtoHref(form: QuoteForm): string {
     form.details.trim(),
   ].join("\n");
 
-  return `mailto:${VI_EMAIL}?subject=${encodeURIComponent("Edmonton Site Visit Request")}&body=${encodeURIComponent(body)}`;
+  return `mailto:${VI_EMAIL}?subject=${encodeURIComponent("West Region Site Visit Request")}&body=${encodeURIComponent(body)}`;
 }
 
 const SERVICE_OPTIONS = ["Interlocking", "Retaining Walls", "Deck & Fence", "Full Landscaping"] as const;
 const LOCATION_OPTIONS = [
-  "Edmonton (North/South/Central)",
-  "St. Albert",
-  "Sherwood Park",
-  "Leduc",
-  "Spruce Grove",
+  "West Region (North/South/Central)",
+  "Sample Town B",
+  "Sample Town A",
+  "West Place 6",
+  "West Place 5",
   "Other / Regional",
 ] as const;
 
@@ -54,7 +54,7 @@ export function ValleyInterlockingEdmontonQuoteForm() {
     setForm((prev) => ({
       ...prev,
       services: prev.services.includes(service)
-        ? prev.services.filter((s) => s !== service)
+        ? prev.services.filter((s: any) => s !== service)
         : [...prev.services, service],
     }));
   };
@@ -85,7 +85,7 @@ export function ValleyInterlockingEdmontonQuoteForm() {
           <label htmlFor="vi-edm-phone" className="vi-label-md uppercase text-[var(--vi-on-surface-variant)]">
             Phone Number
           </label>
-          <input id="vi-edm-phone" required type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="vi-input" placeholder="(780) 000-0000" disabled={submitting} autoComplete="tel" />
+          <input id="vi-edm-phone" required type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="vi-input" placeholder="(555) 000-0000" disabled={submitting} autoComplete="tel" />
         </div>
       </div>
       <div className="space-y-1">
@@ -93,7 +93,7 @@ export function ValleyInterlockingEdmontonQuoteForm() {
           Service Location
         </label>
         <select id="vi-edm-location" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} className="vi-input" disabled={submitting}>
-          {LOCATION_OPTIONS.map((opt) => (
+          {LOCATION_OPTIONS.map((opt: any) => (
             <option key={opt}>{opt}</option>
           ))}
         </select>
@@ -101,7 +101,7 @@ export function ValleyInterlockingEdmontonQuoteForm() {
       <fieldset className="space-y-3">
         <legend className="vi-label-md uppercase text-[var(--vi-on-surface-variant)]">Interested Services</legend>
         <div className="grid grid-cols-1 gap-3 pt-1 sm:grid-cols-2">
-          {SERVICE_OPTIONS.map((service) => {
+          {SERVICE_OPTIONS.map((service: any) => {
             const id = `vi-edm-service-${service.toLowerCase().replace(/\s+/g, "-")}`;
             return (
               <label key={service} htmlFor={id} className="flex min-h-11 cursor-pointer items-center gap-2 vi-label-sm">
@@ -119,7 +119,7 @@ export function ValleyInterlockingEdmontonQuoteForm() {
         <textarea id="vi-edm-details" rows={3} value={form.details} onChange={(e) => setForm({ ...form, details: e.target.value })} className="vi-input min-h-[5rem] resize-y" placeholder="Tell us about your vision..." disabled={submitting} />
       </div>
       <button type="submit" disabled={submitting} aria-busy={submitting} className="w-full min-h-11 rounded-lg bg-[var(--vi-primary)] py-4 vi-label-md text-[var(--vi-on-primary)] shadow-md transition-all hover:opacity-90 disabled:opacity-70">
-        {submitting ? "Opening email app…" : "Request an Edmonton Site Visit"}
+        {submitting ? "Opening email app…" : "Request a West Region Site Visit"}
       </button>
       <p id={statusId} className="vi-label-sm text-[var(--vi-on-surface-variant)]" role="status" aria-live="polite">
         {sent ? `Demo only — your request opens in your email app for ${VI_EMAIL}.` : "Submitting opens your email client with a pre-filled message (demo placeholder)."}

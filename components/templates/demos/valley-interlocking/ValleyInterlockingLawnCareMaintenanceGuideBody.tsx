@@ -104,7 +104,7 @@ export function ValleyInterlockingLawnCareMaintenanceGuideBody() {
               <SectionHeading number={article.mowing.number} title={article.mowing.title} />
               <p className="vi-body-md mb-6 leading-relaxed text-[var(--vi-on-surface-variant)]">{article.mowing.body}</p>
               <ul className="space-y-3">
-                {article.mowing.tips.map((tip) => (
+                {article.mowing.tips.map((tip: any) => (
                   <li key={tip} className="flex items-start gap-3">
                     <ViIcon name="check" className="mt-1 shrink-0 text-[var(--vi-tertiary)]" />
                     <span className="vi-body-md text-[var(--vi-on-surface-variant)]">{tip}</span>
@@ -124,7 +124,7 @@ export function ValleyInterlockingLawnCareMaintenanceGuideBody() {
                 {article.fertilization.body}
               </p>
               <ul className="space-y-4">
-                {article.fertilization.items.map((item) => (
+                {article.fertilization.items.map((item: any) => (
                   <li key={item.label} className="flex items-start gap-4">
                     <ViIcon name="check_circle" className="mt-1 shrink-0 text-[var(--vi-secondary)]" />
                     <span className="vi-body-md text-[var(--vi-on-surface-variant)]">
@@ -139,7 +139,7 @@ export function ValleyInterlockingLawnCareMaintenanceGuideBody() {
               <SectionHeading number={article.weeds.number} title={article.weeds.title} />
               <p className="vi-body-md mb-6 leading-relaxed text-[var(--vi-on-surface-variant)]">{article.weeds.body}</p>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                {article.weeds.items.map((item) => (
+                {article.weeds.items.map((item: any) => (
                   <div
                     key={item.label}
                     className="border border-[color-mix(in_srgb,var(--vi-outline-variant)_20%,transparent)] bg-[var(--vi-surface-container-lowest)] p-8"
@@ -163,7 +163,7 @@ export function ValleyInterlockingLawnCareMaintenanceGuideBody() {
               </div>
               <h3 className="vi-headline-sm mb-4 text-white">Key Tips for Success</h3>
               <ul className="mb-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {article.seasonal.tips.map((tip) => (
+                {article.seasonal.tips.map((tip: any) => (
                   <li key={tip} className="flex items-start gap-3">
                     <ViIcon name="lightbulb" className="mt-1 shrink-0 opacity-80" />
                     <span className="vi-body-md opacity-90">{tip}</span>

@@ -33,7 +33,7 @@ function ReviewPlaceholderCard({ index }: { index: number }) {
       aria-label={`Google review placeholder ${index + 1}`}
     >
       <div className="mb-3 flex" aria-hidden>
-        {Array.from({ length: 5 }).map((_, star) => (
+        {Array.from({ length: 5 }).map((_: any, star: any) => (
           <ViIcon key={star} name="star" className="text-[var(--vi-secondary)]" fill />
         ))}
       </div>
@@ -106,7 +106,7 @@ export function ViGoogleReviewCarousel({ slideCount = 6 }: { slideCount?: number
               </span>
             </div>
             <div className="mb-4 flex" aria-hidden>
-              {Array.from({ length: 5 }).map((_, star) => (
+              {Array.from({ length: 5 }).map((_: any, star: any) => (
                 <ViIcon key={star} name="star" className="text-[var(--vi-secondary)]" fill />
               ))}
             </div>

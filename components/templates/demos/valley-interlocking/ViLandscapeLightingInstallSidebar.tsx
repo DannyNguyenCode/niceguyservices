@@ -32,7 +32,7 @@ export function ViLandscapeLightingInstallSidebar() {
               Required Tools
             </span>
             <ul className="space-y-3">
-              {article.requiredTools.map((tool) => (
+              {article.requiredTools.map((tool: any) => (
                 <li key={tool} className="vi-body-md flex items-center gap-3 text-[var(--vi-on-surface-variant)]">
                   <span className="h-2 w-2 shrink-0 rounded-full bg-[var(--vi-primary)]" />
                   {tool}
@@ -43,7 +43,7 @@ export function ViLandscapeLightingInstallSidebar() {
           <div className="rounded-xl bg-[var(--vi-tertiary)] p-6 text-[var(--vi-on-tertiary)] shadow-inner">
             <h4 className="vi-label-md mb-4 uppercase text-[var(--vi-tertiary-fixed)]">Project Readiness</h4>
             <div className="space-y-3">
-              {article.readinessChecks.map((item) => (
+              {article.readinessChecks.map((item: any) => (
                 <div key={item} className="vi-caption flex items-center gap-3 font-medium">
                   <ViIcon name="check_circle" className="text-[18px] text-[var(--vi-tertiary-fixed)]" fill />
                   {item}

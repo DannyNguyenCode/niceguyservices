@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { VI_BUSINESS_HOURS, VI_OFFICES, VI_PATHS, viMapsSearchUrl } from "./valleyInterlockingConfig";
+import { VI_CONTACT_PAGE } from "./valleyInterlockingSiteContent";
 import { ViContainer, ViIcon } from "./ValleyInterlockingShared";
 import { ValleyInterlockingContactForm } from "./ValleyInterlockingContactForm";
 import { useViFormLabelFocus, useViNavScroll } from "./useViEffects";
@@ -10,16 +11,15 @@ export function ValleyInterlockingContactBody() {
   useViNavScroll();
   useViFormLabelFocus("vi-contact-form");
 
+  const { hero } = VI_CONTACT_PAGE;
+
   return (
     <main id="contact" className="pt-[var(--vi-nav-height)]">
       <section className="vi-hero-under-nav vi-hero-under-nav--form relative flex min-h-[min(435px,50dvh)] items-center bg-[var(--vi-surface-container-low)] pb-[var(--vi-stack-lg)]">
         <ViContainer>
           <div className="max-w-3xl">
-            <h1 className="vi-display-lg mb-6 leading-tight text-[var(--vi-primary)]">Get in Touch</h1>
-            <p className="vi-body-lg text-[var(--vi-on-surface-variant)]">
-              Transforming your outdoor living space begins with a conversation. Reach out to our expert team in Toronto
-              or Edmonton to discuss your vision.
-            </p>
+            <h1 className="vi-display-lg mb-6 leading-tight text-[var(--vi-primary)]">{hero.headline}</h1>
+            <p className="vi-body-lg text-[var(--vi-on-surface-variant)]">{hero.subhead}</p>
           </div>
         </ViContainer>
       </section>
@@ -29,7 +29,7 @@ export function ValleyInterlockingContactBody() {
           <div className="grid grid-cols-1 items-start gap-[var(--vi-stack-lg)] lg:grid-cols-12">
             <div className="space-y-[var(--vi-stack-lg)] lg:col-span-5">
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-1">
-                {VI_OFFICES.map((office) => (
+                {VI_OFFICES.map((office: any) => (
                   <div
                     key={office.id}
                     className="rounded-xl border border-[color-mix(in_srgb,var(--vi-outline-variant)_20%,transparent)] bg-[var(--vi-surface-container-lowest)] p-6 vi-ambient-shadow"
@@ -78,7 +78,7 @@ export function ValleyInterlockingContactBody() {
                   Business Hours
                 </h3>
                 <div className="space-y-3">
-                  {VI_BUSINESS_HOURS.map((row) => (
+                  {VI_BUSINESS_HOURS.map((row: any) => (
                     <div
                       key={row.day}
                       className={`flex justify-between gap-4 border-b border-[color-mix(in_srgb,var(--vi-outline-variant)_30%,transparent)] pb-1 ${
@@ -112,7 +112,7 @@ export function ValleyInterlockingContactBody() {
               </div>
 
               <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
-                {VI_OFFICES.map((office) => (
+                {VI_OFFICES.map((office: any) => (
                   <a
                     key={`map-${office.id}`}
                     href={viMapsSearchUrl(office.mapLocation)}

@@ -38,7 +38,7 @@ export function ValleyInterlockingLightingBody() {
             <h2 className="vi-headline-lg text-[var(--vi-primary)]">{techniques.heading}</h2>
           </div>
           <div className="vi-lighting-reveal grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {techniques.items.map((item) => (
+            {techniques.items.map((item: any) => (
               <article
                 key={item.title}
                 className="group rounded-lg border border-[var(--vi-surface-container-high)] bg-white p-8 vi-ambient-shadow transition-all hover:-translate-y-1 hover:border-[var(--vi-primary)] hover:bg-[var(--vi-primary)]"
@@ -91,7 +91,7 @@ export function ValleyInterlockingLightingBody() {
         <ViContainer>
           <h2 className="vi-lighting-reveal vi-headline-lg mb-12 text-[var(--vi-primary)]">{factors.heading}</h2>
           <div className="vi-lighting-reveal grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {factors.items.map((item) => (
+            {factors.items.map((item: any) => (
               <article
                 key={item.title}
                 className="rounded-lg border border-[var(--vi-surface-container-high)] bg-white p-8 vi-ambient-shadow"
@@ -111,7 +111,7 @@ export function ValleyInterlockingLightingBody() {
               <h2 className="vi-headline-lg mb-6 text-[var(--vi-primary)]">{howToGuide.title}</h2>
               <p className="vi-body-md mb-8 text-[var(--vi-on-surface-variant)]">{howToGuide.serviceSummary}</p>
               <ol className="mb-8 space-y-3">
-                {howToGuide.serviceStepTitles.map((title, index) => (
+                {howToGuide.serviceStepTitles.map((title: any, index: any) => (
                   <li key={title} className="flex items-center gap-4">
                     <span className="vi-step-number vi-label-md flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--vi-primary)] text-[var(--vi-primary)]">
                       {String(index + 1).padStart(2, "0")}

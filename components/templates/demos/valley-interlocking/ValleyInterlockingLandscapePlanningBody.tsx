@@ -73,11 +73,11 @@ export function ValleyInterlockingLandscapePlanningBody() {
               </div>
               <div className="vi-body-md space-y-4 leading-relaxed text-[var(--vi-on-surface-variant)]">
                 <p>{design.intro}</p>
-                {design.paragraphs.map((paragraph) => (
+                {design.paragraphs.map((paragraph: any) => (
                   <p key={paragraph}>{paragraph}</p>
                 ))}
                 <div className="mt-6 grid gap-4 md:grid-cols-2">
-                  {design.cards.map((card) => (
+                  {design.cards.map((card: any) => (
                     <div key={card.title} className="rounded border border-[var(--vi-outline-variant)] bg-white p-4">
                       <h4 className="vi-label-md mb-2 flex items-center gap-2 text-[var(--vi-on-surface)]">
                         <ViIcon name={card.icon} className="text-[var(--vi-primary)]" />
@@ -105,7 +105,7 @@ export function ValleyInterlockingLandscapePlanningBody() {
               </div>
               <p className="vi-body-md mb-4 text-[var(--vi-on-surface-variant)]">{logistics.intro}</p>
               <ul className="space-y-3">
-                {logistics.timelineItems.map((item) => (
+                {logistics.timelineItems.map((item: any) => (
                   <li key={item.label} className="flex items-start gap-3">
                     <ViIcon name="check_circle" className="shrink-0 text-[var(--vi-primary)]" fill />
                     <span className="vi-body-md text-[var(--vi-on-surface-variant)]">
@@ -141,7 +141,7 @@ export function ValleyInterlockingLandscapePlanningBody() {
                 </div>
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
-                {specialties.services.map((service) => (
+                {specialties.services.map((service: any) => (
                   <Link
                     key={service.href}
                     href={service.href}
@@ -169,7 +169,7 @@ export function ValleyInterlockingLandscapePlanningBody() {
                 <p className="vi-body-md mb-4">{winter.intro}</p>
                 <p className="vi-body-md mb-4">{winter.body}</p>
                 <div className="flex flex-wrap gap-4 text-sm font-bold text-[var(--vi-primary-fixed)]">
-                  {winter.highlights.map((item) => (
+                  {winter.highlights.map((item: any) => (
                     <span key={item.label} className="flex items-center gap-1">
                       <ViIcon name={item.icon} className="text-[18px]" />
                       {item.label}
@@ -204,7 +204,7 @@ export function ValleyInterlockingLandscapePlanningBody() {
               <div className="rounded-lg border-l-4 border-[var(--vi-primary)] bg-[var(--vi-surface)] p-6">
                 <h4 className="vi-label-md mb-4">Our Maintenance Protocols</h4>
                 <div className="space-y-4">
-                  {maintenance.protocols.map((protocol) => (
+                  {maintenance.protocols.map((protocol: any) => (
                     <div
                       key={protocol.label}
                       className="flex items-center justify-between border-b border-[color-mix(in_srgb,var(--vi-outline-variant)_50%,transparent)] pb-2"

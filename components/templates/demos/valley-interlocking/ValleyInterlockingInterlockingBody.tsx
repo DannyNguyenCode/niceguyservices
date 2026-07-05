@@ -61,7 +61,7 @@ export function ValleyInterlockingInterlockingBody() {
             <h2 className="vi-headline-lg text-[var(--vi-primary)]">{benefits.heading}</h2>
           </div>
           <div className="vi-interlocking-reveal grid grid-cols-1 gap-12 md:grid-cols-3">
-            {benefits.items.map((item, index) => (
+            {benefits.items.map((item: any, index: any) => (
               <article key={item.title} className="group flex flex-col items-center text-center">
                 <div
                   className={`relative mb-6 overflow-hidden vi-ambient-shadow transition-transform duration-500 group-hover:scale-105 ${BENEFIT_TILE_SHAPES[index] ?? "rounded-lg h-48 w-48"}`}
@@ -90,7 +90,7 @@ export function ValleyInterlockingInterlockingBody() {
             <h2 className="vi-headline-lg max-w-xl text-[var(--vi-primary)]">{qualities.heading}</h2>
           </div>
           <div className="vi-interlocking-reveal grid gap-8 md:grid-cols-3">
-            {qualities.items.map((item, index) => (
+            {qualities.items.map((item: any, index: any) => (
               <article
                 key={item.title}
                 className="rounded-xl border border-[var(--vi-outline-variant)] bg-white p-8 vi-ambient-shadow"
@@ -99,7 +99,7 @@ export function ValleyInterlockingInterlockingBody() {
                   <ViIcon name={QUALITY_ICONS[index] ?? "verified"} className="text-4xl text-[var(--vi-primary)]" />
                   <h3 className="vi-headline-md text-[var(--vi-primary)]">{item.title}</h3>
                 </div>
-                {item.bullets.map((bullet) => (
+                {item.bullets.map((bullet: any) => (
                   <p key={bullet} className="vi-body-md text-[var(--vi-on-surface-variant)]">
                     {bullet}
                   </p>
@@ -120,7 +120,7 @@ export function ValleyInterlockingInterlockingBody() {
               <h2 className="vi-headline-lg mb-6 text-[var(--vi-primary)]">{howToGuide.title}</h2>
               <p className="vi-body-md mb-8 text-[var(--vi-on-surface-variant)]">{howToGuide.serviceSummary}</p>
               <ol className="mb-8 space-y-3">
-                {howToGuide.serviceStepTitles.map((title, index) => (
+                {howToGuide.serviceStepTitles.map((title: any, index: any) => (
                   <li key={title} className="flex items-center gap-4">
                     <span className="vi-step-number vi-label-md flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--vi-primary)] text-[var(--vi-primary)]">
                       {String(index + 1).padStart(2, "0")}

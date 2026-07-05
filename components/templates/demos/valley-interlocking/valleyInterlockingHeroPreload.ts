@@ -1,5 +1,8 @@
 import { VI_BASE, VI_PATHS } from "./valleyInterlockingConfig";
 import { VI_IMG } from "./valleyInterlockingImages";
+import { VI_PAGE_HERO } from "./valleyInterlockingSiteContent";
+
+export { VI_PAGE_HERO };
 
 const GALLERY_HERO = VI_IMG.interlocking.gallery[0];
 
@@ -34,14 +37,6 @@ const VI_HERO_BY_PATH: Record<string, string> = {
   [`${VI_BASE}/services`]: VI_IMG.services.hero,
   [`${VI_BASE}/gallery`]: GALLERY_HERO,
 };
-
-export const VI_PAGE_HERO = {
-  home: VI_IMG.home.hero,
-  about: VI_IMG.about.hero,
-  services: VI_IMG.services.hero,
-  gallery: GALLERY_HERO,
-  resources: VI_IMG.resources.featured,
-} as const;
 
 export function getViHeroPreloadUrl(pathname: string): string | undefined {
   const normalized = pathname.replace(/\/$/, "") || "/";

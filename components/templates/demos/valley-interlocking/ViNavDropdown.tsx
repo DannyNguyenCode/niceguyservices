@@ -199,7 +199,7 @@ export function ViNavDropdown({
         onKeyDown={onPanelKeyDown}
       >
         <ul role="list">
-          {links.map((link) => (
+          {links.map((link: any) => (
             <li key={link.href}>
               <Link
                 href={link.href}
@@ -236,7 +236,7 @@ export function ViMobileNavGroup({
   href,
 }: ViMobileNavGroupProps) {
   const panelId = useId();
-  const childActive = links.some((link) => currentPath === link.href);
+  const childActive = links.some((link: any) => currentPath === link.href);
   const [expanded, setExpanded] = useState(defaultExpanded || childActive);
 
   return (
@@ -290,7 +290,7 @@ export function ViMobileNavGroup({
         className="flex flex-col gap-1 py-1 pl-2"
         role="list"
       >
-        {links.map((link) => {
+        {links.map((link: any) => {
           const active = currentPath === link.href;
           return (
             <li key={link.href}>

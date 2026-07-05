@@ -121,7 +121,7 @@ export function ValleyInterlockingResourcesBody() {
   const filtered = useMemo(() => {
     const normalized = query.trim().toLowerCase();
     const showingFeatured = category === "All Resources" && !normalized;
-    return VI_RESOURCE_ARTICLES.filter((article) => {
+    return VI_RESOURCE_ARTICLES.filter((article: any) => {
       if (showingFeatured && article.featured) return false;
       const matchesCategory = categoryMatches(article, category);
       const matchesQuery =
@@ -198,7 +198,7 @@ export function ValleyInterlockingResourcesBody() {
         <section className="mb-[var(--vi-stack-lg)] border-y border-[var(--vi-outline-variant)] py-6">
           <div className="flex flex-wrap items-center gap-4">
             <span className="vi-label-md mr-4 text-[var(--vi-on-surface)]">Filter by Category:</span>
-            {VI_RESOURCE_CATEGORIES.map((item) => {
+            {VI_RESOURCE_CATEGORIES.map((item: any) => {
               const active = category === item;
               return (
                 <button
@@ -220,7 +220,7 @@ export function ValleyInterlockingResourcesBody() {
 
         <section className="mb-[var(--vi-stack-lg)] grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {filtered.length > 0 ? (
-            filtered.map((article) => <ResourceCard key={article.id} article={article} />)
+            filtered.map((article: any) => <ResourceCard key={article.id} article={article} />)
           ) : (
             <p className="vi-body-md col-span-full text-[var(--vi-on-surface-variant)]">
               No resources match your search. Try a different category or keyword.

@@ -44,7 +44,7 @@ export function ValleyInterlockingPergolasBody() {
         <ViContainer className="vi-pergola-reveal">
           <h2 className="vi-headline-lg mb-12 text-center text-[var(--vi-primary)]">{features.heading}</h2>
           <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
-            {features.items.map((item, index) => (
+            {features.items.map((item: any, index: any) => (
               <article key={item.title} className="flex flex-col gap-6">
                 <div className="aspect-video overflow-hidden rounded-xl shadow-md">
                   <ViImg
@@ -99,7 +99,7 @@ export function ValleyInterlockingPergolasBody() {
         <ViContainer className="vi-pergola-reveal">
           <h2 className="vi-headline-lg mb-12 text-center text-[var(--vi-primary)]">{styles.heading}</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {styles.styles.map((style) => (
+            {styles.styles.map((style: any) => (
               <div
                 key={style}
                 className="group rounded-lg border border-[var(--vi-outline-variant)] bg-[var(--vi-background)] p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:border-[var(--vi-primary)] hover:bg-[var(--vi-primary)] hover:shadow-md"
@@ -120,7 +120,7 @@ export function ValleyInterlockingPergolasBody() {
               <h2 className="vi-headline-lg mb-6 text-[var(--vi-primary)]">{howToGuide.serviceTitle}</h2>
               <p className="vi-body-md mb-8 text-[var(--vi-on-surface-variant)]">{howToGuide.serviceSummary}</p>
               <ol className="mb-8 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
-                {howToGuide.serviceStepTitles.map((title, index) => (
+                {howToGuide.serviceStepTitles.map((title: any, index: any) => (
                   <li key={title} className="flex items-start gap-4">
                     <span className="vi-step-number vi-label-md flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--vi-primary)] text-[var(--vi-primary)]">
                       {String(index + 1).padStart(2, "0")}

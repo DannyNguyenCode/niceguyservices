@@ -59,7 +59,8 @@ const TEMPLATE_GALLERY_DEMO_ACCENT_BY_SLUG: Record<string, string> = {
   "kinship-capital": "bg-[#0058be] text-white",
   "saturday-pet-market": "bg-[#006a6a] text-white",
   "skyline-designs": "bg-[#0c6780] text-white",
-  "valley-interlocking": "bg-[#0A6847] text-[#ffffff]",
+  "hardscape-landscaping": "bg-[#0A6847] text-[#ffffff]",
+  "power-pellet-electric": "bg-[#e9ea00] text-[#323200]",
 };
 
 export function templateGalleryDemoButtonClass(slug: string): string {
@@ -80,7 +81,8 @@ const MULTI_PAGE_TEMPLATE_SLUGS = new Set([
   "kinship-capital",
   "saturday-pet-market",
   "skyline-designs",
-  "valley-interlocking",
+  "hardscape-landscaping",
+  "power-pellet-electric",
 ]);
 
 export function experienceTemplateSlugs(): string[] {

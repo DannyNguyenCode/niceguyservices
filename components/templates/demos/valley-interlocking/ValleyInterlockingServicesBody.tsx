@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { VI_PATHS, VI_SERVICE_LINKS } from "./valleyInterlockingConfig";
+import { VI_PATHS, VI_SERVICE_LINKS, type ViServiceLinkKey } from "./valleyInterlockingConfig";
 import { VI_SERVICES_CTA, VI_SERVICES_MASONRY } from "./valleyInterlockingData";
 import { VI_IMG } from "./valleyInterlockingImages";
 import { ViAboutCtaBanner } from "./ViAboutCtaBanner";
@@ -31,7 +31,7 @@ function ViServiceMasonryCard({
 
   return (
     <Link
-      href={VI_SERVICE_LINKS[service.linkKey]}
+      href={VI_SERVICE_LINKS[service.linkKey as ViServiceLinkKey]}
       className={`vi-perspective-card vi-reveal group relative block h-full overflow-hidden rounded-xl bg-white ${
         isLarge ? "min-h-[320px]" : "min-h-[200px]"
       }`}
@@ -159,8 +159,8 @@ export function ValleyInterlockingServicesBody() {
           </div>
 
           <div className="flex flex-col gap-6">
-            {chunkServices(VI_SERVICES_MASONRY, 3).map((row, rowIndex) => (
-              <ViServiceMasonryRow key={row.map((service) => service.slug).join("-")} row={row} rowIndex={rowIndex} />
+            {chunkServices(VI_SERVICES_MASONRY, 3).map((row: any, rowIndex: any) => (
+              <ViServiceMasonryRow key={row.map((service: any) => service.slug).join("-")} row={row} rowIndex={rowIndex} />
             ))}
           </div>
         </ViContainer>

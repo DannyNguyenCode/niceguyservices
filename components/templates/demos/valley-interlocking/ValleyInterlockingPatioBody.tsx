@@ -82,7 +82,7 @@ export function ValleyInterlockingPatioBody() {
             {materialsPalette.intro}
           </p>
           <div className="grid grid-cols-2 gap-8 md:grid-cols-3 md:gap-12 lg:grid-cols-4">
-            {materialsPalette.materials.map((material) => {
+            {materialsPalette.materials.map((material: any) => {
               const imageSrc =
                 "imageKey" in material && material.imageKey
                   ? patioImages[material.imageKey]
@@ -128,7 +128,7 @@ export function ValleyInterlockingPatioBody() {
             />
           </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {roofingStyles.styles.map((style) => (
+            {roofingStyles.styles.map((style: any) => (
               <article
                 key={style.name}
                 className="rounded-xl border border-[color-mix(in_srgb,var(--vi-outline-variant)_20%,transparent)] bg-white p-8 vi-ambient-shadow transition-colors hover:border-[color-mix(in_srgb,var(--vi-tertiary-container)_50%,transparent)]"
@@ -139,7 +139,7 @@ export function ValleyInterlockingPatioBody() {
                 <h3 className="vi-headline-md mb-4 text-[var(--vi-primary)]">{style.name}</h3>
                 <p className="vi-body-md mb-6 text-[var(--vi-on-surface-variant)]">{style.description}</p>
                 <ul className="space-y-3">
-                  {style.features.map((feature) => (
+                  {style.features.map((feature: any) => (
                     <li key={feature} className="flex items-center gap-2 vi-label-md text-[var(--vi-on-surface)]">
                       <ViIcon name="check_circle" className="vi-sage text-sm" fill />
                       {feature}
@@ -159,7 +159,7 @@ export function ValleyInterlockingPatioBody() {
               <h2 className="vi-headline-lg mb-6 text-[var(--vi-primary)]">{howToGuide.title}</h2>
               <p className="vi-body-md mb-8 text-[var(--vi-on-surface-variant)]">{howToGuide.serviceSummary}</p>
               <ol className="mb-8 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
-                {howToGuide.serviceStepTitles.map((title, index) => (
+                {howToGuide.serviceStepTitles.map((title: any, index: any) => (
                   <li key={title} className="flex items-start gap-4">
                     <span className="vi-step-number vi-label-md flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--vi-primary)] text-[var(--vi-primary)]">
                       {String(index + 1).padStart(2, "0")}

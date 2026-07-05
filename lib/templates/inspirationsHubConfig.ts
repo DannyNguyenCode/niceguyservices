@@ -10,34 +10,13 @@ export type InspirationRowConfig = {
   featuredSlugs: string[];
 };
 
-/** Short industry-style labels for Netflix poster cards. */
-export const INSPIRATION_POSTER_LABELS: Record<string, string> = {
-  "valley-interlocking": "Landscaping",
-  "evergreen-alpine": "Landscaping",
-  "lumina-landscapes": "Landscapes",
-  "pawsmatch-rescue": "Vet",
-  "party-smile-dental": "Dental",
-  "kinship-capital": "Accountant",
-  "tmnt-trades": "Trades",
-  "starlight-command": "Industrial",
-  "neopets-nonprofit": "Nonprofit",
-  "luxe-co": "Real Estate",
-  "home-restoration": "Cleaning",
-  "liquid-occasions": "Events",
-  "saturday-pet-market": "Pet Store",
-  pawsome: "Pet Store",
-  "companion-pet": "Pet Supply",
-  "looneytunes-services": "Coffee",
-  "skyline-designs": "Developer",
-};
-
 export const INSPIRATION_ROWS: InspirationRowConfig[] = [
   {
     id: "business-websites",
     title: "Business Websites",
     filterId: "services",
     featuredSlugs: [
-      "valley-interlocking",
+      "hardscape-landscaping",
       "pawsmatch-rescue",
       "home-restoration",
       "kinship-capital",
@@ -56,10 +35,6 @@ export const INSPIRATION_ROWS: InspirationRowConfig[] = [
     featuredSlugs: ["skyline-designs"],
   },
 ];
-
-export function inspirationPosterLabel(slug: string, fallbackTitle: string): string {
-  return INSPIRATION_POSTER_LABELS[slug] ?? fallbackTitle;
-}
 
 export function sortTemplatesForRow<T extends { slug: string }>(
   templates: T[],

@@ -3,6 +3,7 @@
 import { VI_ABOUT_PAGE } from "./valleyInterlockingAboutContent";
 import { VI_ABOUT_PROMISES, VI_TEAM_CTA } from "./valleyInterlockingData";
 import { VI_IMG } from "./valleyInterlockingImages";
+import { VI_TEAM_PAGE } from "./valleyInterlockingSiteContent";
 import { ViAboutCtaBanner } from "./ViAboutCtaBanner";
 import { ViContainer, ViIcon, ViImg, ViHeroContentPanel } from "./ValleyInterlockingShared";
 import { useViNavScroll, useViReveal } from "./useViEffects";
@@ -13,13 +14,15 @@ export function ValleyInterlockingTeamBody() {
   useViNavScroll();
   useViReveal(".vi-team-reveal");
 
+  const { hero } = VI_TEAM_PAGE;
+
   return (
     <main className="pt-[var(--vi-nav-height)]">
       <section className="vi-hero-under-nav vi-hero-under-nav--compact relative flex h-[min(870px,100dvh)] items-center overflow-hidden">
         <div className="vi-hero-backdrop absolute inset-0 z-0">
           <ViImg
             src={VI_IMG.about.craftsman}
-            alt="Skilled Valley Interlocking landscaper at work"
+            alt={hero.heroImageAlt}
             fill
             className="object-cover object-center"
             priority
@@ -29,11 +32,8 @@ export function ValleyInterlockingTeamBody() {
         </div>
         <ViContainer className="vi-team-reveal relative z-10 flex w-full items-center">
           <ViHeroContentPanel>
-            <h1 className="vi-display-lg mb-6 leading-tight">Meet Our Team</h1>
-            <p className="vi-body-lg">
-              Certified craftspeople and designers serving Toronto and Edmonton — dedicated to transforming outdoor
-              spaces with precision, care, and lasting quality.
-            </p>
+            <h1 className="vi-display-lg mb-6 leading-tight">{hero.headline}</h1>
+            <p className="vi-body-lg">{hero.subhead}</p>
           </ViHeroContentPanel>
         </ViContainer>
       </section>
@@ -44,7 +44,7 @@ export function ValleyInterlockingTeamBody() {
             <div className="relative min-h-[280px] overflow-hidden rounded-lg vi-ambient-shadow md:min-h-[420px]">
               <ViImg
                 src={VI_IMG.about.craftsman}
-                alt="Valley Interlocking landscaping crew at work on a residential project"
+                alt={hero.sectionImageAlt}
                 fill
                 className="object-cover object-center"
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -53,7 +53,7 @@ export function ValleyInterlockingTeamBody() {
             <div>
               <h2 className="vi-headline-lg mb-8">{VI_ABOUT_PAGE.sections[1].heading}</h2>
               <div className="space-y-8">
-                {TEAM_VALUES.map((item, index) => (
+                {TEAM_VALUES.map((item: any, index: any) => (
                   <div key={item.heading} className="flex gap-4 sm:gap-6">
                     <ViIcon
                       name={index === 0 ? "groups" : "verified"}
@@ -81,7 +81,7 @@ export function ValleyInterlockingTeamBody() {
             </p>
           </div>
           <ul className="vi-team-reveal grid grid-cols-1 gap-6 md:grid-cols-3">
-            {VI_ABOUT_PROMISES.map((promise) => (
+            {VI_ABOUT_PROMISES.map((promise: any) => (
               <li
                 key={promise.title}
                 className="rounded-xl border border-[color-mix(in_srgb,var(--vi-outline-variant)_20%,transparent)] bg-[var(--vi-background)] p-6 vi-ambient-shadow sm:p-8"

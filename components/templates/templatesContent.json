@@ -97,10 +97,16 @@
       "link": "/template/demo/skyline-designs"
     },
     {
-      "slug": "valley-interlocking",
-      "title": "Valley Interlocking",
+      "slug": "hardscape-landscaping",
+      "title": "Hardscape Landscaping",
       "description": "Premium interlocking & landscaping (fictional) — Multi-route hardscape demo — home, Toronto & Edmonton location hubs, services bento with patio, lawn care, and interlocking detail pages, about, and contact; MD3 stone palette; all placeholder copy.",
-      "link": "/template/demo/valley-interlocking"
+      "link": "/template/demo/hardscape-landscaping"
+    },
+    {
+      "slug": "power-pellet-electric",
+      "title": "Power Pellet Electric",
+      "description": "Retro arcade electrician (fictional) — Multi-route demo with home, services grid, panel upgrade detail, about values maze, resource articles, and contact command form; neon yellow/pink MD3 palette with mobile bottom nav; all placeholder copy.",
+      "link": "/template/demo/power-pellet-electric"
     }
   ]
 }

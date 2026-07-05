@@ -43,7 +43,7 @@ export function ValleyInterlockingQuoteForm() {
     setForm((prev) => ({
       ...prev,
       services: prev.services.includes(service)
-        ? prev.services.filter((s) => s !== service)
+        ? prev.services.filter((s: any) => s !== service)
         : [...prev.services, service],
     }));
   };
@@ -152,7 +152,7 @@ export function ValleyInterlockingQuoteForm() {
         <div className="flex flex-col gap-4 border-b border-[var(--vi-surface-variant)] pb-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
             <div className="flex text-[var(--vi-secondary)]" aria-hidden="true">
-              {Array.from({ length: 5 }).map((_, i) => (
+              {Array.from({ length: 5 }).map((_: any, i: any) => (
                 <ViIcon key={i} name="star" fill className="text-base" />
               ))}
             </div>
@@ -229,7 +229,7 @@ export function ValleyInterlockingQuoteForm() {
             <span className="vi-headline-md text-[var(--vi-primary)]">Project Location</span>
           </legend>
           <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2" role="radiogroup" aria-label="Project location">
-            {VI_QUOTE_LOCATIONS.map((loc) => (
+            {VI_QUOTE_LOCATIONS.map((loc: any) => (
               <label key={loc.id} className="vi-choice-card">
                 <input
                   type="radio"
@@ -261,7 +261,7 @@ export function ValleyInterlockingQuoteForm() {
             </span>
           </legend>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {VI_QUOTE_SERVICES.map((service) => {
+            {VI_QUOTE_SERVICES.map((service: any) => {
               const id = serviceId(service);
               return (
                 <label key={service} htmlFor={id} className="vi-service-chip">

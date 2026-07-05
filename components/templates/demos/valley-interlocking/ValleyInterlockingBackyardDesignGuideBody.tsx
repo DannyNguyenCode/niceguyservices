@@ -104,7 +104,7 @@ export function ValleyInterlockingBackyardDesignGuideBody() {
               <SectionHeading number={article.frontBack.number} title={article.frontBack.title} />
               <p className="vi-body-md mb-6 leading-relaxed text-[var(--vi-on-surface-variant)]">{article.frontBack.body}</p>
               <ul className="space-y-4">
-                {article.frontBack.items.map((item) => (
+                {article.frontBack.items.map((item: any) => (
                   <li key={item.label} className="flex items-start gap-4">
                     <ViIcon name="check_circle" className="mt-1 shrink-0 text-[var(--vi-secondary)]" />
                     <span className="vi-body-md text-[var(--vi-on-surface-variant)]">
@@ -121,7 +121,7 @@ export function ValleyInterlockingBackyardDesignGuideBody() {
                 {article.entertainment.body}
               </p>
               <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {article.entertainment.features.map((feature) => (
+                {article.entertainment.features.map((feature: any) => (
                   <li key={feature} className="flex items-start gap-3">
                     <ViIcon name="check" className="mt-1 shrink-0 text-[var(--vi-tertiary)]" />
                     <span className="vi-body-md text-[var(--vi-on-surface-variant)]">{feature}</span>
@@ -136,7 +136,7 @@ export function ValleyInterlockingBackyardDesignGuideBody() {
                 {article.lowMaintenance.body}
               </p>
               <ul className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {article.lowMaintenance.options.map((option) => (
+                {article.lowMaintenance.options.map((option: any) => (
                   <li key={option} className="flex items-start gap-3">
                     <ViIcon name="check" className="mt-1 shrink-0 text-[var(--vi-tertiary)]" />
                     <span className="vi-body-md text-[var(--vi-on-surface-variant)]">{option}</span>
@@ -156,7 +156,7 @@ export function ValleyInterlockingBackyardDesignGuideBody() {
               <p className="vi-body-md mb-6 leading-relaxed opacity-90">{article.smallBackyards.body}</p>
               <h3 className="vi-headline-sm mb-4 text-white">Small Backyard Ideas</h3>
               <ul className="mb-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {article.smallBackyards.ideas.map((idea) => (
+                {article.smallBackyards.ideas.map((idea: any) => (
                   <li key={idea} className="flex items-start gap-3">
                     <ViIcon name="check" className="mt-1 shrink-0 opacity-80" />
                     <span className="vi-body-md opacity-90">{idea}</span>
@@ -165,7 +165,7 @@ export function ValleyInterlockingBackyardDesignGuideBody() {
               </ul>
               <h3 className="vi-headline-sm mb-4 text-white">Planning Tips</h3>
               <ul className="mb-8 space-y-3">
-                {article.smallBackyards.tips.map((tip) => (
+                {article.smallBackyards.tips.map((tip: any) => (
                   <li key={tip} className="flex items-start gap-3">
                     <ViIcon name="lightbulb" className="mt-1 shrink-0 opacity-80" />
                     <span className="vi-body-md opacity-90">{tip}</span>

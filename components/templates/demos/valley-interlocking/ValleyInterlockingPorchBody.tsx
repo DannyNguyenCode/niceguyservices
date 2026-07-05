@@ -43,7 +43,7 @@ export function ValleyInterlockingPorchBody() {
         <ViContainer className="vi-porch-reveal">
           <h2 className="vi-headline-lg mb-12 text-center text-[var(--vi-primary)]">{styles.heading}</h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {styles.items.map((style) => (
+            {styles.items.map((style: any) => (
               <article
                 key={style.title}
                 className="group overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--vi-outline-variant)_10%,transparent)] bg-white shadow-sm vi-ambient-shadow transition-transform duration-300 hover:-translate-y-1"
@@ -118,7 +118,7 @@ export function ValleyInterlockingPorchBody() {
               <h2 className="vi-headline-lg mb-6 text-[var(--vi-primary)]">{howToGuide.serviceTitle}</h2>
               <p className="vi-body-md mb-8 text-[var(--vi-on-surface-variant)]">{howToGuide.serviceSummary}</p>
               <ol className="mb-8 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
-                {howToGuide.serviceStepTitles.map((title, index) => (
+                {howToGuide.serviceStepTitles.map((title: any, index: any) => (
                   <li key={title} className="flex items-start gap-4">
                     <span className="vi-step-number vi-label-md flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--vi-primary)] text-[var(--vi-primary)]">
                       {String(index + 1).padStart(2, "0")}

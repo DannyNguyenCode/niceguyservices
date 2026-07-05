@@ -65,11 +65,11 @@ export function ValleyInterlockingTorontoBody() {
             <div>
               <h2 className="vi-headline-lg mb-6 text-[var(--vi-primary)]">{whyChooseUs.title}</h2>
               <div className="space-y-6 vi-body-md text-[var(--vi-on-surface-variant)]">
-                {introduction.map((paragraph) => (
+                {introduction.map((paragraph: any) => (
                   <p key={paragraph}>{paragraph}</p>
                 ))}
                 <ul className="space-y-3">
-                  {whyChooseUs.items.map((item) => (
+                  {whyChooseUs.items.map((item: any) => (
                     <li key={item.title} className="flex gap-3">
                       <ViIcon name="check_circle" className="shrink-0 text-[var(--vi-primary)]" />
                       <span>
@@ -83,7 +83,7 @@ export function ValleyInterlockingTorontoBody() {
             <div className="overflow-hidden rounded-xl shadow-xl">
               <ViImg
                 src={VI_IMG.toronto.landscape}
-                alt="Landscape design in Toronto"
+                alt={`Landscape design in the East Region — ${VI_TORONTO_LOCATION.title}`}
                 width={800}
                 height={600}
                 className="h-full w-full object-cover"
@@ -101,7 +101,7 @@ export function ValleyInterlockingTorontoBody() {
             <p className="vi-body-md mx-auto max-w-2xl text-[var(--vi-on-surface-variant)]">{services.introduction}</p>
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {services.items.map((service, index) => (
+            {services.items.map((service: any, index: any) => (
               <article
                 key={service.name}
                 className={`rounded-xl bg-white p-8 vi-ambient-shadow ${
@@ -126,7 +126,7 @@ export function ValleyInterlockingTorontoBody() {
         <ViContainer className="vi-toronto-reveal">
           <h2 className="vi-headline-lg mb-12 text-center text-[var(--vi-primary)]">{process.title}</h2>
           <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
-            {process.steps.map((step) => (
+            {process.steps.map((step: any) => (
               <article key={step.step} className="relative pt-16 text-center">
                 <div className="absolute left-1/2 top-0 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full bg-[var(--vi-primary)] text-lg font-bold text-[var(--vi-on-primary)]">
                   {step.step}

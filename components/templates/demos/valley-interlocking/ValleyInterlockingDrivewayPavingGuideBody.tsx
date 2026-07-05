@@ -104,7 +104,7 @@ export function ValleyInterlockingDrivewayPavingGuideBody() {
               <SectionHeading number={article.materials.number} title={article.materials.title} />
               <p className="vi-body-md mb-6 leading-relaxed text-[var(--vi-on-surface-variant)]">{article.materials.body}</p>
               <ul className="space-y-6">
-                {article.materials.items.map((item) => (
+                {article.materials.items.map((item: any) => (
                   <li key={item.label} className="rounded-xl bg-[var(--vi-surface-container-low)] p-6">
                     <h3 className="vi-headline-sm mb-3 text-[var(--vi-primary)]">{item.label}</h3>
                     <p className="vi-body-md text-[var(--vi-on-surface-variant)]">{item.detail}</p>
@@ -117,7 +117,7 @@ export function ValleyInterlockingDrivewayPavingGuideBody() {
               <SectionHeading number={article.concrete.number} title={article.concrete.title} />
               <p className="vi-body-md mb-6 leading-relaxed text-[var(--vi-on-surface-variant)]">{article.concrete.body}</p>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                {article.concrete.options.map((option) => (
+                {article.concrete.options.map((option: any) => (
                   <div
                     key={option.label}
                     className="border border-[color-mix(in_srgb,var(--vi-outline-variant)_20%,transparent)] bg-[var(--vi-surface-container-lowest)] p-8"
@@ -133,7 +133,7 @@ export function ValleyInterlockingDrivewayPavingGuideBody() {
               <SectionHeading number={article.installation.number} title={article.installation.title} />
               <p className="vi-body-md mb-6 leading-relaxed text-[var(--vi-on-surface-variant)]">{article.installation.body}</p>
               <ul className="mb-8 space-y-4">
-                {article.installation.items.map((item) => (
+                {article.installation.items.map((item: any) => (
                   <li key={item.label} className="flex items-start gap-4">
                     <ViIcon name="check_circle" className="mt-1 shrink-0 text-[var(--vi-secondary)]" />
                     <span className="vi-body-md text-[var(--vi-on-surface-variant)]">
@@ -161,7 +161,7 @@ export function ValleyInterlockingDrivewayPavingGuideBody() {
               <SectionHeading number={article.maintenance.number} title={article.maintenance.title} />
               <p className="vi-body-md mb-6 leading-relaxed opacity-90">{article.maintenance.body}</p>
               <ul className="mb-8 space-y-4">
-                {article.maintenance.benefits.map((benefit) => (
+                {article.maintenance.benefits.map((benefit: any) => (
                   <li key={benefit.label} className="flex items-start gap-4">
                     <ViIcon name="check" className="mt-1 shrink-0 opacity-80" />
                     <span className="vi-body-md opacity-90">

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { VI_PATHS } from "./valleyInterlockingConfig";
 import { VI_GALLERY_CTA, VI_GALLERY_ITEMS } from "./valleyInterlockingData";
 import { VI_IMG } from "./valleyInterlockingImages";
+import { VI_GALLERY_PAGE } from "./valleyInterlockingSiteContent";
 import { ViAboutCtaBanner } from "./ViAboutCtaBanner";
 import { ViContainer, ViIcon, ViImg, ViHeroContentPanel, VI_HERO_CTA_PRIMARY, VI_HERO_CTA_SECONDARY } from "./ValleyInterlockingShared";
 import { useViFocusTrap, useViNavScroll } from "./useViEffects";
@@ -59,6 +60,7 @@ export function ValleyInterlockingGalleryBody() {
   }, [activeIndex, close, showNext, showPrev]);
 
   const activeItem = activeIndex !== null ? VI_GALLERY_ITEMS[activeIndex] : null;
+  const { hero } = VI_GALLERY_PAGE;
 
   return (
     <main className="pt-[var(--vi-nav-height)]">
@@ -66,7 +68,7 @@ export function ValleyInterlockingGalleryBody() {
         <div className="vi-hero-backdrop absolute inset-0 z-0">
           <ViImg
             src={galleryImageForIndex(0)}
-            alt="Completed Valley Interlocking landscaping project"
+            alt={hero.heroImageAlt}
             fill
             className="object-cover object-center"
             priority
@@ -77,13 +79,13 @@ export function ValleyInterlockingGalleryBody() {
         <ViContainer className="relative z-10 flex w-full items-center">
           <ViHeroContentPanel>
             <h1 className="vi-display-lg mb-6 leading-tight">
-              <span className="block">See What&apos;s Possible</span>
-              <span className="block">For Your Home.</span>
+              {hero.headlineLines.map((line: any) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
             </h1>
-            <p className="vi-body-lg mb-8">
-              A showcase of completed landscaping, interlocking, driveway, patio, pool, porch, pergola, and outdoor
-              living projects across Toronto and Edmonton.
-            </p>
+            <p className="vi-body-lg mb-8">{hero.subhead}</p>
             <div className="flex flex-wrap gap-4">
               <Link href={VI_PATHS.contact} className={VI_HERO_CTA_PRIMARY}>
                 Contact Us
@@ -99,7 +101,7 @@ export function ValleyInterlockingGalleryBody() {
       <section className="bg-[var(--vi-background)] py-[var(--vi-stack-lg)]">
         <ViContainer>
           <div className="vi-masonry">
-            {VI_GALLERY_ITEMS.map((item, index) => (
+            {VI_GALLERY_ITEMS.map((item: any, index: any) => (
               <button
                 key={item.title}
                 type="button"

@@ -25,7 +25,7 @@ export function ViRelatedServices({
           <p className="vi-body-md text-[var(--vi-on-surface-variant)]">{intro}</p>
         </div>
         <div className={`grid grid-cols-1 gap-6 md:grid-cols-3 ${revealClass}`}>
-          {items.map((service) => (
+          {items.map((service: any) => (
             <Link
               key={service.href}
               href={service.href}

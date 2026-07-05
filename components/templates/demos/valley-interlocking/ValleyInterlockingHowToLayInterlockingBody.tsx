@@ -89,7 +89,7 @@ export function ValleyInterlockingHowToLayInterlockingBody() {
                 <h2 className="vi-headline-lg mb-4 text-[var(--vi-on-surface)]">{stepTwo.title}</h2>
                 <p className="vi-body-md mb-6 text-[var(--vi-secondary)]">{stepTwo.content}</p>
                 <ul className="space-y-2">
-                  {stepTwo.bullets?.map((bullet) => (
+                  {stepTwo.bullets?.map((bullet: any) => (
                     <li key={bullet} className="vi-caption flex items-start gap-2">
                       <ViIcon name="check_circle" className="text-sm text-[var(--vi-primary)]" />
                       {bullet}
@@ -116,7 +116,7 @@ export function ValleyInterlockingHowToLayInterlockingBody() {
             </section>
 
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-              {[stepThree, stepFour].map((step) => (
+              {[stepThree, stepFour].map((step: any) => (
                 <article
                   key={step.number}
                   className="flex flex-col gap-4 border border-[var(--vi-outline-variant)] p-6 transition-colors hover:border-[var(--vi-primary)]"
@@ -151,7 +151,7 @@ export function ValleyInterlockingHowToLayInterlockingBody() {
               <h2 className="vi-display-lg mb-4">{article.beddingSand.title}</h2>
               <div className="flex flex-col items-center gap-8 md:flex-row">
                 <div className="flex-1">
-                  {article.beddingSand.content.map((paragraph) => (
+                  {article.beddingSand.content.map((paragraph: any) => (
                     <p key={paragraph} className="vi-body-md mb-4 leading-relaxed last:mb-6">
                       {paragraph}
                     </p>
@@ -177,7 +177,7 @@ export function ValleyInterlockingHowToLayInterlockingBody() {
                 Tech Specs
               </h4>
               <div className="space-y-4">
-                {article.techSpecs.map((spec) => (
+                {article.techSpecs.map((spec: any) => (
                   <div key={spec.label} className="vi-blueprint-dashed flex justify-between pb-2">
                     <span className="vi-caption font-bold uppercase text-[var(--vi-secondary)]">{spec.label}</span>
                     <span className="vi-label-md text-[var(--vi-on-surface)]">{spec.value}</span>

@@ -49,7 +49,7 @@ export function ValleyInterlockingQuoteBody() {
                 <div className="relative">
                   <div className="absolute bottom-0 left-[15px] top-0 w-0.5 bg-[var(--vi-secondary-container)]" aria-hidden="true" />
                   <ol className="space-y-8 sm:space-y-10 lg:space-y-12">
-                    {VI_QUOTE_NEXT_STEPS.map((step) => (
+                    {VI_QUOTE_NEXT_STEPS.map((step: any) => (
                       <li key={step.title} className="relative flex items-start gap-4 sm:gap-6">
                       <div
                         className={`z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${

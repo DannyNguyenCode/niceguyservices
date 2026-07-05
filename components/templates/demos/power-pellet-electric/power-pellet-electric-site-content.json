@@ -1,0 +1,448 @@
+{
+  "site": {
+    "name": "Power Pellet Electric",
+    "tagline": "High Voltage Arcade Precision",
+    "copyright": "© 2024 Power Pellet Electric. High Voltage Arcade Precision.",
+    "industry": "Electrician",
+    "theme": "Retro arcade Pac-Man inspired electrician website",
+    "primaryCTA": {
+      "label": "Get a Quote",
+      "href": "/contact"
+    },
+    "secondaryCTA": {
+      "label": "Request Electrical Help",
+      "href": "/contact"
+    }
+  },
+  "navigation": [
+    { "key": "home", "label": "Home", "href": "/" },
+    { "key": "services", "label": "Services", "href": "/services" },
+    { "key": "about", "label": "About", "href": "/about" },
+    { "key": "resources", "label": "Resources", "href": "/resources" },
+    { "key": "contact", "label": "Contact", "href": "/contact" }
+  ],
+  "mobileNavigation": [
+    { "key": "home", "label": "Home", "icon": "home" },
+    { "key": "services", "label": "Services", "icon": "electric_bolt" },
+    { "key": "contact", "label": "Contact", "icon": "contact_support" },
+    { "key": "about", "label": "About", "icon": "person" }
+  ],
+  "footerLinks": [
+    { "label": "Privacy Policy", "href": "#" },
+    { "label": "Terms of Service", "href": "#" },
+    { "label": "Licensing", "href": "#" },
+    { "label": "Emergency Support", "href": "/contact", "highlight": true }
+  ],
+  "home": {
+    "hero": {
+      "eyebrow": "Licensed Electrical Help Without the Runaround",
+      "headline": "Power Up Your Home or Business With Safe, Clean Electrical Work",
+      "headlineAccent": "Safe, Clean",
+      "body": "From flickering lights to full panel upgrades, Power Pellet Electric helps homeowners and businesses solve electrical problems with clear communication, careful workmanship, and reliable service.",
+      "primaryCTA": { "label": "Get a Quote", "href": "/contact" },
+      "secondaryCTA": { "label": "View Services", "href": "/services" },
+      "emergencyCallout": {
+        "label": "Need urgent help?",
+        "text": "Use the contact page to request priority electrical support."
+      }
+    },
+    "trustIndicators": [
+      { "icon": "verified", "label": "Licensed electrical service" },
+      { "icon": "business_center", "label": "Residential and commercial support" },
+      { "icon": "cleaning_services", "label": "Clean work areas" },
+      { "icon": "request_quote", "label": "Clear estimates" },
+      { "icon": "health_and_safety", "label": "Safety-first troubleshooting" },
+      { "icon": "location_on", "label": "Local service team" }
+    ],
+    "servicePreview": [
+      {
+        "title": "Panel Upgrades",
+        "description": "Upgrade outdated electrical panels so your property can safely support modern appliances, renovations, EV chargers, and everyday power demand.",
+        "href": "/services/panel-upgrades",
+        "icon": "electrical_services"
+      },
+      {
+        "title": "Lighting Installation",
+        "description": "Install indoor, outdoor, recessed, security, and feature lighting with clean wiring, safe connections, and a finished look that fits your space.",
+        "href": "/services/lighting-installation",
+        "icon": "lightbulb"
+      },
+      {
+        "title": "Troubleshooting",
+        "description": "Find the cause of flickering lights, tripping breakers, dead outlets, buzzing switches, warm plates, and other electrical warning signs.",
+        "href": "/services/breaker-circuit-troubleshooting",
+        "icon": "construction"
+      },
+      {
+        "title": "EV Charger Setup",
+        "description": "Prepare your home or business for EV charging with load assessment, dedicated circuits, safe installation planning, and charger-ready wiring.",
+        "href": "/services/ev-charger-installation-prep",
+        "icon": "ev_charger"
+      }
+    ],
+    "howItWorks": {
+      "title": "Our Power Path",
+      "intro": "Follow the path to restored power. We make electrical maintenance as simple as clearing a stage.",
+      "statusLabel": "SYSTEMS ACTIVE",
+      "steps": [
+        {
+          "step": "01",
+          "stage": "STAGE 01",
+          "title": "Tell Us the Problem",
+          "description": "Send details through the contact page, including the issue, location, photos if helpful, and preferred timing."
+        },
+        {
+          "step": "02",
+          "stage": "STAGE 02",
+          "title": "Get Clear Direction",
+          "description": "We review the request, ask the right questions, and explain the likely next steps before work begins."
+        },
+        {
+          "step": "03",
+          "stage": "STAGE 03",
+          "title": "Safe Electrical Work",
+          "description": "The job is completed with safety, clean workmanship, and respect for your home or business."
+        },
+        {
+          "step": "04",
+          "stage": "WIN STATE",
+          "title": "Power Restored",
+          "description": "We review the completed work, answer questions, and make sure the area is left clean and functional.",
+          "highlight": true
+        }
+      ]
+    },
+    "gallery": {
+      "title": "Precision in Action",
+      "images": [
+        {
+          "src": "panelCloseup",
+          "alt": "A macro close-up of a meticulously organized electrical panel in a dark industrial setting with neon yellow glow highlighting technical precision.",
+          "className": "md:col-span-2 md:row-span-2"
+        },
+        {
+          "src": "evCharger",
+          "alt": "A modern electric vehicle charging station mounted on a dark textured wall in a minimalist garage with pink neon lighting.",
+          "className": ""
+        },
+        {
+          "src": "diagnostic",
+          "alt": "An electrician using a high-tech diagnostic tool on a wall outlet with yellow data visualizations in dim lighting.",
+          "className": ""
+        },
+        {
+          "src": "lighting",
+          "alt": "Wide shot of a contemporary living room with dramatic architectural lighting and warm yellow glow against a dark ceiling.",
+          "className": "md:col-span-2"
+        }
+      ]
+    },
+    "finalCta": {
+      "title": "Ready to Start a New Game?",
+      "body": "Don't gamble with your home's safety. Get the high-score in electrical reliability with Power Pellet Electric.",
+      "label": "Request Your Free Estimate",
+      "href": "/contact"
+    }
+  },
+  "services": {
+    "pageTitle": "Electrical Services",
+    "statusBadge": "SYSTEM STATUS: FULL CAPACITY",
+    "intro": "Electrical problems can feel stressful, especially when they affect safety, comfort, or business operations. Power Pellet Electric provides practical electrical services for homes, rental properties, offices, shops, and small commercial spaces.",
+    "items": [
+      {
+        "slug": "residential-electrical-service",
+        "title": "Residential Electrical Service",
+        "badge": "Home Power",
+        "icon": "home",
+        "description": "Electrical support for homeowners who need repairs, upgrades, installations, troubleshooting, or safety improvements. This can include outlets, switches, lighting, circuits, panels, smoke detectors, and general electrical concerns.",
+        "cta": { "label": "Request Residential Service", "href": "/services/residential-electrical-service" },
+        "emergency": false
+      },
+      {
+        "slug": "commercial-electrical-service",
+        "title": "Commercial Electrical Service",
+        "badge": "Business Power",
+        "icon": "corporate_fare",
+        "description": "Electrical support for offices, storefronts, studios, clinics, restaurants, and small commercial spaces. Services can include lighting, wiring, troubleshooting, outlet placement, code-aware improvements, and electrical maintenance.",
+        "cta": { "label": "Request Commercial Service", "href": "/services/commercial-electrical-service" },
+        "emergency": false
+      },
+      {
+        "slug": "panel-upgrades",
+        "title": "Panel Upgrades",
+        "badge": "Power Boost",
+        "icon": "settings_input_component",
+        "description": "Panel upgrades help properties handle today's electrical demand. A panel upgrade may be needed for renovations, EV chargers, new appliances, basement units, additions, or frequent breaker issues.",
+        "cta": { "label": "Ask About Panel Upgrades", "href": "/services/panel-upgrades" },
+        "emergency": false
+      },
+      {
+        "slug": "breaker-circuit-troubleshooting",
+        "title": "Breaker and Circuit Troubleshooting",
+        "badge": "Problem Solver",
+        "icon": "dynamic_form",
+        "description": "Breaker issues can point to overloaded circuits, faulty devices, damaged wiring, or unsafe electrical conditions. Troubleshooting helps identify the source before bigger problems develop.",
+        "cta": { "label": "Troubleshoot My Breaker", "href": "/services/breaker-circuit-troubleshooting" },
+        "emergency": false
+      },
+      {
+        "slug": "lighting-installation",
+        "title": "Lighting Installation",
+        "badge": "Bright Path",
+        "icon": "lightbulb",
+        "description": "Lighting installation for kitchens, basements, bathrooms, offices, exteriors, garages, security areas, and feature spaces. Work can include recessed lighting, fixtures, dimmers, outdoor lights, and lighting upgrades.",
+        "cta": { "label": "Plan Lighting Work", "href": "/services/lighting-installation" },
+        "emergency": false
+      },
+      {
+        "slug": "ev-charger-installation-prep",
+        "title": "EV Charger Installation Prep",
+        "badge": "Charge Ready",
+        "icon": "ev_station",
+        "description": "EV charger preparation can include reviewing panel capacity, planning a dedicated circuit, choosing charger placement, and installing safe wiring for home or business charging needs.",
+        "cta": { "label": "Prepare for EV Charging", "href": "/services/ev-charger-installation-prep" },
+        "emergency": false
+      },
+      {
+        "slug": "electrical-safety-inspections",
+        "title": "Electrical Safety Inspections",
+        "badge": "Safety Check",
+        "icon": "verified_user",
+        "description": "Safety inspections help identify risks such as outdated wiring, overloaded circuits, damaged outlets, improper connections, missing protection, warm switches, and other electrical warning signs.",
+        "cta": { "label": "Book a Safety Review", "href": "/services/electrical-safety-inspections" },
+        "emergency": false
+      },
+      {
+        "slug": "surge-protection",
+        "title": "Surge Protection",
+        "badge": "Shield Mode",
+        "icon": "bolt",
+        "description": "Surge protection helps protect electronics, appliances, office equipment, smart home devices, and electrical systems from damaging voltage spikes.",
+        "cta": { "label": "Ask About Surge Protection", "href": "/services/surge-protection" },
+        "emergency": false
+      },
+      {
+        "slug": "wiring-rewiring",
+        "title": "Wiring and Rewiring",
+        "badge": "Clean Lines",
+        "icon": "cable",
+        "description": "Wiring and rewiring services for renovations, finished basements, additions, appliance circuits, office layouts, damaged wiring, and safer electrical upgrades.",
+        "cta": { "label": "Request Wiring Help", "href": "/services/wiring-rewiring" },
+        "emergency": false
+      },
+      {
+        "slug": "emergency-electrical-support",
+        "title": "Emergency Electrical Support",
+        "badge": "Urgent",
+        "icon": "warning",
+        "description": "Urgent electrical issues may include burning smells, sparks, power loss, repeated breaker trips, warm outlets, buzzing panels, exposed wires, or unsafe electrical conditions.",
+        "cta": { "label": "Contact for Urgent Help", "href": "/services/emergency-electrical-support" },
+        "emergency": true
+      }
+    ],
+    "bento": {
+      "title": "PRECISION GRID CONTROL",
+      "description": "Our technicians utilize high-fidelity mapping to ensure every pellet of power reaches its destination without loss.",
+      "stat": "25+",
+      "statLabel": "YEARS IN THE ARCADE"
+    }
+  },
+  "about": {
+    "pageTitle": "About Power Pellet Electric",
+    "estBadge": "EST. 1982 // HIGH VOLTAGE PRECISION",
+    "intro": "Power Pellet Electric was built around a simple idea: electrical work should feel clear, safe, and respectful from the first message to the final walkthrough.",
+    "sections": [
+      {
+        "title": "Safety Comes First",
+        "icon": "shield",
+        "description": "Electrical work affects the safety of your home, family, employees, customers, and property. Every service is approached with careful attention to the issue, the environment, and the long-term reliability of the solution.",
+        "glow": "pink"
+      },
+      {
+        "title": "Clean Work Matters",
+        "icon": "cleaning_services",
+        "description": "A good electrical job should not leave a mess behind. Work areas are treated with respect, finished details are considered, and cleanup is part of the customer experience.",
+        "glow": "yellow"
+      },
+      {
+        "title": "Honest Communication",
+        "icon": "chat",
+        "description": "Customers should understand what is happening, why it matters, and what options are available. Power Pellet Electric focuses on clear explanations instead of confusing technical pressure.",
+        "glow": "blue"
+      },
+      {
+        "title": "Licensed Expertise",
+        "icon": "verified",
+        "description": "Electrical systems are not a place for guesswork. The work is handled with professional care, proper process, and safety-focused decision making.",
+        "glow": "pink"
+      },
+      {
+        "title": "Local Service",
+        "icon": "location_on",
+        "description": "The company supports local homeowners, landlords, property managers, and small businesses that need dependable electrical service without feeling like another ticket number.",
+        "glow": "yellow"
+      },
+      {
+        "title": "Respectful Customer Care",
+        "icon": "volunteer_activism",
+        "description": "From quick questions to larger upgrades, the goal is to make customers feel heard, informed, and confident about the electrical work being completed.",
+        "glow": "blue"
+      }
+    ],
+    "valuesSection": {
+      "title": "Power Up Features",
+      "intro": "The core values that drive our system forward and keep the power flowing efficiently across every circuit we touch.",
+      "values": [
+        { "icon": "safety_check", "label": "SAFETY", "hoverColor": "primary-fixed" },
+        { "icon": "mop", "label": "CLEANLINESS", "hoverColor": "secondary" },
+        { "icon": "record_voice_over", "label": "HONESTY", "hoverColor": "tertiary-fixed-dim" },
+        { "icon": "military_tech", "label": "EXPERTISE", "hoverColor": "primary-fixed" },
+        { "icon": "home_pin", "label": "LOCAL", "hoverColor": "secondary" },
+        { "icon": "sentiment_satisfied", "label": "RESPECT", "hoverColor": "tertiary-fixed-dim" }
+      ]
+    },
+    "cta": {
+      "title": "Ready to Start Your Level?",
+      "body": "Whether it's a simple repair or a full system upgrade, we're here to provide the precision your project requires.",
+      "primaryLabel": "GET A QUOTE",
+      "primaryHref": "/contact",
+      "secondaryLabel": "CONTACT US",
+      "secondaryHref": "/contact"
+    }
+  },
+  "contact": {
+    "pageTitle": "Contact Power Pellet Electric",
+    "intro": "Use the contact page to request a quote, ask about a service, explain an electrical issue, or request priority support.",
+    "formLabel": "COMMAND_INPUT",
+    "submitLabel": "Initiate Request",
+    "formFields": [
+      { "id": "name", "label": "Full Name", "type": "text", "placeholder": "John Doe", "required": true },
+      { "id": "email", "label": "Email", "type": "email", "placeholder": "john@example.com", "required": true },
+      { "id": "phone", "label": "Phone", "type": "tel", "placeholder": "(555) 000-0000", "required": true },
+      {
+        "id": "propertyType",
+        "label": "Property Type",
+        "type": "select",
+        "options": ["House", "Condo", "Apartment", "Rental Property", "Office", "Storefront", "Commercial Space", "Other"],
+        "required": true
+      },
+      {
+        "id": "serviceNeeded",
+        "label": "Service Needed",
+        "type": "select",
+        "options": ["General Electrical Help", "Panel Upgrade", "Breaker Issue", "Lighting Installation", "EV Charger Prep", "Safety Inspection", "Wiring or Rewiring", "Emergency Electrical Issue", "Other"],
+        "required": true
+      },
+      {
+        "id": "timing",
+        "label": "Preferred Timing",
+        "type": "select",
+        "options": ["As soon as possible", "This week", "This month", "Planning ahead", "Not sure yet"],
+        "required": true
+      },
+      {
+        "id": "details",
+        "label": "Project Details",
+        "type": "textarea",
+        "placeholder": "Describe your electrical needs...",
+        "required": true
+      }
+    ],
+    "businessHours": [
+      { "day": "Monday", "hours": "8:00 AM - 6:00 PM" },
+      { "day": "Tuesday", "hours": "8:00 AM - 6:00 PM" },
+      { "day": "Wednesday", "hours": "8:00 AM - 6:00 PM" },
+      { "day": "Thursday", "hours": "8:00 AM - 6:00 PM" },
+      { "day": "Friday", "hours": "8:00 AM - 6:00 PM" },
+      { "day": "Saturday", "hours": "By appointment" },
+      { "day": "Sunday", "hours": "Closed" }
+    ],
+    "serviceArea": ["Toronto", "Etobicoke", "Mississauga", "North York", "Scarborough", "Vaughan", "Brampton", "Oakville"],
+    "processTitle": "Level Progression Process",
+    "afterSubmit": [
+      {
+        "step": "01",
+        "title": "Request Received",
+        "description": "Your message is reviewed so the electrical issue, property type, and service need are understood.",
+        "variant": "primary"
+      },
+      {
+        "step": "02",
+        "title": "Follow-Up Questions",
+        "description": "If needed, we ask for photos, extra details, timing, or access information before recommending next steps.",
+        "variant": "secondary"
+      },
+      {
+        "step": "03",
+        "title": "Quote or Visit",
+        "description": "Depending on the request, you receive quote guidance, scheduling options, or a recommendation for an on-site review.",
+        "variant": "neutral"
+      },
+      {
+        "step": "04",
+        "title": "Work Completed",
+        "description": "Electrical work is completed with safety, clean workmanship, and clear communication.",
+        "variant": "neutral"
+      }
+    ],
+    "emergencyNotice": {
+      "title": "Electrical Emergency?",
+      "description": "If there are sparks, smoke, burning smells, exposed live wires, or immediate danger, stay away from the area and contact emergency services or your utility provider when appropriate."
+    }
+  },
+  "resources": {
+    "pageTitle": "Electrical Resources",
+    "heroBadge": "DATABASE_01 // LEVEL UP",
+    "intro": "Helpful guides for homeowners and business owners who want to better understand electrical warning signs, upgrades, safety basics, and when to call a professional.",
+    "articles": [
+      {
+        "title": "Panel Upgrade Guide",
+        "category": "Panel Safety",
+        "icon": "electric_bolt",
+        "description": "Learn when an electrical panel may need an upgrade, including signs like frequent breaker trips, limited capacity, renovation plans, EV charger installation, new appliances, or outdated equipment.",
+        "href": "/resources/panel-upgrade-guide"
+      },
+      {
+        "title": "Breaker Troubleshooting Basics",
+        "category": "Troubleshooting",
+        "icon": "speed",
+        "description": "Understand why breakers trip, what overloaded circuits can look like, when a device may be the issue, and when repeated trips should be checked by an electrician.",
+        "href": "/resources/breaker-troubleshooting"
+      },
+      {
+        "title": "Home Electrical Safety Checklist",
+        "category": "Safety",
+        "icon": "verified_user",
+        "description": "Review common safety items such as warm outlets, damaged cords, overloaded power bars, flickering lights, buzzing switches, missing GFCI protection, and exposed wiring.",
+        "href": "/resources/electrical-safety-checklist"
+      },
+      {
+        "title": "EV Charger Prep Guide",
+        "category": "EV Charging",
+        "icon": "ev_station",
+        "description": "Learn what homeowners should consider before installing an EV charger, including panel capacity, charger location, dedicated circuits, permits, and future charging needs.",
+        "href": "/resources/ev-charger-prep"
+      },
+      {
+        "title": "Lighting Upgrade Guide",
+        "category": "Lighting",
+        "icon": "lightbulb",
+        "description": "Explore lighting upgrade ideas for kitchens, basements, bathrooms, exterior spaces, offices, garages, and security areas.",
+        "href": "/resources/lighting-upgrade-guide"
+      },
+      {
+        "title": "When to Call an Electrician",
+        "category": "Warning Signs",
+        "icon": "emergency",
+        "description": "Know when an electrical issue should not be ignored, including burning smells, sparks, buzzing panels, frequent breaker trips, dead outlets, flickering lights, and warm switch plates.",
+        "href": "/resources/when-to-call-electrician"
+      }
+    ],
+    "resourceCTA": {
+      "title": "Not sure what the issue is?",
+      "description": "Send the details through the contact page and we can help point you in the right direction.",
+      "label": "Contact Us",
+      "href": "/contact"
+    }
+  }
+}

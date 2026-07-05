@@ -39,7 +39,7 @@ export function ValleyInterlockingDrivewayBody() {
         <ViContainer className="vi-driveway-reveal">
           <h2 className="vi-headline-lg mb-12 text-center text-[var(--vi-primary)]">{options.heading}</h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {options.items.map((item) => (
+            {options.items.map((item: any) => (
               <article
                 key={item.title}
                 className="flex flex-col overflow-hidden rounded-xl bg-white shadow-[0_10px_30px_rgba(62,92,118,0.05)] transition-shadow hover:shadow-xl"
@@ -95,7 +95,7 @@ export function ValleyInterlockingDrivewayBody() {
             <h2 className="vi-headline-lg mb-12 text-[var(--vi-primary)]">{keyElements.heading}</h2>
             <div className="flex flex-col items-start gap-12 lg:flex-row">
               <div className="w-full space-y-12 lg:w-1/2">
-                {keyElements.items.map((item) => (
+                {keyElements.items.map((item: any) => (
                   <div key={item.title}>
                     <h3 className="vi-headline-md mb-3 text-[var(--vi-primary)]">{item.title}</h3>
                     <p className="vi-body-md text-[var(--vi-on-surface-variant)]">{item.content}</p>
@@ -125,7 +125,7 @@ export function ValleyInterlockingDrivewayBody() {
             <div>
               <h2 className="vi-headline-lg mb-6 text-[var(--vi-primary)]">{maintenance.heading}</h2>
               <div className="vi-body-lg space-y-6 text-[var(--vi-on-surface-variant)]">
-                {maintenance.content.map((paragraph) => (
+                {maintenance.content.map((paragraph: any) => (
                   <p key={paragraph}>{paragraph}</p>
                 ))}
               </div>
@@ -133,7 +133,7 @@ export function ValleyInterlockingDrivewayBody() {
             <div>
               <h2 className="vi-headline-lg mb-6 text-[var(--vi-primary)]">{ethical.heading}</h2>
               <div className="vi-body-lg space-y-6 text-[var(--vi-on-surface-variant)]">
-                {ethical.content.map((paragraph) => (
+                {ethical.content.map((paragraph: any) => (
                   <p key={paragraph}>{paragraph}</p>
                 ))}
               </div>
@@ -149,7 +149,7 @@ export function ValleyInterlockingDrivewayBody() {
               <h2 className="vi-headline-lg mb-6 text-[var(--vi-primary)]">{howToGuide.serviceTitle}</h2>
               <p className="vi-body-md mb-8 text-[var(--vi-on-surface-variant)]">{howToGuide.serviceSummary}</p>
               <ol className="mb-8 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
-                {howToGuide.serviceStepTitles.map((title, index) => (
+                {howToGuide.serviceStepTitles.map((title: any, index: any) => (
                   <li key={title} className="flex items-start gap-4">
                     <span className="vi-step-number vi-label-md flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--vi-primary)] text-[var(--vi-primary)]">
                       {String(index + 1).padStart(2, "0")}

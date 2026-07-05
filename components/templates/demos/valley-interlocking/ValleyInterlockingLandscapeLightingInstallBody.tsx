@@ -51,7 +51,7 @@ export function ValleyInterlockingLandscapeLightingInstallBody() {
             <section id="system-selection" className="scroll-mt-24">
               <PhaseHeading number={1} title="System Selection" />
               <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                {article.systemTypes.map((system) => (
+                {article.systemTypes.map((system: any) => (
                   <div
                     key={system.id}
                     className={`group rounded-lg border p-6 transition-colors ${
@@ -82,7 +82,7 @@ export function ValleyInterlockingLandscapeLightingInstallBody() {
             <section id="solar-installation" className="scroll-mt-24">
               <PhaseHeading number={2} title="Solar Installation" />
               <div className="space-y-4">
-                {article.solarSteps.map((step) => (
+                {article.solarSteps.map((step: any) => (
                   <div
                     key={step.number}
                     className="flex gap-4 rounded-xl border border-[var(--vi-outline-variant)] bg-[var(--vi-surface-container-lowest)] p-5"
@@ -107,7 +107,7 @@ export function ValleyInterlockingLandscapeLightingInstallBody() {
             >
               <PhaseHeading number={3} title="Low Voltage Setup" light />
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                {article.lowVoltageCards.map((card) => (
+                {article.lowVoltageCards.map((card: any) => (
                   <div
                     key={card.title}
                     className="rounded-xl border border-[color-mix(in_srgb,var(--vi-surface)_10%,transparent)] bg-[color-mix(in_srgb,var(--vi-surface-container-highest)_10%,transparent)] p-5 transition-colors hover:bg-[color-mix(in_srgb,var(--vi-surface-container-highest)_20%,transparent)]"
@@ -134,7 +134,7 @@ export function ValleyInterlockingLandscapeLightingInstallBody() {
                   </div>
                 </div>
                 <div className="grid grid-cols-1 gap-4 border-t border-[color-mix(in_srgb,var(--vi-outline-variant)_30%,transparent)] pt-4 md:grid-cols-2">
-                  {article.lineVoltage.requirements.map((req) => (
+                  {article.lineVoltage.requirements.map((req: any) => (
                     <div key={req.label} className="flex items-center gap-3">
                       <ViIcon name={req.icon} className="text-[var(--vi-secondary)]" />
                       <span className="vi-body-md font-medium text-[var(--vi-on-surface)]">{req.label}</span>
@@ -152,7 +152,7 @@ export function ValleyInterlockingLandscapeLightingInstallBody() {
               <h2 className="vi-display-lg mb-4">{article.closing.title}</h2>
               <div className="flex flex-col items-center gap-8 md:flex-row">
                 <div className="flex-1">
-                  {article.closing.content.map((paragraph) => (
+                  {article.closing.content.map((paragraph: any) => (
                     <p key={paragraph} className="vi-body-md mb-4 leading-relaxed last:mb-6">
                       {paragraph}
                     </p>

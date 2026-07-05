@@ -30,7 +30,7 @@ function ArticleStep({
           ) : null}
           {"materialCards" in step && step.materialCards ? (
             <div className="mt-6 grid grid-cols-1 gap-4">
-              {step.materialCards.map((card) => (
+              {step.materialCards.map((card: any) => (
                 <div
                   key={card.title}
                   className="rounded border border-[color-mix(in_srgb,var(--vi-outline-variant)_20%,transparent)] bg-[var(--vi-surface-container)] p-4"
@@ -100,7 +100,7 @@ export function ValleyInterlockingPatioDesignGuideBody() {
           <div className="grid grid-cols-1 gap-[var(--vi-gutter)] lg:grid-cols-12">
             <div className="lg:col-span-9">
               <div className="grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2">
-                {article.steps.slice(0, figureAfterIndex).map((step) => (
+                {article.steps.slice(0, figureAfterIndex).map((step: any) => (
                   <ArticleStep key={step.id} step={step} />
                 ))}
 
@@ -119,7 +119,7 @@ export function ValleyInterlockingPatioDesignGuideBody() {
                   </figcaption>
                 </figure>
 
-                {article.steps.slice(figureAfterIndex).map((step) => (
+                {article.steps.slice(figureAfterIndex).map((step: any) => (
                   <ArticleStep key={step.id} step={step} />
                 ))}
 

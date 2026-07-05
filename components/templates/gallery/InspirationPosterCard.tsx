@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import { GalleryCardMedia } from "@/components/templates/gallery/GalleryCardMedia";
 import type { GalleryCardMeta } from "@/lib/templates/galleryConfig";
-import { inspirationPosterLabel } from "@/lib/templates/inspirationsHubConfig";
 import type { ExperienceTemplate } from "@/lib/templates/registry";
 
 type InspirationPosterCardProps = {
@@ -18,7 +17,6 @@ export function InspirationPosterCard({
   priority,
   layout = "row",
 }: InspirationPosterCardProps) {
-  const label = inspirationPosterLabel(template.slug, template.title);
   const widthClass =
     layout === "grid" ? "w-full" : "w-[220px] shrink-0 snap-start sm:w-[260px] md:w-[300px]";
 
@@ -27,7 +25,7 @@ export function InspirationPosterCard({
       href={template.link}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`View ${label} demo in a new tab`}
+      aria-label={`View ${template.slug} demo in a new tab`}
       className={`inspiration-poster group/card block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-fixed ${widthClass}`}
     >
       <article className={`relative aspect-video overflow-hidden rounded-lg bg-surface-container-high ${widthClass}`}>
@@ -45,7 +43,7 @@ export function InspirationPosterCard({
             {template.category}
           </p>
           <h3 className="mt-1 font-[family-name:var(--font-gallery)] text-lg leading-tight font-semibold text-white">
-            {label}
+            {template.slug}
           </h3>
         </div>
         <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover/card:opacity-100 group-focus-visible/card:opacity-100">

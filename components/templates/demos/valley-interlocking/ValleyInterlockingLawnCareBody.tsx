@@ -105,7 +105,7 @@ export function ValleyInterlockingLawnCareBody() {
             <div className="mx-auto h-1 w-24 bg-[var(--vi-secondary)]" />
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
-            {VI_LAWN_SERVICES.map((item, index) => {
+            {VI_LAWN_SERVICES.map((item: any, index: any) => {
               const imageLeft = index === 3;
 
               if (item.large) {
@@ -163,7 +163,7 @@ export function ValleyInterlockingLawnCareBody() {
                   <p className="vi-body-md mb-6 text-[var(--vi-on-surface-variant)]">{item.description}</p>
                   {"tags" in item && item.tags ? (
                     <div className="flex flex-wrap gap-2">
-                      {item.tags.map((tag) => (
+                      {item.tags.map((tag: any) => (
                         <span
                           key={tag}
                           className="rounded-full bg-[color-mix(in_srgb,var(--vi-tertiary)_10%,transparent)] px-3 py-1 vi-label-sm text-[var(--vi-tertiary)]"
@@ -189,7 +189,7 @@ export function ValleyInterlockingLawnCareBody() {
               </h2>
               <p className="vi-body-lg text-[var(--vi-on-surface-variant)]">{VI_LAWN_CARE_101.intro}</p>
               <div className="mt-8 space-y-6">
-                {VI_LAWN_CARE_101.tiles.map((tile, index) => (
+                {VI_LAWN_CARE_101.tiles.map((tile: any, index: any) => (
                   <div
                     key={tile.title}
                     className={`rounded-xl bg-white p-8 vi-ambient-shadow ${
@@ -226,7 +226,7 @@ export function ValleyInterlockingLawnCareBody() {
       <section className="py-[var(--vi-stack-lg)]">
         <ViContainer className="vi-lawn-reveal">
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {detailSections.map((section, index) => {
+            {detailSections.map((section: any, index: any) => {
               const icon = DETAIL_ICONS[section.heading] ?? "grass";
               const [cardDescription] = section.content;
 
@@ -308,7 +308,7 @@ export function ValleyInterlockingLawnCareBody() {
               <h2 className="vi-headline-lg mb-6 text-[var(--vi-primary)]">{howToGuide.serviceTitle}</h2>
               <p className="vi-body-md mb-8 text-[var(--vi-on-surface-variant)]">{howToGuide.serviceSummary}</p>
               <ol className="mb-8 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
-                {howToGuide.serviceStepTitles.map((title, index) => (
+                {howToGuide.serviceStepTitles.map((title: any, index: any) => (
                   <li key={title} className="flex items-start gap-4">
                     <span className="vi-step-number vi-label-md flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--vi-primary)] text-[var(--vi-primary)]">
                       {String(index + 1).padStart(2, "0")}

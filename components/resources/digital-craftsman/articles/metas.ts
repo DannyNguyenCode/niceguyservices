@@ -1,5 +1,6 @@
 import type { DcArticleMeta } from "../types";
 import { CUSTOM_VS_TEMPLATE_PATH, CUSTOM_VS_TEMPLATE_TOC, CUSTOM_VS_TEMPLATE_RELATED, CUSTOM_VS_TEMPLATE_TAKEAWAYS } from "../customVsTemplateConfig";
+import { GEO_PATH, GEO_RELATED, GEO_TOC } from "../geoConfig";
 import { LOCAL_SEO_BASICS_PATH, LOCAL_SEO_BASICS_TOC, LOCAL_SEO_BASICS_RELATED, LOCAL_SEO_BASICS_TAKEAWAYS } from "../localSeoBasicsConfig";
 import { SEARCH_CONSOLE_PATH, SEARCH_CONSOLE_TOC, SEARCH_CONSOLE_RELATED, SEARCH_CONSOLE_TAKEAWAYS } from "../searchConsoleConfig";
 import { WEBSITE_LEADS_PATH, WEBSITE_LEADS_TOC, WEBSITE_LEADS_RELATED, WEBSITE_LEADS_TAKEAWAYS } from "../websiteLeadsConfig";
@@ -15,9 +16,36 @@ const GOOGLE_AI_TOC = [
 ] as const;
 
 const GOOGLE_AI_RELATED = [
+    {
+        title: "Understanding GEO (Generative Engine Optimization)",
+        href: "/resources/understanding-generative-engine-optimization",
+        year: "2026",
+    },
     { title: "SEO Basics for Local Businesses", href: "/resources/seo-basics-for-local-businesses", year: "2026" },
     { title: "How Websites Generate Leads for Local Businesses", href: "/resources/how-websites-generate-leads-for-local-businesses", year: "2026" },
 ] as const;
+
+export const geoMeta: DcArticleMeta = {
+    path: GEO_PATH,
+    headline: "Understanding GEO (Generative Engine Optimization)",
+    description:
+        "Learn what Generative Engine Optimization (GEO) is, how AI-powered search is changing the web, and how businesses can prepare for the future of online visibility.",
+    datePublished: "2026-07-04",
+    dateModified: "2026-07-04",
+    heroImageSrc: "/images/Futuristic-tech-abstract.png",
+    badge: "Resource / SEO & AI",
+    readTime: "11 min read",
+    title: "Understanding GEO (Generative Engine Optimization): The Future of Being Found Online",
+    subtitle: "What generative engine optimization means for small businesses in plain English",
+    desktopCategory: "SEO & AI",
+    toc: GEO_TOC,
+    related: GEO_RELATED,
+    ctaLabel: "Book a Free Consultation",
+    sidebarCta: {
+        title: "Prepare for AI search",
+        body: "Websites built for clarity, trust, and the way people search today — without hype or false promises.",
+    },
+};
 
 export const googleAiSearchMeta: DcArticleMeta = {
     path: GOOGLE_AI_PATH,
@@ -121,6 +149,7 @@ export const customVsTemplateMeta: DcArticleMeta = {
 
 /** Published Digital Craftsman articles — used by sitemap and hub. */
 export const RESOURCE_ARTICLE_METAS = [
+    geoMeta,
     googleAiSearchMeta,
     seoBasicsMeta,
     searchConsoleMeta,

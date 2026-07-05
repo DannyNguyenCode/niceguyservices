@@ -1,19 +1,29 @@
 "use client";
 
 import Link from "next/link";
-import { VI_PATHS, VI_SERVICE_LINKS } from "./valleyInterlockingConfig";
+import { VI_PATHS, VI_SERVICE_LINKS, type ViServiceLinkKey } from "./valleyInterlockingConfig";
 import { VI_FAQS } from "./valleyInterlockingFaqContent";
 import { VI_ABOUT_CTA_BANNER } from "./valleyInterlockingAboutContent";
 import { VI_HOME_GET_INSPIRED_CTA, VI_HOME_SERVICES, VI_HOME_SERVICES_INTRO } from "./valleyInterlockingData";
 import { VI_IMG } from "./valleyInterlockingImages";
+import { VI_HOME_PAGE } from "./valleyInterlockingSiteContent";
 import { ViFaqAccordion } from "./valleyInterlockingServiceSections";
 import { ViAboutCtaBanner } from "./ViAboutCtaBanner";
 import { ViContainer, ViIcon, ViImg, ViHeroContentPanel, VI_HERO_CTA_PRIMARY } from "./ValleyInterlockingShared";
 import { useViNavScroll, useViReveal } from "./useViEffects";
 
+type ViLocationPathKey = "toronto" | "edmonton";
+type ViHomeImageKey = "home.toronto" | "home.edmonton";
+
+function viHomeImage(key: ViHomeImageKey): string {
+  return key === "home.toronto" ? VI_IMG.home.toronto : VI_IMG.home.edmonton;
+}
+
 export function ValleyInterlockingHomeBody() {
   useViNavScroll();
   useViReveal(".vi-home-reveal");
+
+  const { hero, locationsSection } = VI_HOME_PAGE;
 
   return (
     <main className="pt-[var(--vi-nav-height)]">
@@ -21,7 +31,7 @@ export function ValleyInterlockingHomeBody() {
         <div className="vi-hero-backdrop absolute inset-0 z-0">
           <ViImg
             src={VI_IMG.home.hero}
-            alt="Interlocking stone driveway installation by Valley Interlocking"
+            alt={hero.heroImageAlt}
             fill
             className="vi-hero-backdrop__image object-cover object-center"
             priority
@@ -31,20 +41,18 @@ export function ValleyInterlockingHomeBody() {
         </div>
         <ViContainer className="vi-hero-home__container relative z-10 flex h-full w-full items-center">
           <ViHeroContentPanel>
-            <h1 className="vi-display-lg mb-6 leading-tight">
-              Beautiful Outdoor Spaces Start Here.
-            </h1>
-            <p className="vi-body-lg mb-8">
-              Welcome to Valley Interlocking & Landscaping – Your Premier Landscaping Experts, specializing in
-              enduring stone work and bespoke garden designs.
-            </p>
+            <h1 className="vi-display-lg mb-6 leading-tight">{hero.headline}</h1>
+            <p className="vi-body-lg mb-8">{hero.subhead}</p>
             <div className="flex flex-wrap gap-4">
-              <Link href={VI_PATHS.toronto} className={VI_HERO_CTA_PRIMARY}>
-                Explore Toronto
-              </Link>
-              <Link href={VI_PATHS.edmonton} className={VI_HERO_CTA_PRIMARY}>
-                Explore Edmonton
-              </Link>
+              {hero.ctas.map((cta: any) => (
+                <Link
+                  key={cta.pathKey}
+                  href={VI_PATHS[cta.pathKey as ViLocationPathKey]}
+                  className={VI_HERO_CTA_PRIMARY}
+                >
+                  {cta.label}
+                </Link>
+              ))}
             </div>
           </ViHeroContentPanel>
         </ViContainer>
@@ -52,34 +60,19 @@ export function ValleyInterlockingHomeBody() {
 
       <section id="locations" className="scroll-mt-[var(--vi-nav-height)] bg-[var(--vi-surface-container-lowest)] py-[var(--vi-stack-lg)]">
         <ViContainer className="mb-12 text-center">
-          <h2 className="vi-headline-lg mb-2 text-[var(--vi-primary)]">Serving Our Local Communities</h2>
+          <h2 className="vi-headline-lg mb-2 text-[var(--vi-primary)]">{locationsSection.heading}</h2>
           <div className="mx-auto h-1 w-20 bg-[var(--vi-secondary)]" />
         </ViContainer>
         <ViContainer className="grid gap-6 md:grid-cols-2">
-          {[
-            {
-              title: "Toronto & GTA",
-              description: "Custom interlocking and landscape construction for Ontario's premier properties.",
-              image: VI_IMG.home.toronto,
-              alt: "Aerial view of Toronto residential neighborhood with interlocking driveways",
-              href: VI_PATHS.toronto,
-            },
-            {
-              title: "Edmonton & Area",
-              description: "Hardy, beautiful outdoor living spaces designed for the Alberta climate.",
-              image: VI_IMG.home.edmonton,
-              alt: "Edmonton estate with limestone retaining walls and grand patio staircase",
-              href: VI_PATHS.edmonton,
-            },
-          ].map((loc) => (
+          {locationsSection.cards.map((loc: any) => (
             <Link
               key={loc.title}
-              href={loc.href}
+              href={VI_PATHS[loc.pathKey as ViLocationPathKey]}
               aria-label={`${loc.title}: ${loc.description}`}
               className="group relative block h-72 cursor-pointer overflow-hidden rounded-xl shadow-sm transition-all hover:shadow-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--vi-primary)] sm:h-80 md:h-96"
             >
               <ViImg
-                src={loc.image}
+                src={viHomeImage(loc.imageKey as ViHomeImageKey)}
                 alt={loc.alt}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -113,7 +106,7 @@ export function ValleyInterlockingHomeBody() {
             </Link>
           </div>
           <div className="vi-home-services-masonry">
-            {VI_HOME_SERVICES.map((service) => {
+            {VI_HOME_SERVICES.map((service: { title: string; description: string; imageKey: keyof typeof VI_IMG.home; linkKey: ViServiceLinkKey; gridClass: string; imageAlt: string }) => {
               const image = VI_IMG.home[service.imageKey];
               const href = VI_SERVICE_LINKS[service.linkKey];
               return (
