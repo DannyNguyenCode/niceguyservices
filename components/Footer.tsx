@@ -33,7 +33,7 @@ export default function Footer() {
                             width={160}
                             height={160}
                             alt="Nice Guy Web Design"
-                            className="h-[50px] w-auto max-w-[160px] object-contain object-left"
+                            className="h-16 w-auto max-w-[200px] object-contain object-left"
                         />
                     </Link>
 

@@ -159,7 +159,7 @@ export default function Navigation() {
                         width={160}
                         height={160}
                         alt="Nice Guy Web Design"
-                        className={`h-14 w-auto origin-left scale-[1.06] bg-transparent object-contain object-left transition ${logoBlendClass}`}
+                        className={`h-16 max-h-16 w-auto bg-transparent object-contain object-left transition ${logoBlendClass}`}
                     />
                 </Link>
             </div>
@@ -175,7 +175,7 @@ export default function Navigation() {
                     height={160}
                     alt="Nice Guy Web Design"
                     priority
-                    className={`h-14 w-auto origin-center scale-[1.06] bg-transparent object-contain object-center transition ${logoBlendClass}`}
+                    className={`h-16 max-h-16 w-auto bg-transparent object-contain object-center transition ${logoBlendClass}`}
                 />
             </Link>
 

@@ -27,13 +27,6 @@
     "primaryCta": "View project",
     "secondaryCta": "View Case Study"
   },
-  "inProgress": {
-    "eyebrow": "In Progress",
-    "title": "Wedding RSVP Website",
-    "description": "A custom wedding website with RSVP flow, guest-friendly information, and a polished experience for the couple and their guests.",
-    "tags": ["RSVP flow", "Event details", "Mobile-first", "Guest experience"],
-    "cta": "Coming soon"
-  },
   "internalBuilds": {
     "title": "Selected Internal Builds",
     "subtitle": "Exploring new patterns and perfecting our core platforms.",

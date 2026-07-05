@@ -15,7 +15,7 @@ const cardShadow = "var(--pm-shadow-featured)";
 const cardBorder = "border border-(--pm-border-light)";
 
 export default function FeaturedWorkPage() {
-    const { meta, hero, featuredProject, inProgress, internalBuilds, process, cta } =
+    const { meta, hero, featuredProject, internalBuilds, process, cta } =
         featuredWorkContent;
 
     return (
@@ -191,79 +191,6 @@ export default function FeaturedWorkPage() {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
-
-                {/* In progress */}
-                <section className="mt-24">
-                    <div
-                        className={`relative overflow-hidden rounded-xl border border-dashed p-8 text-center md:p-12 ${cardBorder}`}
-                        style={{ backgroundColor: "var(--pm-surface-low)" }}
-                    >
-                        <div className="relative z-10 flex flex-col items-center">
-                            <span
-                                className={`mb-4 rounded-full px-4 py-1 text-xs font-bold tracking-widest uppercase ${headline}`}
-                                style={{
-                                    backgroundColor: "var(--pm-surface-highest)",
-                                    color: "var(--pm-primary)",
-                                }}
-                            >
-                                {inProgress.eyebrow}
-                            </span>
-                            <h2
-                                className={`mb-4 text-3xl font-medium ${headline}`}
-                                style={{ color: "var(--pm-on-surface)" }}
-                            >
-                                {inProgress.title}
-                            </h2>
-                            <p
-                                className="mb-8 max-w-2xl"
-                                style={{ color: "var(--pm-on-surface-variant)" }}
-                            >
-                                {inProgress.description}
-                            </p>
-                            <div className="mb-8 flex flex-wrap justify-center gap-3">
-                                {inProgress.tags.map((tag) => (
-                                    <span
-                                        key={tag}
-                                        className="rounded-lg px-4 py-1.5 text-sm font-medium"
-                                        style={{
-                                            backgroundColor: "var(--pm-surface-highest)",
-                                            color: "var(--pm-primary)",
-                                        }}
-                                    >
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
-                            <button
-                                type="button"
-                                disabled
-                                className={`cursor-not-allowed rounded-lg px-8 py-4 font-semibold ${headline}`}
-                                style={{
-                                    backgroundColor: "var(--pm-surface-container)",
-                                    color: "var(--pm-on-surface-variant)",
-                                }}
-                            >
-                                {inProgress.cta}
-                            </button>
-                        </div>
-                        <div
-                            className="absolute -right-24 -bottom-24 h-64 w-64 rounded-full blur-[100px]"
-                            style={{
-                                backgroundColor:
-                                    "color-mix(in srgb, var(--pm-secondary) 5%, transparent)",
-                            }}
-                            aria-hidden
-                        />
-                        <div
-                            className="absolute -top-24 -left-24 h-64 w-64 rounded-full blur-[100px]"
-                            style={{
-                                backgroundColor:
-                                    "color-mix(in srgb, var(--pm-primary) 5%, transparent)",
-                            }}
-                            aria-hidden
-                        />
                     </div>
                 </section>
 
