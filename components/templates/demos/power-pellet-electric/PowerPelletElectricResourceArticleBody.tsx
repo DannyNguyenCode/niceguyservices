@@ -22,7 +22,7 @@ export function PowerPelletElectricResourceArticleBody({ slug }: { slug: string 
   }
 
   return (
-    <main id="ppe-main-content" className="ppe-main px-[var(--ppe-margin-mobile)] pb-24 pt-32 md:px-[var(--ppe-margin-desktop)] md:pb-12">
+    <main id="ppe-main-content" className="ppe-main px-[var(--ppe-margin-mobile)] pb-24 pt-32 md:px-[var(--ppe-margin-desktop)] lg:pb-12">
       <PpeContainer className="max-w-3xl">
         <Link
           href={PPE_PATHS.resources}

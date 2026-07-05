@@ -42,13 +42,17 @@ export default function PowerPelletElectricLayout({ children }: Readonly<{ child
         rel="stylesheet"
       />
       <div
-        className={`ppe-root dark ${spaceGrotesk.variable} ${hankenGrotesk.variable} ${jetbrainsMono.variable} min-h-dvh antialiased selection:bg-[var(--ppe-primary-container)] selection:text-[var(--ppe-on-primary-container)]`}
+        className={`ppe-root dark ${spaceGrotesk.variable} ${hankenGrotesk.variable} ${jetbrainsMono.variable} min-h-dvh overflow-x-clip antialiased selection:bg-[var(--ppe-primary-container)] selection:text-[var(--ppe-on-primary-container)]`}
         style={{ fontFamily: "var(--font-ppe-body), ui-sans-serif, system-ui, sans-serif" }}
       >
         <PpeNav />
         <PpeScanline />
-        <div className="min-w-0">{children}</div>
-        <PpeFooter />
+        <div className="min-w-0 overflow-x-clip">
+          <div className="pb-[max(4.5rem,env(safe-area-inset-bottom,0px)+4rem)] lg:pb-0">{children}</div>
+          <div className="pb-[max(4.5rem,env(safe-area-inset-bottom,0px)+4rem)] lg:pb-0">
+            <PpeFooter />
+          </div>
+        </div>
       </div>
     </>
   );

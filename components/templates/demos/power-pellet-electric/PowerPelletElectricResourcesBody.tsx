@@ -9,7 +9,7 @@ export function PowerPelletElectricResourcesBody() {
   const { pageTitle, heroBadge, intro, articles, resourceCTA } = PPE_RESOURCES;
 
   return (
-    <main id="ppe-main-content" className="ppe-main px-[var(--ppe-margin-mobile)] pb-24 pt-32 md:px-[var(--ppe-margin-desktop)] md:pb-12">
+    <main id="ppe-main-content" className="ppe-main px-[var(--ppe-margin-mobile)] pb-24 pt-32 md:px-[var(--ppe-margin-desktop)] lg:pb-12">
       <PpeContainer className="max-w-screen-xl">
         <div className="relative mb-20 overflow-hidden border-2 border-[var(--ppe-on-tertiary-container)] bg-[var(--ppe-surface-container)] p-8 md:p-12">
           <div className="relative z-10 max-w-3xl">

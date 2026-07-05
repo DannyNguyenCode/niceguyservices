@@ -96,31 +96,35 @@ export function PpeNav({ activeKey }: { activeKey?: PpeNavKey }) {
       <a href="#ppe-main-content" className="ppe-skip-link">
         Skip to main content
       </a>
-      <header className="template-demo-sticky-nav fixed top-0 left-0 z-50 flex w-full items-center justify-between border-b-2 border-[var(--ppe-on-tertiary-container)] bg-[color-mix(in_srgb,var(--ppe-surface)_95%,transparent)] px-[var(--ppe-margin-mobile)] py-4 shadow-[0_0_15px_rgba(233,234,0,0.3)] backdrop-blur-sm md:px-[var(--ppe-margin-desktop)]">
-        <Link
-          href={PPE_PATHS.home}
-          className="ppe-headline-md ppe-interactive shrink-0 font-bold uppercase tracking-tighter text-[var(--ppe-primary-fixed)]"
-        >
-          {PPE_SITE_NAME}
-        </Link>
+      <header className="template-demo-sticky-nav fixed inset-x-0 top-0 z-50 w-full max-w-[100vw] border-b-2 border-[var(--ppe-on-tertiary-container)] bg-[color-mix(in_srgb,var(--ppe-surface)_95%,transparent)] shadow-[0_0_15px_rgba(233,234,0,0.3)] backdrop-blur-sm">
+        <div className="flex w-full items-center justify-between gap-2 px-[var(--ppe-margin-mobile)] py-3 sm:gap-3 sm:py-4 md:px-[var(--ppe-margin-desktop)]">
+          <Link
+            href={PPE_PATHS.home}
+            className="ppe-interactive min-w-0 flex-1 truncate font-bold uppercase tracking-tighter text-[var(--ppe-primary-fixed)] sm:text-base lg:flex-none lg:text-2xl"
+            style={{ fontFamily: "var(--font-ppe-headline), Space Grotesk, system-ui, sans-serif" }}
+          >
+            {PPE_SITE_NAME}
+          </Link>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Main">
-          {PPE_NAV_ITEMS.map((item) => {
-            const active = activeKey ? item.key === activeKey : isPpeNavActive(pathname, item.key);
-            return (
-              <Link key={item.key} href={item.href} className={navLinkClass(active)}>
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
+          <nav className="hidden shrink-0 items-center gap-4 lg:flex lg:gap-6 xl:gap-8" aria-label="Main">
+            {PPE_NAV_ITEMS.map((item) => {
+              const active = activeKey ? item.key === activeKey : isPpeNavActive(pathname, item.key);
+              return (
+                <Link key={item.key} href={item.href} className={navLinkClass(active)}>
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
 
-        <Link
-          href={ppePath(PPE_SITE.primaryCTA.href)}
-          className="ppe-label-caps ppe-interactive rounded-full bg-[var(--ppe-primary-container)] px-4 py-2 font-bold text-[var(--ppe-on-primary-container)] transition-transform hover:scale-105 active:scale-95 sm:px-6 ppe-neon-glow-yellow md:inline-flex"
-        >
-          {PPE_SITE.primaryCTA.label}
-        </Link>
+          <Link
+            href={ppePath(PPE_SITE.primaryCTA.href)}
+            className="ppe-label-caps ppe-interactive inline-flex shrink-0 items-center rounded-full bg-[var(--ppe-primary-container)] px-3 py-1.5 text-[10px] font-bold text-[var(--ppe-on-primary-container)] transition-transform hover:scale-105 active:scale-95 sm:px-4 sm:py-2 sm:text-xs lg:px-6 ppe-neon-glow-yellow"
+          >
+            <span className="sm:hidden">Get A Quote</span>
+            <span className="hidden sm:inline">{PPE_SITE.primaryCTA.label}</span>
+          </Link>
+        </div>
       </header>
 
       <PpeBottomNav pathname={pathname} activeKey={activeKey} />
@@ -138,7 +142,7 @@ const PPE_MOBILE_HREF: Record<string, string> = {
 function PpeBottomNav({ pathname, activeKey }: { pathname: string; activeKey?: PpeNavKey }) {
   return (
     <nav
-      className="fixed bottom-0 left-0 z-50 flex h-16 w-full items-center justify-around border-t-2 border-[var(--ppe-on-tertiary-container)] bg-[var(--ppe-surface-container)] md:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 flex min-h-16 w-full max-w-[100vw] items-stretch justify-center border-t-2 border-[var(--ppe-on-tertiary-container)] bg-[var(--ppe-surface-container)] pb-[env(safe-area-inset-bottom,0px)] lg:hidden"
       aria-label="Mobile navigation"
     >
       {PPE_MOBILE_NAV.map((item) => {
@@ -148,13 +152,12 @@ function PpeBottomNav({ pathname, activeKey }: { pathname: string; activeKey?: P
           <Link
             key={item.key}
             href={href}
-            className={`ppe-interactive flex flex-col items-center gap-0.5 ${
-              active ? "text-[var(--ppe-secondary)]" : "text-[var(--ppe-on-surface-variant)]"
-            }`}
+            className={`ppe-interactive flex min-h-14 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-1 py-2 sm:px-2 ${active ? "text-[var(--ppe-secondary)]" : "text-[var(--ppe-on-surface-variant)]"
+              }`}
             aria-current={active ? "page" : undefined}
           >
-            <PpeIcon name={item.icon} fill={active} className="text-xl" />
-            <span className="ppe-label-caps text-[10px]">{item.label}</span>
+            <PpeIcon name={item.icon} fill={active} className="text-xl sm:text-2xl" />
+            <span className="ppe-label-caps max-w-full truncate text-[9px] sm:text-[10px]">{item.label}</span>
           </Link>
         );
       })}
@@ -179,11 +182,10 @@ export function PpeFooter() {
             <Link
               key={link.label}
               href={link.href.startsWith("/") ? ppePath(link.href) : link.href}
-              className={`ppe-label-caps ppe-interactive transition-colors ${
-                link.highlight
+              className={`ppe-label-caps ppe-interactive transition-colors ${link.highlight
                   ? "text-[var(--ppe-secondary)] hover:text-[var(--ppe-primary-fixed)]"
                   : "text-[var(--ppe-on-surface-variant)] hover:text-[var(--ppe-primary-fixed)]"
-              }`}
+                }`}
             >
               {link.label}
             </Link>

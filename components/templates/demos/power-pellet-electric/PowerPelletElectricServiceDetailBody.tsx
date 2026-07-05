@@ -42,7 +42,7 @@ function ServiceDetailContent({ detail }: { detail: PpeServiceDetailPage }) {
   return (
     <>
       <PpeScanline />
-      <main id="ppe-main-content" className="ppe-main px-[var(--ppe-margin-mobile)] pb-24 pt-24 md:px-[var(--ppe-margin-desktop)] md:pb-12">
+      <main id="ppe-main-content" className="ppe-main px-[var(--ppe-margin-mobile)] pb-24 pt-24 md:px-[var(--ppe-margin-desktop)] lg:pb-12">
         <PpeContainer>
           <section className="mb-16">
             <div className="mb-8 flex flex-col items-end justify-between gap-4 md:flex-row">

@@ -10,8 +10,8 @@ export function PowerPelletElectricHomeBody() {
   const { hero, trustIndicators, servicePreview, howItWorks, gallery, finalCta } = PPE_HOME;
 
   return (
-    <main id="ppe-main-content" className="ppe-main mt-24 overflow-x-hidden ppe-arcade-grid pb-24 md:pb-12">
-      <section className="relative flex flex-col items-center overflow-hidden px-[var(--ppe-margin-mobile)] py-20 text-center md:px-[var(--ppe-margin-desktop)]">
+    <main id="ppe-main-content" className="ppe-main overflow-x-hidden ppe-arcade-grid pb-24 lg:pb-12">
+      <section className="relative flex flex-col items-center overflow-hidden px-[var(--ppe-margin-mobile)] pb-16 pt-6 text-center sm:pt-8 md:px-[var(--ppe-margin-desktop)] md:py-20">
         <div className="relative z-10 max-w-4xl">
           <span className="ppe-label-caps mb-4 block uppercase tracking-[0.2em] text-[var(--ppe-secondary-fixed)]">
             {hero.eyebrow}

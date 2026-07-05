@@ -27,7 +27,7 @@ export function PowerPelletElectricAboutBody() {
   const { pageTitle, estBadge, intro, sections, valuesSection, cta } = PPE_ABOUT;
 
   return (
-    <main id="ppe-main-content" className="ppe-main overflow-x-hidden pb-24 pt-32 md:pb-12">
+    <main id="ppe-main-content" className="ppe-main overflow-x-hidden pb-24 pt-32 lg:pb-12">
       <header className="mb-24 px-[var(--ppe-margin-mobile)] text-center md:px-[var(--ppe-margin-desktop)]">
         <div className="mb-6 inline-block rounded-lg ppe-maze-border px-4 py-1 text-[var(--ppe-secondary-fixed)] ppe-label-caps">
           {estBadge}

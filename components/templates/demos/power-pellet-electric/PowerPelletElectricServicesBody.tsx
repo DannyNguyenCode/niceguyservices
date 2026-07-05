@@ -10,7 +10,7 @@ export function PowerPelletElectricServicesBody() {
   const { pageTitle, statusBadge, intro, items, bento } = PPE_SERVICES;
 
   return (
-    <main id="ppe-main-content" className="ppe-main relative px-[var(--ppe-margin-mobile)] pb-20 pt-32 md:px-[var(--ppe-margin-desktop)] md:pb-12">
+    <main id="ppe-main-content" className="ppe-main relative px-[var(--ppe-margin-mobile)] pb-20 pt-32 md:px-[var(--ppe-margin-desktop)] lg:pb-12">
       <div className="pointer-events-none fixed inset-0 z-0 opacity-20">
         <div className="h-full w-full ppe-pellet-path-bg" />
       </div>
