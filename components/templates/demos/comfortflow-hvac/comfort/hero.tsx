@@ -249,13 +249,14 @@ function SystemStatusPanel({
           const isActive = active === s.id;
           const Icon = s.icon;
           return (
-            <li key={s.id}>
-              <Link
-                href={systemIdToServicePath(s.id)}
+                <li key={s.id}>
+              <button
+                type="button"
                 onMouseEnter={() => onHover(s.id)}
                 onMouseLeave={() => onHover(null)}
                 onFocus={() => onHover(s.id)}
                 onBlur={() => onHover(null)}
+                aria-pressed={isActive}
                 className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left transition-all"
                 style={{
                   background: isActive ? s.softBg : "transparent",
@@ -287,7 +288,7 @@ function SystemStatusPanel({
                     {isActive ? "Active" : "Idle"}
                   </span>
                 </span>
-              </Link>
+              </button>
             </li>
           );
         })}
