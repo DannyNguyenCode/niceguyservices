@@ -1,11 +1,10 @@
 "use client";
 
 import AddOnsSection from "./AddOnsSection";
-import ConsultCTA from "./ConsultCTA";
-import PricingGrowthSection from "./PricingGrowthSection";
 import PricingHero from "./PricingHero";
 import PricingPlans from "./PricingPlans";
 import PricingTrustSection from "./PricingTrustSection";
+import ServicesModernCTA from "@/components/services/ServicesModernCTA";
 import {
     pricingLayoutBodyFont as bodyFont,
     sitePageContentClass,
@@ -20,6 +19,7 @@ export default function PricingLayout() {
                 color: "var(--pm-on-surface)",
             }}
         >
+            <div className="pointer-events-none absolute inset-0 ng-grid-bg opacity-25" aria-hidden />
             <div
                 className="pointer-events-none absolute -top-24 left-1/2 z-0 h-[min(420px,50vh)] w-screen -translate-x-1/2 rounded-full blur-[120px]"
                 style={{ backgroundColor: "var(--pm-hero-orb)" }}
@@ -30,11 +30,10 @@ export default function PricingLayout() {
                 <div className={sitePageContentClass}>
                     <PricingHero />
                     <PricingPlans />
-                    <ConsultCTA />
                     <AddOnsSection />
-                    <PricingGrowthSection />
                 </div>
                 <PricingTrustSection />
+                <ServicesModernCTA secondaryHref="/services" secondaryLabel="View services" />
             </div>
         </div>
     );

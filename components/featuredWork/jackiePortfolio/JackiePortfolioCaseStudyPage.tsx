@@ -3,7 +3,7 @@
 import { ArrowLeftIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
-import FeaturedWorkCtaSection from "@/components/featuredWork/FeaturedWorkCtaSection";
+import ServicesModernCTA from "@/components/services/ServicesModernCTA";
 import caseStudyContent from "@/components/featuredWork/jackiePortfolio/jackiePortfolioCaseStudyContent.json";
 import {
     pricingLayoutBodyFont as bodyFont,
@@ -133,7 +133,7 @@ export default function JackiePortfolioCaseStudyPage() {
                         style={{ color: "var(--pm-on-surface-variant)" }}
                     >
                         <ArrowLeftIcon className="h-4 w-4 shrink-0" aria-hidden />
-                        Back to Featured Work
+                        Back to Work
                     </Link>
                 </nav>
 
@@ -367,13 +367,15 @@ export default function JackiePortfolioCaseStudyPage() {
                     </div>
                 </section>
 
-                <FeaturedWorkCtaSection
+                <ServicesModernCTA
+                    layout="contained"
+                    mouseGlow
                     title={cta.title}
                     description={cta.description}
-                    primaryCta={cta.primaryCta}
-                    secondaryCta={cta.secondaryCta}
-                    contactHref={meta.contactHref}
-                    pricingHref="/pricing"
+                    primaryHref={meta.contactHref}
+                    primaryLabel={cta.primaryCta}
+                    secondaryHref="/pricing"
+                    secondaryLabel={cta.secondaryCta}
                 />
             </div>
         </div>

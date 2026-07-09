@@ -1,15 +1,22 @@
 "use client";
 
-import { ArrowRightIcon, CodeBracketIcon, MapPinIcon } from "@heroicons/react/24/outline";
+import { ArrowRightIcon, CodeBracketIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import Link from "next/link";
-import { sitePageContentClass } from "@/components/pricing/pricingLayoutConstants";
+import PixelCtaLink from "@/components/ui/PixelCtaLink";
+import PixelKeyword from "@/components/ui/PixelKeyword";
+import {
+    pixelPageEyebrow,
+    pixelPageHeading,
+    pricingLayoutHeadline as headline,
+    sitePageContentClass,
+} from "@/components/pricing/pricingLayoutConstants";
 import type { HeroCta, HeroFocusCard, IntroImage } from "./aboutBiographyTypes";
 
 type BiographyHeroProps = {
-    locationEyebrow: string;
-    headlineLine1: string;
-    headlineAccent: string;
+    eyebrow: string;
+    headlineHighlight: string;
+    headlinePlain: string;
+    headlineBase: string;
     subtitle: string;
     primaryCta: HeroCta;
     secondaryCta: HeroCta;
@@ -18,9 +25,10 @@ type BiographyHeroProps = {
 };
 
 export default function BiographyHero({
-    locationEyebrow,
-    headlineLine1,
-    headlineAccent,
+    eyebrow,
+    headlineHighlight,
+    headlinePlain,
+    headlineBase,
     subtitle,
     primaryCta,
     secondaryCta,
@@ -29,45 +37,45 @@ export default function BiographyHero({
 }: BiographyHeroProps) {
     return (
         <section
-            className={`flex flex-col items-center gap-12 py-12 md:flex-row md:py-20 ${sitePageContentClass}`}
+            className={`relative flex flex-col items-center gap-12 py-12 md:flex-row md:py-20 ${sitePageContentClass}`}
         >
-            <div className="flex-1 space-y-6">
-                <div className="inline-flex items-center gap-2 rounded-full border border-(--pm-outline-variant)/25 bg-(--pm-surface-low) px-3 py-1">
-                    <MapPinIcon
-                        className="h-4 w-4 shrink-0 text-primary"
-                        aria-hidden
-                    />
-                    <span className="font-pm-headline text-xs font-bold tracking-widest text-(--pm-on-surface-variant) uppercase">
-                        {locationEyebrow}
-                    </span>
-                </div>
-                <h1 className="font-pm-headline text-5xl leading-none font-bold tracking-tighter text-(--pm-on-surface) sm:text-6xl md:text-6xl">
-                    {headlineLine1}{" "}
-                    <span className="text-primary italic">{headlineAccent}</span>
+            <div className="pointer-events-none absolute inset-0 ng-grid-bg opacity-30" aria-hidden />
+            <div className="relative z-10 flex flex-1 flex-col space-y-6">
+                <span
+                    className={`w-fit text-sm font-bold tracking-[0.2em] ${headline} ${pixelPageEyebrow}`}
+                >
+                    {eyebrow}
+                </span>
+                <h1 className={`${headline} text-5xl leading-[1.1] font-extrabold tracking-tight sm:text-6xl md:text-6xl ${pixelPageHeading}`}>
+                    <PixelKeyword>{headlineHighlight}</PixelKeyword>
+                    <br />
+                    {headlinePlain}{" "}
+                    <PixelKeyword variant="base">{headlineBase}</PixelKeyword>
                 </h1>
-                <p className="max-w-xl text-xl leading-relaxed text-(--pm-on-surface-variant)">
+                <p className="max-w-xl text-xl leading-relaxed text-[color:var(--ng-body)]">
                     {subtitle}
                 </p>
                 <div className="flex flex-wrap gap-4">
-                    <Link
+                    <PixelCtaLink
                         href={primaryCta.href}
-                        className="inline-flex items-center gap-2 rounded-xl bg-linear-to-br from-primary to-(--pm-primary-container) px-8 py-4 font-pm-headline font-bold text-primary-content shadow-lg transition-shadow hover:shadow-xl"
+                        color="var(--ng-btn-coral)"
+                        className="group"
                     >
                         {primaryCta.label}
                         <ArrowRightIcon
-                            className="h-5 w-5 shrink-0"
+                            className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5"
                             aria-hidden
                         />
-                    </Link>
-                    <Link
+                    </PixelCtaLink>
+                    <PixelCtaLink
                         href={secondaryCta.href}
-                        className="rounded-xl border border-(--pm-outline-variant)/25 px-8 py-4 font-pm-headline font-bold transition-colors hover:bg-(--pm-surface-low)"
+                        color="var(--ng-btn-sky)"
                     >
                         {secondaryCta.label}
-                    </Link>
+                    </PixelCtaLink>
                 </div>
             </div>
-            <div className="relative flex flex-1 justify-center md:justify-end">
+            <div className="relative z-10 flex flex-1 justify-center md:justify-end">
                 <div
                     className="border-primary/20 absolute -top-4 -left-4 hidden h-[min(100%,420px)] w-[min(100%,420px)] rounded-full border animate-pulse md:block"
                     aria-hidden
@@ -91,10 +99,10 @@ export default function BiographyHero({
                             />
                         </div>
                         <div>
-                            <div className="font-pm-headline text-xs font-black text-(--pm-on-surface-variant) uppercase">
+                            <div className={`${headline} text-xs font-black capitalize text-[color:var(--ng-body)]`}>
                                 {focusCard.eyebrow}
                             </div>
-                            <div className="font-pm-headline font-bold text-(--pm-on-surface)">
+                            <div className={`${headline} font-bold ${pixelPageHeading}`}>
                                 {focusCard.title}
                             </div>
                         </div>

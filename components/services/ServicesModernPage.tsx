@@ -29,6 +29,7 @@ export default function ServicesModernPage() {
                 color: "var(--pm-on-surface)",
             }}
         >
+            <div className="pointer-events-none absolute inset-0 ng-grid-bg opacity-25" aria-hidden />
             <div
                 className="pointer-events-none absolute -top-24 left-1/2 z-0 h-[min(420px,50vh)] w-screen -translate-x-1/2 rounded-full blur-[120px]"
                 style={{ backgroundColor: "var(--pm-hero-orb)" }}

@@ -3,7 +3,7 @@ import JackiePortfolioCaseStudy from "@/components/featuredWork/jackiePortfolio/
 import caseStudyContent from "@/components/featuredWork/jackiePortfolio/jackiePortfolioCaseStudyContent.json";
 import { absoluteUrl } from "@/lib/siteConfig";
 
-const pagePath = "/featured-work/jackie-portfolio";
+const pagePath = "/work/jackie-portfolio";
 const pageTitle = "JackiePortfolio Case Study | Nice Guy Web Design";
 const pageDescription =
     "How a responsive portfolio website was built for a creative professional—gallery-first UX, maintainable content structure, contact form handling, and SEO foundations without inflated claims.";

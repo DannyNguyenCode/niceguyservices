@@ -9,7 +9,7 @@ To break the "template" look, we move away from rigid, boxed-in grids. We embrac
 
 ## 2. Colors & Surface Philosophy
 
-The color palette utilizes a base of clinical greys (`#f5f6f7`) to provide a canvas for high-chroma accents. The "Neon" energy is preserved through `primary` (Electric Purple) and `secondary` (Cyan), used sparingly for maximum impact.
+The color palette utilizes a base of clinical light blue-greys (`#f2f6f9`) to provide a canvas for high-chroma accents. The energy is preserved through `primary` (Accent Blue) and `secondary` (Soft Teal), used sparingly for maximum impact.
 
 ### The "No-Line" Rule
 **Borders are a failure of hierarchy.** Designers are prohibited from using 1px solid strokes to define sections. Boundaries must be defined solely through:
@@ -18,15 +18,15 @@ The color palette utilizes a base of clinical greys (`#f5f6f7`) to provide a can
 
 ### Surface Hierarchy & Nesting
 Treat the UI as a physical stack. The hierarchy of importance follows the `surface-container` tiers:
-*   **Base Layer:** `surface` (#f5f6f7) — The global canvas.
-*   **Secondary Sections:** `surface-container-low` (#eff1f2) — For sidebars or background grouping.
+*   **Base Layer:** `surface` (#f2f6f9) — The global canvas.
+*   **Secondary Sections:** `surface-container-low` (#e9f0f5) — For sidebars or background grouping.
 *   **Interaction Cards:** `surface-container-lowest` (#ffffff) — Reserved for the highest-priority "active" content, creating a crisp pop.
-*   **Overlays/Modals:** `surface-container-high` (#e0e3e4) — To sit atop the stack.
+*   **Overlays/Modals:** `surface-container-high` (#dce7ef) — To sit atop the stack.
 
 ### The "Glass & Gradient" Rule
 To elevate beyond "Standard Light Mode," use **Glassmorphism** for all floating UI elements (menus, tooltips, sticky headers). 
 *   **Token:** Use `surface-container-lowest` at 60% opacity with a `20px` backdrop-blur. 
-*   **Gradients:** Apply a subtle linear gradient (Top-Left to Bottom-Right) from `primary` (#8c00d8) to `primary-container` (#cb80ff) on hero CTAs to inject "soul" into the clinical aesthetic.
+*   **Gradients:** Apply a subtle linear gradient (Top-Left to Bottom-Right) from `primary` (#0a7dba) to `primary-container` (#60c4e3) on hero CTAs to inject "soul" into the clinical aesthetic.
 
 ---
 
@@ -47,12 +47,12 @@ Forget shadows as the primary driver of depth. Use **Tonal Layering**. Place a `
 
 ### Ambient Shadows
 When an element must "float" (e.g., a modal or floating action button):
-*   **Color:** Use a tinted shadow based on `on-surface` (#2c2f30).
-*   **Values:** `0px 12px 32px rgba(44, 47, 48, 0.06)`. The low opacity (6%) is critical to avoid a "dirty" look.
+*   **Color:** Use a tinted shadow based on `on-surface` (#0b2540).
+*   **Values:** `0px 12px 32px rgba(11, 37, 64, 0.06)`. The low opacity (6%) is critical to avoid a "dirty" look.
 
 ### The "Ghost Border" Fallback
 If a boundary is required for accessibility, use a **Ghost Border**:
-*   **Token:** `outline-variant` (#abadae) at **15% opacity**.
+*   **Token:** `outline-variant` (#a9becd) at **15% opacity**.
 *   **Usage:** Only for input fields or high-density data tables.
 
 ---
@@ -85,6 +85,6 @@ If a boundary is required for accessibility, use a **Ghost Border**:
 *   **Do** overlap elements slightly (e.g., a card overlapping a headline) to create an editorial, non-linear layout.
 
 ### Don't
-*   **Don't** use black (#000000) for text. Always use `on-surface` (#2c2f30) to maintain tonal softness.
+*   **Don't** use black (#000000) for text. Always use `on-surface` (#0b2540) to maintain tonal softness.
 *   **Don't** use standard "Drop Shadows" from design software defaults. They kill the ethereal, light-filled aesthetic.
 *   **Don't** use 100% opaque borders. They create "visual noise" that contradicts the clean, futuristic goal.

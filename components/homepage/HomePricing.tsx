@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import PixelCtaLink from "@/components/ui/PixelCtaLink";
 import pricingContent from "@/components/pricing/pricingContent.json";
 import { PackageIncludesList } from "@/components/pricing/PackageIncludesList";
 import homepageContent from "./homepageContent.json";
+import { homeSectionTitleSizeClass } from "./homepageLayoutConstants";
 
 function stripMoney(raw: string) {
     return raw.replace(/^\$/, "").replace(/,/g, "");
@@ -31,8 +32,9 @@ export default function HomePricing() {
     return (
         <section className="mx-auto max-w-7xl px-4 md:px-8">
             <div className="mb-16 text-center">
-                <h2 className="font-pm-headline mb-4 text-4xl font-bold tracking-tight text-(--pm-on-surface)">
-                    {pricingTeaser.title}
+                <h2 className={`font-pixel mb-4 text-(--pm-on-surface) ${homeSectionTitleSizeClass}`}>
+                    Website{" "}
+                    <span className="pixel-word ng-pixel-word-highlight">Pricing</span>
                 </h2>
                 <p className="text-(--pm-on-surface-variant)">{pricingTeaser.subtitle}</p>
             </div>
@@ -70,12 +72,17 @@ export default function HomePricing() {
                             maxRegular={4}
                         />
                     </div>
-                    <Link
+                    <PixelCtaLink
                         href={contactHref}
-                        className="mt-auto flex min-h-12 w-full items-center justify-center rounded-xl border border-primary/20 py-4 text-center font-pm-headline font-bold text-primary transition-colors hover:bg-primary hover:text-primary-content sm:min-h-14"
+                        color="var(--ng-btn-sky)"
+                        filled
+                        xl
+                        block
+                        className="mt-auto"
+                        fill="color-mix(in srgb, var(--ng-btn-sky) 8%, transparent)"
                     >
                         {pricingTeaser.projectCtaLabel}
-                    </Link>
+                    </PixelCtaLink>
                 </div>
 
                 <div className="relative flex flex-col overflow-hidden rounded-2xl bg-neutral p-8 text-neutral-content sm:p-10">
@@ -114,21 +121,28 @@ export default function HomePricing() {
                             maxRegular={4}
                         />
                     </div>
-                    <Link
+                    <PixelCtaLink
                         href={contactHref}
-                        className="mt-auto flex min-h-12 w-full items-center justify-center rounded-xl bg-primary py-4 text-center font-pm-headline font-bold text-primary-content transition-colors hover:bg-(--pm-primary-dim) sm:min-h-14"
+                        color="var(--ng-btn-sky)"
+                        fill="var(--color-primary)"
+                        textColor="var(--color-primary-content)"
+                        filled
+                        xl
+                        block
+                        className="mt-auto"
                     >
                         {pricingTeaser.monthlyCtaLabel}
-                    </Link>
+                    </PixelCtaLink>
                 </div>
             </div>
             <div className="mt-12 text-center">
-                <Link
+                <PixelCtaLink
                     href={pricingTeaser.fullPricingHref}
-                    className="font-pm-headline text-sm tracking-widest text-(--pm-on-surface-variant) uppercase underline decoration-transparent underline-offset-4 transition-colors hover:text-primary hover:decoration-primary"
+                    color="var(--ng-btn-accent)"
+                    className="mx-auto"
                 >
                     {pricingTeaser.fullPricingLabel}
-                </Link>
+                </PixelCtaLink>
             </div>
         </section>
     );

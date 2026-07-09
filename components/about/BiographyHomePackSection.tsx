@@ -21,7 +21,7 @@ export default function BiographyHomePackSection({
             <div className={sitePageContentClass}>
                 <div className="mb-16 flex flex-col items-end justify-between gap-6 md:flex-row">
                     <div className="max-w-2xl">
-                        <h2 className="font-pm-headline mb-4 text-4xl font-bold tracking-tight">
+                        <h2 className="font-pixel mb-4 capitalize text-4xl font-bold tracking-tight">
                             {sectionTitle}
                         </h2>
                         <p className="text-lg text-(--pm-on-surface-variant)">
@@ -64,7 +64,7 @@ export default function BiographyHomePackSection({
                                     className="mb-6 aspect-square w-full rounded-2xl object-cover transition-transform duration-700 group-hover:scale-105"
                                 />
                                 <div className="px-4 pb-4">
-                                    <h3 className="font-pm-headline text-2xl font-bold">
+                                    <h3 className="font-pixel capitalize text-2xl font-bold">
                                         {pet.name ?? pet.alt}
                                     </h3>
                                     <p className="text-(--pm-on-surface-variant)">

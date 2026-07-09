@@ -7,13 +7,14 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import ThemeToggleBtn from "./ThemeToggleBtn";
 import { useTheme } from "@/components/theme/ThemeProvider";
 import { getSiteLogoForTheme } from "@/lib/siteConfig";
+import { isDarkTheme } from "@/lib/themes/siteTheme";
 
 const pages = [
     { title: "Home", link: "/" },
     { title: "Services", link: "/services" },
     { title: "Pricing", link: "/pricing" },
-    { title: "Featured Work", link: "/featured-work" },
-    { title: "Website Inspirations", link: "/website-inspirations" },
+    { title: "Work", link: "/work" },
+    { title: "Inspiration", link: "/inspiration" },
     { title: "About Us", link: "/about" },
     { title: "Resources", link: "/resources" },
     { title: "Contact", link: "/contact" },
@@ -31,7 +32,7 @@ export default function Navigation() {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [menuTopPx, setMenuTopPx] = useState(0);
     const logoSrc = getSiteLogoForTheme(theme);
-    const logoBlendClass = theme === "dark" ? "mix-blend-lighten" : "";
+    const logoBlendClass = isDarkTheme(theme) ? "mix-blend-lighten" : "";
 
     useLayoutEffect(() => {
         if (!mobileOpen || !navRef.current) return;

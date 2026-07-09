@@ -2,6 +2,7 @@
 
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import homepageContent from "./homepageContent.json";
+import { homeSectionTitleSizeClass } from "./homepageLayoutConstants";
 
 type FaqItem = {
     question: string;
@@ -22,7 +23,7 @@ export default function HomeFaq() {
                 <div className="space-y-2 text-center">
                     <h2
                         id="home-faq-heading"
-                        className="font-pm-headline text-3xl font-bold tracking-tight text-(--pm-on-surface) md:text-4xl"
+                        className={`font-pm-headline text-(--pm-on-surface) ${homeSectionTitleSizeClass}`}
                     >
                         {faq.title}
                     </h2>

@@ -1,0 +1,70 @@
+:root,
+html[data-theme="niceguys-light"] {
+    --brand-white: #ffffff;
+    --brand-navy: #0b2540;
+    --brand-navy-deep: #071729;
+    --brand-primary: #0a7dba;
+    --brand-primary-bright: #60c4e3;
+    --brand-primary-dim: #086193;
+    --brand-secondary: #2cc4b3;
+    --brand-teal: #1a9e92;
+    --brand-green: #2fa875;
+    --brand-coral: #e5533d;
+    --brand-surface: #f2f6f9;
+    --brand-surface-low: #e9f0f5;
+    --brand-surface-container: #e6eef4;
+    --brand-surface-high: #dce7ef;
+    --brand-surface-highest: #d3e0ea;
+    --brand-card: #ffffff;
+    --brand-on-surface: #0b2540;
+    --brand-on-surface-variant: #4c6072;
+    --brand-on-primary: #ffffff;
+    --brand-heading: #0b2540;
+    --brand-body: rgba(11, 37, 64, 0.72);
+    --brand-border: rgba(11, 37, 64, 0.12);
+    --brand-pixel-highlight: #055a85;
+    --brand-pixel-word: #071729;
+    --brand-pixel-highlight-glow: rgba(10, 125, 186, 0.55);
+    --brand-pixel-word-glow: rgba(11, 37, 64, 0.42);
+    --brand-btn-coral: #e5533d;
+    --brand-btn-sky: #0a7dba;
+    --brand-btn-accent: #086193;
+    --brand-btn-text: #0b2540;
+    --brand-btn-fill: #ffffff;
+    --brand-hero-glow: rgba(10, 125, 186, 0.32);
+}
+
+html[data-theme="niceguys-dark"] {
+    --brand-white: #ffffff;
+    --brand-navy: #071729;
+    --brand-navy-deep: #071729;
+    --brand-primary: #60c4e3;
+    --brand-primary-bright: #60c4e3;
+    --brand-primary-dim: #0a7dba;
+    --brand-secondary: #20b2a8;
+    --brand-teal: #20b2a8;
+    --brand-green: #59d39a;
+    --brand-coral: #ff8a7a;
+    --brand-surface: #071729;
+    --brand-surface-low: #0b1f33;
+    --brand-surface-container: #0f1d2e;
+    --brand-surface-high: #14273a;
+    --brand-surface-highest: #1b3145;
+    --brand-card: #0f1d2e;
+    --brand-on-surface: #eaf3f9;
+    --brand-on-surface-variant: #9fb4c6;
+    --brand-on-primary: #071729;
+    --brand-heading: #eaf3f9;
+    --brand-body: rgba(234, 243, 249, 0.72);
+    --brand-border: rgba(255, 255, 255, 0.1);
+    --brand-pixel-highlight: #60c4e3;
+    --brand-pixel-word: #eaf3f9;
+    --brand-pixel-highlight-glow: rgba(96, 196, 227, 0.72);
+    --brand-pixel-word-glow: rgba(234, 243, 249, 0.38);
+    --brand-btn-coral: #ff8a7a;
+    --brand-btn-sky: #60c4e3;
+    --brand-btn-accent: #60c4e3;
+    --brand-btn-text: #071729;
+    --brand-btn-fill: #ffffff;
+    --brand-hero-glow: rgba(96, 196, 227, 0.35);
+}

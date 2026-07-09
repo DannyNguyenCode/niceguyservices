@@ -7,6 +7,10 @@ import {
   templateMatchesFilter,
   type GalleryFilterId,
 } from "@/lib/templates/galleryConfig";
+import {
+  pricingLayoutHeadline as headline,
+  sitePageContentClass,
+} from "@/components/pricing/pricingLayoutConstants";
 import { EXPERIENCE_TEMPLATES } from "@/lib/templates/registry";
 
 type InspirationCategoryFiltersProps = {
@@ -27,7 +31,7 @@ export function InspirationCategoryFilters({
 
   return (
     <section
-      className="mx-auto max-w-[var(--spacing-container-max)] px-[var(--spacing-gutter)] pb-8"
+      className={`border-b border-[color:var(--ng-border)] bg-(--pm-surface) pb-8 ${sitePageContentClass}`}
       aria-label="Filter inspirations by category"
     >
       <div className="scrollbar-hide flex snap-x gap-3 overflow-x-auto pb-1">
@@ -39,9 +43,12 @@ export function InspirationCategoryFilters({
               type="button"
               aria-pressed={isActive}
               onClick={() => onFilterChange(chip.id)}
-              className={`shrink-0 snap-start rounded-full border border-white/5 px-6 py-2.5 font-[family-name:var(--font-gallery)] text-[length:var(--text-body-md)] leading-[var(--text-body-md--line-height)] text-on-surface transition-all hover:border-primary-fixed/50 md:px-8 md:py-3 ${
-                isActive ? "filter-chip--active border-primary-fixed/50" : "bg-[#1A1A1A]"
-              }`}
+              className={[
+                `shrink-0 snap-start rounded-full border px-5 py-2.5 text-sm font-bold transition-all md:px-7 md:py-3 ${headline}`,
+                isActive
+                  ? "border-[color:var(--ng-btn-coral)] bg-[color:var(--ng-btn-coral)]/12 text-[color:var(--ng-heading)]"
+                  : "border-[color:var(--ng-border)] bg-white/60 text-[color:var(--ng-body)] backdrop-blur hover:border-[color:var(--ng-accent)]/40 dark:bg-white/5",
+              ].join(" ")}
             >
               {chip.label}
             </button>
@@ -50,7 +57,7 @@ export function InspirationCategoryFilters({
       </div>
       {activeFilter !== "all" &&
       !EXPERIENCE_TEMPLATES.some((t) => templateMatchesFilter(t.slug, activeFilter)) ? (
-        <p className="mt-6 font-[family-name:var(--font-gallery)] text-on-surface-variant">
+        <p className="mt-6 text-sm text-[color:var(--ng-body)]">
           {galleryFilterEmptyMessage(activeFilter)}
         </p>
       ) : null}

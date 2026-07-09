@@ -2,9 +2,11 @@
 
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import Link from "next/link";
+import PixelCtaLink from "@/components/ui/PixelCtaLink";
+import PixelKeyword from "@/components/ui/PixelKeyword";
 import aboutContent from "@/components/about/aboutContent.json";
 import homepageContent from "./homepageContent.json";
+import { homeSectionTitleSizeClass } from "./homepageLayoutConstants";
 
 export default function HomeAbout() {
     const { aboutTeaser } = homepageContent;
@@ -41,8 +43,11 @@ export default function HomeAbout() {
                     </div>
                 </div>
                 <div>
-                    <h2 className="font-pm-headline mb-8 text-4xl font-bold tracking-tight text-(--pm-on-surface) md:text-5xl">
-                        {aboutTeaser.title}
+                    <h2 className={`font-pixel mb-8 text-(--pm-on-surface) ${homeSectionTitleSizeClass}`}>
+                        The{" "}
+                        <PixelKeyword>Mind</PixelKeyword>{" "}
+                        Behind The{" "}
+                        <PixelKeyword>Code</PixelKeyword>
                     </h2>
                     <p className="mb-6 text-xl leading-relaxed text-(--pm-on-surface)">
                         {intro.leadParagraph}
@@ -50,16 +55,21 @@ export default function HomeAbout() {
                     <p className="mb-10 leading-relaxed text-(--pm-on-surface-variant)">
                         {summary.paragraphs[0]}
                     </p>
-                    <Link
+                    <PixelCtaLink
                         href={aboutTeaser.meetCtaHref}
-                        className="inline-flex items-center gap-3 rounded-full bg-(--pm-on-surface) px-8 py-4 font-pm-headline font-bold text-(--pm-surface) transition-colors hover:bg-primary hover:text-primary-content"
+                        color="var(--ng-btn-sky)"
+                        fill="var(--pm-on-surface)"
+                        textColor="var(--pm-surface)"
+                        filled
+                        pill
+                        className="group"
                     >
                         {aboutTeaser.meetCtaLabel}
                         <ArrowTopRightOnSquareIcon
-                            className="h-5 w-5 shrink-0"
+                            className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                             aria-hidden
                         />
-                    </Link>
+                    </PixelCtaLink>
                 </div>
             </div>
         </section>

@@ -6,9 +6,12 @@ import {
     CommandLineIcon,
     SparklesIcon,
 } from "@heroicons/react/24/outline";
-import Link from "next/link";
 import { serviceCards } from "@/components/services/data";
+import PixelCtaLink from "@/components/ui/PixelCtaLink";
 import homepageContent from "./homepageContent.json";
+import { homeSectionTitleSizeClass } from "./homepageLayoutConstants";
+
+const sectionTitle = `font-pm-headline ${homeSectionTitleSizeClass} text-(--pm-on-surface)`;
 
 const serviceIcons = [CommandLineIcon, SparklesIcon, BoltIcon] as const;
 
@@ -20,20 +23,21 @@ export default function HomeServices() {
         <section className="mx-auto max-w-7xl px-4 md:px-8">
             <div className="mb-16 flex flex-col justify-between gap-6 md:flex-row md:items-end">
                 <div>
-                    <h2 className="font-pm-headline mb-4 text-4xl font-bold tracking-tight text-(--pm-on-surface)">
+                    <h2 className={`${sectionTitle} mb-4`}>
                         {servicesTeaser.title}
                     </h2>
                     <p className="max-w-md text-(--pm-on-surface-variant)">
                         {servicesTeaser.subtitle}
                     </p>
                 </div>
-                <Link
+                <PixelCtaLink
                     href={servicesTeaser.viewAllHref}
-                    className="group hidden items-center gap-2 font-pm-headline text-sm font-bold tracking-widest text-primary uppercase transition-colors hover:text-(--pm-primary-dim) md:flex"
+                    color="var(--ng-btn-sky)"
+                    className="group hidden md:inline-flex"
                 >
                     {servicesTeaser.viewAllLabel}
-                    <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
+                    <ArrowRightIcon className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                </PixelCtaLink>
             </div>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
                 {teasers.map((svc, i) => {
@@ -77,12 +81,16 @@ export default function HomeServices() {
                 })}
             </div>
             <div className="mt-12 md:hidden">
-                <Link
+                <PixelCtaLink
                     href={servicesTeaser.viewAllHref}
-                    className="block w-full rounded-lg bg-(--pm-surface-highest) py-4 text-center font-pm-headline text-sm font-bold tracking-widest text-primary uppercase"
+                    color="var(--ng-btn-sky)"
+                    filled
+                    block
+                    className="md:hidden"
+                    fill="color-mix(in srgb, var(--ng-btn-sky) 10%, var(--pm-surface-highest))"
                 >
                     {servicesTeaser.viewAllLabel}
-                </Link>
+                </PixelCtaLink>
             </div>
         </section>
     );

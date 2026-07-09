@@ -17,22 +17,22 @@ export default function Homepage() {
             >
                 <h2
                     id="areas-we-serve-heading"
-                    className="font-pm-headline mb-3 text-sm font-bold tracking-[0.2em] text-(--pm-on-surface-variant) uppercase"
+                    className="font-pixel mb-3 text-sm font-bold capitalize tracking-[0.2em] text-(--pm-on-surface-variant)"
                 >
-                    Areas we serve
+                    Areas We <span className="pixel-word ng-pixel-word-highlight">Serve</span>
                 </h2>
                 <p className="text-base leading-relaxed text-(--pm-on-surface-variant) md:text-lg">
                     Nice Guy Web Design works with contractors, creators, and small businesses
                     across Toronto and the GTA, with select remote projects throughout Canada.
                 </p>
             </section>
-            <div className="relative space-y-24 overflow-hidden pb-24 pt-24 md:space-y-32 md:pb-32 md:pt-28">
+            <div className="relative space-y-24 overflow-hidden pt-24 md:space-y-32 md:pt-28">
                 <HomeServices />
                 <HomeAbout />
                 <HomePricing />
                 <HomeFaq />
-                <HomeContact />
             </div>
+            <HomeContact />
         </div>
     );
 }

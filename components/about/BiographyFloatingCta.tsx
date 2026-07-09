@@ -21,7 +21,7 @@ export default function BiographyFloatingCta({
                 <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-content">
                     <PaperAirplaneIcon className="h-5 w-5" aria-hidden />
                 </span>
-                <span className="font-pm-headline text-xs font-bold tracking-widest">
+                <span className="font-pixel text-xs font-bold tracking-widest">
                     {label}
                 </span>
             </Link>

@@ -122,9 +122,10 @@
     "previewImageAlt": "Stylized map of Toronto"
   },
   "biographyLayout": {
-    "heroEyebrow": "ABOUT NICE GUY WEB DESIGN",
-    "heroHeadlineLine1": "Websites that",
-    "heroHeadlineAccent": "stay maintainable.",
+    "heroEyebrow": "About Nice Guy Web Design",
+    "heroHeadlineHighlight": "Websites",
+    "heroHeadlinePlain": "That Stay",
+    "heroHeadlineBase": "Maintainable.",
     "spotlightImage": {
       "src": "/images/Futuristic-tech-abstract.png",
       "alt": "Abstract futuristic technology visualization"

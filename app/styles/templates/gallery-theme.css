@@ -123,6 +123,15 @@
   background: radial-gradient(circle, rgba(0, 162, 253, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
 }
 
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .gallery-root .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -130,11 +139,6 @@
 .gallery-root .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-.gallery-root .filter-chip--active {
-  background-color: #00e383;
-  color: #00391d;
 }
 
 .gallery-root .gallery-card-enter {

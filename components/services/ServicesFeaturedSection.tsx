@@ -6,7 +6,10 @@ import {
     DevicePhoneMobileIcon,
     ShieldCheckIcon,
 } from "@heroicons/react/24/solid";
+import PixelKeyword from "@/components/ui/PixelKeyword";
 import {
+    pixelPageEyebrow,
+    pixelPageHeading,
     pricingLayoutHeadline as headline,
     sitePageContentClass,
 } from "@/components/pricing/pricingLayoutConstants";
@@ -22,10 +25,10 @@ export default function ServicesFeaturedSection() {
                     <div className="space-y-8">
                         <div>
                             <h2
-                                className={`mb-6 text-4xl font-bold ${headline}`}
-                                style={{ color: "var(--pm-on-surface)" }}
+                                className={`mb-6 text-4xl font-extrabold ${headline} ${pixelPageHeading}`}
                             >
-                                Featured: custom website builds
+                                Featured: custom website{" "}
+                                <PixelKeyword>builds</PixelKeyword>
                             </h2>
                             <p
                                 className="mb-8 text-lg leading-relaxed"

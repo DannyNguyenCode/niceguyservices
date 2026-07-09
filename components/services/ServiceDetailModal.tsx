@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, type CSSProperties } from "react";
-import Link from "next/link";
-import { ArrowRightIcon, CheckCircleIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import PixelCtaLink from "@/components/ui/PixelCtaLink";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 import { serviceCards, type Service } from "@/components/services/data";
 
@@ -198,14 +199,19 @@ export default function ServiceDetailModal({ service, onClose }: ServiceDetailMo
                                 </div>
 
                                 <div className="pt-2">
-                                    <Link
+                                    <PixelCtaLink
                                         href="/contact"
-                                        className={`inline-flex items-center gap-3 bg-(--pm-on-surface) px-8 py-4 text-xs font-bold tracking-widest text-(--pm-bento-tile-light) uppercase transition-colors hover:bg-(--pm-primary) hover:text-(--pm-on-primary) active:scale-[0.98] ${headline}`}
+                                        color="var(--ng-btn-coral)"
+                                        fill="var(--ng-btn-fill)"
+                                        textColor="var(--ng-btn-text)"
+                                        filled
+                                        xl
+                                        className="group"
                                         onClick={() => dialogRef.current?.close()}
                                     >
                                         Initialize briefing
-                                        <ArrowRightIcon className="h-4 w-4 shrink-0" aria-hidden />
-                                    </Link>
+                                        <ArrowRightIcon className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5" aria-hidden />
+                                    </PixelCtaLink>
                                 </div>
                             </div>
 

@@ -4,13 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "@/components/theme/ThemeProvider";
 import { BUSINESS, getSiteLogoForTheme } from "@/lib/siteConfig";
+import { isDarkTheme } from "@/lib/themes/siteTheme";
 
 const pages = [
     { title: "Home", link: "/" },
     { title: "Services", link: "/services" },
     { title: "Pricing", link: "/pricing" },
-    { title: "Featured Work", link: "/featured-work" },
-    { title: "Website Inspirations", link: "/website-inspirations" },
+    { title: "Work", link: "/work" },
+    { title: "Inspiration", link: "/inspiration" },
     { title: "About Us", link: "/about" },
     { title: "Resources", link: "/resources" },
     { title: "Contact", link: "/contact" },
@@ -22,10 +23,9 @@ export default function Footer() {
 
     return (
         <footer
-            className={`border-t border-base-300/60 bg-base-200/90 text-base-content backdrop-blur-md transition-[background-color,border-color,color] duration-200 ${theme === "dark" ? "mt-0" : "mt-12"}`}
+            className={`border-t border-base-300/60 bg-base-200/90 text-base-content backdrop-blur-md transition-[background-color,border-color,color] duration-200 ${isDarkTheme(theme) ? "mt-0" : "mt-12"}`}
         >
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-10 sm:px-8 md:flex-row md:items-center md:justify-between md:py-12 lg:px-10">
-                {/* LEFT SIDE — Logo + About Text */}
                 <aside className="flex flex-col gap-2 items-start">
                     <Link href="/" className="flex items-center" aria-label="Go to homepage">
                         <Image
@@ -67,7 +67,6 @@ export default function Footer() {
                     </p>
                 </aside>
 
-                {/* RIGHT SIDE — Footer Navigation + Socials */}
                 <nav className="flex flex-col gap-8 md:place-self-center md:justify-self-end" aria-label="Footer navigation">
                     <ul className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm md:justify-end">
                         {pages.map((page) => (
