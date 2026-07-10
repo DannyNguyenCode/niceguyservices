@@ -35,6 +35,10 @@
         },
         {
           "icon": "check",
+          "text": "Up to five core pages"
+        },
+        {
+          "icon": "check",
           "text": "Mobile responsive design"
         },
         {

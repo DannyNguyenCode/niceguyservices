@@ -8,6 +8,8 @@ import {
     pixelPageEyebrow,
     pixelPageHeading,
     pricingLayoutHeadline as headline,
+    pricingLayoutHeroHeadline as heroHeadline,
+    pricingLayoutPixelLabel as pixelLabel,
     sitePageContentClass,
 } from "@/components/pricing/pricingLayoutConstants";
 import type { HeroCta, HeroFocusCard, IntroImage } from "./aboutBiographyTypes";
@@ -42,11 +44,11 @@ export default function BiographyHero({
             <div className="pointer-events-none absolute inset-0 ng-grid-bg opacity-30" aria-hidden />
             <div className="relative z-10 flex flex-1 flex-col space-y-6">
                 <span
-                    className={`w-fit text-sm font-bold tracking-[0.2em] ${headline} ${pixelPageEyebrow}`}
+                    className={`w-fit text-sm font-bold tracking-[0.2em] ${pixelLabel} ${pixelPageEyebrow}`}
                 >
                     {eyebrow}
                 </span>
-                <h1 className={`${headline} text-5xl leading-[1.1] font-extrabold tracking-tight sm:text-6xl md:text-6xl ${pixelPageHeading}`}>
+                <h1 className={`${heroHeadline} text-5xl leading-[1.1] font-extrabold tracking-tight sm:text-6xl md:text-6xl ${pixelPageHeading}`}>
                     <PixelKeyword>{headlineHighlight}</PixelKeyword>
                     <br />
                     {headlinePlain}{" "}
@@ -99,7 +101,7 @@ export default function BiographyHero({
                             />
                         </div>
                         <div>
-                            <div className={`${headline} text-xs font-black capitalize text-[color:var(--ng-body)]`}>
+                            <div className={`${pixelLabel} text-xs font-black capitalize text-[color:var(--ng-body)]`}>
                                 {focusCard.eyebrow}
                             </div>
                             <div className={`${headline} font-bold ${pixelPageHeading}`}>

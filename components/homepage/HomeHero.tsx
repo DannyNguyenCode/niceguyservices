@@ -27,12 +27,47 @@ type Particle = {
   phase: Phase;
   color: string;
   size: number;
+  opacity: number;
+  scale: number;
   arrived: boolean;
   bornAt: number;
   startDelay: number;
   arrivedAt: number;
   drift: number;
 };
+
+function drawPixelParticle(
+  ctx: CanvasRenderingContext2D,
+  p: Particle,
+  alpha: number,
+  isDark: boolean,
+  fill: string,
+  outline: string,
+) {
+  const a = alpha * p.opacity;
+  if (a <= 0) return;
+
+  const s = p.size * p.scale;
+  const x = p.x - s / 2;
+  const y = p.y - s / 2;
+
+  ctx.globalAlpha = a;
+  ctx.shadowBlur = 0;
+
+  if (isDark) {
+    ctx.shadowColor = p.color;
+    ctx.shadowBlur = 4;
+    ctx.fillStyle = p.color;
+    ctx.fillRect(x, y, s, s);
+    return;
+  }
+
+  ctx.fillStyle = fill;
+  ctx.fillRect(x, y, s, s);
+  ctx.strokeStyle = outline;
+  ctx.lineWidth = Math.max(0.5, s * 0.2);
+  ctx.strokeRect(x, y, s, s);
+}
 
 function pointsFromRect(
   rect: { x: number; y: number; w: number; h: number },
@@ -436,6 +471,9 @@ export default function HomeHero() {
 
       const isDark = isDarkTheme(theme);
       const pageBg = isDark ? PALETTE.navy : "#f2f6f9";
+      const particleCap = isDark ? 1200 : 550;
+      const pixelFill = PALETTE.primary;
+      const pixelOutline = PALETTE.navy;
 
       const targets: Record<Phase, TargetPoint[]> = {
         browser: [],
@@ -448,7 +486,7 @@ export default function HomeHero() {
         targets.browser = pointsFromBrowserImage(
           browserRef.current,
           wrapRect,
-          5,
+          isDark ? 5 : 7,
           isDark,
           pageBg,
         );
@@ -489,7 +527,7 @@ export default function HomeHero() {
 
       (PHASE_ORDER as Phase[]).forEach((phase) => {
         const timing = phaseTiming[phase];
-        const capped = capPoints(targets[phase]);
+        const capped = capPoints(targets[phase], particleCap);
         capped.forEach((p, i) => {
           const staggered = timing.start + (i / Math.max(1, capped.length)) * timing.duration;
           particles.push({
@@ -501,7 +539,9 @@ export default function HomeHero() {
             ty: p.y,
             phase,
             color: p.color,
-            size: rand(2, 3.4),
+            size: isDark ? rand(2, 3.4) : rand(1.6, 2.6),
+            opacity: isDark ? 1 : rand(0.48, 0.92),
+            scale: isDark ? 1 : rand(0.82, 1.12),
             arrived: false,
             bornAt: now,
             startDelay: staggered,
@@ -514,7 +554,8 @@ export default function HomeHero() {
       const browserBounds = browserRef.current ? getLocal(browserRef.current) : null;
 
       const ambient: Particle[] = [];
-      for (let i = 0; i < 40; i++) {
+      const ambientCount = isDark ? 40 : 14;
+      for (let i = 0; i < ambientCount; i++) {
         const maxX = browserBounds ? Math.max(80, browserBounds.x - 24) : wrapRect.width * 0.55;
         ambient.push({
           x: rand(0, maxX),
@@ -525,7 +566,9 @@ export default function HomeHero() {
           ty: 0,
           phase: "browser",
           color: i % 3 === 0 ? PALETTE.primary : PALETTE.accent,
-          size: rand(1.2, 2),
+          size: isDark ? rand(1.2, 2) : rand(1, 1.6),
+          opacity: isDark ? 0.35 : rand(0.22, 0.42),
+          scale: isDark ? 1 : rand(0.85, 1.05),
           arrived: true,
           bornAt: now,
           startDelay: 0,
@@ -553,10 +596,10 @@ export default function HomeHero() {
         const glowAlpha = allRevealedAt > 0
           ? Math.max(0, 1 - (elapsed - allRevealedAt) / 600)
           : Math.max(0, 1 - Math.max(0, elapsed - 3500) / 1200);
-        if (glowAlpha > 0.01) {
+        if (isDark && glowAlpha > 0.01) {
           ctx.globalAlpha = glowAlpha;
           const glow = ctx.createRadialGradient(source.x, source.y, 0, source.x, source.y, 90);
-          glow.addColorStop(0, "rgba(96,196,227,0.35)");
+          glow.addColorStop(0, "rgba(96,196,227,0.28)");
           glow.addColorStop(1, "rgba(96,196,227,0)");
           ctx.fillStyle = glow;
           ctx.fillRect(source.x - 90, source.y - 90, 180, 180);
@@ -603,12 +646,7 @@ export default function HomeHero() {
             : 1;
           if (revealAlpha <= 0) continue;
 
-          ctx.globalAlpha = revealAlpha;
-          ctx.shadowColor = p.color;
-          ctx.shadowBlur = 6;
-          ctx.fillStyle = p.color;
-          const s = p.size;
-          ctx.fillRect(p.x - s / 2, p.y - s / 2, s, s);
+          drawPixelParticle(ctx, p, revealAlpha, isDark, pixelFill, pixelOutline);
         }
         ctx.globalAlpha = 1;
         ctx.shadowBlur = 0;
@@ -631,9 +669,7 @@ export default function HomeHero() {
           p.vy += Math.sin(p.drift) * 0.002;
           if (p.x < 0 || p.x > wrapRect.width) p.vx *= -1;
           if (p.y < 0 || p.y > wrapRect.height) p.vy *= -1;
-          ctx.globalAlpha = 0.35;
-          ctx.fillStyle = p.color;
-          ctx.fillRect(p.x, p.y, p.size, p.size);
+          drawPixelParticle(ctx, p, 1, isDark, pixelFill, pixelOutline);
         }
         ctx.globalAlpha = 1;
 
@@ -688,19 +724,23 @@ export default function HomeHero() {
   return (
     <div ref={wrapRef} className="relative isolate overflow-hidden">
       <div className="pointer-events-none absolute inset-0 ng-grid-bg opacity-60" />
-      <div className="pointer-events-none absolute -top-40 left-1/2 h-[600px] w-[900px] -translate-x-1/2 rounded-full opacity-40 blur-3xl"
+      <div className="pointer-events-none absolute -top-40 left-1/2 hidden h-[600px] w-[900px] -translate-x-1/2 rounded-full opacity-40 blur-3xl dark:block"
            style={{ background: "radial-gradient(closest-side, var(--ng-hero-glow), transparent)" }} />
 
-      <section className="relative z-10 mx-auto grid max-w-[1400px] grid-cols-1 items-start gap-14 px-6 pb-24 pt-8 lg:grid-cols-12 lg:gap-6 lg:px-10 lg:pt-14">
+      <section
+        className="relative z-10 mx-auto grid max-w-[1400px] grid-cols-1 items-start gap-14 px-6 pb-24 pt-8 lg:grid-cols-12 lg:gap-6 lg:px-10 lg:pt-14"
+        aria-labelledby="home-hero-heading"
+      >
         <div className="lg:col-span-5">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[color:var(--ng-border)] bg-white/60 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--ng-accent)] backdrop-blur dark:bg-white/5">
-            <Sparkles className="h-3 w-3" />
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[color:var(--ng-border)] bg-white/60 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--ng-heading)] backdrop-blur dark:bg-white/5">
+            <Sparkles className="h-3 w-3" aria-hidden />
             Websites, pixel by pixel
           </div>
 
           <h1
+            id="home-hero-heading"
             ref={headlineRef}
-            className={`font-pixel text-[44px] font-extrabold capitalize leading-[0.98] tracking-tight text-[color:var(--ng-heading)] transition-all duration-700 ease-out sm:text-[54px] lg:text-[64px] ${revealed.headline ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"}`}
+            className="font-pixel text-[44px] font-extrabold capitalize leading-[0.98] tracking-tight text-[color:var(--ng-heading)] sm:text-[54px] lg:text-[64px]"
           >
             We Build{" "}
             <span className="pixel-word ng-pixel-word-highlight">Websites</span>
@@ -711,7 +751,7 @@ export default function HomeHero() {
 
           <p
             ref={paragraphRef}
-            className={`mt-6 max-w-lg text-[16px] leading-relaxed text-[color:var(--ng-body)] transition-all duration-700 ease-out ${revealed.paragraph ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"}`}
+            className="mt-6 max-w-lg text-[16px] leading-relaxed text-[color:var(--ng-body)]"
           >
             A tiny Toronto studio obsessed with craft. We build fast, thoughtful
             websites that convert visitors into customers — one deliberate
@@ -720,7 +760,7 @@ export default function HomeHero() {
 
           <div
             ref={ctaRef}
-            className={`mt-10 flex flex-wrap items-center gap-4 transition-all duration-700 ease-out sm:gap-5 ${revealed.ctas ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"}`}
+            className="mt-10 flex flex-wrap items-center gap-4 sm:gap-5"
           >
             <PixelCtaLink
               href="/contact"
@@ -748,13 +788,17 @@ export default function HomeHero() {
         </div>
 
         <div className="relative z-10 lg:col-span-7">
+          <p className="sr-only">
+            Decorative pixel-art browser window illustrating how a website is assembled step by step.
+          </p>
           <div
             ref={browserRef}
-            className={`relative mx-auto aspect-[5/4] w-full overflow-hidden rounded-2xl transition-all duration-700 ease-out lg:mx-0 lg:ml-auto lg:w-[min(100%,580px)] xl:w-[min(100%,640px)] ${revealed.browser ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"}`}
+            aria-hidden
+            className={`relative mx-auto aspect-[5/4] w-full overflow-hidden rounded-2xl home-hero-browser motion-safe:transition-all motion-safe:duration-700 motion-safe:ease-out lg:mx-0 lg:ml-auto lg:w-[min(100%,580px)] xl:w-[min(100%,640px)] ${revealed.browser ? "motion-safe:translate-y-0 motion-safe:opacity-100" : "motion-safe:translate-y-2 motion-safe:opacity-0"}`}
           >
             <Image
               src="/pixel-browser.png"
-              alt="Pixel-art browser window illustration"
+              alt=""
               fill
               sizes="(max-width: 1024px) 100vw, 58vw"
               className="pixel-browser-mockup"

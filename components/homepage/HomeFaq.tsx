@@ -35,14 +35,14 @@ export default function HomeFaq() {
                     {items.map((item) => (
                         <details
                             key={item.question}
-                            className="group rounded-2xl border border-(--pm-outline-variant)/40 bg-(--pm-white) transition-colors duration-300 open:border-primary/30 dark:bg-base-100/60"
+                            className="group rounded-2xl border border-(--pm-outline-variant)/40 bg-(--pm-white) transition-colors duration-300 open:border-(--pm-outline-variant) dark:bg-base-100/60"
                         >
                             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 [&::-webkit-details-marker]:hidden">
                                 <span className="pr-2 text-base font-semibold leading-snug text-(--pm-on-surface) md:text-lg">
                                     {item.question}
                                 </span>
                                 <ChevronDownIcon
-                                    className="h-6 w-6 shrink-0 text-primary transition-transform duration-300 group-open:rotate-180"
+                                    className="h-6 w-6 shrink-0 text-(--pm-on-surface-variant) transition-transform duration-300 group-open:rotate-180"
                                     aria-hidden
                                 />
                             </summary>

@@ -43,7 +43,7 @@ export default function HomeAbout() {
                     </div>
                 </div>
                 <div>
-                    <h2 className={`font-pixel mb-8 text-(--pm-on-surface) ${homeSectionTitleSizeClass}`}>
+                    <h2 className={`mb-8 text-(--pm-on-surface) ${homeSectionTitleSizeClass}`}>
                         The{" "}
                         <PixelKeyword>Mind</PixelKeyword>{" "}
                         Behind The{" "}

@@ -1,5 +1,6 @@
 "use client";
 
+import { pricingLayoutPixelLabel as pixelLabel } from "@/components/pricing/pricingLayoutConstants";
 import HomeAbout from "./HomeAbout";
 import HomeContact from "./HomeContact";
 import HomeFaq from "./HomeFaq";
@@ -17,7 +18,7 @@ export default function Homepage() {
             >
                 <h2
                     id="areas-we-serve-heading"
-                    className="font-pixel mb-3 text-sm font-bold capitalize tracking-[0.2em] text-(--pm-on-surface-variant)"
+                    className={`${pixelLabel} mb-3 text-sm font-bold capitalize tracking-[0.2em] text-(--pm-on-surface-variant)`}
                 >
                     Areas We <span className="pixel-word ng-pixel-word-highlight">Serve</span>
                 </h2>

@@ -31,7 +31,7 @@ export default function HomeContact() {
                 aria-hidden
             />
             <div className={`relative z-10 text-center ${sitePageContentClass}`}>
-                <h2 className={`font-pixel mb-8 text-primary-content ${homeSectionTitleSizeClass}`}>
+                <h2 className={`mb-8 text-primary-content ${homeSectionTitleSizeClass}`}>
                     Need A Website That Works Harder For Your Business?
                 </h2>
                 <p className="mx-auto mb-12 max-w-xl text-lg leading-relaxed font-medium text-primary-content/90">

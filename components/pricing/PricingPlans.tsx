@@ -6,7 +6,9 @@ import PixelKeyword from "@/components/ui/PixelKeyword";
 import pricingContent from "./pricingContent.json";
 import {
     pixelPageHeading,
+    pricingLayoutDisplayNumber,
     pricingLayoutHeadline as headline,
+    pricingLayoutPixelLabel as pixelLabel,
 } from "./pricingLayoutConstants";
 import { PackageIncludesList } from "./PackageIncludesList";
 
@@ -74,7 +76,7 @@ function PackageCard({ pkg }: { pkg: Package }) {
         >
             {pkg.popularBadge ? (
                 <div
-                    className={`absolute top-0 right-0 rounded-bl-xl px-4 py-1.5 text-[10px] font-black tracking-widest uppercase sm:px-5 ${headline}`}
+                    className={`absolute top-0 right-0 rounded-bl-xl px-4 py-1.5 text-[10px] font-black tracking-widest uppercase sm:px-5 ${pixelLabel}`}
                     style={{
                         backgroundColor: "var(--pm-primary)",
                         color: "var(--pm-on-primary)",
@@ -102,11 +104,8 @@ function PackageCard({ pkg }: { pkg: Package }) {
             <div className="mb-6 sm:mb-8">
                 <div className="flex flex-wrap items-baseline gap-1">
                     <span
-                        className={`text-3xl font-black tracking-tight sm:text-4xl md:text-5xl ${headline}`}
-                        style={{
-                            color:
-                                featured && !showMonthlyRow ? "var(--pm-primary)" : "var(--pm-on-surface)",
-                        }}
+                        className={`text-3xl font-black tracking-tight sm:text-4xl md:text-5xl ${pricingLayoutDisplayNumber}`}
+                        style={{ color: "var(--pm-on-surface)" }}
                     >
                         {pkg.upfront}
                     </span>
@@ -116,8 +115,7 @@ function PackageCard({ pkg }: { pkg: Package }) {
                 </div>
                 {showMonthlyRow ? (
                     <p
-                        className={`mt-1 font-black ${headline} ${featured ? "text-xl sm:text-2xl md:text-3xl" : "text-lg sm:text-xl md:text-2xl"}`}
-                        style={{ color: "var(--pm-primary)" }}
+                        className={`mt-1 font-black text-(--pm-on-surface) ${pricingLayoutDisplayNumber} ${featured ? "text-xl sm:text-2xl md:text-3xl" : "text-lg sm:text-xl md:text-2xl"}`}
                     >
                         {featured ? (
                             <>

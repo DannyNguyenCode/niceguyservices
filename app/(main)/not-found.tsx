@@ -3,7 +3,7 @@ import PixelCtaLink from "@/components/ui/PixelCtaLink";
 import PixelKeyword from "@/components/ui/PixelKeyword";
 import {
     pixelPageHeading,
-    pricingLayoutHeadline as headline,
+    pricingLayoutHeroHeadline as heroHeadline,
 } from "@/components/pricing/pricingLayoutConstants";
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export default function NotFound() {
   return (
     <div className="relative mx-auto flex min-h-[60vh] max-w-lg flex-col items-center justify-center gap-6 px-6 py-24 text-center">
       <div className="pointer-events-none absolute inset-0 ng-grid-bg opacity-25" aria-hidden />
-      <h1 className={`relative z-10 ${headline} text-4xl font-extrabold tracking-tight md:text-5xl ${pixelPageHeading}`}>
+      <h1 className={`relative z-10 ${heroHeadline} text-4xl font-extrabold tracking-tight md:text-5xl ${pixelPageHeading}`}>
         Page <PixelKeyword>not found</PixelKeyword>
       </h1>
       <p className="relative z-10 text-base-content/80">

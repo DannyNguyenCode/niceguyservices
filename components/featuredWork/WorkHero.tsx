@@ -7,7 +7,8 @@ import featuredWorkContent from "@/components/featuredWork/featuredWorkContent.j
 import {
     pixelPageEyebrow,
     pixelPageHeading,
-    pricingLayoutHeadline as headline,
+    pricingLayoutHeroHeadline as heroHeadline,
+    pricingLayoutPixelLabel as pixelLabel,
 } from "@/components/pricing/pricingLayoutConstants";
 
 export default function WorkHero() {
@@ -25,12 +26,12 @@ export default function WorkHero() {
             <div className="relative z-10 w-full">
                 <div className="w-full">
                     <span
-                        className={`mb-4 block text-sm font-bold tracking-[0.2em] ${headline} ${pixelPageEyebrow}`}
+                        className={`mb-4 block text-sm font-bold tracking-[0.2em] ${pixelLabel} ${pixelPageEyebrow}`}
                     >
                         {hero.eyebrow}
                     </span>
                     <h1
-                        className={`mb-6 w-full text-5xl leading-[1.1] font-extrabold tracking-tight md:text-7xl ${headline} ${pixelPageHeading}`}
+                        className={`mb-6 w-full text-5xl leading-[1.1] font-extrabold tracking-tight md:text-7xl ${heroHeadline} ${pixelPageHeading}`}
                     >
                         Featured <PixelKeyword>Websites</PixelKeyword> <br />
                         Built With{" "}

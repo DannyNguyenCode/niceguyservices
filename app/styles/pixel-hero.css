@@ -16,6 +16,9 @@ html[data-theme="niceguys-light"] {
     --ng-pixel-word: var(--brand-pixel-word);
     --ng-pixel-highlight-glow: var(--brand-pixel-highlight-glow);
     --ng-pixel-word-glow: var(--brand-pixel-word-glow);
+    --ng-pixel-outline: var(--brand-pixel-outline);
+    --ng-pixel-fill: var(--brand-pixel-fill);
+    --ng-pixel-elevation: var(--brand-pixel-elevation);
     --ng-btn-coral: var(--brand-btn-coral);
     --ng-btn-sky: var(--brand-btn-sky);
     --ng-btn-accent: var(--brand-btn-accent);
@@ -42,6 +45,9 @@ html[data-theme="niceguys-dark"] {
     --ng-pixel-word: var(--brand-pixel-word);
     --ng-pixel-highlight-glow: var(--brand-pixel-highlight-glow);
     --ng-pixel-word-glow: var(--brand-pixel-word-glow);
+    --ng-pixel-outline: var(--brand-pixel-outline);
+    --ng-pixel-fill: var(--brand-pixel-fill);
+    --ng-pixel-elevation: var(--brand-pixel-elevation);
     --ng-btn-coral: var(--brand-btn-coral);
     --ng-btn-sky: var(--brand-btn-sky);
     --ng-btn-accent: var(--brand-btn-accent);
@@ -68,6 +74,9 @@ html[data-theme="niceguys-dark"] {
     --ng-pixel-word: var(--brand-pixel-word);
     --ng-pixel-highlight-glow: var(--brand-pixel-highlight-glow);
     --ng-pixel-word-glow: var(--brand-pixel-word-glow);
+    --ng-pixel-outline: var(--brand-pixel-outline);
+    --ng-pixel-fill: var(--brand-pixel-fill);
+    --ng-pixel-elevation: var(--brand-pixel-elevation);
     --ng-btn-coral: var(--brand-btn-coral);
     --ng-btn-sky: var(--brand-btn-sky);
     --ng-btn-accent: var(--brand-btn-accent);
@@ -98,18 +107,32 @@ html[data-theme="niceguys-dark"] {
     -webkit-text-fill-color: transparent;
 }
 
-.pixel-word.ng-pixel-word-highlight {
+html[data-theme="niceguys-light"] .pixel-word.ng-pixel-word-highlight {
+    background-image: radial-gradient(var(--ng-pixel-fill) 48%, transparent 50%);
     filter:
-        drop-shadow(0 0 0.08em var(--ng-pixel-highlight-glow))
-        drop-shadow(0 0 0.22em var(--ng-pixel-highlight-glow))
-        drop-shadow(0 0 0.45em var(--ng-pixel-highlight-glow));
+        drop-shadow(0 1px 0 rgba(11, 37, 64, 0.14))
+        drop-shadow(0 2px 6px rgba(11, 37, 64, 0.08));
 }
 
-.pixel-word.ng-pixel-word-base {
+html[data-theme="niceguys-light"] .pixel-word.ng-pixel-word-base {
+    background-image: radial-gradient(var(--ng-pixel-word) 48%, transparent 50%);
     filter:
-        drop-shadow(0 0 0.08em var(--ng-pixel-word-glow))
-        drop-shadow(0 0 0.22em var(--ng-pixel-word-glow))
-        drop-shadow(0 0 0.45em var(--ng-pixel-word-glow));
+        drop-shadow(0 1px 0 rgba(11, 37, 64, 0.14))
+        drop-shadow(0 2px 6px rgba(11, 37, 64, 0.08));
+}
+
+html[data-theme="niceguys-dark"] .pixel-word.ng-pixel-word-highlight {
+    filter:
+        drop-shadow(0 0 0.06em var(--ng-pixel-highlight-glow))
+        drop-shadow(0 0 0.18em var(--ng-pixel-highlight-glow))
+        drop-shadow(0 0 0.32em var(--ng-pixel-highlight-glow));
+}
+
+html[data-theme="niceguys-dark"] .pixel-word.ng-pixel-word-base {
+    filter:
+        drop-shadow(0 0 0.06em var(--ng-pixel-word-glow))
+        drop-shadow(0 0 0.18em var(--ng-pixel-word-glow))
+        drop-shadow(0 0 0.32em var(--ng-pixel-word-glow));
 }
 
 .ng-card-shadow {
@@ -184,10 +207,22 @@ html[data-theme="niceguys-dark"] .ng-card-shadow {
     pointer-events: none;
 }
 
+html[data-theme="niceguys-light"] .pixel-btn-neon::before {
+    background: radial-gradient(var(--ng-pixel-outline) 42%, transparent 45%);
+}
+
 .pixel-btn-neon:hover {
     transform: translateY(-2px);
-    box-shadow: 0 0 20px color-mix(in srgb, var(--pixel-btn-color) 50%, transparent);
     filter: brightness(1.08);
+}
+
+html[data-theme="niceguys-light"] .pixel-btn-neon:hover {
+    box-shadow: var(--ng-pixel-elevation);
+    filter: none;
+}
+
+html[data-theme="niceguys-dark"] .pixel-btn-neon:hover {
+    box-shadow: 0 0 16px color-mix(in srgb, var(--pixel-btn-color) 40%, transparent);
 }
 
 .pixel-btn-neon:active {
@@ -252,6 +287,10 @@ html[data-theme="niceguys-dark"] .ng-card-shadow {
     z-index: 1;
 }
 
+html[data-theme="niceguys-light"] .pixel-frame::before {
+    background: radial-gradient(var(--ng-pixel-outline) 42%, transparent 45%);
+}
+
 .pixel-divider-b {
     position: relative;
     border-bottom: none !important;
@@ -276,12 +315,53 @@ html[data-theme="niceguys-dark"] .ng-card-shadow {
     animation: pixel-dissolve 0.5s ease;
 }
 
+html[data-theme="niceguys-light"] .pixel-btn:hover {
+    animation: pixel-dissolve-light 0.5s ease;
+}
+
 .pixel-browser-mockup {
     object-fit: contain;
 }
 
 html[data-theme="niceguys-dark"] .pixel-browser-mockup {
     mix-blend-mode: screen;
+}
+
+.home-hero-browser {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pixel-btn:hover,
+    html[data-theme="niceguys-light"] .pixel-btn:hover {
+        animation: none;
+    }
+
+    .pixel-btn-neon,
+    .pixel-btn-neon:hover {
+        transition: none;
+        transform: none;
+        box-shadow: none;
+        filter: none;
+    }
+
+    .home-hero-browser {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+
+@keyframes pixel-dissolve-light {
+    0% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-1px);
+    }
+    100% {
+        transform: translateY(-2px);
+    }
 }
 
 @keyframes pixel-dissolve {

@@ -21,7 +21,7 @@ export default function BiographyWhoSection({
             <div className={sitePageContentClass}>
                 <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
                     <div className="space-y-8 md:col-span-2">
-                        <h2 className="font-pixel capitalize text-4xl font-bold tracking-tight text-(--pm-on-surface)">
+                        <h2 className="font-pm-headline capitalize text-4xl font-bold tracking-tight text-(--pm-on-surface)">
                             {heading}
                         </h2>
                         <div className="prose prose-lg max-w-none text-(--pm-on-surface-variant)">
@@ -40,7 +40,7 @@ export default function BiographyWhoSection({
                     </div>
                     <div className="space-y-6">
                         <div className="rounded-2xl border border-(--pm-outline-variant)/15 bg-(--pm-white) p-8 shadow-sm dark:bg-base-100">
-                            <h3 className="font-pixel mb-6 text-sm font-black capitalize tracking-widest text-primary">
+                            <h3 className="font-pm-headline mb-6 text-sm font-black capitalize tracking-widest text-(--pm-on-surface)">
                                 Vital statistics
                             </h3>
                             <ul className="space-y-4">

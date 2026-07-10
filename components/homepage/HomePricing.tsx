@@ -32,7 +32,7 @@ export default function HomePricing() {
     return (
         <section className="mx-auto max-w-7xl px-4 md:px-8">
             <div className="mb-16 text-center">
-                <h2 className={`font-pixel mb-4 text-(--pm-on-surface) ${homeSectionTitleSizeClass}`}>
+                <h2 className={`mb-4 text-(--pm-on-surface) ${homeSectionTitleSizeClass}`}>
                     Website{" "}
                     <span className="pixel-word ng-pixel-word-highlight">Pricing</span>
                 </h2>

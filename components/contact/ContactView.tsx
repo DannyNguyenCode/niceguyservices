@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { useState } from "react";
-import { sitePageContentClass, pixelPageHeading, pricingLayoutHeadline as headline } from "@/components/pricing/pricingLayoutConstants";
+import { sitePageContentClass, pixelPageHeading, pricingLayoutHeroHeadline as heroHeadline, pricingLayoutHeadline as headline } from "@/components/pricing/pricingLayoutConstants";
 import PixelKeyword from "@/components/ui/PixelKeyword";
 import ContactForm from "./ContactForm";
 import ThankYouModal from "./ThankYouModal";
@@ -132,7 +132,7 @@ export default function ContactView() {
                 <header className="relative z-10 mb-16 flex flex-col items-baseline gap-6 overflow-hidden md:mb-24 md:flex-row">
                     <h1
                         id="contact-header"
-                        className={`${headline} text-5xl leading-none font-extrabold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl ${pixelPageHeading}`}
+                        className={`${heroHeadline} text-5xl leading-none font-extrabold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl ${pixelPageHeading}`}
                     >
                         <PixelKeyword>Connect</PixelKeyword>
                         <br />
@@ -141,7 +141,7 @@ export default function ContactView() {
                         <PixelKeyword variant="base">Grow</PixelKeyword>
                     </h1>
                     <div className="hidden h-[2px] grow bg-(--pm-surface-highest) opacity-50 md:block" />
-                    <p className="font-pm-body text-sm text-primary">
+                    <p className="font-pm-body text-sm text-(--pm-on-surface-variant)">
                         Replies within one business day
                     </p>
                 </header>
@@ -149,7 +149,7 @@ export default function ContactView() {
                 <div className="mb-20 grid grid-cols-1 gap-6 md:grid-cols-3">
                     <div className="group flex flex-col gap-4 rounded-xl border-b border-[rgb(171_173_174/0.15)] bg-base-100 p-8 transition-all hover:bg-base-100 dark:border-[rgb(255_255_255/0.08)] dark:hover:bg-base-200">
                         <BoltIcon
-                            className="h-8 w-8 shrink-0 text-primary"
+                            className="h-8 w-8 shrink-0 text-(--pm-on-surface)"
                             aria-hidden
                         />
                         <h3 className={`${headline} text-xl font-bold tracking-tight ${pixelPageHeading}`}>
@@ -162,7 +162,7 @@ export default function ContactView() {
                     </div>
                     <div className="group flex flex-col gap-4 rounded-xl border-b border-[rgb(171_173_174/0.15)] bg-base-100 p-8 transition-all hover:bg-base-100 dark:border-[rgb(255_255_255/0.08)] dark:hover:bg-base-200">
                         <LockClosedIcon
-                            className="h-8 w-8 shrink-0 text-secondary"
+                            className="h-8 w-8 shrink-0 text-(--pm-on-surface)"
                             aria-hidden
                         />
                         <h3 className={`${headline} text-xl font-bold tracking-tight ${pixelPageHeading}`}>
@@ -175,7 +175,7 @@ export default function ContactView() {
                     </div>
                     <div className="group flex flex-col gap-4 rounded-xl border-b border-[rgb(171_173_174/0.15)] bg-base-100 p-8 transition-all hover:bg-base-100 dark:border-[rgb(255_255_255/0.08)] dark:hover:bg-base-200">
                         <HandRaisedIcon
-                            className="h-8 w-8 shrink-0 text-accent"
+                            className="h-8 w-8 shrink-0 text-(--pm-on-surface)"
                             aria-hidden
                         />
                         <h3 className={`${headline} text-xl font-bold tracking-tight ${pixelPageHeading}`}>
@@ -192,7 +192,7 @@ export default function ContactView() {
                 <div className="flex flex-col items-start gap-12 lg:flex-row">
                     <section className="w-full rounded-xl bg-(--pm-surface-low) p-8 md:p-12 lg:w-2/3">
                         <div className="mb-10">
-                            <h2 className="mb-2 font-pixel capitalize text-3xl font-bold tracking-tight text-(--pm-on-surface)">
+                            <h2 className={`mb-2 capitalize text-3xl font-bold tracking-tight text-(--pm-on-surface) ${headline}`}>
                                 Send a message
                             </h2>
                             <p className="font-pm-body text-sm text-(--pm-on-surface-variant)">
@@ -222,7 +222,7 @@ export default function ContactView() {
                                     Phone number
                                 </span>
                                 <a
-                                    className="font-pixel text-2xl font-bold tracking-tighter transition-colors hover:text-secondary"
+                                    className="font-pm-headline text-2xl font-bold tracking-tighter text-(--pm-on-surface) transition-colors hover:text-(--pm-on-surface) hover:underline"
                                     href="tel:+16477603458"
                                 >
                                     (647) 760-3458
@@ -242,7 +242,7 @@ export default function ContactView() {
                                     Email address
                                 </span>
                                 <a
-                                    className="break-all font-pixel text-xl font-bold tracking-tighter transition-colors hover:text-primary sm:text-2xl"
+                                    className="break-all font-pm-headline text-xl font-bold tracking-tighter text-(--pm-on-surface) transition-colors hover:underline sm:text-2xl"
                                     href="mailto:gbnguyenw@gmail.com"
                                 >
                                     gbnguyenw@gmail.com
@@ -266,7 +266,7 @@ export default function ContactView() {
                                             Toronto &amp; GTA
                                         </span>
                                     </div>
-                                    <p className="font-pixel text-sm font-medium text-(--pm-on-surface-variant)">
+                                    <p className="font-pm-body text-sm font-medium text-(--pm-on-surface-variant)">
                                         Local &amp; remote small-business websites
                                     </p>
                                 </div>

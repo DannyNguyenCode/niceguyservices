@@ -8,6 +8,7 @@ import ThemeToggleBtn from "./ThemeToggleBtn";
 import { useTheme } from "@/components/theme/ThemeProvider";
 import { getSiteLogoForTheme } from "@/lib/siteConfig";
 import { isDarkTheme } from "@/lib/themes/siteTheme";
+import { siteNavLinkClass } from "@/components/pricing/pricingLayoutConstants";
 
 const pages = [
     { title: "Home", link: "/" },
@@ -85,7 +86,7 @@ export default function Navigation() {
                 >
                     <button
                         type="button"
-                        className="btn btn-ghost border-0 shadow-none"
+                        className="btn btn-ghost border-0 shadow-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                         aria-label={mobileOpen ? "Close menu" : "Open menu"}
                         aria-expanded={mobileOpen}
                         aria-controls="mobile-nav-menu"
@@ -136,9 +137,10 @@ export default function Navigation() {
                                             }
                                             className={[
                                                 "block w-full rounded-none py-4 pr-6 pl-6 text-base font-medium",
+                                                siteNavLinkClass,
                                                 active
-                                                    ? "bg-base-200 text-primary"
-                                                    : "text-base-content hover:bg-base-200/70",
+                                                    ? "bg-base-200 font-semibold text-(--pm-on-surface) ring-1 ring-inset ring-primary/35"
+                                                    : "text-(--pm-on-surface) hover:bg-base-200/70",
                                             ].join(" ")}
                                         >
                                             {p.title}
@@ -190,10 +192,11 @@ export default function Navigation() {
                                     href={p.link}
                                     aria-current={active ? "page" : undefined}
                                     className={[
-                                        "inline-flex whitespace-nowrap rounded-lg px-2 py-2 font-medium transition-colors sm:px-3",
+                                        "inline-flex whitespace-nowrap px-2 py-2 font-medium sm:px-3",
+                                        siteNavLinkClass,
                                         active
-                                            ? "bg-base-200 text-primary"
-                                            : "text-base-content/80 hover:bg-base-200 hover:text-primary",
+                                            ? "bg-base-200 font-semibold text-(--pm-on-surface) ring-1 ring-inset ring-primary/35"
+                                            : "text-(--pm-on-surface)/85 hover:bg-base-200 hover:text-(--pm-on-surface)",
                                     ].join(" ")}
                                 >
                                     {p.title}

@@ -24,8 +24,11 @@ html[data-theme="niceguys-dark"] {
     --brand-border: rgba(255, 255, 255, 0.1);
     --brand-pixel-highlight: #60c4e3;
     --brand-pixel-word: #eaf3f9;
-    --brand-pixel-highlight-glow: rgba(96, 196, 227, 0.72);
-    --brand-pixel-word-glow: rgba(234, 243, 249, 0.38);
+    --brand-pixel-highlight-glow: rgba(96, 196, 227, 0.45);
+    --brand-pixel-word-glow: rgba(234, 243, 249, 0.28);
+    --brand-pixel-outline: transparent;
+    --brand-pixel-fill: #60c4e3;
+    --brand-pixel-elevation: none;
     --brand-btn-coral: #ff8a7a;
     --brand-btn-sky: #60c4e3;
     --brand-btn-accent: #60c4e3;
@@ -59,12 +62,15 @@ html[data-theme="niceguys-light"] {
     --brand-border: rgba(11, 37, 64, 0.12);
     --brand-pixel-highlight: #055a85;
     --brand-pixel-word: #071729;
-    --brand-pixel-highlight-glow: rgba(10, 125, 186, 0.55);
-    --brand-pixel-word-glow: rgba(11, 37, 64, 0.42);
+    --brand-pixel-highlight-glow: transparent;
+    --brand-pixel-word-glow: transparent;
+    --brand-pixel-outline: #0b2540;
+    --brand-pixel-fill: #0a7dba;
+    --brand-pixel-elevation: 0 1px 0 rgba(11, 37, 64, 0.1), 0 3px 8px rgba(11, 37, 64, 0.08);
     --brand-btn-coral: #e5533d;
     --brand-btn-sky: #0a7dba;
     --brand-btn-accent: #086193;
     --brand-btn-text: #0b2540;
     --brand-btn-fill: #ffffff;
-    --brand-hero-glow: rgba(10, 125, 186, 0.32);
+    --brand-hero-glow: transparent;
 }

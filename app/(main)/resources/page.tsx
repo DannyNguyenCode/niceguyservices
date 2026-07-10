@@ -10,6 +10,8 @@ import {
     pixelPageEyebrow,
     pixelPageHeading,
     pricingLayoutHeadline as headline,
+    pricingLayoutHeroHeadline as heroHeadline,
+    pricingLayoutPixelLabel as pixelLabel,
     sitePageContentClass,
 } from "@/components/pricing/pricingLayoutConstants";
 import { absoluteUrl } from "@/lib/siteConfig";
@@ -165,11 +167,11 @@ export default function ResourcesPage() {
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px] ng-grid-bg opacity-30" aria-hidden />
                 <header className="relative z-10 mb-20">
                     <div className="mb-6 inline-block rounded-full border border-[color:var(--ng-border)] bg-white/60 px-3 py-1 backdrop-blur dark:bg-white/5">
-                        <span className={`${headline} text-[10px] font-bold tracking-widest ${pixelPageEyebrow}`}>
+                        <span className={`${pixelLabel} text-[10px] font-bold tracking-widest ${pixelPageEyebrow}`}>
                             Knowledge archive
                         </span>
                     </div>
-                    <h1 className={`${headline} mb-8 max-w-4xl text-5xl leading-[0.95] font-extrabold tracking-tighter md:text-7xl ${pixelPageHeading}`}>
+                    <h1 className={`${heroHeadline} mb-8 max-w-4xl text-5xl leading-[0.95] font-extrabold tracking-tighter md:text-7xl ${pixelPageHeading}`}>
                         <PixelKeyword>Resources</PixelKeyword>
                         <br />
                         for small businesses
