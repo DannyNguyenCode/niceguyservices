@@ -1,9 +1,13 @@
 "use client";
 
 import { Squares2X2Icon } from "@heroicons/react/24/outline";
-import Link from "next/link";
+import PixelCtaLink from "@/components/ui/PixelCtaLink";
+import PixelKeyword from "@/components/ui/PixelKeyword";
 import pricingContent from "./pricingContent.json";
-import { pricingLayoutHeadline as headline } from "./pricingLayoutConstants";
+import {
+    pixelPageHeading,
+    pricingLayoutHeadline as headline,
+} from "./pricingLayoutConstants";
 import { PackageIncludesList } from "./PackageIncludesList";
 
 type Package = (typeof pricingContent.packages)[number];
@@ -11,6 +15,9 @@ type Package = (typeof pricingContent.packages)[number];
 function hasMonthlyPrice(pkg: Package) {
     return typeof pkg.monthly === "string" && pkg.monthly.trim().length > 0;
 }
+
+const packagesSectionTitle =
+    "text-3xl font-extrabold tracking-tight md:text-4xl";
 
 export default function PricingPlans() {
     const { packagesSection, packages } = pricingContent;
@@ -29,16 +36,10 @@ export default function PricingPlans() {
                         <Squares2X2Icon className="h-6 w-6" aria-hidden />
                     </span>
                     <div>
-                        <p
-                            className={`mb-1 text-xs font-bold tracking-widest uppercase ${headline}`}
-                            style={{ color: "var(--pm-on-surface-variant)" }}
-                        >
-                            {packagesSection.sectionEyebrow}
-                        </p>
                         <h2
-                            className={`text-2xl font-black tracking-tight md:text-3xl ${headline}`}
-                            style={{ color: "var(--pm-on-surface)" }}
+                            className={`${packagesSectionTitle} ${headline} ${pixelPageHeading}`}
                         >
+                            <PixelKeyword>{packagesSection.sectionEyebrow}</PixelKeyword>{" "}
                             {packagesSection.title}
                         </h2>
                     </div>
@@ -56,6 +57,7 @@ export default function PricingPlans() {
 
 function PackageCard({ pkg }: { pkg: Package }) {
     const featured = Boolean(pkg.popularBadge);
+    const isGrowthCard = pkg.id === "growth-optimization";
     const upfrontWord = pkg.upfrontEyebrow.toLowerCase();
     const showMonthlyRow = hasMonthlyPrice(pkg);
 
@@ -139,27 +141,15 @@ function PackageCard({ pkg }: { pkg: Package }) {
                 layout="sequential"
             />
 
-            <Link
+            <PixelCtaLink
                 href={pricingContent.meta.contactHref}
-                className={`mt-auto flex min-h-12 w-full items-center justify-center rounded-lg py-3 text-center text-base font-bold transition-all active:scale-[0.98] sm:min-h-14 sm:py-4 ${headline}`}
-                style={
-                    featured
-                        ? {
-                            background: `linear-gradient(to bottom right, var(--pm-primary), var(--pm-primary-container))`,
-                            color: "var(--pm-on-primary)",
-                            boxShadow: "var(--pm-shadow-cta-button)",
-                        }
-                        : {
-                            borderWidth: 2,
-                            borderStyle: "solid",
-                            borderColor: "var(--pm-outline-variant)",
-                            color: "var(--pm-on-surface)",
-                            backgroundColor: "transparent",
-                        }
-                }
+                color={isGrowthCard ? "var(--ng-btn-coral)" : "var(--ng-btn-sky)"}
+                block
+                xl
+                className="mt-auto"
             >
                 {pkg.buttonLabel}
-            </Link>
+            </PixelCtaLink>
         </div>
     );
 }

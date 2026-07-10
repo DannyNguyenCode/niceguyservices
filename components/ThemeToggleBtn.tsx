@@ -2,10 +2,11 @@
 
 import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "@/components/theme/ThemeProvider";
+import { isDarkTheme } from "@/lib/themes/siteTheme";
 
 export default function ThemeToggleBtn() {
     const { theme, toggle } = useTheme();
-    const isDark = theme === "dark";
+    const isDark = isDarkTheme(theme);
 
     return (
         <button

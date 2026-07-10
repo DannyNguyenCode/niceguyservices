@@ -1,4 +1,3 @@
-/* Canonical theme: daisyUI tokens (--color-*) + modern pricing/services (--pm-*). Toggle via html[data-theme="niceguys-light" | "niceguys-dark"]. */
 @import "tailwindcss";
 
 @plugin "daisyui" {
@@ -8,30 +7,29 @@
 
 @plugin "daisyui/theme" {
     name: "niceguys-light";
-    default: true;
     prefersdark: false;
     color-scheme: light;
 
     --color-base-100: #ffffff;
-    --color-base-200: #f5f6f7;
-    --color-base-300: #e6e8ea;
-    --color-base-content: #2c2f30;
-    --color-base-content-muted: #595c5d;
-    --color-primary: #8c00d8;
-    --color-primary-content: #fceeff;
-    --color-secondary: #006666;
-    --color-secondary-content: #e6fffc;
-    --color-accent: #00a3a3;
-    --color-accent-content: #042a2a;
-    --color-neutral: #3d4042;
-    --color-neutral-content: #f5f6f7;
-    --color-info: #0284c7;
+    --color-base-200: #f2f6f9;
+    --color-base-300: #e6eef4;
+    --color-base-content: #0b2540;
+    --color-base-content-muted: #4c6072;
+    --color-primary: #0a7dba;
+    --color-primary-content: #ffffff;
+    --color-secondary: #2cc4b3;
+    --color-secondary-content: #06312c;
+    --color-accent: #60c4e3;
+    --color-accent-content: #0b2540;
+    --color-neutral: #0b2540;
+    --color-neutral-content: #f2f6f9;
+    --color-info: #0a7dba;
     --color-info-content: #ffffff;
-    --color-success: #059669;
+    --color-success: #2fa875;
     --color-success-content: #ffffff;
     --color-warning: #d97706;
     --color-warning-content: #ffffff;
-    --color-error: #b42318;
+    --color-error: #e5533d;
     --color-error-content: #ffffff;
 
     --radius-selector: 0.5rem;
@@ -43,43 +41,43 @@
     --depth: 1;
     --noise: 0;
 
-    --pm-surface: #f5f6f7;
-    --pm-surface-low: #eff1f2;
-    --pm-surface-container: #e6e8ea;
-    --pm-surface-high: #e0e3e4;
-    --pm-surface-highest: #dadddf;
-    --pm-on-surface: #2c2f30;
-    --pm-on-surface-variant: #595c5d;
-    --pm-primary: #8c00d8;
-    --pm-primary-container: #cb80ff;
-    --pm-primary-dim: #7b00be;
-    --pm-on-primary: #fceeff;
-    --pm-secondary: #006666;
-    --pm-secondary-container: #00fbfb;
-    --pm-tertiary: #a400a4;
-    --pm-outline-variant: #abadae;
+    --pm-surface: #f2f6f9;
+    --pm-surface-low: #e9f0f5;
+    --pm-surface-container: #e6eef4;
+    --pm-surface-high: #dce7ef;
+    --pm-surface-highest: #d3e0ea;
+    --pm-on-surface: #0b2540;
+    --pm-on-surface-variant: #4c6072;
+    --pm-primary: #0a7dba;
+    --pm-primary-container: #60c4e3;
+    --pm-primary-dim: #086193;
+    --pm-on-primary: #ffffff;
+    --pm-secondary: #2cc4b3;
+    --pm-secondary-container: #9fe7de;
+    --pm-tertiary: #60c4e3;
+    --pm-outline-variant: #a9becd;
     --pm-white: #ffffff;
     --pm-glass: rgb(255 255 255 / 0.65);
-    --pm-border-subtle: rgb(140 0 216 / 0.12);
-    --pm-border-light: rgb(171 173 174 / 0.35);
+    --pm-border-subtle: rgb(10 125 186 / 0.12);
+    --pm-border-light: rgb(11 37 64 / 0.12);
     --pm-card-border: rgb(255 255 255 / 0.95);
-    --pm-glow-primary: rgb(140 0 216 / 0.06);
-    --pm-glow-secondary: rgb(0 102 102 / 0.07);
-    --pm-hero-orb: rgb(140 0 216 / 0.05);
-    --pm-badge-bg: rgb(0 251 251 / 0.12);
-    --pm-badge-border: rgb(0 102 102 / 0.12);
-    --pm-primary-alpha-50: rgb(140 0 216 / 0.2);
-    --pm-primary-alpha-40: rgb(140 0 216 / 0.28);
-    --pm-primary-alpha-30: rgb(140 0 216 / 0.18);
-    --pm-secondary-alpha-40: rgb(0 102 102 / 0.22);
-    --pm-trust-section-bg: #eff1f2;
-    --pm-shadow-featured: 0 25px 50px -12px rgb(140 0 216 / 0.12);
-    --pm-shadow-nova-focus: 0 25px 50px -12px rgb(0 102 102 / 0.14);
-    --pm-shadow-cta-button: 0 20px 25px -5px rgb(140 0 216 / 0.28);
-    --pm-shadow-card-hover: 0 25px 50px -12px rgb(44 47 48 / 0.08);
-    --pm-cta-band: #2c2f30;
+    --pm-glow-primary: rgb(10 125 186 / 0.06);
+    --pm-glow-secondary: rgb(44 196 179 / 0.08);
+    --pm-hero-orb: rgb(96 196 227 / 0.06);
+    --pm-badge-bg: rgb(96 196 227 / 0.14);
+    --pm-badge-border: rgb(10 125 186 / 0.14);
+    --pm-primary-alpha-50: rgb(10 125 186 / 0.2);
+    --pm-primary-alpha-40: rgb(10 125 186 / 0.28);
+    --pm-primary-alpha-30: rgb(10 125 186 / 0.18);
+    --pm-secondary-alpha-40: rgb(44 196 179 / 0.22);
+    --pm-trust-section-bg: #e9f0f5;
+    --pm-shadow-featured: 0 25px 50px -12px rgb(10 125 186 / 0.14);
+    --pm-shadow-nova-focus: 0 25px 50px -12px rgb(44 196 179 / 0.16);
+    --pm-shadow-cta-button: 0 20px 25px -5px rgb(10 125 186 / 0.3);
+    --pm-shadow-card-hover: 0 25px 50px -12px rgb(11 37 64 / 0.1);
+    --pm-cta-band: #0b2540;
     --pm-cta-band-muted: rgb(255 255 255 / 0.62);
-    --pm-divider: rgb(44 47 48 / 0.08);
+    --pm-divider: rgb(11 37 64 / 0.08);
     --pm-bento-tile-light: #ffffff;
     --pm-bento-tile-accent: var(--pm-surface-low);
     --pm-modal-section-eyebrow: var(--pm-outline-variant);
@@ -87,30 +85,31 @@
 
 @plugin "daisyui/theme" {
     name: "niceguys-dark";
+    default: true;
     prefersdark: false;
     color-scheme: dark;
 
-    --color-base-100: #1a1a22;
-    --color-base-200: #131318;
-    --color-base-300: #2a2a34;
-    --color-base-content: #f8f5fd;
-    --color-base-content-muted: #acaab1;
-    --color-primary: #df8eff;
-    --color-primary-content: #1f0a28;
-    --color-secondary: #00eefc;
-    --color-secondary-content: #031a1c;
-    --color-accent: #00deec;
-    --color-accent-content: #031a1c;
-    --color-neutral: #25252c;
-    --color-neutral-content: #f8f5fd;
-    --color-info: #38bdf8;
-    --color-info-content: #0c1222;
-    --color-success: #34d399;
-    --color-success-content: #052e1a;
+    --color-base-100: #0f1d2e;
+    --color-base-200: #071729;
+    --color-base-300: #1b3145;
+    --color-base-content: #eaf3f9;
+    --color-base-content-muted: #9fb4c6;
+    --color-primary: #60c4e3;
+    --color-primary-content: #071729;
+    --color-secondary: #20b2a8;
+    --color-secondary-content: #071729;
+    --color-accent: #2cc4b3;
+    --color-accent-content: #071729;
+    --color-neutral: #14273a;
+    --color-neutral-content: #eaf3f9;
+    --color-info: #60c4e3;
+    --color-info-content: #071729;
+    --color-success: #59d39a;
+    --color-success-content: #06331f;
     --color-warning: #fbbf24;
     --color-warning-content: #1a1404;
-    --color-error: #f97066;
-    --color-error-content: #1f0a0a;
+    --color-error: #ff8a7a;
+    --color-error-content: #3a0f0a;
 
     --radius-selector: 0.5rem;
     --radius-field: 0.25rem;
@@ -121,42 +120,42 @@
     --depth: 1;
     --noise: 0;
 
-    --pm-surface: #0e0e13;
-    --pm-surface-low: #131318;
-    --pm-surface-container: #19191f;
-    --pm-surface-high: #1f1f26;
-    --pm-surface-highest: #25252c;
-    --pm-on-surface: #f8f5fd;
-    --pm-on-surface-variant: #acaab1;
-    --pm-primary: #df8eff;
-    --pm-primary-container: #cb80ff;
-    --pm-primary-dim: #bb00fc;
-    --pm-on-primary: #4f006d;
-    --pm-secondary: #00eefc;
-    --pm-secondary-container: #00deec;
-    --pm-tertiary: #ac89ff;
-    --pm-outline-variant: #48474d;
+    --pm-surface: #071729;
+    --pm-surface-low: #0b1f33;
+    --pm-surface-container: #0f1d2e;
+    --pm-surface-high: #14273a;
+    --pm-surface-highest: #1b3145;
+    --pm-on-surface: #eaf3f9;
+    --pm-on-surface-variant: #9fb4c6;
+    --pm-primary: #60c4e3;
+    --pm-primary-container: #3fb0d6;
+    --pm-primary-dim: #0a7dba;
+    --pm-on-primary: #071729;
+    --pm-secondary: #20b2a8;
+    --pm-secondary-container: #2cc4b3;
+    --pm-tertiary: #59d39a;
+    --pm-outline-variant: #33495e;
     --pm-white: #ffffff;
-    --pm-glass: rgb(31 31 38 / 0.45);
+    --pm-glass: rgb(15 29 46 / 0.45);
     --pm-border-subtle: rgb(255 255 255 / 0.08);
     --pm-border-light: rgb(255 255 255 / 0.12);
     --pm-card-border: rgb(255 255 255 / 0.08);
-    --pm-glow-primary: rgb(223 142 255 / 0.12);
-    --pm-glow-secondary: rgb(0 238 252 / 0.1);
-    --pm-hero-orb: rgb(223 142 255 / 0.08);
-    --pm-badge-bg: rgb(0 238 252 / 0.08);
-    --pm-badge-border: rgb(0 238 252 / 0.15);
-    --pm-primary-alpha-50: rgb(223 142 255 / 0.45);
-    --pm-primary-alpha-40: rgb(223 142 255 / 0.35);
-    --pm-primary-alpha-30: rgb(223 142 255 / 0.25);
-    --pm-secondary-alpha-40: rgb(0 238 252 / 0.35);
+    --pm-glow-primary: rgb(96 196 227 / 0.14);
+    --pm-glow-secondary: rgb(32 178 168 / 0.12);
+    --pm-hero-orb: rgb(96 196 227 / 0.1);
+    --pm-badge-bg: rgb(96 196 227 / 0.1);
+    --pm-badge-border: rgb(96 196 227 / 0.18);
+    --pm-primary-alpha-50: rgb(96 196 227 / 0.45);
+    --pm-primary-alpha-40: rgb(96 196 227 / 0.35);
+    --pm-primary-alpha-30: rgb(96 196 227 / 0.25);
+    --pm-secondary-alpha-40: rgb(32 178 168 / 0.35);
     --pm-trust-section-bg: color-mix(in srgb, var(--pm-surface-low) 85%, transparent);
-    --pm-shadow-featured: 0 0 28px rgb(223 142 255 / 0.22);
-    --pm-shadow-nova-focus: 0 0 28px rgb(0 238 252 / 0.2);
-    --pm-shadow-cta-button: 0 0 22px rgb(223 142 255 / 0.35);
+    --pm-shadow-featured: 0 0 28px rgb(96 196 227 / 0.24);
+    --pm-shadow-nova-focus: 0 0 28px rgb(32 178 168 / 0.22);
+    --pm-shadow-cta-button: 0 0 22px rgb(96 196 227 / 0.35);
     --pm-shadow-card-hover: 0 25px 50px -12px rgb(0 0 0 / 0.35);
-    --pm-cta-band: #1a1a22;
-    --pm-cta-band-muted: rgb(248 245 253 / 0.65);
+    --pm-cta-band: #0f1d2e;
+    --pm-cta-band-muted: rgb(234 243 249 / 0.65);
     --pm-divider: rgb(255 255 255 / 0.08);
     --pm-bento-tile-light: var(--pm-surface-high);
     --pm-bento-tile-accent: var(--pm-surface-low);
@@ -173,14 +172,14 @@
     html[data-theme="niceguys-light"]:has([data-pricing-page="modern"]) main#content-container,
     html[data-theme="niceguys-light"]:has([data-services-page="modern"]) body,
     html[data-theme="niceguys-light"]:has([data-services-page="modern"]) main#content-container,
-    html[data-theme="niceguys-light"]:has([data-featured-work-page=""]) body,
-    html[data-theme="niceguys-light"]:has([data-featured-work-page=""]) main#content-container,
+    html[data-theme="niceguys-light"]:has([data-work-page=""]) body,
+    html[data-theme="niceguys-light"]:has([data-work-page=""]) main#content-container,
     html[data-theme="niceguys-dark"]:has([data-pricing-page="modern"]) body,
     html[data-theme="niceguys-dark"]:has([data-pricing-page="modern"]) main#content-container,
     html[data-theme="niceguys-dark"]:has([data-services-page="modern"]) body,
     html[data-theme="niceguys-dark"]:has([data-services-page="modern"]) main#content-container,
-    html[data-theme="niceguys-dark"]:has([data-featured-work-page=""]) body,
-    html[data-theme="niceguys-dark"]:has([data-featured-work-page=""]) main#content-container {
+    html[data-theme="niceguys-dark"]:has([data-work-page=""]) body,
+    html[data-theme="niceguys-dark"]:has([data-work-page=""]) main#content-container {
         background-color: var(--pm-surface);
     }
 
@@ -199,7 +198,6 @@
         color: var(--pm-on-primary);
     }
 
-    /* Links and primary controls: hand cursor on hover */
     a[href]:not([href=""]):not([aria-disabled="true"]),
     button:not(:disabled),
     [role="button"]:not([aria-disabled="true"]),
@@ -225,10 +223,6 @@
     }
 }
 
-/* Unlayered: MIcon uses this class. Must set font + ligatures here so the icon
-   font wins over inherited `font-pm-body` (Inter) from labels/wrappers; the
-   Google Fonts import only adds @font-face, and layered CSS can make ligatures
-   use the wrong face. @see https://fonts.google.com/icons */
 .material-symbols-outlined {
     font-family: "Material Symbols Outlined", sans-serif;
     font-style: normal;

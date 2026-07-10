@@ -19,10 +19,10 @@ export default function BiographyMeetSection({
             <div className={sitePageContentClass}>
                 <div className="flex flex-col overflow-hidden rounded-[2.5rem] border border-(--pm-outline-variant)/15 bg-(--pm-white) shadow-xl dark:bg-base-100 md:flex-row">
                     <div className="flex flex-col justify-center p-10 md:w-1/3 md:p-12">
-                        <div className="font-pm-headline mb-4 text-xs font-black tracking-[0.2em] text-primary uppercase">
+                        <div className="font-pixel mb-4 text-xs font-black capitalize tracking-[0.2em] text-primary">
                             {eyebrow}
                         </div>
-                        <h2 className="font-pm-headline mb-6 text-4xl font-bold">
+                        <h2 className="font-pixel mb-6 capitalize text-4xl font-bold">
                             {meetCard.title}
                         </h2>
                         {meetCard.paragraphs.map((para, i) => (

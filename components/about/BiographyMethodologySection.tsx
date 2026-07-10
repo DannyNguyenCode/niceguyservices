@@ -41,7 +41,7 @@ export default function BiographyMethodologySection({
         <section className="bg-(--pm-surface) py-24">
             <div className={sitePageContentClass}>
                 <div className="mx-auto mb-20 max-w-3xl text-center">
-                    <h2 className="font-pm-headline mb-4 text-4xl font-bold text-(--pm-on-surface)">
+                    <h2 className="font-pixel mb-4 capitalize text-4xl font-bold text-(--pm-on-surface)">
                         {sectionTitle}
                     </h2>
                     <p className="text-(--pm-on-surface-variant)">
@@ -65,7 +65,7 @@ export default function BiographyMethodologySection({
                                         aria-hidden
                                     />
                                 </div>
-                                <h3 className="font-pm-headline mb-3 text-xl font-bold">
+                                <h3 className="font-pixel mb-3 capitalize text-xl font-bold">
                                     {item.heading}
                                 </h3>
                                 <p className="text-sm leading-relaxed text-(--pm-on-surface-variant)">

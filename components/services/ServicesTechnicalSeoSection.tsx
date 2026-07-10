@@ -5,7 +5,10 @@ import {
     CodeBracketSquareIcon,
     CpuChipIcon,
 } from "@heroicons/react/24/solid";
+import PixelKeyword from "@/components/ui/PixelKeyword";
 import {
+    pixelPageEyebrow,
+    pixelPageHeading,
     pricingLayoutHeadline as headline,
     sitePageContentClass,
 } from "@/components/pricing/pricingLayoutConstants";
@@ -15,16 +18,15 @@ export default function ServicesTechnicalSeoSection() {
         <section className={`py-24 ${sitePageContentClass}`}>
             <div className="mb-16 text-center">
                 <span
-                    className={`mb-4 block text-xs font-bold tracking-widest uppercase ${headline}`}
-                    style={{ color: "var(--pm-secondary)" }}
+                    className={`mb-4 block text-xs font-bold tracking-widest ${headline} ${pixelPageEyebrow}`}
                 >
                     Performance architecture
                 </span>
                 <h2
-                    className={`text-4xl font-bold ${headline}`}
-                    style={{ color: "var(--pm-on-surface)" }}
+                    className={`text-4xl font-extrabold ${headline} ${pixelPageHeading}`}
                 >
-                    Performance &amp; technical SEO
+                    Performance &amp; technical{" "}
+                    <PixelKeyword>SEO</PixelKeyword>
                 </h2>
             </div>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-3">

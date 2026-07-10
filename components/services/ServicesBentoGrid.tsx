@@ -10,10 +10,11 @@ import {
     SwatchIcon,
 } from "@heroicons/react/24/solid";
 import {
-    goToContact,
     pricingLayoutHeadline as headline,
     sitePageContentClass,
 } from "@/components/pricing/pricingLayoutConstants";
+import PixelCtaLink from "@/components/ui/PixelCtaLink";
+import pricingContent from "@/components/pricing/pricingContent.json";
 
 const focusRing =
     "cursor-pointer outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[color:var(--pm-primary)]";
@@ -234,16 +235,19 @@ export default function ServicesBentoGrid({ onOpenService }: ServicesBentoGridPr
                             integration.
                         </p>
                     </div>
-                    <button
-                        type="button"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            goToContact();
-                        }}
-                        className={`z-10 w-full cursor-pointer rounded-lg px-8 py-4 font-bold transition-colors md:w-auto ${headline} bg-(--pm-white) text-[#2c2f30] hover:opacity-95`}
+                    <PixelCtaLink
+                        href={pricingContent.meta.contactHref}
+                        color="var(--ng-btn-sky)"
+                        fill="var(--ng-btn-fill)"
+                        textColor="var(--ng-btn-text)"
+                        filled
+                        xl
+                        lg
+                        className="z-10 w-full md:w-auto"
+                        onClick={(e) => e.stopPropagation()}
                     >
                         Enquire for quote
-                    </button>
+                    </PixelCtaLink>
                 </div>
             </div>
         </section>

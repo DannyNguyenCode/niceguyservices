@@ -3,14 +3,16 @@
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import PixelCtaLink from "@/components/ui/PixelCtaLink";
 import PixelKeyword from "@/components/ui/PixelKeyword";
+import featuredWorkContent from "@/components/featuredWork/featuredWorkContent.json";
 import {
     pixelPageEyebrow,
     pixelPageHeading,
     pricingLayoutHeadline as headline,
-    sitePageContentClass,
 } from "@/components/pricing/pricingLayoutConstants";
 
-export default function ServicesHero() {
+export default function WorkHero() {
+    const { meta, hero } = featuredWorkContent;
+
     return (
         <section className="relative w-full overflow-hidden pt-24 pb-16 md:pb-24 md:pt-28">
             <div className="pointer-events-none absolute inset-0 ng-grid-bg opacity-40" aria-hidden />
@@ -20,50 +22,55 @@ export default function ServicesHero() {
                     style={{ background: "radial-gradient(closest-side, var(--ng-hero-glow), transparent)" }}
                 />
             </div>
-            <div className={`relative z-10 ${sitePageContentClass}`}>
+            <div className="relative z-10 w-full">
                 <div className="w-full">
                     <span
                         className={`mb-4 block text-sm font-bold tracking-[0.2em] ${headline} ${pixelPageEyebrow}`}
                     >
-                        Professional capabilities
+                        {hero.eyebrow}
                     </span>
                     <h1
                         className={`mb-6 w-full text-5xl leading-[1.1] font-extrabold tracking-tight md:text-7xl ${headline} ${pixelPageHeading}`}
                     >
-                        Web Design &amp; <br />
-                        <PixelKeyword>Development</PixelKeyword> <br />
-                        For Small <PixelKeyword variant="base">Businesses</PixelKeyword>
+                        Featured <PixelKeyword>Websites</PixelKeyword> <br />
+                        Built With{" "}
+                        <PixelKeyword variant="base">Clarity</PixelKeyword>,{" "}
+                        <PixelKeyword variant="base">Care</PixelKeyword>, And{" "}
+                        <PixelKeyword variant="base">Purpose</PixelKeyword>
                     </h1>
-                    <p
-                        className="w-full max-w-none text-xl font-light leading-relaxed text-[color:var(--ng-body)]"
-                    >
-                        Custom sites that load fast, rank well, and stay easy to maintain — built with
-                        modern stacks and explained in plain language.
+                    <p className="w-full max-w-none text-xl font-light leading-relaxed text-[color:var(--ng-body)]">
+                        {hero.subtitle}
                     </p>
                     <div className="mt-10 flex flex-wrap items-center gap-4 sm:gap-5">
                         <PixelCtaLink
-                            href="/contact"
+                            href={meta.contactHref}
                             color="var(--ng-btn-coral)"
                             className="group"
                         >
-                            Start your project
+                            {hero.primaryCta}
                             <ArrowRightIcon
                                 className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
                                 aria-hidden
                             />
                         </PixelCtaLink>
                         <PixelCtaLink
-                            href="/work"
+                            href={meta.servicesHref}
                             color="var(--ng-btn-sky)"
                             className="group"
                         >
-                            See our work
+                            {hero.secondaryCta}
                             <ArrowRightIcon
                                 className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
                                 aria-hidden
                             />
                         </PixelCtaLink>
                     </div>
+                    <p
+                        className="mt-8 border-l-2 py-1 pl-4 text-sm italic text-[color:var(--ng-body)]"
+                        style={{ borderColor: "var(--ng-border)" }}
+                    >
+                        {hero.note}
+                    </p>
                 </div>
             </div>
         </section>

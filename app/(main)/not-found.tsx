@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import PixelCtaLink from "@/components/ui/PixelCtaLink";
+import PixelKeyword from "@/components/ui/PixelKeyword";
+import {
+    pixelPageHeading,
+    pricingLayoutHeadline as headline,
+} from "@/components/pricing/pricingLayoutConstants";
 
 export const metadata: Metadata = {
   title: "Page not found",
@@ -11,27 +16,31 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <div className="mx-auto flex min-h-[60vh] max-w-lg flex-col items-center justify-center gap-6 px-6 py-24 text-center">
-      <h1 className="font-pm-headline text-4xl font-bold tracking-tight text-base-content md:text-5xl">
-        Page not found
+    <div className="relative mx-auto flex min-h-[60vh] max-w-lg flex-col items-center justify-center gap-6 px-6 py-24 text-center">
+      <div className="pointer-events-none absolute inset-0 ng-grid-bg opacity-25" aria-hidden />
+      <h1 className={`relative z-10 ${headline} text-4xl font-extrabold tracking-tight md:text-5xl ${pixelPageHeading}`}>
+        Page <PixelKeyword>not found</PixelKeyword>
       </h1>
-      <p className="text-base-content/80">
+      <p className="relative z-10 text-base-content/80">
         That link may be outdated or the page was moved. You can start again from the
         homepage or get in touch if you were looking for something specific.
       </p>
-      <div className="flex flex-wrap items-center justify-center gap-4">
-        <Link
+      <div className="relative z-10 flex flex-wrap items-center justify-center gap-4">
+        <PixelCtaLink
           href="/"
-          className="rounded-full bg-primary px-6 py-3 font-pm-headline font-semibold text-primary-content transition-opacity hover:opacity-90"
+          color="var(--ng-btn-coral)"
+          filled
+          pill
         >
           Back to home
-        </Link>
-        <Link
+        </PixelCtaLink>
+        <PixelCtaLink
           href="/contact"
-          className="rounded-full border border-base-300 px-6 py-3 font-pm-headline font-semibold text-base-content transition-colors hover:border-primary hover:text-primary"
+          color="var(--ng-btn-sky)"
+          pill
         >
           Contact
-        </Link>
+        </PixelCtaLink>
       </div>
     </div>
   );

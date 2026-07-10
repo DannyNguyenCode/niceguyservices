@@ -4,7 +4,7 @@ import "./globals.css";
 import SiteJsonLd from "@/components/seo/SiteJsonLd";
 import { cookies } from "next/headers";
 import ThemeProvider from "@/components/theme/ThemeProvider";
-import { parseStoredColorMode } from "@/lib/themes/siteTheme";
+import { dataThemeName, parseStoredColorMode } from "@/lib/themes/siteTheme";
 import { BUSINESS, getSiteUrl } from "@/lib/siteConfig";
 
 const geistSans = Geist({
@@ -70,8 +70,7 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
   const initialColorMode = parseStoredColorMode(cookieStore.get("theme")?.value);
-  const dataTheme =
-    initialColorMode === "dark" ? "niceguys-dark" : "niceguys-light";
+  const dataTheme = dataThemeName(initialColorMode);
 
   return (
     <html lang="en" data-theme={dataTheme}>

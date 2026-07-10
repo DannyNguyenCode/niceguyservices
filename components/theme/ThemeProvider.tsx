@@ -7,7 +7,7 @@ import {
     useEffect,
     type ReactNode,
 } from "react";
-import type { SiteColorMode } from "@/lib/themes/siteTheme";
+import { dataThemeName, type SiteColorMode } from "@/lib/themes/siteTheme";
 
 interface Ctx {
     theme: SiteColorMode;
@@ -36,10 +36,7 @@ export default function ThemeProvider({
     const [theme, setTheme] = useState<SiteColorMode>(initialTheme);
 
     useEffect(() => {
-        document.documentElement.setAttribute(
-            "data-theme",
-            theme === "dark" ? "niceguys-dark" : "niceguys-light",
-        );
+        document.documentElement.setAttribute("data-theme", dataThemeName(theme));
         document.cookie = `theme=${theme}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
     }, [theme]);
 

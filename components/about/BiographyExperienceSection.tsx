@@ -17,12 +17,12 @@ export default function BiographyExperienceSection({
             <div className={sitePageContentClass}>
                 <div className="grid grid-cols-1 gap-20 md:grid-cols-2">
                     <div>
-                        <h2 className="font-pm-headline mb-12 flex items-center gap-4 text-3xl font-bold md:text-4xl">
+                        <h2 className="font-pixel mb-12 flex capitalize items-center gap-4 text-3xl font-bold md:text-4xl">
                             <span
                                 className="bg-primary h-px w-12 shrink-0"
                                 aria-hidden
                             />
-                            Professional experience
+                            Professional Experience
                         </h2>
                         <div className="space-y-12">
                             {experienceTimeline.map((job) => (
@@ -39,7 +39,7 @@ export default function BiographyExperienceSection({
                                         aria-hidden
                                     />
                                     <div
-                                        className={`font-pm-headline mb-2 text-xs font-bold tracking-widest uppercase ${
+                                        className={`font-pixel mb-2 text-xs font-bold capitalize tracking-widest ${
                                             job.active
                                                 ? "text-primary"
                                                 : "text-neutral-content/60"
@@ -47,7 +47,7 @@ export default function BiographyExperienceSection({
                                     >
                                         {job.period}
                                     </div>
-                                    <h3 className="font-pm-headline mb-1 text-2xl font-bold">
+                                    <h3 className="font-pixel mb-1 capitalize text-2xl font-bold">
                                         {job.title}
                                     </h3>
                                     <div className="mb-4 font-medium text-neutral-content/75">
@@ -61,7 +61,7 @@ export default function BiographyExperienceSection({
                         </div>
                     </div>
                     <div>
-                        <h2 className="font-pm-headline mb-12 flex items-center gap-4 text-3xl font-bold md:text-4xl">
+                        <h2 className="font-pixel mb-12 flex capitalize items-center gap-4 text-3xl font-bold md:text-4xl">
                             <span
                                 className="bg-secondary h-px w-12 shrink-0"
                                 aria-hidden
@@ -69,10 +69,10 @@ export default function BiographyExperienceSection({
                             {educationHighlight.eyebrow}
                         </h2>
                         <div className="rounded-2xl border border-white/10 bg-white/5 p-8">
-                            <div className="font-pm-headline mb-2 text-xs font-bold tracking-widest text-secondary uppercase">
+                            <div className="font-pixel mb-2 text-xs font-bold capitalize tracking-widest text-secondary">
                                 {educationHighlight.cardEyebrow ?? "Credential"}
                             </div>
-                            <h3 className="font-pm-headline mb-1 text-2xl font-bold">
+                            <h3 className="font-pixel mb-1 capitalize text-2xl font-bold">
                                 {educationHighlight.title}
                             </h3>
                             <div className="font-medium text-neutral-content/75">

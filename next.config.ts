@@ -23,8 +23,23 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/featured-work",
+        destination: "/work",
+        permanent: true,
+      },
+      {
+        source: "/featured-work/:path*",
+        destination: "/work/:path*",
+        permanent: true,
+      },
+      {
+        source: "/website-inspirations",
+        destination: "/inspiration",
+        permanent: true,
+      },
+      {
         source: "/templates",
-        destination: "/website-inspirations",
+        destination: "/inspiration",
         permanent: true,
       },
       {

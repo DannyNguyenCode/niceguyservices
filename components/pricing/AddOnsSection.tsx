@@ -1,8 +1,14 @@
 "use client";
 
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
+import PixelCtaLink from "@/components/ui/PixelCtaLink";
+import PixelKeyword from "@/components/ui/PixelKeyword";
 import pricingContent from "./pricingContent.json";
-import { goToContact, pricingLayoutHeadline as headline } from "./pricingLayoutConstants";
+import {
+    pixelPageEyebrow,
+    pixelPageHeading,
+    pricingLayoutHeadline as headline,
+} from "./pricingLayoutConstants";
 import { addOnIcons, type AddOnIconKey } from "./pricingIconMaps";
 
 export default function AddOnsSection() {
@@ -27,16 +33,14 @@ export default function AddOnsSection() {
                 <div className="mb-10 flex flex-col items-start justify-between gap-6 md:mb-12 md:flex-row md:items-end">
                     <div>
                         <span
-                            className={`mb-2 block text-xs font-bold tracking-widest uppercase ${headline}`}
-                            style={{ color: "var(--pm-primary)" }}
+                            className={`mb-2 block text-xs font-bold tracking-widest ${headline} ${pixelPageEyebrow}`}
                         >
                             {sectionEyebrow}
                         </span>
                         <h2
-                            className={`text-3xl font-black tracking-tight md:text-4xl ${headline}`}
-                            style={{ color: "var(--pm-on-surface)" }}
+                            className={`text-3xl font-extrabold tracking-tight md:text-4xl ${headline} ${pixelPageHeading}`}
                         >
-                            {title}
+                            <PixelKeyword>{title}</PixelKeyword>
                         </h2>
                         {showSubtitle ? (
                             <p
@@ -47,14 +51,14 @@ export default function AddOnsSection() {
                             </p>
                         ) : null}
                     </div>
-                    <button
-                        type="button"
-                        onClick={goToContact}
-                        className={`flex items-center gap-2 rounded-lg px-1 py-1 text-sm font-bold transition-all hover:gap-3 ${headline}`}
-                        style={{ color: "var(--pm-primary)" }}
+                    <PixelCtaLink
+                        href={pricingContent.meta.contactHref}
+                        color="var(--ng-btn-sky)"
+                        className="group flex items-center gap-2"
                     >
-                        {ctaLabel} <ArrowRightIcon className="h-4 w-4 shrink-0" aria-hidden />
-                    </button>
+                        {ctaLabel}
+                        <ArrowRightIcon className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5" aria-hidden />
+                    </PixelCtaLink>
                 </div>
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

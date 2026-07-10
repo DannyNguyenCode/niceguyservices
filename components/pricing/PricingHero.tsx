@@ -1,53 +1,67 @@
 "use client";
 
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import PixelCtaLink from "@/components/ui/PixelCtaLink";
+import PixelKeyword from "@/components/ui/PixelKeyword";
 import pricingContent from "./pricingContent.json";
-import { pricingLayoutHeadline as headline } from "./pricingLayoutConstants";
+import {
+    pixelPageEyebrow,
+    pixelPageHeading,
+    pricingLayoutHeadline as headline,
+} from "./pricingLayoutConstants";
 
 export default function PricingHero() {
     const { hero } = pricingContent;
 
     return (
-        <section className="w-full overflow-hidden pt-24 pb-16 md:pb-24 md:pt-28">
+        <section className="relative w-full overflow-hidden pt-24 pb-16 md:pb-24 md:pt-28">
+            <div className="pointer-events-none absolute inset-0 ng-grid-bg opacity-40" aria-hidden />
             <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
                 <div
-                    className="absolute -top-24 -left-24 h-64 w-64 rounded-full blur-3xl md:-left-8"
-                    style={{ backgroundColor: "var(--pm-primary-alpha-30)" }}
-                />
-                <div
-                    className="absolute -top-8 right-0 h-96 w-96 max-w-[min(100vw,28rem)] rounded-full blur-[100px] md:right-[8%]"
-                    style={{
-                        backgroundColor: `color-mix(in srgb, var(--pm-secondary-container) 20%, transparent)`,
-                    }}
+                    className="absolute -top-40 left-1/2 h-[600px] w-[900px] -translate-x-1/2 rounded-full opacity-40 blur-3xl"
+                    style={{ background: "radial-gradient(closest-side, var(--ng-hero-glow), transparent)" }}
                 />
             </div>
             <div className="relative z-10 w-full">
-                <div className="max-w-3xl">
+                <div className="w-full">
                     <span
-                        className={`mb-4 block text-sm font-bold tracking-[0.2em] uppercase ${headline}`}
-                        style={{ color: "var(--pm-primary)" }}
+                        className={`mb-4 block text-sm font-bold tracking-[0.2em] ${headline} ${pixelPageEyebrow}`}
                     >
                         {hero.eyebrow}
                     </span>
                     <h1
-                        className={`mb-6 max-w-3xl text-5xl leading-[1.1] font-bold tracking-tight md:text-7xl ${headline}`}
-                        style={{ color: "var(--pm-on-surface)" }}
+                        className={`mb-6 w-full text-5xl leading-[1.1] font-extrabold tracking-tight md:text-7xl ${headline} ${pixelPageHeading}`}
                     >
-                        {hero.headlineLine1} <br />
-                        <span
-                            className="bg-clip-text text-transparent"
-                            style={{
-                                backgroundImage: `linear-gradient(to right, var(--pm-primary), var(--pm-primary-container))`,
-                            }}
-                        >
-                            {hero.headlineGradient}
-                        </span>
+                        Simple <PixelKeyword>Plans</PixelKeyword>, <br />
+                        Serious <PixelKeyword variant="base">Results</PixelKeyword>
                     </h1>
-                    <p
-                        className="max-w-xl text-xl font-light leading-relaxed"
-                        style={{ color: "var(--pm-on-surface-variant)" }}
-                    >
+                    <p className="w-full max-w-none text-xl font-light leading-relaxed text-[color:var(--ng-body)]">
                         {hero.subtitle}
                     </p>
+                    <div className="mt-10 flex flex-wrap items-center gap-4 sm:gap-5">
+                        <PixelCtaLink
+                            href={pricingContent.meta.contactHref}
+                            color="var(--ng-btn-coral)"
+                            className="group"
+                        >
+                            Start your project
+                            <ArrowRightIcon
+                                className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
+                                aria-hidden
+                            />
+                        </PixelCtaLink>
+                        <PixelCtaLink
+                            href="/services"
+                            color="var(--ng-btn-sky)"
+                            className="group"
+                        >
+                            View services
+                            <ArrowRightIcon
+                                className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
+                                aria-hidden
+                            />
+                        </PixelCtaLink>
+                    </div>
                 </div>
             </div>
         </section>

@@ -1,0 +1,313 @@
+html[data-theme="niceguys-light"] {
+    --ng-bg: var(--brand-surface);
+    --ng-card: var(--brand-card);
+    --ng-primary: var(--brand-primary);
+    --ng-primary-bright: var(--brand-primary-bright);
+    --ng-accent: var(--brand-primary);
+    --ng-navy: var(--brand-navy);
+    --ng-teal: var(--brand-teal);
+    --ng-green: var(--brand-green);
+    --ng-coral: var(--brand-coral);
+    --ng-muted: var(--brand-surface-container);
+    --ng-border: var(--brand-border);
+    --ng-heading: var(--brand-heading);
+    --ng-body: var(--brand-body);
+    --ng-pixel-highlight: var(--brand-pixel-highlight);
+    --ng-pixel-word: var(--brand-pixel-word);
+    --ng-pixel-highlight-glow: var(--brand-pixel-highlight-glow);
+    --ng-pixel-word-glow: var(--brand-pixel-word-glow);
+    --ng-btn-coral: var(--brand-btn-coral);
+    --ng-btn-sky: var(--brand-btn-sky);
+    --ng-btn-accent: var(--brand-btn-accent);
+    --ng-btn-text: var(--brand-btn-text);
+    --ng-btn-fill: var(--brand-btn-fill);
+    --ng-hero-glow: var(--brand-hero-glow);
+}
+
+html[data-theme="niceguys-dark"] {
+    --ng-bg: var(--brand-surface);
+    --ng-card: var(--brand-card);
+    --ng-primary: var(--brand-primary);
+    --ng-primary-bright: var(--brand-primary-bright);
+    --ng-accent: var(--brand-primary);
+    --ng-navy: var(--brand-navy);
+    --ng-teal: var(--brand-teal);
+    --ng-green: var(--brand-green);
+    --ng-coral: var(--brand-coral);
+    --ng-muted: var(--brand-surface-container);
+    --ng-border: var(--brand-border);
+    --ng-heading: var(--brand-heading);
+    --ng-body: var(--brand-body);
+    --ng-pixel-highlight: var(--brand-pixel-highlight);
+    --ng-pixel-word: var(--brand-pixel-word);
+    --ng-pixel-highlight-glow: var(--brand-pixel-highlight-glow);
+    --ng-pixel-word-glow: var(--brand-pixel-word-glow);
+    --ng-btn-coral: var(--brand-btn-coral);
+    --ng-btn-sky: var(--brand-btn-sky);
+    --ng-btn-accent: var(--brand-btn-accent);
+    --ng-btn-text: var(--brand-btn-text);
+    --ng-btn-fill: var(--brand-btn-fill);
+    --ng-hero-glow: var(--brand-hero-glow);
+}
+
+:root {
+    --ng-bg: var(--brand-surface);
+    --ng-card: var(--brand-card);
+    --ng-primary: var(--brand-primary);
+    --ng-primary-bright: var(--brand-primary-bright);
+    --ng-accent: var(--brand-primary);
+    --ng-navy: var(--brand-navy);
+    --ng-teal: var(--brand-teal);
+    --ng-green: var(--brand-green);
+    --ng-coral: var(--brand-coral);
+    --ng-muted: var(--brand-surface-container);
+    --ng-border: var(--brand-border);
+    --ng-heading: var(--brand-heading);
+    --ng-body: var(--brand-body);
+    --ng-pixel-highlight: var(--brand-pixel-highlight);
+    --ng-pixel-word: var(--brand-pixel-word);
+    --ng-pixel-highlight-glow: var(--brand-pixel-highlight-glow);
+    --ng-pixel-word-glow: var(--brand-pixel-word-glow);
+    --ng-btn-coral: var(--brand-btn-coral);
+    --ng-btn-sky: var(--brand-btn-sky);
+    --ng-btn-accent: var(--brand-btn-accent);
+    --ng-btn-text: var(--brand-btn-text);
+    --ng-btn-fill: var(--brand-btn-fill);
+    --ng-hero-glow: var(--brand-hero-glow);
+}
+
+.font-pixel {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    letter-spacing: -0.02em;
+}
+
+.ng-pixel-word-highlight {
+    color: var(--ng-pixel-highlight);
+}
+
+.ng-pixel-word-base {
+    color: var(--ng-pixel-word);
+}
+
+.pixel-word {
+    background-image: radial-gradient(currentColor 45%, transparent 47%);
+    background-size: 0.09em 0.09em;
+    background-position: center;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.pixel-word.ng-pixel-word-highlight {
+    filter:
+        drop-shadow(0 0 0.08em var(--ng-pixel-highlight-glow))
+        drop-shadow(0 0 0.22em var(--ng-pixel-highlight-glow))
+        drop-shadow(0 0 0.45em var(--ng-pixel-highlight-glow));
+}
+
+.pixel-word.ng-pixel-word-base {
+    filter:
+        drop-shadow(0 0 0.08em var(--ng-pixel-word-glow))
+        drop-shadow(0 0 0.22em var(--ng-pixel-word-glow))
+        drop-shadow(0 0 0.45em var(--ng-pixel-word-glow));
+}
+
+.ng-card-shadow {
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.7) inset,
+        0 30px 60px -30px rgba(10, 125, 186, 0.35),
+        0 10px 30px -15px rgba(11, 37, 64, 0.18);
+}
+
+html[data-theme="niceguys-dark"] .ng-card-shadow {
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.04) inset,
+        0 40px 90px -30px rgba(96, 196, 227, 0.28),
+        0 10px 30px -15px rgba(0, 0, 0, 0.6);
+}
+
+.ng-grid-bg {
+    background-image:
+        linear-gradient(to right, var(--ng-border) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--ng-border) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 75%);
+}
+
+.pixel-btn {
+    position: relative;
+    transition:
+        transform 0.25s ease,
+        filter 0.25s ease;
+}
+
+.pixel-btn-neon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    border: none !important;
+    border-radius: 3px;
+    padding: 0.9rem 1.35rem;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--pixel-btn-text, var(--pixel-btn-color, var(--ng-btn-accent)));
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+.pixel-btn-neon::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: radial-gradient(
+        var(--pixel-btn-color, var(--ng-btn-accent)) 42%,
+        transparent 45%
+    );
+    background-size: 3px 3px;
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+.pixel-btn-neon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--pixel-btn-color) 50%, transparent);
+    filter: brightness(1.08);
+}
+
+.pixel-btn-neon:active {
+    transform: translateY(0);
+}
+
+.pixel-btn-neon--pill {
+    border-radius: 9999px;
+    padding: 1rem 2rem;
+}
+
+.pixel-btn-neon--xl {
+    border-radius: 0.75rem;
+    padding: 0.95rem 1.25rem;
+}
+
+.pixel-btn-neon--lg {
+    font-size: 12px;
+    padding: 1.15rem 2.25rem;
+}
+
+.pixel-btn-neon--block {
+    width: 100%;
+    justify-content: center;
+}
+
+.pixel-btn-neon--filled {
+    background: var(--pixel-btn-fill, color-mix(in srgb, var(--pixel-btn-color) 14%, transparent));
+    color: var(--pixel-btn-text, var(--pixel-btn-color));
+}
+
+.pixel-section-title {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    letter-spacing: -0.02em;
+}
+
+.pixel-frame {
+    position: relative;
+    border: none !important;
+}
+
+.pixel-frame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: radial-gradient(
+        var(--pixel-frame-color, var(--ng-accent)) 42%,
+        transparent 45%
+    );
+    background-size: 3px 3px;
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.pixel-divider-b {
+    position: relative;
+    border-bottom: none !important;
+}
+
+.pixel-divider-b::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: radial-gradient(
+        var(--pixel-divider-color, var(--ng-border)) 42%,
+        transparent 45%
+    );
+    background-size: 3px 3px;
+    pointer-events: none;
+}
+
+.pixel-btn:hover {
+    animation: pixel-dissolve 0.5s ease;
+}
+
+.pixel-browser-mockup {
+    object-fit: contain;
+}
+
+html[data-theme="niceguys-dark"] .pixel-browser-mockup {
+    mix-blend-mode: screen;
+}
+
+@keyframes pixel-dissolve {
+    0% {
+        filter: none;
+        transform: translateY(0);
+    }
+    30% {
+        filter: blur(1.5px) contrast(1.15) saturate(1.2);
+        transform: translateY(-1px);
+        clip-path: polygon(
+            0 0,
+            100% 0,
+            100% 40%,
+            95% 45%,
+            100% 55%,
+            100% 100%,
+            0 100%,
+            0 55%,
+            5% 45%,
+            0 40%
+        );
+    }
+    100% {
+        filter: none;
+        transform: translateY(-2px);
+        clip-path: none;
+    }
+}

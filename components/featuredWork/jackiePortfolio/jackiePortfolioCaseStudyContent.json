@@ -2,7 +2,7 @@
   "meta": {
     "slug": "jackie-portfolio",
     "contactHref": "/contact#contact-form",
-    "featuredWorkHref": "/featured-work",
+    "featuredWorkHref": "/work",
     "projectUrl": "https://jackie-portfolio-nu.vercel.app/",
     "projectDetailsHref": "#project-snapshot",
     "heroImageSrc": "/jackieportfoliocasestudy/homepage.png",

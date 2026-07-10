@@ -4,7 +4,7 @@
 ## 1. Overview & Creative North Star: "The Neon Pulse"
 The Creative North Star for this design system is **"The Neon Pulse."** We are moving away from the static, rigid structures of traditional SaaS dashboards toward a living, breathing digital organism. This system is designed to feel fast, innovative, and unapologetically premium.
 
-To break the "template" look, we utilize **Kinetic Asymmetry.** Do not align every element to a perfect vertical axis. Overlap high-energy gradient cards with display typography to create a sense of depth and motion. We treat the interface not as a flat screen, but as a deep, multi-layered environment where "Electric Purple" and "Cyan" act as light sources within a dark, cinematic space.
+To break the "template" look, we utilize **Kinetic Asymmetry.** Do not align every element to a perfect vertical axis. Overlap high-energy gradient cards with display typography to create a sense of depth and motion. We treat the interface not as a flat screen, but as a deep, multi-layered environment where "Primary Blue" and "Soft Teal" act as light sources within a dark, cinematic space.
 
 ---
 
@@ -12,9 +12,9 @@ To break the "template" look, we utilize **Kinetic Asymmetry.** Do not align eve
 This system thrives on the contrast between a deep, obsidian base (`surface`) and hyper-saturated accent tokens.
 
 ### The Color Logic
-- **Primary (`#df8eff`):** Use this for high-impact brand moments. 
-- **Secondary (`#00eefc`):** Our "functional" accent. Use Cyan for data visualization, success states, or to draw the eye to secondary actions.
-- **Tertiary (`#ac89ff`):** Reserved for deep-layered elements and supporting gradients.
+- **Primary (`#60c4e3`):** Use this for high-impact brand moments. 
+- **Secondary (`#20b2a8`):** Our "functional" accent. Use Teal for data visualization, success states, or to draw the eye to secondary actions.
+- **Tertiary (`#59d39a`):** Reserved for deep-layered elements and supporting gradients.
 
 ### The "No-Line" Rule
 **Explicit Instruction:** Prohibit 1px solid borders for sectioning. Structural boundaries must be defined solely through background color shifts. 
@@ -23,7 +23,7 @@ This system thrives on the contrast between a deep, obsidian base (`surface`) an
 
 ### Surface Hierarchy & Nesting
 Treat the UI as stacked sheets of frosted glass. 
-- **Level 0 (Foundation):** `surface` (`#0e0e13`)
+- **Level 0 (Foundation):** `surface` (`#071729`)
 - **Level 1 (Sectioning):** `surface-container-low`
 - **Level 2 (Active Cards):** `surface-container` or `surface-container-high`
 - **Level 3 (Floating/Pop-overs):** `surface-bright` with Backdrop Blur.
@@ -81,6 +81,6 @@ Traditional shadows are too heavy for this system. We use **Ambient Luminance.**
 
 ### Don’t:
 - **Don’t** use 1px solid borders to define "sections." It kills the futuristic aesthetic.
-- **Don’t** use pure black (#000000) for large surfaces. Stick to the `surface` token (`#0e0e13`) to maintain tonal richness.
+- **Don’t** use pure black (#000000) for large surfaces. Stick to the `surface` token (`#071729`) to maintain tonal richness.
 - **Don’t** use standard "Drop Shadows." If it doesn't look like ambient light or glass, rethink the elevation.
 - **Don’t** clutter the screen. High-energy design requires significant negative space to avoid becoming "noisy."

@@ -8,13 +8,13 @@ import type {
     VitalStat,
 } from "./aboutBiographyTypes";
 import BiographyExperienceSection from "./BiographyExperienceSection";
-import BiographyFinalCtaSection from "./BiographyFinalCtaSection";
 import BiographyFloatingCta from "./BiographyFloatingCta";
 import BiographyHero from "./BiographyHero";
 import BiographyHomePackSection from "./BiographyHomePackSection";
 import BiographyMeetSection from "./BiographyMeetSection";
 import BiographyMethodologySection from "./BiographyMethodologySection";
 import BiographyWhoSection from "./BiographyWhoSection";
+import ServicesModernCTA from "@/components/services/ServicesModernCTA";
 
 export default function AboutBiographyLayout() {
     const {
@@ -43,9 +43,6 @@ export default function AboutBiographyLayout() {
         educationHighlight: EducationHighlight;
     };
 
-    const locationEyebrow =
-        intro.badges[0] ?? "Toronto, ON • Local & remote";
-
     return (
         <div
             className="flex min-h-screen flex-col bg-(--pm-surface) font-pm-body text-(--pm-on-surface)"
@@ -53,9 +50,10 @@ export default function AboutBiographyLayout() {
         >
                 <main className="min-w-0 w-full flex-1">
                     <BiographyHero
-                        locationEyebrow={locationEyebrow}
-                        headlineLine1={bl.heroHeadlineLine1}
-                        headlineAccent={bl.heroHeadlineAccent}
+                        eyebrow={bl.heroEyebrow}
+                        headlineHighlight={bl.heroHeadlineHighlight}
+                        headlinePlain={bl.heroHeadlinePlain}
+                        headlineBase={bl.heroHeadlineBase}
                         subtitle={page.subtitle}
                         primaryCta={bl.heroPrimaryCta}
                         secondaryCta={bl.heroSecondaryCta}
@@ -86,13 +84,15 @@ export default function AboutBiographyLayout() {
                         eyebrow={bl.meetModuleEyebrow}
                         meetCard={meetCard}
                     />
-                    <BiographyFinalCtaSection
-                        title={cta.title}
-                        description={cta.description}
-                        buttonLabel={cta.buttonLabel}
-                        buttonHref={cta.buttonHref}
-                    />
                 </main>
+
+                <ServicesModernCTA
+                    title={cta.title}
+                    description={cta.description}
+                    primaryLabel={cta.buttonLabel}
+                    secondaryHref="/services"
+                    secondaryLabel="View services"
+                />
 
                 <BiographyFloatingCta
                     href={cta.buttonHref}

@@ -1,11 +1,18 @@
 "use client";
 
 import { useCallback, useMemo, useRef, useState } from "react";
+import PixelKeyword from "@/components/ui/PixelKeyword";
 import { InspirationCategoryFilters } from "@/components/templates/gallery/InspirationCategoryFilters";
 import { InspirationFilteredGrid } from "@/components/templates/gallery/InspirationFilteredGrid";
 import { InspirationPosterCard } from "@/components/templates/gallery/InspirationPosterCard";
 import { InspirationRow } from "@/components/templates/gallery/InspirationRow";
 import { InspirationsBackToTopFab } from "@/components/templates/gallery/InspirationsBackToTopFab";
+import {
+  pixelPageEyebrow,
+  pixelPageHeading,
+  pricingLayoutHeadline as headline,
+  sitePageContentClass,
+} from "@/components/pricing/pricingLayoutConstants";
 import {
   GALLERY_CARD_META,
   templateMatchesFilter,
@@ -49,27 +56,38 @@ export function TemplateGallery() {
   );
 
   return (
-    <div className="gallery-root min-h-dvh overflow-x-hidden pb-16">
+    <>
+      <section className="relative w-full overflow-hidden bg-(--pm-surface) pt-24 pb-8 md:pt-28 md:pb-10">
+        <div className="pointer-events-none absolute inset-0 ng-grid-bg opacity-40" aria-hidden />
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          <div
+            className="absolute -top-40 left-1/2 h-[600px] w-[900px] -translate-x-1/2 rounded-full opacity-40 blur-3xl"
+            style={{ background: "radial-gradient(closest-side, var(--ng-hero-glow), transparent)" }}
+          />
+        </div>
+        <div className={`relative z-10 ${sitePageContentClass}`}>
+          <span
+            className={`mb-4 block text-sm font-bold tracking-[0.2em] ${headline} ${pixelPageEyebrow}`}
+          >
+            Layout demos
+          </span>
+          <h1
+            className={`mb-6 w-full text-5xl leading-[1.1] font-extrabold tracking-tight md:text-7xl ${headline} ${pixelPageHeading}`}
+          >
+            Website <PixelKeyword>Inspirations</PixelKeyword>
+          </h1>
+          <p className="max-w-2xl text-xl font-light leading-relaxed text-[color:var(--ng-body)]">
+            Explore professionally designed website concepts organized by website type. Every
+            concept is fully customizable and serves as a starting point—not a one-size-fits-all
+            template.
+          </p>
+        </div>
+      </section>
+
+      <InspirationCategoryFilters activeFilter={activeFilter} onFilterChange={handleFilterChange} />
+
+      <div className="gallery-root min-h-dvh overflow-x-hidden pb-16">
       <main>
-        <section className="relative overflow-hidden px-[var(--spacing-gutter)] pt-16 pb-6 md:pt-20">
-          <div className="glow-node -left-20 top-0" aria-hidden />
-          <div className="relative z-10 mx-auto max-w-[var(--spacing-container-max)]">
-            <h1 className="font-[family-name:var(--font-gallery)] text-[length:var(--text-headline-xl-mobile)] leading-[var(--text-headline-xl-mobile--line-height)] font-[number:var(--text-headline-xl-mobile--font-weight)] tracking-[var(--text-headline-xl-mobile--letter-spacing)] text-on-surface uppercase md:text-[length:var(--text-headline-xl)] md:leading-[var(--text-headline-xl--line-height)] md:tracking-[var(--text-headline-xl--letter-spacing)] md:font-[number:var(--text-headline-xl--font-weight)]">
-              Website{" "}
-              <span className="bg-linear-to-r from-primary-fixed to-secondary-container bg-clip-text text-transparent">
-                Inspirations
-              </span>
-            </h1>
-            <p className="mt-4 max-w-2xl font-[family-name:var(--font-gallery)] text-[length:var(--text-body-lg)] leading-[var(--text-body-lg--line-height)] font-[number:var(--text-body-lg--font-weight)] text-on-surface-variant">
-              Explore professionally designed website concepts organized by website type. Every concept is
-              fully customizable and serves as a starting point—not a one-size-fits-all template.
-            </p>
-            <div className="gallery-row-divider mt-8" aria-hidden />
-          </div>
-        </section>
-
-        <InspirationCategoryFilters activeFilter={activeFilter} onFilterChange={handleFilterChange} />
-
         <div ref={contentRef} className="scroll-mt-24">
           {isBrowseAll ? (
             <>
@@ -150,6 +168,7 @@ export function TemplateGallery() {
         </div>
       </main>
       <InspirationsBackToTopFab />
-    </div>
+      </div>
+    </>
   );
 }

@@ -2,12 +2,19 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import type { ComponentType, SVGProps } from "react";
+import PixelCtaLink from "@/components/ui/PixelCtaLink";
+import PixelKeyword from "@/components/ui/PixelKeyword";
 import resourceCategoriesData from "@/components/resources/resourceCategories.json";
-import { sitePageContentClass } from "@/components/pricing/pricingLayoutConstants";
+import ServicesModernCTA from "@/components/services/ServicesModernCTA";
+import {
+    pixelPageEyebrow,
+    pixelPageHeading,
+    pricingLayoutHeadline as headline,
+    sitePageContentClass,
+} from "@/components/pricing/pricingLayoutConstants";
 import { absoluteUrl } from "@/lib/siteConfig";
 import {
     ArrowRightIcon,
-    ArrowUpRightIcon,
     ChartBarIcon,
     MapPinIcon,
     SparklesIcon,
@@ -117,7 +124,7 @@ function ResourceCard({ article, index }: { article: ResourceArticle; index: num
                     large ? "mt-8 transition-all group-hover:gap-4" : "mt-6",
                 ].join(" ")}
             >
-                <span className="font-pm-headline text-sm tracking-wider uppercase">
+                <span className={`${headline} text-sm tracking-wider uppercase`}>
                     Read article
                 </span>
                 <ArrowRightIcon className="h-5 w-5" aria-hidden />
@@ -131,7 +138,7 @@ function ResourceCategorySection({ category }: { category: ResourceCategory }) {
         <section aria-labelledby={`category-${category.id}`} className="mb-20 last:mb-0">
             <h2
                 id={`category-${category.id}`}
-                className="font-pm-headline mb-4 text-3xl font-bold tracking-tight text-(--pm-on-surface) md:text-4xl"
+                className={`${headline} mb-4 text-3xl font-extrabold tracking-tight md:text-4xl ${pixelPageHeading}`}
             >
                 {category.title}
             </h2>
@@ -154,24 +161,50 @@ function ResourceCategorySection({ category }: { category: ResourceCategory }) {
 export default function ResourcesPage() {
     return (
         <div className="bg-(--pm-surface) font-pm-body text-(--pm-on-surface)">
-            <main className={`pt-28 pb-24 ${sitePageContentClass}`}>
-                <header className="mb-20">
-                    <div className="mb-6 inline-block rounded-full bg-secondary/30 px-3 py-1">
-                        <span className="font-pm-headline text-[10px] font-bold tracking-widest text-(--pm-on-surface) uppercase">
+            <main className={`relative pt-28 pb-24 ${sitePageContentClass}`}>
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px] ng-grid-bg opacity-30" aria-hidden />
+                <header className="relative z-10 mb-20">
+                    <div className="mb-6 inline-block rounded-full border border-[color:var(--ng-border)] bg-white/60 px-3 py-1 backdrop-blur dark:bg-white/5">
+                        <span className={`${headline} text-[10px] font-bold tracking-widest ${pixelPageEyebrow}`}>
                             Knowledge archive
                         </span>
                     </div>
-                    <h1 className="font-pm-headline mb-8 max-w-4xl text-5xl leading-[0.95] font-bold tracking-tighter text-(--pm-on-surface) md:text-7xl">
-                        Resources for{" "}
-                        <span className="text-primary italic">
-                            small business
-                        </span>{" "}
-                        websites &amp; SEO
+                    <h1 className={`${headline} mb-8 max-w-4xl text-5xl leading-[0.95] font-extrabold tracking-tighter md:text-7xl ${pixelPageHeading}`}>
+                        <PixelKeyword>Resources</PixelKeyword>
+                        <br />
+                        for small businesses
+                        <br />
+                        <PixelKeyword variant="base">website</PixelKeyword> &amp;{" "}
+                        <PixelKeyword variant="base">SEO</PixelKeyword>
                     </h1>
                     <p className="max-w-2xl text-xl font-light leading-relaxed text-(--pm-on-surface-variant) md:text-2xl">
                         Short, practical guides on local SEO, Search Console, and how search
                         is changing for Toronto and GTA small businesses.
                     </p>
+                    <div className="mt-10 flex flex-wrap items-center gap-4 sm:gap-5">
+                        <PixelCtaLink
+                            href="/contact"
+                            color="var(--ng-btn-coral)"
+                            className="group"
+                        >
+                            Start your project
+                            <ArrowRightIcon
+                                className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
+                                aria-hidden
+                            />
+                        </PixelCtaLink>
+                        <PixelCtaLink
+                            href="/services"
+                            color="var(--ng-btn-sky)"
+                            className="group"
+                        >
+                            View services
+                            <ArrowRightIcon
+                                className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
+                                aria-hidden
+                            />
+                        </PixelCtaLink>
+                    </div>
                 </header>
 
                 <div className="space-y-4">
@@ -179,45 +212,15 @@ export default function ResourcesPage() {
                         <ResourceCategorySection key={category.id} category={category} />
                     ))}
                 </div>
-
-                <section className="relative mt-32 overflow-hidden rounded-3xl bg-neutral p-12 text-center md:p-20">
-                    <div
-                        className="bg-primary/20 absolute top-0 right-0 -mt-48 -mr-48 h-96 w-96 rounded-full blur-[120px]"
-                        aria-hidden
-                    />
-                    <div
-                        className="bg-secondary/10 absolute bottom-0 left-0 -mb-32 -ml-32 h-64 w-64 rounded-full blur-[100px]"
-                        aria-hidden
-                    />
-                    <div className="relative z-10 mx-auto max-w-2xl">
-                        <h2 className="font-pm-headline mb-6 text-4xl font-bold tracking-tight text-neutral-content md:text-5xl">
-                            Need a website built the right way?
-                        </h2>
-                        <p className="mb-10 text-lg font-light text-neutral-content/80">
-                            Skip the trial and error. Get a site that loads fast, reads
-                            clearly, and is built to grow with your business.
-                        </p>
-                        <div className="flex flex-wrap items-center justify-center gap-4">
-                            <Link
-                                href="/services"
-                                className="group bg-(--pm-white) font-pm-headline inline-flex items-center gap-4 rounded-full px-10 py-4 text-lg font-bold text-neutral transition-all duration-300 hover:bg-primary hover:text-primary-content"
-                            >
-                                Explore services
-                                <ArrowUpRightIcon
-                                    className="h-6 w-6 transition-transform group-hover:rotate-45"
-                                    aria-hidden
-                                />
-                            </Link>
-                            <Link
-                                href="/contact"
-                                className="font-pm-headline text-sm font-semibold text-neutral-content/90 underline-offset-4 transition-colors hover:text-neutral-content hover:underline"
-                            >
-                                Contact — Toronto &amp; GTA
-                            </Link>
-                        </div>
-                    </div>
-                </section>
             </main>
+
+            <ServicesModernCTA
+                title="Need a website built the right way?"
+                description="Skip the trial and error. Get a site that loads fast, reads clearly, and is built to grow with your business."
+                primaryLabel="Start your project"
+                secondaryHref="/services"
+                secondaryLabel="View services"
+            />
         </div>
     );
 }
