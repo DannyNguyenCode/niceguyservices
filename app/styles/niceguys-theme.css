@@ -7,7 +7,6 @@
 
 @plugin "daisyui/theme" {
     name: "niceguys-light";
-    default: true;
     prefersdark: false;
     color-scheme: light;
 
@@ -86,6 +85,7 @@
 
 @plugin "daisyui/theme" {
     name: "niceguys-dark";
+    default: true;
     prefersdark: false;
     color-scheme: dark;
 
