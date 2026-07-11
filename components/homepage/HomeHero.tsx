@@ -740,7 +740,7 @@ export default function HomeHero() {
           <h1
             id="home-hero-heading"
             ref={headlineRef}
-            className="font-pixel text-[44px] font-extrabold capitalize leading-[0.98] tracking-tight text-[color:var(--ng-heading)] sm:text-[54px] lg:text-[64px]"
+            className={`font-pixel text-[44px] font-extrabold capitalize leading-[0.98] tracking-tight text-[color:var(--ng-heading)] motion-safe:transition-all motion-safe:duration-700 motion-safe:ease-out sm:text-[54px] lg:text-[64px] ${revealed.headline ? "motion-safe:translate-y-0 motion-safe:opacity-100" : "motion-safe:translate-y-2 motion-safe:opacity-0 motion-reduce:translate-y-0 motion-reduce:opacity-100"}`}
           >
             We Build{" "}
             <span className="pixel-word ng-pixel-word-highlight">Websites</span>
@@ -751,7 +751,7 @@ export default function HomeHero() {
 
           <p
             ref={paragraphRef}
-            className="mt-6 max-w-lg text-[16px] leading-relaxed text-[color:var(--ng-body)]"
+            className={`mt-6 max-w-lg text-[16px] leading-relaxed text-[color:var(--ng-body)] motion-safe:transition-all motion-safe:duration-700 motion-safe:ease-out ${revealed.paragraph ? "motion-safe:translate-y-0 motion-safe:opacity-100" : "motion-safe:translate-y-2 motion-safe:opacity-0 motion-reduce:translate-y-0 motion-reduce:opacity-100"}`}
           >
             A tiny Toronto studio obsessed with craft. We build fast, thoughtful
             websites that convert visitors into customers — one deliberate
@@ -760,7 +760,7 @@ export default function HomeHero() {
 
           <div
             ref={ctaRef}
-            className="mt-10 flex flex-wrap items-center gap-4 sm:gap-5"
+            className={`mt-10 flex flex-wrap items-center gap-4 sm:gap-5 motion-safe:transition-all motion-safe:duration-700 motion-safe:ease-out ${revealed.ctas ? "motion-safe:translate-y-0 motion-safe:opacity-100" : "motion-safe:translate-y-2 motion-safe:opacity-0 motion-reduce:translate-y-0 motion-reduce:opacity-100"}`}
           >
             <PixelCtaLink
               href="/contact"
@@ -794,7 +794,7 @@ export default function HomeHero() {
           <div
             ref={browserRef}
             aria-hidden
-            className={`relative mx-auto aspect-[5/4] w-full overflow-hidden rounded-2xl home-hero-browser motion-safe:transition-all motion-safe:duration-700 motion-safe:ease-out lg:mx-0 lg:ml-auto lg:w-[min(100%,580px)] xl:w-[min(100%,640px)] ${revealed.browser ? "motion-safe:translate-y-0 motion-safe:opacity-100" : "motion-safe:translate-y-2 motion-safe:opacity-0"}`}
+            className={`relative mx-auto aspect-[5/4] w-full overflow-hidden rounded-2xl home-hero-browser motion-safe:transition-all motion-safe:duration-700 motion-safe:ease-out lg:mx-0 lg:ml-auto lg:w-[min(100%,580px)] xl:w-[min(100%,640px)] ${revealed.browser ? "motion-safe:translate-y-0 motion-safe:opacity-100" : "motion-safe:translate-y-2 motion-safe:opacity-0 motion-reduce:translate-y-0 motion-reduce:opacity-100"}`}
           >
             <Image
               src="/pixel-browser.png"

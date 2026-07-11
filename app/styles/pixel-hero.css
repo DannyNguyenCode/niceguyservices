@@ -229,6 +229,11 @@ html[data-theme="niceguys-dark"] .pixel-btn-neon:hover {
     transform: translateY(0);
 }
 
+.pixel-btn-neon:focus-visible {
+    outline: 2px solid var(--ng-primary, var(--brand-primary-dim));
+    outline-offset: 3px;
+}
+
 .pixel-btn-neon--pill {
     border-radius: 9999px;
     padding: 1rem 2rem;
@@ -327,9 +332,45 @@ html[data-theme="niceguys-dark"] .pixel-browser-mockup {
     mix-blend-mode: screen;
 }
 
-.home-hero-browser {
-    opacity: 1;
-    transform: none;
+.ng-skip-link {
+    position: absolute;
+    left: 0.75rem;
+    top: 0.75rem;
+    z-index: 100;
+    border-radius: 0.375rem;
+    background: var(--pm-surface-low);
+    color: var(--pm-on-surface);
+    padding: 0.625rem 1rem;
+    font-family: var(--font-geist-sans, system-ui, sans-serif);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgb(11 37 64 / 0.12);
+    transform: translateY(-200%);
+    transition: transform 0.15s ease;
+}
+
+.ng-skip-link:focus {
+    transform: translateY(0);
+    outline: 2px solid var(--ng-primary, var(--brand-primary-dim));
+    outline-offset: 2px;
+}
+
+@media (max-width: 639px) {
+    .pixel-btn-neon {
+        min-height: 44px;
+        padding: 0.75rem 1.1rem;
+    }
+
+    .home-hero-browser {
+        max-height: min(72vw, 300px);
+    }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+    .home-hero-browser {
+        max-height: min(56vw, 420px);
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {

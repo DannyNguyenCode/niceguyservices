@@ -9,12 +9,12 @@ import { isDarkTheme } from "@/lib/themes/siteTheme";
 const pages = [
     { title: "Home", link: "/" },
     { title: "Services", link: "/services" },
-    { title: "Pricing", link: "/pricing" },
     { title: "Work", link: "/work" },
-    { title: "Inspiration", link: "/inspiration" },
-    { title: "About Us", link: "/about" },
+    { title: "Pricing", link: "/pricing" },
     { title: "Resources", link: "/resources" },
+    { title: "About", link: "/about" },
     { title: "Contact", link: "/contact" },
+    { title: "Website Inspirations", link: "/inspiration" },
 ];
 
 export default function Footer() {
@@ -67,7 +67,7 @@ export default function Footer() {
                     </p>
                 </aside>
 
-                <nav className="flex flex-col gap-8 md:place-self-center md:justify-self-end" aria-label="Footer navigation">
+                <nav className="flex flex-col gap-8 md:place-self-center md:justify-self-end" aria-label="Footer">
                     <ul className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm md:justify-end">
                         {pages.map((page) => (
                             <li key={page.title}>

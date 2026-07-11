@@ -9,29 +9,26 @@ import {
     pixelPageHeading,
     pricingLayoutHeroHeadline as heroHeadline,
     pricingLayoutPixelLabel as pixelLabel,
+    responsiveHeroBodyClass,
+    responsivePageHeroTitleClass,
+    sitePageContentClass,
 } from "@/components/pricing/pricingLayoutConstants";
 
 export default function WorkHero() {
     const { meta, hero } = featuredWorkContent;
 
     return (
-        <section className="relative w-full overflow-hidden pt-24 pb-16 md:pb-24 md:pt-28">
+        <section className="relative w-full overflow-hidden pt-24 pb-12 sm:pb-16 md:pb-24 md:pt-28">
             <div className="pointer-events-none absolute inset-0 ng-grid-bg opacity-40" aria-hidden />
-            <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-                <div
-                    className="absolute -top-40 left-1/2 h-[600px] w-[900px] -translate-x-1/2 rounded-full opacity-40 blur-3xl"
-                    style={{ background: "radial-gradient(closest-side, var(--ng-hero-glow), transparent)" }}
-                />
-            </div>
-            <div className="relative z-10 w-full">
-                <div className="w-full">
+            <div className={`relative z-10 ${sitePageContentClass}`}>
+                <div className="w-full min-w-0">
                     <span
-                        className={`mb-4 block text-sm font-bold tracking-[0.2em] ${pixelLabel} ${pixelPageEyebrow}`}
+                        className={`mb-4 block text-sm font-bold ${pixelLabel} ${pixelPageEyebrow}`}
                     >
                         {hero.eyebrow}
                     </span>
                     <h1
-                        className={`mb-6 w-full text-5xl leading-[1.1] font-extrabold tracking-tight md:text-7xl ${heroHeadline} ${pixelPageHeading}`}
+                        className={`mb-6 w-full min-w-0 text-balance font-extrabold ${heroHeadline} ${responsivePageHeroTitleClass} ${pixelPageHeading}`}
                     >
                         Featured <PixelKeyword>Websites</PixelKeyword> <br />
                         Built With{" "}
@@ -39,7 +36,7 @@ export default function WorkHero() {
                         <PixelKeyword variant="base">Care</PixelKeyword>, And{" "}
                         <PixelKeyword variant="base">Purpose</PixelKeyword>
                     </h1>
-                    <p className="w-full max-w-none text-xl font-light leading-relaxed text-[color:var(--ng-body)]">
+                    <p className={`w-full max-w-none ${responsiveHeroBodyClass} text-[color:var(--ng-body)]`}>
                         {hero.subtitle}
                     </p>
                     <div className="mt-10 flex flex-wrap items-center gap-4 sm:gap-5">

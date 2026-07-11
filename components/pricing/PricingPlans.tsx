@@ -87,6 +87,11 @@ function PackageCard({ pkg }: { pkg: Package }) {
             ) : null}
 
             <div className="mb-6 sm:mb-8">
+                {"customerLabel" in pkg && pkg.customerLabel ? (
+                    <p className={`mb-2 text-xs font-bold uppercase ${pixelLabel}`} style={{ color: "var(--pm-primary)" }}>
+                        {pkg.customerLabel}
+                    </p>
+                ) : null}
                 <h3
                     className={`mb-2 text-xl font-bold tracking-tight sm:text-2xl md:text-3xl ${headline}`}
                     style={{ color: "var(--pm-on-surface)" }}

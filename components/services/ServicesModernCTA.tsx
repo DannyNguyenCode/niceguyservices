@@ -7,6 +7,7 @@ import {
     pricingLayoutHeadline as headline,
     sitePageContentClass,
 } from "@/components/pricing/pricingLayoutConstants";
+import { PRIMARY_CTA_LABEL } from "@/lib/navigation";
 import pricingContent from "@/components/pricing/pricingContent.json";
 
 type ServicesModernCTAProps = {
@@ -27,7 +28,7 @@ export default function ServicesModernCTA({
     title,
     description,
     primaryHref = pricingContent.meta.contactHref,
-    primaryLabel = "Start your project",
+    primaryLabel = PRIMARY_CTA_LABEL,
     secondaryHref = "/pricing",
     secondaryLabel = "View pricing",
     className = "",
