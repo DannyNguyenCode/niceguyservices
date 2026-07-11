@@ -12,6 +12,8 @@ import {
     pricingLayoutHeadline as headline,
     pricingLayoutHeroHeadline as heroHeadline,
     pricingLayoutPixelLabel as pixelLabel,
+    responsiveHeroBodyClass,
+    responsivePageHeroTitleClass,
     sitePageContentClass,
 } from "@/components/pricing/pricingLayoutConstants";
 import { absoluteUrl } from "@/lib/siteConfig";
@@ -171,7 +173,7 @@ export default function ResourcesPage() {
                             Knowledge archive
                         </span>
                     </div>
-                    <h1 className={`${heroHeadline} mb-8 max-w-4xl text-5xl leading-[0.95] font-extrabold tracking-tighter md:text-7xl ${pixelPageHeading}`}>
+                    <h1 className={`${heroHeadline} mb-6 max-w-4xl min-w-0 text-balance font-extrabold sm:mb-8 ${responsivePageHeroTitleClass} ${pixelPageHeading}`}>
                         <PixelKeyword>Resources</PixelKeyword>
                         <br />
                         for small businesses
@@ -179,9 +181,10 @@ export default function ResourcesPage() {
                         <PixelKeyword variant="base">website</PixelKeyword> &amp;{" "}
                         <PixelKeyword variant="base">SEO</PixelKeyword>
                     </h1>
-                    <p className="max-w-2xl text-xl font-light leading-relaxed text-(--pm-on-surface-variant) md:text-2xl">
-                        Short, practical guides on local SEO, Search Console, and how search
-                        is changing for Toronto and GTA small businesses.
+                    <p className={`max-w-2xl ${responsiveHeroBodyClass} text-(--pm-on-surface-variant)`}>
+                        These guides are here to help small-business owners make better website
+                        decisions, whether they hire me or not. Short reads on local SEO, Search
+                        Console, and how search is changing for Toronto and GTA businesses.
                     </p>
                     <div className="mt-10 flex flex-wrap items-center gap-4 sm:gap-5">
                         <PixelCtaLink
@@ -189,7 +192,7 @@ export default function ResourcesPage() {
                             color="var(--ng-btn-coral)"
                             className="group"
                         >
-                            Start your project
+                            Start a project
                             <ArrowRightIcon
                                 className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
                                 aria-hidden
@@ -219,7 +222,7 @@ export default function ResourcesPage() {
             <ServicesModernCTA
                 title="Need a website built the right way?"
                 description="Skip the trial and error. Get a site that loads fast, reads clearly, and is built to grow with your business."
-                primaryLabel="Start your project"
+                primaryLabel="Start a project"
                 secondaryHref="/services"
                 secondaryLabel="View services"
             />

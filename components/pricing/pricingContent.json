@@ -20,6 +20,7 @@
     {
       "id": "starter-website",
       "tierLabel": "Package",
+      "customerLabel": "Start here",
       "name": "Starter Website",
       "upfront": "$500",
       "upfrontEyebrow": "One-time",
@@ -62,11 +63,12 @@
           "text": "You fully own the website after launch"
         }
       ],
-      "buttonLabel": "Start your build"
+      "buttonLabel": "Start a project"
     },
     {
       "id": "hosting-reports",
       "tierLabel": "Package",
+      "customerLabel": "Keep it managed",
       "name": "Hosting & Reports",
       "upfront": "$20",
       "upfrontEyebrow": "per month",
@@ -102,6 +104,7 @@
     {
       "id": "growth-optimization",
       "tierLabel": "Package",
+      "customerLabel": "Grow visibility",
       "name": "Growth & Optimization",
       "upfront": "$200",
       "upfrontEyebrow": "per month",
@@ -137,7 +140,7 @@
           "text": "Ongoing website updates"
         }
       ],
-      "buttonLabel": "Discuss Growth & Optimization",
+      "buttonLabel": "Start a project",
       "popularBadge": "Best value"
     }
   ],
@@ -185,7 +188,7 @@
     "sectionEyebrow": "Customization",
     "title": "Add-on Services",
     "subtitle": "Need more than the starter scope? Layer on pages, integrations, or hourly support.",
-    "ctaLabel": "Get a full quote",
+    "ctaLabel": "Start a project",
     "cards": [
       {
         "icon": "documentPlus",
@@ -206,6 +209,83 @@
   "consultCta": {
     "title": "Need Something Custom?",
     "body": "Every business is different. If you need booking systems, e-commerce, advanced SEO, custom integrations, or additional pages, we can build a custom solution tailored to your goals.",
-    "buttonLabel": "Get a Free Quote"
+    "buttonLabel": "Start a project"
+  },
+  "starterScope": {
+    "title": "Starter Website scope",
+    "intro": "The $500 starter package is designed for small businesses that need a professional foundation—not every advanced feature on day one.",
+    "includesTitle": "Included in the starter build",
+    "includes": [
+      "Up to five core pages",
+      "One initial design direction",
+      "Two revision rounds",
+      "Responsive implementation",
+      "Contact form",
+      "Basic on-page SEO setup",
+      "Deployment",
+      "Client-supplied text and images"
+    ],
+    "excludesTitle": "Not included (quoted separately)",
+    "excludes": [
+      "E-commerce",
+      "Authentication or member areas",
+      "Custom booking systems",
+      "Advanced dashboards",
+      "Complex integrations",
+      "Professional branding or photography",
+      "Ongoing copywriting",
+      "Large custom applications"
+    ]
+  },
+  "hostingFaq": {
+    "title": "Hosting & ownership FAQ",
+    "items": [
+      {
+        "question": "Is hosting required?",
+        "answer": "No. You can launch with the one-time starter build and choose hosting later, or host elsewhere if you prefer."
+      },
+      {
+        "question": "Can I host the site somewhere else?",
+        "answer": "Yes. After launch you own the site files and can move hosting when it makes sense for your business."
+      },
+      {
+        "question": "What happens if I cancel hosting?",
+        "answer": "Your website files remain yours. Hosting covers server uptime, domain connection support, and basic maintenance while active."
+      },
+      {
+        "question": "Is the domain included?",
+        "answer": "Domain registration is billed separately through your registrar. I help connect your domain to the live site."
+      },
+      {
+        "question": "Who owns the website?",
+        "answer": "You do. After the starter build is complete, you own the website and can take it to another host or developer."
+      },
+      {
+        "question": "What does basic maintenance include?",
+        "answer": "Hosting & Reports covers uptime monitoring, domain connection support, and light technical upkeep—not unlimited content edits."
+      },
+      {
+        "question": "What changes are billed separately?",
+        "answer": "New pages, design refreshes, integrations, and content updates beyond basic maintenance are quoted at $40/hour (two-hour minimum) or scoped as a project."
+      }
+    ]
+  },
+  "packageComparison": {
+    "title": "Compare packages at a glance",
+    "subtitle": "Pick the starting point that matches where your business is today.",
+    "columns": [
+      { "id": "starter", "name": "Starter" },
+      { "id": "hosting", "name": "Hosting" },
+      { "id": "growth", "name": "Growth" }
+    ],
+    "rows": [
+      { "feature": "One-time website build", "values": { "starter": "✓", "hosting": "—", "growth": "—" } },
+      { "feature": "Up to five core pages", "values": { "starter": "✓", "hosting": "—", "growth": "—" } },
+      { "feature": "Monthly hosting", "values": { "starter": "Optional add-on", "hosting": "✓", "growth": "✓" } },
+      { "feature": "Search Console reports", "values": { "starter": "—", "hosting": "✓", "growth": "✓" } },
+      { "feature": "Ongoing SEO & conversion work", "values": { "starter": "—", "hosting": "—", "growth": "✓" } },
+      { "feature": "Best for", "values": { "starter": "New sites", "hosting": "Launched sites", "growth": "Lead growth" } }
+    ],
+    "ctaText": "Not sure which option fits? Start a project and tell me what you need."
   }
 }

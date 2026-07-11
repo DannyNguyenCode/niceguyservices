@@ -12,7 +12,7 @@ export default function ThemeToggleBtn() {
         <button
             type="button"
             onClick={toggle}
-            className="btn btn-ghost btn-sm btn-square shrink-0 border-0 bg-transparent shadow-none text-base-content hover:bg-base-200/60 hover:text-base-content focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="btn btn-ghost btn-sm btn-square min-h-11 min-w-11 shrink-0 border-0 bg-transparent shadow-none text-base-content hover:bg-base-200/60 hover:text-base-content focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
         >
             {isDark ? (

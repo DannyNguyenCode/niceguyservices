@@ -1,0 +1,94 @@
+{
+  "primaryServices": [
+    {
+      "id": "small-business",
+      "title": "Small-business websites",
+      "audience": "Service businesses, studios, and local brands that need a credible online home.",
+      "problem": "Visitors cannot quickly understand what you do or how to contact you.",
+      "outcome": "A clear, fast site that builds trust and turns visits into inquiries.",
+      "ctaLabel": "Start a project",
+      "ctaHref": "/contact"
+    },
+    {
+      "id": "redesign",
+      "title": "Website redesigns",
+      "audience": "Businesses with an outdated site that no longer reflects their work.",
+      "problem": "An old layout hurts credibility and makes updates painful.",
+      "outcome": "A modern refresh with better structure, mobile experience, and room to grow.",
+      "ctaLabel": "Start a project",
+      "ctaHref": "/contact"
+    },
+    {
+      "id": "landing-pages",
+      "title": "Landing pages",
+      "audience": "Campaigns, launches, and focused offers that need one strong page.",
+      "problem": "A full website is more than you need, but a generic page will not convert.",
+      "outcome": "A focused page with a clear message, CTA, and fast load time.",
+      "ctaLabel": "Start a project",
+      "ctaHref": "/contact"
+    },
+    {
+      "id": "optimization",
+      "title": "Ongoing optimization",
+      "audience": "Sites that are live but need SEO, performance, and conversion improvements.",
+      "problem": "Traffic arrives but leads stay flat without regular tuning.",
+      "outcome": "Monthly improvements to visibility, clarity, and how visitors take action.",
+      "ctaLabel": "View pricing",
+      "ctaHref": "/pricing"
+    }
+  ],
+  "integrations": [
+  {
+      "title": "Contact forms",
+      "description": "Reliable inquiry flows that reach your inbox without exposing API keys on the client."
+    },
+    {
+      "title": "Analytics",
+      "description": "Understand what visitors do after they land—without drowning in dashboards."
+    },
+    {
+      "title": "Email integration",
+      "description": "Connect newsletters or transactional email to the tools you already use."
+    },
+    {
+      "title": "CMS",
+      "description": "An editing system that makes updates easier without limiting the design."
+    },
+    {
+      "title": "Booking functionality",
+      "description": "Let customers request appointments or consultations from your site."
+    },
+    {
+      "title": "Custom dashboards",
+      "description": "Simple admin views when your team needs more than a public website."
+    },
+    {
+      "title": "APIs",
+      "description": "Connect your website to the tools your business already uses."
+    },
+    {
+      "title": "Authentication",
+      "description": "Secure sign-in when members, staff, or clients need private areas."
+    },
+    {
+      "title": "Other custom features",
+      "description": "Scoped additions discussed upfront—no surprise scope creep."
+    }
+  ],
+  "includedSection": {
+    "title": "What can be included in a website build?",
+    "intro": "Every project starts with a clear baseline. Advanced features are scoped separately so you know what is in the starter package and what is custom.",
+    "includes": [
+      "Up to five core pages on the starter package",
+      "Responsive layout across common devices",
+      "Contact form and basic on-page SEO setup",
+      "Deployment and handoff documentation",
+      "Client-supplied text and images"
+    ],
+    "excludes": [
+      "E-commerce, authentication, or complex booking systems",
+      "Large custom applications or advanced dashboards",
+      "Professional branding, photography, or ongoing copywriting"
+    ]
+  }
+}

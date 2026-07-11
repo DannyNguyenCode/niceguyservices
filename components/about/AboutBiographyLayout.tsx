@@ -66,19 +66,19 @@ export default function AboutBiographyLayout() {
                         teamIntro={teamCard.intro}
                         vitalStats={bl.vitalStats}
                     />
-                    <BiographyHomePackSection
-                        sectionTitle={bl.homePackCardTitle}
-                        outsideWork={intro.outsideWork}
-                        petPortraits={bl.petPortraits}
+                    <BiographyMethodologySection
+                        sectionTitle={bl.methodologySectionTitle}
+                        sectionIntro={bl.methodologySectionIntro}
+                        items={workingWithMe.items}
                     />
                     <BiographyExperienceSection
                         experienceTimeline={bgExt.experienceTimeline}
                         educationHighlight={bgExt.educationHighlight}
                     />
-                    <BiographyMethodologySection
-                        sectionTitle={bl.methodologySectionTitle}
-                        sectionIntro={bl.methodologySectionIntro}
-                        items={workingWithMe.items}
+                    <BiographyHomePackSection
+                        sectionTitle={bl.homePackCardTitle}
+                        outsideWork={intro.outsideWork}
+                        petPortraits={bl.petPortraits}
                     />
                     <BiographyMeetSection
                         eyebrow={bl.meetModuleEyebrow}

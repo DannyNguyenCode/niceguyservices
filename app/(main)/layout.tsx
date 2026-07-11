@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer";
 import Navigation from "@/components/Navigation";
+import SkipLink from "@/components/SkipLink";
 
 export default function MainSiteLayout({
   children,
@@ -8,8 +9,11 @@ export default function MainSiteLayout({
 }>) {
   return (
     <>
+      <SkipLink />
       <Navigation />
-      <main id="content-container">{children}</main>
+      <main id="content-container" className="min-w-0 overflow-x-clip" tabIndex={-1}>
+        {children}
+      </main>
       <Footer />
     </>
   );

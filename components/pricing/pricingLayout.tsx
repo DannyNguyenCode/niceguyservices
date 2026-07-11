@@ -4,6 +4,9 @@ import AddOnsSection from "./AddOnsSection";
 import PricingHero from "./PricingHero";
 import PricingPlans from "./PricingPlans";
 import PricingTrustSection from "./PricingTrustSection";
+import PricingStarterScope from "./PricingStarterScope";
+import PricingHostingFaq from "./PricingHostingFaq";
+import PricingComparison from "./PricingComparison";
 import ServicesModernCTA from "@/components/services/ServicesModernCTA";
 import {
     pricingLayoutBodyFont as bodyFont,
@@ -30,7 +33,10 @@ export default function PricingLayout() {
                 <div className={sitePageContentClass}>
                     <PricingHero />
                     <PricingPlans />
+                    <PricingStarterScope />
+                    <PricingComparison />
                     <AddOnsSection />
+                    <PricingHostingFaq />
                 </div>
                 <PricingTrustSection />
                 <ServicesModernCTA secondaryHref="/services" secondaryLabel="View services" />

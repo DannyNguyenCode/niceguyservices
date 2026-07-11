@@ -1,5 +1,6 @@
 "use client";
 
+import type { FormEvent } from "react";
 import {
     BriefcaseIcon,
     ChatBubbleLeftRightIcon,
@@ -8,22 +9,33 @@ import {
     PhoneIcon,
     UserIcon,
 } from "@heroicons/react/24/outline";
-import type { FormEvent } from "react";
 import type { FormState } from "../Contact";
+import { siteFieldFocusClass } from "@/components/pricing/pricingLayoutConstants";
 
 const labelCapsClass =
-    "mb-2 flex items-center gap-1.5 font-pm-body text-xs font-bold uppercase tracking-[0.1em] text-(--pm-on-surface-variant)";
+    "mb-2 flex items-center gap-1.5 font-pm-body text-xs font-bold uppercase text-(--pm-on-surface-variant)";
 
 const fieldUnderlineClass =
     "w-full border-0 border-b border-base-300 bg-transparent px-0 py-3 font-pm-body text-base-content transition-[border-color] duration-200 placeholder:text-base-300/80 " +
     "focus:border-0 focus:border-b-2 focus:border-primary focus:ring-0 focus:outline-none " +
-    "dark:border-base-content/20";
+    `dark:border-base-content/20 ${siteFieldFocusClass}`;
+
+const PROJECT_TYPES = [
+    "New website",
+    "Website redesign",
+    "Landing page",
+    "SEO or optimization",
+    "Maintenance",
+    "Custom functionality",
+    "Not sure yet",
+] as const;
 
 interface ContactFormProps {
     form: FormState;
     submitting: boolean;
-    // ctaText: string;
-    // onCtaTextChange: (t: string) => void;
+    fieldErrors?: Partial<Record<keyof FormState, string>>;
+    statusMessage?: string;
+    statusType?: "success" | "error" | "idle";
     onChange: (field: keyof FormState, value: string | boolean) => void;
     onSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }
@@ -31,21 +43,34 @@ interface ContactFormProps {
 export default function ContactForm({
     form,
     submitting,
-    // ctaText,
-    // onCtaTextChange,
+    fieldErrors = {},
+    statusMessage = "",
+    statusType = "idle",
     onChange,
     onSubmit,
 }: ContactFormProps) {
     return (
-        <form id="contact-form" onSubmit={onSubmit} className="space-y-10">
+        <form
+            id="contact-form"
+            onSubmit={onSubmit}
+            className="flex flex-col gap-10"
+            noValidate
+            aria-describedby="contact-form-intro"
+        >
+            <div
+                className="sr-only"
+                aria-live="polite"
+                aria-atomic="true"
+                role="status"
+            >
+                {statusType === "success" ? statusMessage : ""}
+            </div>
+
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                 <div className="flex flex-col">
                     <label className={labelCapsClass} htmlFor="contact-name">
-                        <UserIcon
-                            className="h-4 w-4 shrink-0 text-primary"
-                            aria-hidden
-                        />
-                        Full name
+                        <UserIcon className="h-4 w-4 shrink-0 text-primary" aria-hidden />
+                        Full name <span className="text-error">*</span>
                     </label>
                     <input
                         id="contact-name"
@@ -53,19 +78,24 @@ export default function ContactForm({
                         type="text"
                         className={fieldUnderlineClass}
                         required
+                        aria-required="true"
                         autoComplete="name"
                         placeholder="e.g. your name"
                         value={form.name}
+                        aria-invalid={Boolean(fieldErrors.name)}
+                        aria-describedby={fieldErrors.name ? "contact-name-error" : undefined}
                         onChange={(e) => onChange("name", e.target.value)}
                     />
+                    {fieldErrors.name ? (
+                        <p id="contact-name-error" className="mt-1 text-xs text-error" role="alert">
+                            {fieldErrors.name}
+                        </p>
+                    ) : null}
                 </div>
                 <div className="flex flex-col">
                     <label className={labelCapsClass} htmlFor="contact-email">
-                        <EnvelopeIcon
-                            className="h-4 w-4 shrink-0 text-primary"
-                            aria-hidden
-                        />
-                        Email
+                        <EnvelopeIcon className="h-4 w-4 shrink-0 text-primary" aria-hidden />
+                        Email <span className="text-error">*</span>
                     </label>
                     <input
                         id="contact-email"
@@ -73,47 +103,47 @@ export default function ContactForm({
                         type="email"
                         className={fieldUnderlineClass}
                         required
+                        aria-required="true"
                         autoComplete="email"
                         placeholder="you@business.com"
                         value={form.email}
+                        aria-invalid={Boolean(fieldErrors.email)}
+                        aria-describedby={fieldErrors.email ? "contact-email-error" : undefined}
                         onChange={(e) => onChange("email", e.target.value)}
                     />
+                    {fieldErrors.email ? (
+                        <p id="contact-email-error" className="mt-1 text-xs text-error" role="alert">
+                            {fieldErrors.email}
+                        </p>
+                    ) : null}
                 </div>
             </div>
 
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                 <div className="flex flex-col">
-                    <label className={labelCapsClass} htmlFor="contact-profession">
-                        <BriefcaseIcon
-                            className="h-4 w-4 shrink-0 text-primary"
-                            aria-hidden
-                        />
-                        Profession{" "}
-                        <span className="text-[0.7rem] font-normal normal-case tracking-normal text-base-content/50">
+                    <label className={labelCapsClass} htmlFor="contact-organization">
+                        <BriefcaseIcon className="h-4 w-4 shrink-0 text-primary" aria-hidden />
+                        Business or organization{" "}
+                        <span className="text-[0.7rem] font-normal normal-case text-base-content/50">
                             (optional)
                         </span>
                     </label>
                     <input
-                        id="contact-profession"
+                        id="contact-organization"
                         name="profession"
                         type="text"
                         className={fieldUnderlineClass}
-                        autoComplete="organization-title"
-                        placeholder="e.g. designer, business owner, dentist"
+                        autoComplete="organization"
+                        placeholder="e.g. studio name, clinic, trade business"
                         value={form.profession}
-                        onChange={(e) =>
-                            onChange("profession", e.target.value)
-                        }
+                        onChange={(e) => onChange("profession", e.target.value)}
                     />
                 </div>
                 <div className="flex flex-col">
                     <label className={labelCapsClass} htmlFor="contact-phone">
-                        <PhoneIcon
-                            className="h-4 w-4 shrink-0 text-primary"
-                            aria-hidden
-                        />
+                        <PhoneIcon className="h-4 w-4 shrink-0 text-primary" aria-hidden />
                         Phone{" "}
-                        <span className="text-[0.7rem] font-normal normal-case tracking-normal text-base-content/50">
+                        <span className="text-[0.7rem] font-normal normal-case text-base-content/50">
                             (optional)
                         </span>
                     </label>
@@ -130,155 +160,97 @@ export default function ContactForm({
                 </div>
             </div>
 
-            {/* Intake primary goal temporarily disabled
-            <fieldset className="flex flex-col border border-base-300 bg-(--pm-surface-low) p-8">
-                <legend className="mb-6 flex w-full items-center gap-2 font-pm-body text-xs font-bold tracking-[0.15em] text-primary uppercase">
-                    Select primary goal
-                </legend>
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    <label className="group flex cursor-pointer items-center border border-base-300 bg-base-100 p-4 transition-all hover:border-primary/60 dark:bg-base-200">
-                        <input
-                            className="radio h-5 w-5"
-                            name="objective"
-                            type="radio"
-                            value="business"
-                            required
-                            checked={form.primaryObjective === "business"}
-                            onChange={() => {
-                                onChange("primaryObjective", "business");
-                            }}
-                        />
-                        <div className="ml-2 flex min-w-0 flex-1 flex-col sm:ml-3">
-                            <span className="flex items-center gap-1.5 text-sm font-bold tracking-wider text-(--pm-on-surface) uppercase group-hover:text-primary">
-                                Business website
-                            </span>
-                            <span className="mt-1 block text-xs text-(--pm-on-surface-variant)">
-                                A fast, credible site for leads and service calls
-                            </span>
-                        </div>
-                    </label>
-                    <label className="group flex cursor-pointer items-center border border-base-300 bg-base-100 p-4 transition-all hover:border-primary/60 dark:bg-base-200">
-                        <input
-                            className="radio h-5 w-5"
-                            name="objective"
-                            type="radio"
-                            value="portfolio"
-                            checked={form.primaryObjective === "portfolio"}
-                            onChange={() => {
-                                onChange("primaryObjective", "portfolio");
-                            }}
-                        />
-                        <div className="ml-2 flex min-w-0 flex-1 flex-col sm:ml-3">
-                            <span className="flex items-center gap-1.5 text-sm font-bold tracking-wider text-(--pm-on-surface) uppercase group-hover:text-primary">
-                                Portfolio or showcase
-                            </span>
-                            <span className="mt-1 block text-xs text-(--pm-on-surface-variant)">
-                                A polished, image-forward presence for your work
-                            </span>
-                        </div>
-                    </label>
-                </div>
-            </fieldset>
-            */}
+            <div className="flex flex-col">
+                <label className={labelCapsClass} htmlFor="contact-project-type">
+                    Project type{" "}
+                    <span className="text-[0.7rem] font-normal normal-case text-base-content/50">
+                        (optional)
+                    </span>
+                </label>
+                <select
+                    id="contact-project-type"
+                    name="projectType"
+                    className={`${fieldUnderlineClass} cursor-pointer`}
+                    value={form.projectType}
+                    onChange={(e) => onChange("projectType", e.target.value)}
+                >
+                    <option value="">Select one (optional)</option>
+                    {PROJECT_TYPES.map((type) => (
+                        <option key={type} value={type}>
+                            {type}
+                        </option>
+                    ))}
+                </select>
+            </div>
 
             <div className="flex flex-col">
                 <label className={labelCapsClass} htmlFor="contact-message">
-                    <ChatBubbleLeftRightIcon
-                        className="h-4 w-4 shrink-0 text-primary"
-                        aria-hidden
-                    />
-                    Message
+                    <ChatBubbleLeftRightIcon className="h-4 w-4 shrink-0 text-primary" aria-hidden />
+                    Message <span className="text-error">*</span>
                 </label>
                 <textarea
                     id="contact-message"
                     name="message"
                     className={`${fieldUnderlineClass} min-h-20 resize-none`}
                     required
+                    aria-required="true"
                     rows={3}
                     placeholder="What are you looking to build, and when do you need it?"
                     value={form.message}
+                    aria-invalid={Boolean(fieldErrors.message)}
+                    aria-describedby={fieldErrors.message ? "contact-message-error" : undefined}
                     onChange={(e) => onChange("message", e.target.value)}
                 />
+                {fieldErrors.message ? (
+                    <p id="contact-message-error" className="mt-1 text-xs text-error" role="alert">
+                        {fieldErrors.message}
+                    </p>
+                ) : null}
             </div>
 
-            <label className="flex cursor-pointer items-start gap-3 font-pm-body text-sm text-(--pm-on-surface-variant)">
+            <label
+                className="flex min-h-11 cursor-pointer items-start gap-3 font-pm-body text-sm text-(--pm-on-surface-variant)"
+                htmlFor="contact-meeting"
+            >
                 <input
+                    id="contact-meeting"
+                    name="wantsMeeting"
                     type="checkbox"
-                    className="checkbox checkbox-sm checkbox-primary"
+                    className="checkbox checkbox-sm checkbox-primary mt-0.5"
                     checked={form.wantsMeeting}
                     onChange={(e) => onChange("wantsMeeting", e.target.checked)}
                 />
-                <span className="inline-flex min-w-0 items-start gap-1.5">
-                    <span>
-                        I&apos;m interested in a call or in-person meetup (Toronto
-                        / GTA when practical).
-                    </span>
+                <span>
+                    I&apos;m interested in a call or in-person meetup (Toronto / GTA when practical).
                 </span>
             </label>
 
-            <div className="flex flex-col justify-around gap-6 pt-2 md:flex-row">
+            <div className="flex flex-col gap-4 pt-2">
                 <button
-                    className="btn btn-outline border-primary text-primary font-pm-body text-sm font-semibold tracking-widest uppercase transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-content md:min-w-40 md:shrink-0 md:px-6 md:py-5"
+                    className="btn btn-outline min-h-11 border-primary text-primary font-pm-body text-sm font-semibold uppercase transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-content focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:min-w-40 md:shrink-0 md:self-start md:px-6 md:py-5"
                     type="submit"
                     disabled={submitting}
+                    aria-busy={submitting}
                 >
                     {submitting ? (
                         "Sending…"
                     ) : (
                         <span className="inline-flex items-center justify-center gap-1.5">
-                            <PaperAirplaneIcon
-                                className="h-4 w-4"
-                                aria-hidden
-                            />
+                            <PaperAirplaneIcon className="h-4 w-4" aria-hidden />
                             Send message
                         </span>
                     )}
                 </button>
-                {/* Intake wizard temporarily disabled
-                <Link
-                    href={
-                        form.primaryObjective === "business"
-                            ? "/contact/business-intake"
-                            : form.primaryObjective === "portfolio"
-                                ? "/contact/portfolio-intake"
-                                : "/pricing"
-                    }
-                    className="btn btn-primary group flex items-center justify-around font-pm-body text-sm font-semibold tracking-widest uppercase"
-                    onClick={() => {
-                        if (
-                            form.primaryObjective !== "business" &&
-                            form.primaryObjective !== "portfolio"
-                        ) {
-                            return;
-                        }
-                        try {
-                            sessionStorage.setItem(
-                                "ng-contact-prefill",
-                                JSON.stringify({
-                                    name: form.name,
-                                    email: form.email,
-                                    profession: form.profession,
-                                })
-                            );
-                        } catch {
-                        }
-                    }}
-                >
-                    <span>{ctaText}</span>
-                    <ArrowRightIcon
-                        className="h-5 w-5 transition-transform group-hover:translate-x-2"
-                        aria-hidden
-                    />
-                </Link>
-                */}
+                <p className="text-sm leading-relaxed text-(--pm-on-surface-variant)">
+                    I&apos;ll review your message and reply within one business day with questions or a
+                    suggested next step. No mailing list and no obligation.
+                </p>
+                {statusType === "error" && statusMessage ? (
+                    <p className="text-sm text-error" role="alert" aria-live="assertive">
+                        {statusMessage}
+                    </p>
+                ) : null}
             </div>
-            {/* <p className="mt-4 flex items-center justify-center gap-1 text-center text-[0.65rem] tracking-[0.2em] text-(--pm-on-surface-variant) uppercase opacity-60 md:justify-end">
-                <ClockIcon
-                    className="h-3.5 w-3.5 shrink-0 opacity-80"
-                    aria-hidden
-                />
-                Avg. time to complete: 3–4 minutes
-            </p> */}
         </form>
     );
 }
