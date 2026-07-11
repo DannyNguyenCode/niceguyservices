@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { useState } from "react";
-import { sitePageContentClass, pixelPageHeading, pricingLayoutHeroHeadline as heroHeadline, pricingLayoutHeadline as headline } from "@/components/pricing/pricingLayoutConstants";
+import { sitePageContentClass, pixelPageHeading, pricingLayoutHeroHeadline as heroHeadline, pricingLayoutHeadline as headline, responsiveHeroBodyClass, responsivePageHeroTitleClass } from "@/components/pricing/pricingLayoutConstants";
 import PixelKeyword from "@/components/ui/PixelKeyword";
 import ContactForm from "./ContactForm";
 import ThankYouModal from "./ThankYouModal";
@@ -19,6 +19,7 @@ export type FormState = {
     email: string;
     profession: string;
     phone: string;
+    projectType: string;
     services: string[];
     message: string;
     wantsMeeting: boolean;
@@ -30,6 +31,7 @@ export const initialFormState: FormState = {
     email: "",
     profession: "",
     phone: "",
+    projectType: "",
     services: [],
     message: "",
     wantsMeeting: false,
@@ -54,6 +56,9 @@ export default function ContactView() {
     const [form, setForm] = useState<FormState>(initialFormState);
     const [submitting, setSubmitting] = useState(false);
     const [thankOpen, setThankOpen] = useState(false);
+    const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof FormState, string>>>({});
+    const [statusMessage, setStatusMessage] = useState("");
+    const [statusType, setStatusType] = useState<"success" | "error" | "idle">("idle");
     // Intake wizard temporarily disabled
     // const [intakeCta, setIntakeCta] = useState(DEFAULT_CTA);
 
@@ -77,8 +82,28 @@ export default function ContactView() {
         });
     };
 
+    const validate = (): boolean => {
+        const errors: Partial<Record<keyof FormState, string>> = {};
+        if (!form.name.trim()) errors.name = "Please enter your name.";
+        if (!form.email.trim()) {
+            errors.email = "Please enter your email.";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+            errors.email = "Please enter a valid email address.";
+        }
+        if (!form.message.trim()) errors.message = "Please include a short message.";
+        setFieldErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setStatusType("idle");
+        setStatusMessage("");
+        if (!validate()) {
+            setStatusType("error");
+            setStatusMessage("Please fix the highlighted fields and try again.");
+            return;
+        }
         setSubmitting(true);
 
         try {
@@ -90,6 +115,7 @@ export default function ContactView() {
                     email: form.email,
                     profession: form.profession,
                     phone: form.phone,
+                    projectType: form.projectType,
                     services: form.services,
                     message: form.message,
                     wantsMeeting: form.wantsMeeting,
@@ -109,14 +135,17 @@ export default function ContactView() {
 
             setThankOpen(true);
             setForm(initialFormState);
-            // setIntakeCta(DEFAULT_CTA);
+            setFieldErrors({});
+            setStatusType("success");
+            setStatusMessage("Message sent. I will reply within one business day.");
         } catch (error) {
             console.error("Error submitting contact form:", error);
             const message =
                 error instanceof Error
                     ? error.message
                     : "Something went wrong sending your message. Please try again or email me directly.";
-            alert(message);
+            setStatusType("error");
+            setStatusMessage(message);
         } finally {
             setSubmitting(false);
         }
@@ -129,10 +158,10 @@ export default function ContactView() {
         >
             <main className={`relative pb-24 pt-28 md:pt-32 ${sitePageContentClass}`}>
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-[480px] ng-grid-bg opacity-30" aria-hidden />
-                <header className="relative z-10 mb-16 flex flex-col items-baseline gap-6 overflow-hidden md:mb-24 md:flex-row">
+                <header className="relative z-10 mb-12 flex min-w-0 flex-col items-baseline gap-4 overflow-hidden sm:mb-16 md:mb-24 md:flex-row md:gap-6">
                     <h1
                         id="contact-header"
-                        className={`${heroHeadline} text-5xl leading-none font-extrabold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl ${pixelPageHeading}`}
+                        className={`min-w-0 text-balance ${heroHeadline} ${responsivePageHeroTitleClass} font-extrabold leading-none ${pixelPageHeading}`}
                     >
                         <PixelKeyword>Connect</PixelKeyword>
                         <br />
@@ -189,13 +218,13 @@ export default function ContactView() {
                     </div>
                 </div>
 
-                <div className="flex flex-col items-start gap-12 lg:flex-row">
-                    <section className="w-full rounded-xl bg-(--pm-surface-low) p-8 md:p-12 lg:w-2/3">
+                <div className="flex min-w-0 flex-col items-start gap-10 lg:flex-row lg:gap-12">
+                    <section className="w-full min-w-0 rounded-xl bg-(--pm-surface-low) p-6 sm:p-8 md:p-12 lg:w-2/3">
                         <div className="mb-10">
                             <h2 className={`mb-2 capitalize text-3xl font-bold tracking-tight text-(--pm-on-surface) ${headline}`}>
                                 Send a message
                             </h2>
-                            <p className="font-pm-body text-sm text-(--pm-on-surface-variant)">
+                            <p className="font-pm-body text-sm text-(--pm-on-surface-variant)" id="contact-form-intro">
                                 Fill in what you can below and I&apos;ll get back to you
                                 with next steps. Required fields are marked so we can
                                 respond quickly.
@@ -204,12 +233,15 @@ export default function ContactView() {
                         <ContactForm
                             form={form}
                             submitting={submitting}
+                            fieldErrors={fieldErrors}
+                            statusMessage={statusMessage}
+                            statusType={statusType}
                             onChange={handleChange}
                             onSubmit={handleSubmit}
                         />
                     </section>
 
-                    <aside className="w-full space-y-6 lg:w-1/3">
+                    <aside className="flex w-full min-w-0 flex-col gap-6 lg:w-1/3">
                         <div className="group flex flex-col items-center gap-6 rounded-xl border-b border-[rgb(171_173_174/0.15)] bg-base-100 p-8 text-center transition-transform hover:-translate-y-1 dark:border-[rgb(255_255_255/0.08)]">
                             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary/15 text-secondary">
                                 <PhoneIcon

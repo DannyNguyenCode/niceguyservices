@@ -10,6 +10,7 @@ type ContactPayload = {
     email: string;
     profession: string;
     phone: string;
+    projectType: string;
     services: string[];
     message: string;
     wantsMeeting: boolean;
@@ -44,6 +45,7 @@ function buildEmailBody(data: ContactPayload): { text: string; html: string } {
         `Email: ${data.email}`,
         `Primary goal: ${primaryGoalLabel(data.primaryObjective)}`,
         `Profession: ${data.profession || "—"}`,
+        `Project type: ${data.projectType || "—"}`,
         `Phone: ${data.phone || "—"}`,
         `Services: ${data.services.length ? data.services.join(", ") : "—"}`,
         `Wants meeting: ${data.wantsMeeting ? "Yes" : "No"}`,
@@ -63,6 +65,7 @@ ${row("Name", data.name)}
 ${row("Email", data.email)}
 ${row("Primary goal", primaryGoalLabel(data.primaryObjective))}
 ${row("Profession", data.profession || "—")}
+${row("Project type", data.projectType || "—")}
 ${row("Phone", data.phone || "—")}
 ${row("Services", data.services.length ? data.services.join(", ") : "—")}
 ${row("Wants meeting", data.wantsMeeting ? "Yes" : "No")}
@@ -99,6 +102,7 @@ export async function POST(request: Request) {
     const email = p.email;
     const message = p.message;
     const profession = typeof p.profession === "string" ? p.profession : "";
+    const projectType = typeof p.projectType === "string" ? p.projectType : "";
     const phone = typeof p.phone === "string" ? p.phone : "";
     const services = isStringArray(p.services) ? p.services : [];
     const wantsMeeting = p.wantsMeeting === true;
@@ -132,6 +136,7 @@ export async function POST(request: Request) {
         name: name.trim(),
         email: email.trim(),
         profession: profession.trim(),
+        projectType: projectType.trim(),
         phone,
         services,
         message: message.trim(),

@@ -6,45 +6,73 @@
   },
   "hero": {
     "eyebrow": "Selected Projects",
-    "headline": "Featured websites built with clarity, care, and purpose.",
-    "subtitle": "A look at real projects and selected website builds created for small businesses, creators, and service-based brands.",
+    "headline": "Selected work and design thinking",
+    "subtitle": "Client projects, case studies, and concept builds—clearly labelled so you know what is live work versus exploration.",
     "primaryCta": "Start a project",
     "secondaryCta": "View services",
     "note": "More case studies will be added as new client projects launch."
   },
+  "sections": {
+    "clientWork": "Client Work",
+    "caseStudies": "Case Studies",
+    "concepts": "Concepts and Internal Builds",
+    "process": "Process"
+  },
   "featuredProject": {
+    "label": "Client Project",
     "title": "Jackie Portfolio",
     "description": "A professional portfolio website created to help the client present their work, experience, and personal brand with a clean responsive design.",
     "imageSrc": "https://lh3.googleusercontent.com/aida-public/AB6AXuCsyWnARXnlvx8DZ4WBK5FOIuyaZtY4pTwopcHzX21LHy7lqVIVeYhR9Wgax6DUeS-2F405w_-c84lj4xIB7sE-g2icRSn43fzV61epdP2CFCyjBs5y7kWy_kh5q7KhSkjetxRAI6idyzEJleIqiTGbkndpdRNjECivRu5sKDCWlmQ14JBefNxrr94SlF3eWg_5f_teIqqT3ptilu4pADAGEIbfkSVITXeqQzEndvmsWOeZvLogRG-W",
     "imageAlt": "Jackie portfolio website displayed on a laptop in a creative studio setting.",
     "highlights": [
-      "Custom website & Responsive design",
-      "Personal branding & Contact flow"
+      "Custom website & responsive design",
+      "Personal branding & contact flow"
     ],
-    "reviewNote": "Client review received",
+    "reviewNote": "5-star client review",
     "projectUrl": "https://jackie-portfolio-nu.vercel.app/",
     "caseStudyHref": "/work/jackie-portfolio",
     "primaryCta": "View project",
-    "secondaryCta": "View Case Study"
+    "secondaryCta": "Read the case study"
   },
-  "internalBuilds": {
-    "title": "Selected Internal Builds",
-    "subtitle": "Exploring new patterns and perfecting our core platforms.",
+  "caseStudies": [],
+  "concepts": {
+    "title": "Concepts and Internal Builds",
+    "subtitle": "Design explorations that show how Nice Guy Web Design approaches different industries—demo routes only, not client deliverables.",
     "items": [
       {
-        "category": "Business Website",
-        "title": "Nice Guy Web Design",
-        "description": "The main business website for Nice Guy Web Design, built to explain services, pricing, resources, and lead generation clearly.",
-        "tags": ["Service pages", "SEO-ready", "Contact flow", "Resources"],
-        "cta": "Explore Site",
-        "href": "/"
+        "label": "Concept",
+        "category": "HVAC / Home Services",
+        "title": "ComfortFlow HVAC",
+        "description": "Interactive home cutaway concept for explaining HVAC systems and service areas.",
+        "tags": ["Interactive UI", "Service business", "Demo"],
+        "cta": "View concept",
+        "href": "/template/demo/comfortflow-hvac"
       },
       {
-        "category": "Portfolio Website",
+        "label": "Concept",
+        "category": "Electrical Services",
+        "title": "Power Pellet Electric",
+        "description": "Playful electrician brand concept with bold visual personality and service pages.",
+        "tags": ["Brand concept", "Service pages", "Demo"],
+        "cta": "View concept",
+        "href": "/template/demo/power-pellet-electric"
+      },
+      {
+        "label": "Concept",
+        "category": "Landscaping",
+        "title": "Valley Interlocking Landscaping",
+        "description": "Multi-region landscaping flow with service-area structure and project galleries.",
+        "tags": ["Multi-page flow", "Gallery", "Demo"],
+        "cta": "View concept",
+        "href": "/template/demo/valley-interlocking"
+      },
+      {
+        "label": "Internal Build",
+        "category": "Portfolio",
         "title": "Developer Portfolio",
-        "description": "A separate portfolio website used to showcase design experiments, development skills, and selected website concepts.",
-        "tags": ["Portfolio", "UI design", "Front-end", "Responsive"],
-        "cta": "Explore Site",
+        "description": "A separate portfolio site for design experiments and selected website concepts.",
+        "tags": ["Portfolio", "UI design", "Front-end"],
+        "cta": "Explore site",
         "href": "https://portfolio-black-two-97.vercel.app/"
       }
     ]
@@ -54,29 +82,29 @@
     "steps": [
       {
         "title": "Discovery",
-        "description": "We dive deep into your goals, audience, and the unique problems we're solving."
+        "description": "I dive into your goals, audience, and the problems the site needs to solve."
       },
       {
         "title": "UX Direction",
-        "description": "Planning the flow and structure to ensure a frictionless user experience."
+        "description": "Planning flow and structure so visitors know what to do next."
       },
       {
         "title": "Design",
-        "description": "Crafting a visual identity that feels premium, professional, and authentic."
+        "description": "Crafting a visual direction that feels professional and authentic to your brand."
       },
       {
         "title": "Development",
-        "description": "Building with clean code, ensuring speed, security, and responsiveness."
+        "description": "Building with clean code for speed, accessibility, and responsiveness."
       },
       {
         "title": "Launch",
-        "description": "Going live with support and training to ensure you own your digital space."
+        "description": "Going live with deployment support so you understand how to use the site."
       }
     ]
   },
   "cta": {
     "title": "Want your project to be next?",
-    "description": "Whether you need a simple business website, a portfolio, or a custom landing page, Nice Guy Web Design can help turn your idea into a clean, professional website.",
+    "description": "Whether you need a simple business website, a portfolio, or a custom landing page, I can help turn your idea into a clean, professional website.",
     "primaryCta": "Start a project",
     "secondaryCta": "View pricing"
   }

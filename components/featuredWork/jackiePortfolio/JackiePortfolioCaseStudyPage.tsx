@@ -328,6 +328,11 @@ export default function JackiePortfolioCaseStudyPage() {
                 {/* Outcome */}
                 <section className="mt-24">
                     <SectionHeading title={outcome.title} intro={outcome.intro} />
+                    {"clientNote" in outcome && outcome.clientNote ? (
+                        <p className="mb-6 max-w-3xl text-sm font-medium text-(--pm-on-surface)">
+                            {outcome.clientNote}
+                        </p>
+                    ) : null}
                     <BulletList items={outcome.points} />
                 </section>
 

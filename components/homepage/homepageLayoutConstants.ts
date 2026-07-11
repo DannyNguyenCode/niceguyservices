@@ -1,2 +1,2 @@
 export const homeSectionTitleSizeClass =
-    "capitalize text-4xl font-extrabold tracking-tight md:text-5xl";
+    "capitalize text-[clamp(1.75rem,5vw,2.25rem)] font-extrabold md:text-5xl";

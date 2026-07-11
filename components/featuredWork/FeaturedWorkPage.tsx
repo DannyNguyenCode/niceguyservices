@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRightIcon, CheckCircleIcon, StarIcon } from "@heroicons/react/24/solid";
-import Image from "next/image";
+import PixelImageReveal from "@/components/ui/PixelImageReveal";
 import PixelCtaLink from "@/components/ui/PixelCtaLink";
 import WorkHero from "@/components/featuredWork/WorkHero";
 import featuredWorkContent from "@/components/featuredWork/featuredWorkContent.json";
@@ -19,7 +19,7 @@ const cardBorder = "border border-(--pm-border-light)";
 const sectionTitle = "text-3xl font-extrabold tracking-tight md:text-4xl";
 
 export default function FeaturedWorkPage() {
-    const { meta, featuredProject, internalBuilds, process, cta } =
+    const { meta, featuredProject, concepts, sections, process, cta } =
         featuredWorkContent;
 
     return (
@@ -41,8 +41,13 @@ export default function FeaturedWorkPage() {
                 <div className={`${sitePageContentClass} pb-24`}>
                     <WorkHero />
 
-                    {/* Featured client project */}
-                    <section className="mt-24">
+                    <section className="mt-24" aria-labelledby="client-work-heading">
+                        <h2
+                            id="client-work-heading"
+                            className={`mb-8 ${sectionTitle} ${headline} ${pixelPageHeading}`}
+                        >
+                            {sections.clientWork}
+                        </h2>
                         <div
                             className={`group overflow-hidden rounded-xl ${cardBorder}`}
                             style={{
@@ -51,13 +56,12 @@ export default function FeaturedWorkPage() {
                             }}
                         >
                             <div className="grid grid-cols-1 md:grid-cols-2">
-                                <div className="relative h-64 overflow-hidden md:h-full md:min-h-[420px]">
-                                    <Image
+                                <div className="relative h-64 md:h-full md:min-h-[420px]">
+                                    <PixelImageReveal
                                         src={featuredProject.imageSrc}
                                         alt={featuredProject.imageAlt}
-                                        fill
+                                        className="h-full min-h-[16rem] md:min-h-[420px]"
                                         sizes="(max-width: 768px) 100vw, 50vw"
-                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
                                     />
                                     <div className="absolute top-4 left-4 flex gap-2">
                                         <span
@@ -78,7 +82,7 @@ export default function FeaturedWorkPage() {
                                                 color: "var(--pm-on-surface)",
                                             }}
                                         >
-                                            Client Project
+                                            {featuredProject.label ?? "Client Project"}
                                         </span>
                                     </div>
                                 </div>
@@ -138,20 +142,20 @@ export default function FeaturedWorkPage() {
                         </div>
                     </section>
 
-                    {/* Internal builds */}
-                    <section className="mt-24">
+                    <section className="mt-24" aria-labelledby="concepts-heading">
                         <div className="mb-8 flex flex-col">
                             <h2
+                                id="concepts-heading"
                                 className={`mb-2 ${sectionTitle} ${headline} ${pixelPageHeading}`}
                             >
-                                Selected Internal Builds
+                                {concepts.title}
                             </h2>
                             <p className="text-[color:var(--ng-body)]">
-                                {internalBuilds.subtitle}
+                                {concepts.subtitle}
                             </p>
                         </div>
                         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-                            {internalBuilds.items.map((item) => (
+                            {concepts.items.map((item) => (
                                 <div
                                     key={item.title}
                                     className={`flex h-full flex-col rounded-xl p-8 transition-colors duration-300 hover:bg-(--pm-surface-highest) ${cardBorder}`}
@@ -161,9 +165,9 @@ export default function FeaturedWorkPage() {
                                     }}
                                 >
                                     <span
-                                        className={`mb-2 text-[10px] font-bold tracking-widest uppercase ${headline} text-[color:var(--ng-accent)]`}
+                                        className={`mb-2 text-[10px] font-bold uppercase ${headline} text-[color:var(--ng-accent)]`}
                                     >
-                                        {item.category}
+                                        {item.label} · {item.category}
                                     </span>
                                     <h3
                                         className={`mb-4 text-3xl font-extrabold ${headline} ${pixelPageHeading}`}
@@ -212,7 +216,7 @@ export default function FeaturedWorkPage() {
                         >
                             How Each Project Comes Together
                         </h2>
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
                             {process.steps.map((step, index) => (
                                 <div
                                     key={step.title}

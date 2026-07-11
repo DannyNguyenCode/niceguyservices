@@ -162,6 +162,7 @@
   "outcome": {
     "title": "Outcome",
     "intro": "This project delivered practical improvements the client can build on—without inventing traffic or revenue numbers.",
+    "clientNote": "The client returned for additional website work after launch, which reflects continued trust in the delivery process.",
     "points": [
       "A more polished professional portfolio experience",
       "Stronger gallery browsing experience for video and campaign work",
@@ -241,7 +242,7 @@
   "cta": {
     "title": "Need a website that does more than look good?",
     "description": "I build websites that are designed around your goals, your customers, and the way people actually use the web.",
-    "primaryCta": "Start a Project",
+    "primaryCta": "Start a project",
     "secondaryCta": "View pricing"
   }
 }

@@ -10,6 +10,8 @@ import {
     pricingLayoutHeadline as headline,
     pricingLayoutHeroHeadline as heroHeadline,
     pricingLayoutPixelLabel as pixelLabel,
+    responsiveHeroBodyClass,
+    responsivePageHeroTitleClass,
     sitePageContentClass,
 } from "@/components/pricing/pricingLayoutConstants";
 import type { HeroCta, HeroFocusCard, IntroImage } from "./aboutBiographyTypes";
@@ -39,22 +41,22 @@ export default function BiographyHero({
 }: BiographyHeroProps) {
     return (
         <section
-            className={`relative flex flex-col items-center gap-12 py-12 md:flex-row md:py-20 ${sitePageContentClass}`}
+            className={`relative flex min-w-0 flex-col items-center gap-10 py-10 sm:gap-12 sm:py-12 md:flex-row md:py-20 ${sitePageContentClass}`}
         >
             <div className="pointer-events-none absolute inset-0 ng-grid-bg opacity-30" aria-hidden />
-            <div className="relative z-10 flex flex-1 flex-col space-y-6">
+            <div className="relative z-10 flex min-w-0 flex-1 flex-col gap-6">
                 <span
                     className={`w-fit text-sm font-bold tracking-[0.2em] ${pixelLabel} ${pixelPageEyebrow}`}
                 >
                     {eyebrow}
                 </span>
-                <h1 className={`${heroHeadline} text-5xl leading-[1.1] font-extrabold tracking-tight sm:text-6xl md:text-6xl ${pixelPageHeading}`}>
+                <h1 className={`min-w-0 text-balance ${heroHeadline} ${responsivePageHeroTitleClass} font-extrabold ${pixelPageHeading}`}>
                     <PixelKeyword>{headlineHighlight}</PixelKeyword>
                     <br />
                     {headlinePlain}{" "}
                     <PixelKeyword variant="base">{headlineBase}</PixelKeyword>
                 </h1>
-                <p className="max-w-xl text-xl leading-relaxed text-[color:var(--ng-body)]">
+                <p className={`max-w-xl ${responsiveHeroBodyClass} text-[color:var(--ng-body)]`}>
                     {subtitle}
                 </p>
                 <div className="flex flex-wrap gap-4">

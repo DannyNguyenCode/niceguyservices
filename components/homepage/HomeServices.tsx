@@ -20,7 +20,7 @@ export default function HomeServices() {
     const teasers = serviceCards.filter((s) => s.featured).slice(0, 3);
 
     return (
-        <section className="mx-auto max-w-7xl px-4 md:px-8">
+        <section className="mx-auto max-w-7xl min-w-0 px-4 sm:px-6 md:px-8">
             <div className="mb-16 flex flex-col justify-between gap-6 md:flex-row md:items-end">
                 <div>
                     <h2 className={`${sectionTitle} mb-4`}>

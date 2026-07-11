@@ -3,6 +3,7 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import homepageContent from "./homepageContent.json";
 import { homeSectionTitleSizeClass } from "./homepageLayoutConstants";
+import { siteDisclosureSummaryClass } from "@/components/pricing/pricingLayoutConstants";
 
 type FaqItem = {
     question: string;
@@ -37,7 +38,7 @@ export default function HomeFaq() {
                             key={item.question}
                             className="group rounded-2xl border border-(--pm-outline-variant)/40 bg-(--pm-white) transition-colors duration-300 open:border-(--pm-outline-variant) dark:bg-base-100/60"
                         >
-                            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 [&::-webkit-details-marker]:hidden">
+                            <summary className={`flex cursor-pointer list-none items-center justify-between gap-4 p-5 ${siteDisclosureSummaryClass} [&::-webkit-details-marker]:hidden`}>
                                 <span className="pr-2 text-base font-semibold leading-snug text-(--pm-on-surface) md:text-lg">
                                     {item.question}
                                 </span>
