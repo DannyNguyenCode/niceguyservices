@@ -68,6 +68,26 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/template/demo/leave-a-spark",
+        destination: "/template/demo/spark-frame",
+        permanent: true,
+      },
+      {
+        source: "/template/demo/leave-a-spark/:path*",
+        destination: "/template/demo/spark-frame/:path*",
+        permanent: true,
+      },
+      {
+        source: "/template/demo/sparkframe",
+        destination: "/template/demo/spark-frame",
+        permanent: true,
+      },
+      {
+        source: "/template/demo/sparkframe/:path*",
+        destination: "/template/demo/spark-frame/:path*",
+        permanent: true,
+      },
+      {
         source: "/template/demo/valley-interlocking",
         destination: "/template/demo/hardscape-landscaping",
         permanent: true,

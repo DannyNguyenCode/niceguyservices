@@ -1,0 +1,586 @@
+{
+  "site": {
+    "name": "Peace of Mind Electric",
+    "shortName": "Peace of Mind",
+    "tagline": "More than electricity.",
+    "statement": "We bring homes and businesses to life with electrical craftsmanship built for today and tomorrow.",
+    "copyright": "© 2026 Peace of Mind Electric. Licensed electrical contractors — demo template.",
+    "industry": "Electrician",
+    "license": "ECRA/ESA License #7001234 (demo)",
+    "serviceArea": "Greater Toronto Area & surrounding municipalities",
+    "emergency": "24/7 emergency response available for existing clients",
+    "warranty": "Workmanship warranty on all residential installations",
+    "primaryCTA": {
+      "label": "Get a Free Quote",
+      "href": "/contact"
+    },
+    "secondaryCTA": {
+      "label": "Explore Services",
+      "href": "/services"
+    }
+  },
+  "navigation": [
+    {
+      "key": "services",
+      "label": "Services",
+      "href": "/services"
+    },
+    {
+      "key": "projects",
+      "label": "Projects",
+      "href": "/projects"
+    },
+    {
+      "key": "about",
+      "label": "About",
+      "href": "/about"
+    },
+    {
+      "key": "resources",
+      "label": "Resources",
+      "href": "/resources"
+    },
+    {
+      "key": "contact",
+      "label": "Contact",
+      "href": "/contact"
+    }
+  ],
+  "contact": {
+    "phone": "(416) 555-0147",
+    "email": "hello@peaceofmind.demo",
+    "address": "124 Volt Avenue, Toronto, ON M5V 2K1",
+    "hours": "Mon–Fri 7:30am–6pm · Emergency line for clients"
+  },
+  "social": [
+    {
+      "label": "Instagram",
+      "href": "#",
+      "icon": "instagram"
+    },
+    {
+      "label": "LinkedIn",
+      "href": "#",
+      "icon": "linkedin"
+    },
+    {
+      "label": "Facebook",
+      "href": "#",
+      "icon": "facebook"
+    }
+  ],
+  "footer": {
+    "statement": "Controlled energy moving through carefully built systems — licensed electrical craftsmanship for homes and businesses.",
+    "columns": [
+      {
+        "title": "Navigate",
+        "links": [
+          {
+            "label": "Services",
+            "href": "/services"
+          },
+          {
+            "label": "Projects",
+            "href": "/projects"
+          },
+          {
+            "label": "About",
+            "href": "/about"
+          },
+          {
+            "label": "Resources",
+            "href": "/resources"
+          },
+          {
+            "label": "Contact",
+            "href": "/contact"
+          }
+        ]
+      },
+      {
+        "title": "Services",
+        "links": [
+          {
+            "label": "Panel Upgrades",
+            "href": "/services/panel-upgrades"
+          },
+          {
+            "label": "Lighting Installation",
+            "href": "/services/lighting-installation"
+          },
+          {
+            "label": "EV Chargers",
+            "href": "/services/ev-chargers"
+          },
+          {
+            "label": "Backup Generators",
+            "href": "/services/backup-generators"
+          },
+          {
+            "label": "Commercial Electrical",
+            "href": "/services/commercial-electrical"
+          }
+        ]
+      },
+      {
+        "title": "Contact",
+        "links": [
+          {
+            "label": "(416) 555-0147",
+            "href": "tel:+14165550147"
+          },
+          {
+            "label": "hello@peaceofmind.demo",
+            "href": "mailto:hello@peaceofmind.demo"
+          },
+          {
+            "label": "Get a Free Quote",
+            "href": "/contact",
+            "highlight": true
+          }
+        ]
+      }
+    ]
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "LICENSED ELECTRICAL CONTRACTORS",
+      "headline": {
+        "line1": "MORE THAN",
+        "line2": "ELECTRICITY.",
+        "accent": "PEACE OF MIND."
+      },
+      "body": "We bring homes and businesses to life with electrical craftsmanship built for today and tomorrow.",
+      "primaryCTA": {
+        "label": "Get a Free Quote",
+        "href": "/contact"
+      },
+      "secondaryCTA": {
+        "label": "Explore Services",
+        "href": "/services"
+      },
+      "callouts": [
+        {
+          "text": "Powering what matters most.",
+          "position": "top"
+        },
+        {
+          "text": "Quiet work. Powerful impact.",
+          "emphasis": "Powerful",
+          "position": "bottom"
+        }
+      ],
+      "confidence": [
+        {
+          "icon": "shield",
+          "label": "Licensed & Insured"
+        },
+        {
+          "icon": "spark",
+          "label": "Quality Craftsmanship"
+        },
+        {
+          "icon": "clock",
+          "label": "On Time"
+        },
+        {
+          "icon": "handshake",
+          "label": "Built on Trust"
+        }
+      ]
+    },
+    "servicePanels": {
+      "title": "Power Where You Need It.",
+      "titleAccent": "Need",
+      "body": "From the panel to the final fixture, every service is connected by one carefully planned system.",
+      "items": [
+        {
+          "slug": "panel-upgrades",
+          "title": "Panel Upgrades",
+          "description": "Modernize your service panel for today's load demands and tomorrow's additions.",
+          "image": "/templates/spark-frame/icon-panel.jpg",
+          "span": {
+            "col": 2,
+            "row": 2
+          },
+          "variant": "light"
+        },
+        {
+          "slug": "lighting-installation",
+          "title": "Lighting Installation",
+          "description": "Interior, exterior, and feature lighting with clean, code-compliant wiring.",
+          "image": "/templates/spark-frame/icon-lighting.jpg",
+          "span": {
+            "col": 1,
+            "row": 1
+          },
+          "variant": "dark"
+        },
+        {
+          "slug": "ev-chargers",
+          "title": "EV Chargers",
+          "description": "Dedicated circuits and charger-ready infrastructure for home and business.",
+          "image": "/templates/spark-frame/icon-ev.jpg",
+          "span": {
+            "col": 1,
+            "row": 2
+          },
+          "variant": "light"
+        },
+        {
+          "slug": "backup-generators",
+          "title": "Backup Generators",
+          "description": "Transfer switches and generator integration for resilient backup power.",
+          "image": "/templates/spark-frame/icon-generator.jpg",
+          "span": {
+            "col": 1,
+            "row": 1
+          },
+          "variant": "dark"
+        },
+        {
+          "slug": "residential-electrical",
+          "title": "Residential Electrical",
+          "description": "Full-home wiring, renovations, and electrical improvements done right.",
+          "image": "/templates/spark-frame/hero-house.jpg",
+          "span": {
+            "col": 1,
+            "row": 1
+          },
+          "variant": "dark"
+        },
+        {
+          "slug": "commercial-electrical",
+          "title": "Commercial Electrical",
+          "description": "Tenant fit-outs, maintenance, and power distribution for commercial spaces.",
+          "image": "/templates/spark-frame/icon-commercial.jpg",
+          "span": {
+            "col": 2,
+            "row": 1
+          },
+          "variant": "light"
+        },
+        {
+          "slug": "rewiring",
+          "title": "Rewiring",
+          "description": "Replace outdated wiring with systems built for safety and capacity.",
+          "image": "/templates/spark-frame/icon-panel.jpg",
+          "span": {
+            "col": 1,
+            "row": 1
+          },
+          "variant": "dark"
+        },
+        {
+          "slug": "surge-protection",
+          "title": "Surge Protection",
+          "description": "Whole-home and point-of-use protection for sensitive electronics.",
+          "image": "/templates/spark-frame/icon-lighting.jpg",
+          "span": {
+            "col": 1,
+            "row": 1
+          },
+          "variant": "light"
+        }
+      ]
+    },
+    "behindWalls": {
+      "title": "Built Behind the Walls.",
+      "titleAccent": "Walls.",
+      "body": "Great electrical work is rarely the part you notice. It is the confidence that every switch, outlet, fixture, and circuit will work exactly when you need it.",
+      "points": [
+        {
+          "title": "Planned for safety",
+          "description": "Code-compliant layouts, proper grounding, and load calculations before a wire is pulled."
+        },
+        {
+          "title": "Installed for longevity",
+          "description": "Quality materials, neat terminations, and accessible junction points for future service."
+        },
+        {
+          "title": "Built for future demand",
+          "description": "Capacity and pathways planned for EV charging, smart home, and expansion."
+        }
+      ]
+    },
+    "featuredProject": {
+      "title": "From Dark to Fully Powered.",
+      "titleAccent": "Powered.",
+      "category": "Whole-Home Rebuild",
+      "location": "North York, ON",
+      "scope": "200A service upgrade, full rewire, EV charger, generator transfer, and landscape lighting",
+      "outcome": "A century home brought to modern code with invisible craftsmanship and visible reliability.",
+      "href": "/projects",
+      "image": "/templates/spark-frame/hero-house.jpg",
+      "tag": "Featured Project"
+    },
+    "process": {
+      "title": "From the Beginning to the End.",
+      "titleAccent": "End",
+      "steps": [
+        {
+          "id": "consultation",
+          "title": "Consultation",
+          "description": "We listen to your goals, timeline, and concerns before recommending a path forward."
+        },
+        {
+          "id": "inspection",
+          "title": "Inspection",
+          "description": "On-site assessment of existing systems, access points, and code requirements."
+        },
+        {
+          "id": "plan",
+          "title": "Plan",
+          "description": "Clear scope, permit strategy, and a detailed plan you can review before work begins."
+        },
+        {
+          "id": "installation",
+          "title": "Installation",
+          "description": "Clean, methodical installation with communication at every milestone."
+        },
+        {
+          "id": "testing",
+          "title": "Final Testing",
+          "description": "Circuit verification, safety checks, and walkthrough before we close the panel."
+        }
+      ]
+    },
+    "trust": {
+      "title": "Trusted When It Matters.",
+      "titleAccent": "Matters.",
+      "reviews": [
+        {
+          "quote": "They upgraded our panel and added an EV charger without disrupting our daily routine. Every detail was explained clearly.",
+          "author": "Sarah M.",
+          "location": "Toronto",
+          "rating": 5
+        },
+        {
+          "quote": "Our office fit-out needed tight timelines. Peace of Mind Electric coordinated with our contractor and delivered on schedule.",
+          "author": "David K.",
+          "location": "Mississauga",
+          "rating": 5
+        },
+        {
+          "quote": "The rewire on our older home was invisible when they finished — but the difference in reliability is obvious every day.",
+          "author": "Priya L.",
+          "location": "Oakville",
+          "rating": 5
+        }
+      ],
+      "indicators": [
+        {
+          "icon": "badge",
+          "label": "ECRA/ESA Licensed",
+          "detail": "License #7001234 (demo)"
+        },
+        {
+          "icon": "shield",
+          "label": "Fully Insured",
+          "detail": "$5M liability coverage"
+        },
+        {
+          "icon": "warranty",
+          "label": "Workmanship Warranty",
+          "detail": "Residential installations"
+        },
+        {
+          "icon": "map",
+          "label": "Service Area",
+          "detail": "GTA & surrounding areas"
+        },
+        {
+          "icon": "emergency",
+          "label": "Emergency Response",
+          "detail": "24/7 for existing clients"
+        }
+      ]
+    },
+    "resources": {
+      "title": "Know What Powers Your Home.",
+      "titleAccent": "Powers",
+      "items": [
+        {
+          "slug": "when-to-replace-electrical-panel",
+          "title": "When should you replace an electrical panel?",
+          "excerpt": "Signs your panel is overdue for an upgrade — and what a modern service can support.",
+          "readTime": "6 min read"
+        },
+        {
+          "slug": "ev-charger-readiness",
+          "title": "Is your home ready for an EV charger?",
+          "excerpt": "Load calculations, panel capacity, and the path from outlet to dedicated circuit.",
+          "readTime": "5 min read"
+        },
+        {
+          "slug": "outdated-wiring-warning-signs",
+          "title": "Warning signs of outdated wiring",
+          "excerpt": "Flickering lights, warm plates, and tripping breakers — what they may indicate.",
+          "readTime": "7 min read"
+        },
+        {
+          "slug": "how-surge-protection-works",
+          "title": "How surge protection works",
+          "excerpt": "Whole-home vs point-of-use protection and why both layers matter.",
+          "readTime": "4 min read"
+        },
+        {
+          "slug": "generator-sizing-basics",
+          "title": "Generator sizing basics",
+          "excerpt": "Matching generator capacity to essential circuits and transfer switch requirements.",
+          "readTime": "8 min read"
+        }
+      ]
+    },
+    "faq": {
+      "title": "Questions Homeowners Ask.",
+      "titleAccent": "Ask",
+      "intro": "Straight answers about electrical work, permits, and what to expect when you hire a licensed contractor in the GTA.",
+      "items": [
+        {
+          "question": "Are you licensed and insured?",
+          "answer": "Yes. Peace of Mind Electric holds a valid ECRA/ESA contractor licence and carries liability insurance on every job. Permits and inspections are coordinated as required — this is placeholder demo copy."
+        },
+        {
+          "question": "How much does a panel upgrade cost?",
+          "answer": "Most residential panel upgrades in the GTA range from a few thousand dollars depending on amperage, meter base work, and whether the utility service needs upgrading. We provide a written quote after an on-site assessment."
+        },
+        {
+          "question": "Do I need a permit for electrical work?",
+          "answer": "Most panel changes, service upgrades, new circuits, EV chargers, and generator installs require an ESA permit and inspection in Ontario. We handle permit filing and final inspection as part of the project scope."
+        },
+        {
+          "question": "Can you install an EV charger at my home?",
+          "answer": "In most cases, yes — after we verify panel capacity and the run from your electrical service to the parking location. We install dedicated circuits, conduit, and charger mounts to code."
+        },
+        {
+          "question": "How do I know if my wiring needs to be replaced?",
+          "answer": "Frequent breaker trips, flickering lights, warm outlets, aluminum or knob-and-tube wiring, and homes built before 1970 without updates are common signs. A licensed inspection is the safest way to know your options."
+        },
+        {
+          "question": "Do you offer emergency electrical service?",
+          "answer": "We provide emergency response for existing clients. For new inquiries, contact us to discuss urgency — same-day options may be available depending on crew schedule and scope."
+        }
+      ],
+      "cta": {
+        "label": "Ask About Your Project",
+        "href": "/contact"
+      }
+    },
+    "finalCta": {
+      "headline": "Ready for Peace of Mind?",
+      "body": "Tell us what you are planning, and we will help you power it safely.",
+      "cta": {
+        "label": "Start Your Project",
+        "href": "/contact"
+      }
+    }
+  },
+  "about": {
+    "title": "Craftsmanship You Can Trust Behind Every Wall.",
+    "titleAccent": "Trust",
+    "intro": "Peace of Mind Electric was built on a simple belief: the best electrical work is invisible, but its impact powers everything you do.",
+    "values": [
+      {
+        "title": "Safety first",
+        "body": "Every project starts with code compliance, proper permits, and load calculations — no shortcuts."
+      },
+      {
+        "title": "Clear communication",
+        "body": "You know what we are doing, why, and what it costs before we open a wall."
+      },
+      {
+        "title": "Built to last",
+        "body": "Quality materials, neat work, and systems designed for today's needs and tomorrow's growth."
+      }
+    ],
+    "teamNote": "Our licensed electricians serve residential and commercial clients across the Greater Toronto Area. All team details are placeholder copy for this demo."
+  },
+  "servicesPage": {
+    "title": "Electrical Services",
+    "titleAccent": "Services",
+    "intro": "From panel upgrades to EV infrastructure, every service connects back to one carefully planned electrical system."
+  },
+  "projectsPage": {
+    "title": "Recent Projects",
+    "titleAccent": "Projects",
+    "intro": "Selected work demonstrating the path from assessment to fully powered — all demo placeholder content.",
+    "projects": [
+      {
+        "slug": "north-york-whole-home",
+        "title": "North York Whole-Home Rebuild",
+        "category": "Residential",
+        "location": "North York, ON",
+        "scope": "200A upgrade, rewire, EV, generator",
+        "image": "/templates/spark-frame/hero-house.jpg"
+      },
+      {
+        "slug": "mississauga-office-fitout",
+        "title": "Mississauga Office Fit-Out",
+        "category": "Commercial",
+        "location": "Mississauga, ON",
+        "scope": "Power distribution, lighting, data pathways",
+        "image": "/templates/spark-frame/icon-commercial.jpg"
+      },
+      {
+        "slug": "oakville-landscape-lighting",
+        "title": "Oakville Landscape Lighting",
+        "category": "Lighting",
+        "location": "Oakville, ON",
+        "scope": "Exterior fixtures, pathway, and timer controls",
+        "image": "/templates/spark-frame/icon-lighting.jpg"
+      }
+    ]
+  },
+  "contactPage": {
+    "title": "Start Your Project",
+    "titleAccent": "Project",
+    "intro": "Tell us about your electrical needs. We respond within one business day — demo form, no data stored.",
+    "formFields": [
+      {
+        "name": "name",
+        "label": "Full Name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "email",
+        "label": "Email",
+        "type": "email",
+        "required": true
+      },
+      {
+        "name": "phone",
+        "label": "Phone",
+        "type": "tel",
+        "required": false
+      },
+      {
+        "name": "service",
+        "label": "Service Type",
+        "type": "select",
+        "required": true
+      },
+      {
+        "name": "message",
+        "label": "Project Details",
+        "type": "textarea",
+        "required": true
+      }
+    ],
+    "serviceOptions": [
+      "Panel Upgrade",
+      "Lighting Installation",
+      "EV Charger",
+      "Generator",
+      "Residential Electrical",
+      "Commercial Electrical",
+      "Other"
+    ]
+  },
+  "resourcesPage": {
+    "title": "Electrical Resources",
+    "titleAccent": "Resources",
+    "intro": "Practical guides to help you understand what powers your home and when to call a licensed electrician."
+  }
+}

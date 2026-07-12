@@ -21,6 +21,7 @@
 @import "./valley-interlocking-theme.css";
 @import "./power-pellet-electric-theme.css";
 @import "./comfortflow-hvac-theme.css";
+@import "./spark-frame-theme.css";
 
 /* Fixed/sticky template navs sit flush at the top of the viewport */
 .template-demo-fixed-nav {

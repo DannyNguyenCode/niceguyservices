@@ -290,6 +290,17 @@ export const GALLERY_CARD_META: Record<string, GalleryCardMeta> = {
       layout: "Multi-route comfort hub — network map home, maintenance plans, service verticals, and booking.",
     },
   }),
+  "spark-frame": servicesCard("spark-frame", {
+    themeColors: ["#050505", "#D71920", "#F1222A", "#F2EDE4", "#111111", "#B8B3AC"],
+    icon: "bolt",
+    iconClassName: "text-primary-fixed",
+    gradientClassName: "bg-linear-to-br from-[#D71920]/20 to-[#050505]",
+    inspiration: {
+      theme: "Editorial comic-panel electrician — controlled energy through architectural cutaway illustration.",
+      colorPalette: "Charcoal black (#050505), primary red (#D71920), warm off-white (#F2EDE4).",
+      layout: "Multi-route trades demo — animated hero, editorial service grid, process circuit, resources.",
+    },
+  }),
 };
 
 export function templateMatchesFilter(slug: string, filter: GalleryFilterId): boolean {
