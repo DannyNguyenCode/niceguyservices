@@ -62,6 +62,7 @@ const TEMPLATE_GALLERY_DEMO_ACCENT_BY_SLUG: Record<string, string> = {
   "hardscape-landscaping": "bg-[#0A6847] text-[#ffffff]",
   "power-pellet-electric": "bg-[#e9ea00] text-[#323200]",
   "comfortflow-hvac": "bg-[#0a1422] text-[#ffffff]",
+  "spark-frame": "bg-[#D71920] text-[#F2EDE4]",
 };
 
 export function templateGalleryDemoButtonClass(slug: string): string {
@@ -85,6 +86,7 @@ const MULTI_PAGE_TEMPLATE_SLUGS = new Set([
   "hardscape-landscaping",
   "power-pellet-electric",
   "comfortflow-hvac",
+  "spark-frame",
 ]);
 
 export function experienceTemplateSlugs(): string[] {

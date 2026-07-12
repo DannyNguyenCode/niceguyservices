@@ -113,6 +113,12 @@
       "title": "ComfortFlow HVAC",
       "description": "Precision engineered comfort (fictional) — Multi-route HVAC demo with home network map, maintenance plans, heating, cooling, air quality, water heaters, comfort systems, resources, and contact booking; Geist light-mode MD3 palette; all placeholder copy.",
       "link": "/template/demo/comfortflow-hvac"
+    },
+    {
+      "slug": "spark-frame",
+      "title": "SparkFrame",
+      "description": "Editorial comic-panel electrician (fictional) — Multi-route demo with animated cutaway hero, room-lighting sequence, editorial service panels, behind-the-walls reveal, circuit process, reviews, resources, and contact; black/red MD3 palette; all placeholder copy.",
+      "link": "/template/demo/spark-frame"
     }
   ]
 }

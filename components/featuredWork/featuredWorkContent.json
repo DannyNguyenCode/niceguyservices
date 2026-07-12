@@ -59,12 +59,12 @@
       },
       {
         "label": "Concept",
-        "category": "Landscaping",
-        "title": "Valley Interlocking Landscaping",
-        "description": "Multi-region landscaping flow with service-area structure and project galleries.",
-        "tags": ["Multi-page flow", "Gallery", "Demo"],
+        "category": "Electrical Services",
+        "title": "SparkFrame",
+        "description": "Editorial comic-panel electrician demo with cutaway hero, service grid, process circuit, reviews, and resources.",
+        "tags": ["Editorial design", "Multi-page flow", "Demo"],
         "cta": "View concept",
-        "href": "/template/demo/valley-interlocking"
+        "href": "/template/demo/spark-frame"
       },
       {
         "label": "Internal Build",

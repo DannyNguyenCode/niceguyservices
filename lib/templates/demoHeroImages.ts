@@ -12,6 +12,7 @@ import { SD_IMG } from "@/components/templates/demos/skyline-designs/skylineDesi
 import { VI_IMG } from "@/components/templates/demos/valley-interlocking/valleyInterlockingImages";
 import { PPE_IMG } from "@/components/templates/demos/power-pellet-electric/powerPelletElectricImages";
 import { CFH_IMG } from "@/components/templates/demos/comfortflow-hvac/comfortflowHvacImages";
+import { LAS_IMG } from "@/components/templates/demos/spark-frame/leaveASparkImages";
 import { TMNT_IMAGES } from "@/components/templates/demos/tmnt-construction/tmntConfig";
 
 export type DemoHeroMeta = {
@@ -80,5 +81,9 @@ export const DEMO_HERO_BY_SLUG: Record<string, DemoHeroMeta> = {
   "comfortflow-hvac": {
     src: CFH_IMG.networkMap,
     alt: "Smart home HVAC network map with connected comfort nodes — ComfortFlow HVAC demo hero",
+  },
+  "spark-frame": {
+    src: LAS_IMG.heroHouse,
+    alt: "Cutaway home illustration with red electrical paths — SparkFrame demo hero",
   },
 };

@@ -1,0 +1,162 @@
+{
+  "panel-upgrades": {
+    "title": "Panel Upgrades",
+    "powerLabel": "Service Panel",
+    "intro": "Upgrade outdated electrical panels so your property can safely support modern appliances, renovations, EV chargers, and everyday power demand.",
+    "sections": [
+      {
+        "heading": "When to upgrade",
+        "body": "Federal Pacific, Zinsco, or fuse panels, frequent breaker trips, and planned additions are common triggers for a service upgrade."
+      },
+      {
+        "heading": "What we deliver",
+        "body": "Load calculations, permit coordination, neat panel installation, labeling, and final inspection support."
+      },
+      {
+        "heading": "Capacity planning",
+        "body": "We size your service for today's circuits and tomorrow's EV, heat pump, or workshop demands."
+      }
+    ],
+    "cta": { "label": "Request a Panel Assessment", "href": "/contact" }
+  },
+  "lighting-installation": {
+    "title": "Lighting Installation",
+    "powerLabel": "Lighting",
+    "intro": "Interior, exterior, recessed, security, and feature lighting with clean wiring and a finished look that fits your space.",
+    "sections": [
+      {
+        "heading": "Interior lighting",
+        "body": "Recessed cans, pendants, under-cabinet, and dimmer-compatible circuits installed to code."
+      },
+      {
+        "heading": "Exterior & landscape",
+        "body": "Wall sconces, pathway, and security lighting with weather-rated fixtures and proper GFCI protection."
+      },
+      {
+        "heading": "Smart controls",
+        "body": "Compatible dimmers, timers, and smart switch integration where requested."
+      }
+    ],
+    "cta": { "label": "Plan Your Lighting", "href": "/contact" }
+  },
+  "ev-chargers": {
+    "title": "EV Chargers",
+    "powerLabel": "EV Infrastructure",
+    "intro": "Dedicated circuits and charger-ready infrastructure for home garages and commercial parking.",
+    "sections": [
+      {
+        "heading": "Load assessment",
+        "body": "We verify panel capacity and recommend the right charger level for your vehicle and usage."
+      },
+      {
+        "heading": "Installation",
+        "body": "Conduit, dedicated breaker, and charger mount with clean cable routing."
+      },
+      {
+        "heading": "Future-ready",
+        "body": "Pathways planned for additional chargers or load management as your needs grow."
+      }
+    ],
+    "cta": { "label": "Get EV Charger Quote", "href": "/contact" }
+  },
+  "backup-generators": {
+    "title": "Backup Generators",
+    "powerLabel": "Backup Power",
+    "intro": "Transfer switches and generator integration for resilient backup power during outages.",
+    "sections": [
+      {
+        "heading": "Sizing",
+        "body": "Match generator output to essential circuits — heat, refrigeration, sump, and selected outlets."
+      },
+      {
+        "heading": "Transfer switch",
+        "body": "Manual or automatic transfer with clear labeling and safe isolation from the grid."
+      },
+      {
+        "heading": "Maintenance",
+        "body": "Testing protocols and access for annual service."
+      }
+    ],
+    "cta": { "label": "Discuss Backup Power", "href": "/contact" }
+  },
+  "residential-electrical": {
+    "title": "Residential Electrical",
+    "powerLabel": "Residential",
+    "intro": "Full-home wiring, renovations, additions, and electrical improvements for homeowners.",
+    "sections": [
+      {
+        "heading": "Renovations",
+        "body": "Kitchen, basement, and addition wiring coordinated with your general contractor."
+      },
+      {
+        "heading": "Repairs",
+        "body": "Outlet, switch, and fixture repairs with root-cause diagnosis."
+      },
+      {
+        "heading": "Inspections",
+        "body": "Pre-purchase and insurance inspections with clear reporting."
+      }
+    ],
+    "cta": { "label": "Book a Consultation", "href": "/contact" }
+  },
+  "commercial-electrical": {
+    "title": "Commercial Electrical",
+    "powerLabel": "Commercial",
+    "intro": "Tenant fit-outs, maintenance, and power distribution for offices, retail, and light industrial.",
+    "sections": [
+      {
+        "heading": "Fit-outs",
+        "body": "Power, lighting, and data pathways for new tenants and renovations."
+      },
+      {
+        "heading": "Maintenance",
+        "body": "Scheduled service and emergency response for commercial properties."
+      },
+      {
+        "heading": "Compliance",
+        "body": "Code-compliant work with documentation for property managers."
+      }
+    ],
+    "cta": { "label": "Commercial Inquiry", "href": "/contact" }
+  },
+  "rewiring": {
+    "title": "Rewiring",
+    "powerLabel": "Rewiring",
+    "intro": "Replace outdated or unsafe wiring with modern copper systems built for capacity and safety.",
+    "sections": [
+      {
+        "heading": "Assessment",
+        "body": "Knob-and-tube, aluminum, or damaged wiring identified and scoped."
+      },
+      {
+        "heading": "Phased approach",
+        "body": "Room-by-room or whole-home strategies to minimize disruption."
+      },
+      {
+        "heading": "Final certification",
+        "body": "ESA inspection and documentation for insurance and resale."
+      }
+    ],
+    "cta": { "label": "Schedule Rewire Assessment", "href": "/contact" }
+  },
+  "surge-protection": {
+    "title": "Surge Protection",
+    "powerLabel": "Surge Protection",
+    "intro": "Whole-home and point-of-use protection for sensitive electronics and appliances.",
+    "sections": [
+      {
+        "heading": "Whole-home",
+        "body": "Type 1 or Type 2 surge protectors at the service panel."
+      },
+      {
+        "heading": "Point-of-use",
+        "body": "Dedicated protection for home offices, entertainment, and HVAC controls."
+      },
+      {
+        "heading": "Layered defense",
+        "body": "Combined strategies for maximum equipment protection."
+      }
+    ],
+    "cta": { "label": "Protect Your Home", "href": "/contact" }
+  }
+}
