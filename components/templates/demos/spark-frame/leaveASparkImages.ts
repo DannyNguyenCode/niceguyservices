@@ -1,3 +1,4 @@
+/** Image URLs — source files in ./assets/, served from /public/templates/spark-frame/ */
 export const LAS_IMG = {
   heroHouse: "/templates/spark-frame/hero-house.jpg",
   iconPanel: "/templates/spark-frame/icon-panel.jpg",

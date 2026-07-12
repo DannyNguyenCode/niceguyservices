@@ -16,105 +16,7 @@ export function usePrefersReducedMotion(): boolean {
   return reduced;
 }
 
-export function useIsTouchDevice(): boolean {
-  const [touch, setTouch] = useState(true);
-
-  useEffect(() => {
-    setTouch(window.matchMedia("(pointer: coarse)").matches || "ontouchstart" in window);
-  }, []);
-
-  return touch;
-}
-
-export function useCompactViewport(): boolean {
-  const [compact, setCompact] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 1023px)");
-    const update = () => setCompact(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
-
-  return compact;
-}
-
-/** Hero room lighting sequence — milliseconds from page load */
-export const HERO_LIGHT_TIMELINE = {
-  panelLed: 400,
-  panelPulse: 800,
-  kitchen: 1200,
-  living: 1700,
-  office: 2200,
-  bedroom: 2700,
-  garage: 3200,
-  exterior: 3700,
-  landscape: 4200,
-  complete: 4700,
-  sparkGlow: 4700,
-} as const;
-
-/** Compressed sequence for touch / narrow viewports */
-export const HERO_MOBILE_LIGHT_TIMELINE = {
-  panelLed: 200,
-  panelPulse: 400,
-  kitchen: 600,
-  living: 900,
-  office: 1100,
-  bedroom: 1300,
-  garage: 1500,
-  exterior: 1700,
-  landscape: 1900,
-  complete: 2100,
-  sparkGlow: 2100,
-} as const;
-
-export type HeroRoomId =
-  | "panel"
-  | "kitchen"
-  | "living"
-  | "office"
-  | "bedroom"
-  | "garage"
-  | "exterior"
-  | "landscape";
-
-export const HERO_ROOM_ORDER: HeroRoomId[] = [
-  "panel",
-  "kitchen",
-  "living",
-  "office",
-  "bedroom",
-  "garage",
-  "exterior",
-  "landscape",
-];
-
 import type { Variants } from "framer-motion";
-
-export const panelEntrance: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.45, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] },
-  }),
-};
-
-export const staggerContainer: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
-};
-
-export const electricalPulse: Variants = {
-  idle: { scale: 1, opacity: 0.6 },
-  pulse: {
-    scale: [1, 1.4, 1],
-    opacity: [0.6, 1, 0.6],
-    transition: { duration: 0.35, ease: "easeOut" },
-  },
-};
 
 export const residualTrail = {
   duration: 0.15,
@@ -143,15 +45,6 @@ export const mobileMenuItem: Variants = {
     x: 0,
     transition: { delay: 0.05 + i * 0.06, duration: 0.25 },
   }),
-};
-
-export const circuitNodeActivate: Variants = {
-  inactive: { scale: 1, backgroundColor: "#242424" },
-  active: {
-    scale: [1, 1.15, 1],
-    backgroundColor: "#D71920",
-    transition: { duration: 0.3 },
-  },
 };
 
 export const buttonChargeVariants: Variants = {

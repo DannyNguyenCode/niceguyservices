@@ -32,7 +32,6 @@
   ],
   "exclude": [
     "node_modules",
-    "components/pricing/fusion-starter-d24/**/*",
-    "components/electrician-hero-showcase/**/*"
+    "components/pricing/fusion-starter-d24/**/*"
   ]
 }
