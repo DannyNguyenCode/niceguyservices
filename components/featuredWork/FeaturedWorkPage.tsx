@@ -197,9 +197,8 @@ export default function FeaturedWorkPage() {
                                         href={item.href}
                                         color="var(--ng-btn-sky)"
                                         className="group w-fit"
-                                        {...(item.href.startsWith("http")
-                                            ? { target: "_blank", rel: "noopener noreferrer" }
-                                            : {})}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                     >
                                         {item.cta}
                                         <ArrowRightIcon className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
