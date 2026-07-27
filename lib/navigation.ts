@@ -18,6 +18,7 @@ export const mainNavigation: NavItem[] = [
         href: "/work",
         children: [
             { title: "Featured Work", href: "/work" },
+            { title: "Website Audit", href: "/work/website-audit" },
             { title: "Website Inspirations", href: "/inspiration" },
         ],
     },
@@ -30,6 +31,25 @@ export const mainNavigation: NavItem[] = [
 export function isNavPathActive(pathname: string, href: string): boolean {
     if (href === "/") return pathname === "/";
     return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+/**
+ * Child-link active state prefers the most specific matching sibling.
+ * Prevents `/work` from staying active on `/work/website-audit`.
+ */
+export function isNavChildActive(
+    pathname: string,
+    href: string,
+    siblings: NavLink[],
+): boolean {
+    if (!isNavPathActive(pathname, href)) return false;
+
+    return !siblings.some(
+        (sibling) =>
+            sibling.href !== href &&
+            sibling.href.length > href.length &&
+            isNavPathActive(pathname, sibling.href),
+    );
 }
 
 export function isNavItemActive(pathname: string, item: NavItem): boolean {
