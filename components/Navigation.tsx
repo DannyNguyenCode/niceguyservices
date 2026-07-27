@@ -8,6 +8,7 @@ import ThemeToggleBtn from "./ThemeToggleBtn";
 import { useTheme } from "@/components/theme/ThemeProvider";
 import { getSiteLogoForTheme } from "@/lib/siteConfig";
 import {
+    isNavChildActive,
     isNavItemActive,
     isNavPathActive,
     mainNavigation,
@@ -100,7 +101,11 @@ function WorkDropdown({
                     className="menu absolute top-full left-0 z-50 mt-1 min-w-[220px] rounded-lg bg-base-100 p-2 shadow-lg ring-1 ring-base-300/60"
                 >
                     {item.children.map((child, index) => {
-                        const childActive = isNavPathActive(pathname, child.href);
+                        const childActive = isNavChildActive(
+                            pathname,
+                            child.href,
+                            item.children,
+                        );
                         return (
                             <li key={child.href}>
                                 <Link
@@ -204,7 +209,11 @@ export default function Navigation() {
                 </div>
                 <ul>
                     {item.children.map((child) => {
-                        const active = isNavPathActive(pathname, child.href);
+                        const active = isNavChildActive(
+                            pathname,
+                            child.href,
+                            item.children,
+                        );
                         return (
                             <li key={child.href}>
                                 <Link

@@ -22,7 +22,7 @@
       "tierLabel": "Package",
       "customerLabel": "Start here",
       "name": "Starter Website",
-      "upfront": "$500",
+      "upfront": "$250",
       "upfrontEyebrow": "One-time",
       "monthly": "",
       "monthlyUnit": "",
@@ -70,7 +70,7 @@
       "tierLabel": "Package",
       "customerLabel": "Keep it managed",
       "name": "Hosting & Reports",
-      "upfront": "$20",
+      "upfront": "$10",
       "upfrontEyebrow": "per month",
       "monthly": "",
       "monthlyUnit": "",
@@ -213,7 +213,7 @@
   },
   "starterScope": {
     "title": "Starter Website scope",
-    "intro": "The $500 starter package is designed for small businesses that need a professional foundation—not every advanced feature on day one.",
+    "intro": "The $250 starter package is designed for small businesses that need a professional foundation—not every advanced feature on day one.",
     "includesTitle": "Included in the starter build",
     "includes": [
       "Up to five core pages",
