@@ -4,6 +4,7 @@ const reactPdfBrowserEntry =
   "./node_modules/@react-pdf/renderer/lib/react-pdf.browser.js";
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   turbopack: {
     resolveAlias: {
       "@react-pdf/renderer": reactPdfBrowserEntry,
@@ -19,6 +20,18 @@ const nextConfig: NextConfig = {
       };
     }
     return config;
+  },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+        ],
+      },
+    ];
   },
   async redirects() {
     return [
