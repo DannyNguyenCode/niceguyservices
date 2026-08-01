@@ -116,45 +116,62 @@ export async function createCrawlRecord(input: {
     requestedUrl: string;
     status?: CrawlStatus;
     auditRunId?: string | null;
-}): Promise<SerializableCrawl> {
+    idempotencyKey?: string;
+}): Promise<{ crawl: SerializableCrawl; created: boolean }> {
     await connectToDatabase();
     const websiteObjectId = assertObjectId(input.websiteId);
+    const idempotencyKey =
+        input.idempotencyKey ?? `crawl:${input.websiteId}:active`;
 
-    const created = await CrawlData.create({
-        websiteId: websiteObjectId,
-        auditRunId: input.auditRunId ? assertObjectId(input.auditRunId) : null,
-        status: input.status ?? "queued",
-        requestedUrl: input.requestedUrl,
-        startedAt: null,
-        completedAt: null,
-        finalUrl: "",
-        homepageTitle: "",
-        metaDescription: "",
-        language: "",
-        pagesDiscovered: 0,
-        pagesCrawled: 0,
-        internalLinks: [],
-        externalLinks: [],
-        emailsFound: [],
-        phoneNumbersFound: [],
-        socialLinks: [],
-        hasAboutPage: false,
-        hasContactPage: false,
-        hasServicesPage: false,
-        hasPrivacyPolicy: false,
-        hasTerms: false,
-        pageResults: [],
-        crawlDurationMs: 0,
-        errorMessage: null,
+    const { acquireOrReuseActiveJob } = await import("@/src/services/audit-jobs/stage-job");
+    const result = await acquireOrReuseActiveJob({
+        idempotencyKey,
+        findActive: async () =>
+            CrawlData.findOne({
+                websiteId: websiteObjectId,
+                status: { $in: ["queued", "processing"] },
+            }).lean<CrawlDataLean | null>(),
+        createDocument: async () => {
+            const created = await CrawlData.create({
+                websiteId: websiteObjectId,
+                auditRunId: input.auditRunId ? assertObjectId(input.auditRunId) : null,
+                status: input.status ?? "queued",
+                idempotencyKey,
+                attempt: 1,
+                requestedUrl: input.requestedUrl,
+                startedAt: null,
+                completedAt: null,
+                heartbeatAt: null,
+                finalUrl: "",
+                homepageTitle: "",
+                metaDescription: "",
+                language: "",
+                pagesDiscovered: 0,
+                pagesCrawled: 0,
+                internalLinks: [],
+                externalLinks: [],
+                emailsFound: [],
+                phoneNumbersFound: [],
+                socialLinks: [],
+                hasAboutPage: false,
+                hasContactPage: false,
+                hasServicesPage: false,
+                hasPrivacyPolicy: false,
+                hasTerms: false,
+                pageResults: [],
+                crawlDurationMs: 0,
+                errorMessage: null,
+            });
+            return created.toObject() as { _id: unknown };
+        },
+        serialize: (doc) => ({ id: String(doc._id) }),
     });
 
-    return toSerializable(
-        mapLean({
-            ...(created.toObject() as unknown as CrawlDataLean),
-            _id: String(created._id),
-            websiteId: String(created.websiteId),
-        }),
-    );
+    const crawl = await getCrawlById(result.record.id);
+    if (!crawl) {
+        throw new CrawlDataError("database", "Unable to create crawl record.");
+    }
+    return { crawl, created: result.created };
 }
 
 export async function getLatestCrawlForWebsite(
@@ -214,7 +231,9 @@ export async function updateCrawlStatus(
     extra: Partial<{
         startedAt: Date | null;
         completedAt: Date | null;
+        heartbeatAt: Date | null;
         errorMessage: string | null;
+        idempotencyKey: string | null;
     }> = {},
 ): Promise<SerializableCrawl> {
     await connectToDatabase();
@@ -262,6 +281,8 @@ export async function completeCrawl(
             $set: {
                 status: "complete",
                 completedAt: new Date(),
+                heartbeatAt: new Date(),
+                idempotencyKey: null,
                 requestedUrl: payload.requestedUrl,
                 finalUrl: payload.finalUrl,
                 homepageTitle: payload.homepageTitle,
@@ -302,6 +323,15 @@ export async function failCrawl(
 ): Promise<SerializableCrawl> {
     return updateCrawlStatus(crawlId, "failed", {
         completedAt: new Date(),
+        heartbeatAt: new Date(),
+        idempotencyKey: null,
         errorMessage,
+    });
+}
+
+export async function touchCrawlHeartbeat(crawlId: string): Promise<void> {
+    await connectToDatabase();
+    await CrawlData.findByIdAndUpdate(assertObjectId(crawlId, "Invalid crawl ID."), {
+        $set: { heartbeatAt: new Date() },
     });
 }

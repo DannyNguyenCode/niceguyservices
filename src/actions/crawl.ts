@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { runWebsiteCrawl } from "@/src/services/run-website-crawl";
+import { requireAdministratorSession } from "@/src/services/auth/administrator-session";
 import { mapRateLimitErrorToActionState } from "@/src/services/rate-limit/map-rate-limit-action-state";
 
 export type RunCrawlActionState = {
@@ -12,10 +13,11 @@ export type RunCrawlActionState = {
     resetAt?: string;
 };
 
-// TODO: Require admin authentication before allowing crawl triggers in production.
 export async function runWebsiteCrawlAction(
     websiteId: string,
 ): Promise<RunCrawlActionState> {
+    await requireAdministratorSession(`/dashboard/websites/${websiteId}`);
+
     try {
         const result = await runWebsiteCrawl(websiteId);
 

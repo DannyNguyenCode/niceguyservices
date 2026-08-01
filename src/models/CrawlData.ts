@@ -88,6 +88,14 @@ const CrawlDataSchema = new Schema(
             enum: CRAWL_STATUSES,
             default: "not-started",
         },
+        idempotencyKey: {
+            type: String,
+            trim: true,
+            default: null,
+            index: true,
+        },
+        attempt: { type: Number, default: 1, min: 1 },
+        heartbeatAt: { type: Date, default: null },
         startedAt: {
             type: Date,
             default: null,
@@ -202,6 +210,16 @@ indexWebsiteForeignKey(CrawlDataSchema);
 CrawlDataSchema.index({ websiteId: 1, createdAt: -1 });
 CrawlDataSchema.index({ websiteId: 1, auditRunId: 1 });
 CrawlDataSchema.index({ websiteId: 1, status: 1 });
+CrawlDataSchema.index(
+    { idempotencyKey: 1 },
+    {
+        unique: true,
+        partialFilterExpression: {
+            idempotencyKey: { $type: "string" },
+            status: { $in: ["queued", "processing"] },
+        },
+    },
+);
 
 export type CrawlDataDocument = InferSchemaType<typeof CrawlDataSchema> & {
     _id: mongoose.Types.ObjectId;
@@ -214,6 +232,8 @@ export type CrawlDataLean = {
     _id: string;
     websiteId: string;
     status: (typeof CRAWL_STATUSES)[number];
+    attempt: number;
+    heartbeatAt: Date | null;
     startedAt: Date | null;
     completedAt: Date | null;
     requestedUrl: string;

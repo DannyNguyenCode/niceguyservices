@@ -1,13 +1,11 @@
 import "server-only";
 
 import { NextResponse } from "next/server";
-import { isAuthConfigured } from "@/src/lib/auth/config";
-import { getAdministratorSessionFromToken } from "@/src/services/auth/administrator-session";
-import { ADMIN_SESSION_COOKIE } from "@/src/lib/auth/middleware-auth";
 import {
-    isTrustedInternalWorker,
-    resolveAdministratorRateLimitIdentity,
-} from "@/src/services/rate-limit/administrator-context";
+    createAuthConfigurationUnavailableResponse,
+    requireAdministratorApiAccess,
+} from "@/src/lib/auth/api-auth";
+import { isTrustedInternalWorker } from "@/src/services/rate-limit/administrator-context";
 import { handleRouteRateLimitError } from "@/src/services/rate-limit/handle-route-rate-limit-error";
 import {
     enforceAdministratorReadRateLimit,
@@ -16,24 +14,10 @@ import {
 import type { RateLimitPolicyId } from "@/src/validation/rate-limit";
 
 async function guardAdministratorAuthRoute(request: Request): Promise<NextResponse | null> {
-    if (!isAuthConfigured()) {
-        return null;
+    const authResult = await requireAdministratorApiAccess(request);
+    if (authResult instanceof NextResponse) {
+        return authResult;
     }
-
-    const cookieHeader = request.headers.get("cookie");
-    const token = cookieHeader
-        ?.split(";")
-        .map((part) => part.trim())
-        .find((part) => part.startsWith(`${ADMIN_SESSION_COOKIE}=`))
-        ?.slice(ADMIN_SESSION_COOKIE.length + 1);
-    const session = await getAdministratorSessionFromToken(token);
-    if (!session) {
-        return NextResponse.json(
-            { success: false, error: { code: "UNAUTHORIZED", message: "Authentication required." } },
-            { status: 401 },
-        );
-    }
-
     return null;
 }
 
@@ -71,20 +55,23 @@ export async function guardAdministratorWriteRoute(request: Request): Promise<Ne
     }
 }
 
+export { createAuthConfigurationUnavailableResponse };
+
 export async function resolveRouteAdministratorIdentity(request: Request): Promise<string> {
+    const { resolveAdministratorRateLimitIdentity } = await import(
+        "@/src/services/rate-limit/administrator-context"
+    );
     return resolveAdministratorRateLimitIdentity(request);
 }
 
-export async function runWithRouteRateLimit<T>(
-    input: {
-        request: Request;
-        policyId: RateLimitPolicyId;
-        websiteId?: string;
-        cost?: number;
-        auditRunId?: string | null;
-        handler: () => Promise<T>;
-    },
-): Promise<T | NextResponse> {
+export async function runWithRouteRateLimit<T>(input: {
+    request: Request;
+    policyId: RateLimitPolicyId;
+    websiteId?: string;
+    cost?: number;
+    auditRunId?: string | null;
+    handler: () => Promise<T>;
+}): Promise<T | NextResponse> {
     if (!isTrustedInternalWorker(input.request)) {
         try {
             const { enforceAdministratorActionRateLimit } = await import(

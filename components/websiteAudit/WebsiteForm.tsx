@@ -291,15 +291,26 @@ export default function WebsiteForm(props: WebsiteFormProps) {
             ) : null}
 
             <div className="md:col-span-2 flex flex-col gap-4 sm:flex-row sm:items-center">
-                <button type="submit" className="btn btn-primary" disabled={pending}>
-                    {pending
-                        ? isEdit
-                            ? "Saving…"
-                            : "Creating…"
-                        : isEdit
-                          ? "Save changes"
-                          : "Create website record"}
+                <button
+                    type="submit"
+                    name="intent"
+                    value="save"
+                    className="btn btn-primary"
+                    disabled={pending}
+                >
+                    {pending ? "Saving…" : isEdit ? "Save Website" : "Save Website"}
                 </button>
+                {!isEdit ? (
+                    <button
+                        type="submit"
+                        name="intent"
+                        value="save-and-start"
+                        className="btn btn-secondary"
+                        disabled={pending}
+                    >
+                        {pending ? "Starting audit…" : "Save and Start Audit"}
+                    </button>
+                ) : null}
                 {state.message && !state.ok ? (
                     <p className="text-sm text-error" role="alert" aria-live="polite">
                         {state.message}

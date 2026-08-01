@@ -39,10 +39,12 @@ export const auditConfigurationSchema = z.object({
     includePageSpeed: z.boolean().optional().default(true),
     includeNiceGuyMetrics: z.boolean().optional().default(true),
     includeAiAnalysis: z.boolean().optional().default(true),
+    generateReportDraft: z.boolean().optional().default(true),
     pageSpeedStrategies: z
         .array(z.enum(["mobile", "desktop"]))
         .optional()
         .default(["mobile", "desktop"]),
+    configurationVersion: z.string().optional().default("audit-config-v1"),
 });
 
 export const auditCreateBodySchema = z.object({

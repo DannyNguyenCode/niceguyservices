@@ -4,6 +4,7 @@ import { chromium, type Browser, type BrowserContext } from "playwright";
 import { CRAWL_CONFIG } from "@/src/lib/crawl-config";
 import { getPlaywrightLaunchOptions } from "@/src/lib/playwright-config";
 import { validatePublicCrawlUrl } from "@/src/lib/validate-public-url";
+import { installPlaywrightNetworkGuard } from "@/src/services/playwright-network-guard";
 import { screenshotFilenameForTarget } from "@/src/services/screenshot-targets";
 
 async function navigateSafely(page: import("playwright").Page, targetUrl: string): Promise<void> {
@@ -45,7 +46,9 @@ export async function capturePageScreenshots(input: {
             userAgent: CRAWL_CONFIG.desktopUserAgent,
             viewport: CRAWL_CONFIG.desktopViewport,
             ignoreHTTPSErrors: false,
+            serviceWorkers: "block",
         });
+        await installPlaywrightNetworkGuard(desktopContext);
         const desktopPage = await desktopContext.newPage();
         desktopPage.setDefaultTimeout(CRAWL_CONFIG.timeoutMs);
         await navigateSafely(desktopPage, validatedUrl.toString());
@@ -73,7 +76,9 @@ export async function capturePageScreenshots(input: {
             isMobile: true,
             hasTouch: true,
             ignoreHTTPSErrors: false,
+            serviceWorkers: "block",
         });
+        await installPlaywrightNetworkGuard(mobileContext);
         const mobilePage = await mobileContext.newPage();
         mobilePage.setDefaultTimeout(CRAWL_CONFIG.timeoutMs);
         await navigateSafely(mobilePage, validatedUrl.toString());

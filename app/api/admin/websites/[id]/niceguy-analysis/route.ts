@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
 import { runNiceGuyAnalysis } from "@/src/services/run-niceguy-analysis";
+import {
+    guardAdministratorWriteRoute,
+    resolveRouteAdministratorIdentity,
+} from "@/src/services/rate-limit/admin-route-guards";
+import { isTrustedInternalWorker } from "@/src/services/rate-limit/administrator-context";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 120;
@@ -8,12 +13,19 @@ type RouteContext = {
     params: Promise<{ id: string }>;
 };
 
-// TODO: Require admin authentication before allowing Nice Guy scoring in production.
-export async function POST(_request: Request, context: RouteContext) {
+export async function POST(request: Request, context: RouteContext) {
+    const writeGuard = await guardAdministratorWriteRoute(request);
+    if (writeGuard) {
+        return writeGuard;
+    }
+
     const { id } = await context.params;
 
     try {
-        const result = await runNiceGuyAnalysis(id);
+        const result = await runNiceGuyAnalysis(id, {
+            administratorIdentity: await resolveRouteAdministratorIdentity(request),
+            internalWorker: isTrustedInternalWorker(request),
+        });
 
         if (!result.success) {
             const status =

@@ -8,6 +8,7 @@ import {
 } from "@/src/data/hero-suggestions";
 import { createActivityLog } from "@/src/data/activity-logs";
 import { runAiAnalysis } from "@/src/services/run-ai-analysis";
+import { requireAdministratorSession } from "@/src/services/auth/administrator-session";
 import { mapRateLimitErrorToActionState } from "@/src/services/rate-limit/map-rate-limit-action-state";
 
 export type RunAiAnalysisActionState = {
@@ -23,6 +24,8 @@ export type RunAiAnalysisActionState = {
 export async function runAiAnalysisAction(
     websiteId: string,
 ): Promise<RunAiAnalysisActionState> {
+    await requireAdministratorSession(`/dashboard/websites/${websiteId}`);
+
     try {
         const result = await runAiAnalysis(websiteId);
 
@@ -61,6 +64,8 @@ export async function selectHeroSuggestionAction(
     websiteId: string,
     heroSuggestionId: string,
 ): Promise<{ ok: boolean; message?: string }> {
+    await requireAdministratorSession(`/dashboard/websites/${websiteId}`);
+
     const updated = await selectHeroSuggestion(heroSuggestionId);
 
     await createActivityLog({
@@ -82,6 +87,8 @@ export async function rejectHeroSuggestionAction(
     websiteId: string,
     heroSuggestionId: string,
 ): Promise<{ ok: boolean; message?: string }> {
+    await requireAdministratorSession(`/dashboard/websites/${websiteId}`);
+
     const updated = await rejectHeroSuggestion(heroSuggestionId);
 
     await createActivityLog({
@@ -103,6 +110,8 @@ export async function restoreHeroSuggestionAction(
     websiteId: string,
     heroSuggestionId: string,
 ): Promise<{ ok: boolean; message?: string }> {
+    await requireAdministratorSession(`/dashboard/websites/${websiteId}`);
+
     const updated = await restoreHeroSuggestion(heroSuggestionId);
 
     await createActivityLog({

@@ -18,11 +18,11 @@ export function assertFileExists(relativePath: string): void {
 }
 
 export function assertThrows(fn: () => unknown, messageIncludes?: string): void {
-    assert.throws(
-        fn,
-        messageIncludes
-            ? (error: unknown) =>
-                  error instanceof Error && error.message.includes(messageIncludes)
-            : undefined,
-    );
+    if (messageIncludes) {
+        assert.throws(fn, (error: unknown) =>
+            error instanceof Error && error.message.includes(messageIncludes),
+        );
+        return;
+    }
+    assert.throws(fn);
 }

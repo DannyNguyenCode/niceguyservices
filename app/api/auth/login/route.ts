@@ -4,19 +4,27 @@ import {
     ADMIN_SESSION_MAX_AGE_SECONDS,
     isAuthConfigured,
 } from "@/src/lib/auth/config";
+import { isProtectedDeploymentEnvironment } from "@/src/lib/auth/auth-requirements";
+import { createAuthConfigurationUnavailableResponse } from "@/src/lib/auth/api-auth";
 import {
     authenticateAdministrator,
     createAdministratorSessionCookie,
 } from "@/src/services/auth/administrator-session";
+import { enforceLoginRateLimitsFromRequest } from "@/src/services/rate-limit/enforce-login-rate-limit";
+import { normalizeLoginEmail } from "@/src/services/rate-limit/rate-limit-identity";
+import { createRateLimitResponseFromError } from "@/src/services/rate-limit/create-rate-limit-response";
 
 export const dynamic = "force-dynamic";
 
+const INVALID_CREDENTIALS_MESSAGE = "Invalid email or password.";
+
 export async function POST(request: Request) {
+    if (isProtectedDeploymentEnvironment() && !isAuthConfigured()) {
+        return createAuthConfigurationUnavailableResponse();
+    }
+
     if (!isAuthConfigured()) {
-        return NextResponse.json(
-            { success: false, error: "Authentication is not configured." },
-            { status: 503 },
-        );
+        return createAuthConfigurationUnavailableResponse();
     }
 
     let body: { email?: string; password?: string } = {};
@@ -39,10 +47,31 @@ export async function POST(request: Request) {
         );
     }
 
-    const session = await authenticateAdministrator(email, password);
+    const normalizedEmail = normalizeLoginEmail(email);
+    if (!normalizedEmail) {
+        return NextResponse.json(
+            { success: false, error: INVALID_CREDENTIALS_MESSAGE },
+            { status: 401 },
+        );
+    }
+
+    try {
+        await enforceLoginRateLimitsFromRequest({
+            email: normalizedEmail,
+            request,
+        });
+    } catch (error) {
+        const rateLimitResponse = createRateLimitResponseFromError(error);
+        if (rateLimitResponse) {
+            return rateLimitResponse;
+        }
+        throw error;
+    }
+
+    const session = await authenticateAdministrator(normalizedEmail, password);
     if (!session) {
         return NextResponse.json(
-            { success: false, error: "Invalid email or password." },
+            { success: false, error: INVALID_CREDENTIALS_MESSAGE },
             { status: 401 },
         );
     }

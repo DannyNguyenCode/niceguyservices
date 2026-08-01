@@ -1,7 +1,7 @@
 import "server-only";
 
 import { createActivityLog } from "@/src/data/activity-logs";
-import { getLatestCrawlForWebsite } from "@/src/data/crawls";
+import { getLatestCrawlForWebsite, getCrawlById } from "@/src/data/crawls";
 import { getGoogleMetricsForCrawl } from "@/src/data/google-metrics";
 import {
     completeNiceGuyMetricRecord,
@@ -54,7 +54,9 @@ export async function runNiceGuyAnalysis(
         };
     }
 
-    const latestCrawl = await getLatestCrawlForWebsite(websiteId);
+    const latestCrawl = options?.crawlId
+        ? await getCrawlById(options.crawlId)
+        : await getLatestCrawlForWebsite(websiteId);
     if (!latestCrawl || latestCrawl.status !== "complete") {
         return {
             success: false,
@@ -78,7 +80,8 @@ export async function runNiceGuyAnalysis(
 
     const crawlMetrics = await getGoogleMetricsForCrawl(latestCrawl.id);
     const pagespeed = getCompleteGoogleMetricsForCrawl(crawlMetrics);
-    if (!hasAtLeastOnePageSpeedResult(pagespeed)) {
+    const requirePageSpeed = options?.requirePageSpeed ?? true;
+    if (requirePageSpeed && !hasAtLeastOnePageSpeedResult(pagespeed)) {
         return {
             success: false,
             error: {

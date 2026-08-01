@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { runPageSpeedAnalysis } from "@/src/services/run-pagespeed-analysis";
+import { requireAdministratorSession } from "@/src/services/auth/administrator-session";
 import { mapRateLimitErrorToActionState } from "@/src/services/rate-limit/map-rate-limit-action-state";
 
 export type RunPageSpeedActionState = {
@@ -17,6 +18,8 @@ export type RunPageSpeedActionState = {
 export async function runPageSpeedAnalysisAction(
     websiteId: string,
 ): Promise<RunPageSpeedActionState> {
+    await requireAdministratorSession(`/dashboard/websites/${websiteId}`);
+
     try {
         const result = await runPageSpeedAnalysis(websiteId);
 

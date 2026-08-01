@@ -116,28 +116,56 @@ export async function createGoogleMetricRecord(input: {
     strategy: PageSpeedStrategy;
     requestedUrl: string;
     status?: GoogleMetricStatus;
+    idempotencyKey?: string;
 }): Promise<SerializableGoogleMetric> {
     await connectToDatabase();
 
-    const created = await GoogleMetric.create({
-        websiteId: assertObjectId(input.websiteId),
-        crawlId: assertObjectId(input.crawlId),
-        auditRunId: input.auditRunId ? assertObjectId(input.auditRunId) : null,
-        strategy: input.strategy,
-        status: input.status ?? "queued",
-        requestedUrl: input.requestedUrl,
-        scores: {},
-        fieldData: { available: false },
-        opportunities: [],
-        diagnostics: [],
-        failedAudits: [],
-        passedAuditCount: 0,
-        failedAuditCount: 0,
-        notApplicableAuditCount: 0,
-        apiMetadata: {},
+    const websiteObjectId = assertObjectId(input.websiteId);
+    const crawlObjectId = assertObjectId(input.crawlId);
+    const idempotencyKey =
+        input.idempotencyKey ??
+        `pagespeed:${input.websiteId}:${input.crawlId}:${input.strategy}`;
+
+    const { acquireOrReuseActiveJob } = await import("@/src/services/audit-jobs/stage-job");
+    const result = await acquireOrReuseActiveJob({
+        idempotencyKey,
+        findActive: async () =>
+            GoogleMetric.findOne({
+                websiteId: websiteObjectId,
+                crawlId: crawlObjectId,
+                strategy: input.strategy,
+                status: { $in: ["queued", "processing"] },
+            }).lean(),
+        createDocument: async () => {
+            const created = await GoogleMetric.create({
+                websiteId: websiteObjectId,
+                crawlId: crawlObjectId,
+                auditRunId: input.auditRunId ? assertObjectId(input.auditRunId) : null,
+                strategy: input.strategy,
+                status: input.status ?? "queued",
+                idempotencyKey,
+                attempt: 1,
+                requestedUrl: input.requestedUrl,
+                scores: {},
+                fieldData: { available: false },
+                opportunities: [],
+                diagnostics: [],
+                failedAudits: [],
+                passedAuditCount: 0,
+                failedAuditCount: 0,
+                notApplicableAuditCount: 0,
+                apiMetadata: {},
+            });
+            return created.toObject() as { _id: unknown };
+        },
+        serialize: (doc) => ({ id: String(doc._id) }),
     });
 
-    return toSerializable(created.toObject() as Record<string, unknown>);
+    const record = await getGoogleMetricById(result.record.id);
+    if (!record) {
+        throw new Error("Google metric record not found.");
+    }
+    return record;
 }
 
 export async function getGoogleMetricById(
@@ -211,11 +239,17 @@ export async function getLatestGoogleMetricByStrategy(
 export async function updateGoogleMetricStatus(
     id: string,
     status: GoogleMetricStatus,
+    extra: Partial<{
+        startedAt: Date | null;
+        heartbeatAt: Date | null;
+        completedAt: Date | null;
+        idempotencyKey: string | null;
+    }> = {},
 ): Promise<SerializableGoogleMetric> {
     await connectToDatabase();
     const updated = await GoogleMetric.findByIdAndUpdate(
         assertObjectId(id),
-        { $set: { status } },
+        { $set: { status, ...extra } },
         { new: true, runValidators: true },
     ).lean();
 
@@ -237,6 +271,9 @@ export async function completeGoogleMetricRecord(
         {
             $set: {
                 status: "complete",
+                completedAt: new Date(),
+                heartbeatAt: new Date(),
+                idempotencyKey: null,
                 finalUrl: payload.finalUrl ?? "",
                 fetchTime: payload.fetchTime,
                 lighthouseVersion: payload.lighthouseVersion ?? "",
@@ -282,6 +319,9 @@ export async function failGoogleMetricRecord(
         {
             $set: {
                 status: "failed",
+                completedAt: new Date(),
+                heartbeatAt: new Date(),
+                idempotencyKey: null,
                 errorCode: input.errorCode,
                 errorMessage: input.errorMessage,
                 durationMs: input.durationMs ?? null,

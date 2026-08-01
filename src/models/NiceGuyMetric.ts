@@ -28,6 +28,16 @@ const NiceGuyMetricSchema = new Schema(
             required: true,
             default: "queued",
         },
+        idempotencyKey: {
+            type: String,
+            trim: true,
+            default: null,
+            index: true,
+        },
+        attempt: { type: Number, default: 1, min: 1 },
+        startedAt: { type: Date, default: null },
+        heartbeatAt: { type: Date, default: null },
+        completedAt: { type: Date, default: null },
         scoringVersion: { type: String, required: true, default: "niceguy-v1" },
         overallScore: { type: Number, default: 0, min: 0, max: 100 },
         categories: {
@@ -56,6 +66,16 @@ NiceGuyMetricSchema.index({ websiteId: 1, createdAt: -1 });
 NiceGuyMetricSchema.index({ crawlId: 1, scoringVersion: 1 });
 NiceGuyMetricSchema.index({ websiteId: 1, status: 1 });
 NiceGuyMetricSchema.index({ websiteId: 1, auditRunId: 1 });
+NiceGuyMetricSchema.index(
+    { idempotencyKey: 1 },
+    {
+        unique: true,
+        partialFilterExpression: {
+            idempotencyKey: { $type: "string" },
+            status: { $in: ["queued", "processing"] },
+        },
+    },
+);
 
 export type NiceGuyMetricDocument = InferSchemaType<typeof NiceGuyMetricSchema> & {
     _id: mongoose.Types.ObjectId;

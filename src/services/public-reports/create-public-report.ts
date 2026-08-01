@@ -19,12 +19,16 @@ import {
     resolveHeroSelection,
     resolveScreenshotSelection,
 } from "@/src/services/public-reports/build-public-report-snapshot";
+import { isDuplicateKeyError } from "@/src/services/audit-jobs/stage-job-utils";
+import { logError } from "@/src/lib/safe-log";
 import { sanitizeReportText } from "@/src/services/public-reports/screenshot-selection";
 import {
     PublicReportValidationError,
     validatePublicReportSources,
 } from "@/src/services/public-reports/validate-public-report-sources";
 import type { PublicReportSettings } from "@/src/types/public-report";
+
+const MAX_REVISION_ALLOCATION_ATTEMPTS = 12;
 
 export type CreatePublicReportResult =
     | {
@@ -46,6 +50,7 @@ function defaultTitle(businessName: string, domain: string): string {
 
 export async function createPublicReport(input: {
     websiteId: string;
+    auditRunId?: string | null;
     crawlId: string;
     niceGuyMetricId: string;
     aiSummaryId: string;
@@ -120,21 +125,22 @@ export async function createPublicReport(input: {
             ? sanitizeReportText(input.subtitle, 200)
             : "Prepared by Nice Guy Web Design";
 
-        let revisionNumber = await getNextRevisionNumber(website.id);
         let report = null;
-        const sourceAuditRunId = aiSummary.auditRunId ?? crawl.auditRunId ?? null;
+        const sourceAuditRunId =
+            input.auditRunId ?? aiSummary.auditRunId ?? crawl.auditRunId ?? null;
         const sourceAuditRun = sourceAuditRunId
             ? await getAuditRunById(sourceAuditRunId)
             : null;
 
-        for (let attempt = 0; attempt < 3; attempt += 1) {
+        for (let attempt = 0; attempt < MAX_REVISION_ALLOCATION_ATTEMPTS; attempt += 1) {
+            const revisionNumber = await getNextRevisionNumber(website.id);
             try {
                 report = await createPublicReportDraft({
                     websiteId: website.id,
                     crawlId: crawl.id,
                     niceGuyMetricId: niceGuy.id,
                     aiSummaryId: aiSummary.id,
-                    auditRunId: aiSummary.auditRunId,
+                    auditRunId: sourceAuditRunId,
                     sourceAuditRunId,
                     sourceAuditNumber: sourceAuditRun?.auditNumber ?? null,
                     heroSuggestionIds: heroSuggestions.map((hero) => hero.id),
@@ -148,16 +154,16 @@ export async function createPublicReport(input: {
                 });
                 break;
             } catch (error) {
-                if (
-                    typeof error === "object" &&
-                    error !== null &&
-                    "code" in error &&
-                    (error as { code?: number }).code === 11000
-                ) {
-                    revisionNumber += 1;
-                    continue;
+                if (!isDuplicateKeyError(error)) {
+                    throw error;
                 }
-                throw error;
+                logError("public-report.revision-conflict", {
+                    websiteId: website.id,
+                    auditRunId: sourceAuditRunId,
+                    revisionNumber,
+                    attempt: attempt + 1,
+                    message: error instanceof Error ? error.message : String(error),
+                });
             }
         }
 

@@ -6,12 +6,12 @@ import {
     reserveNextAuditNumber,
 } from "@/src/data/audit-runs";
 import { getWebsiteById } from "@/src/data/websites";
-import { CRAWL_CONFIG } from "@/src/lib/crawl-config";
 import { NICEGUY_SCORING_VERSION } from "@/src/config/niceguy-scoring";
 import { AI_ANALYSIS_VERSION, AI_HERO_SUGGESTION_VERSION } from "@/src/lib/ai-config";
 import { createActivityEvent } from "@/src/services/activity/create-activity-event";
 import { AUDIT_RUN_SCHEMA_VERSION } from "@/src/services/audit-history/constants";
 import type { SerializableAuditRun } from "@/src/services/audit-history/types";
+import { normalizeAuditConfiguration } from "@/src/data/audit-jobs";
 
 export class AuditHistoryError extends Error {
     readonly code: string;
@@ -50,15 +50,7 @@ export async function createAuditRun(input: {
         );
     }
 
-    const configuration: SerializableAuditRun["configuration"] = {
-        crawlMaxPages: input.configuration?.crawlMaxPages ?? CRAWL_CONFIG.maxPages,
-        crawlMaxDepth: input.configuration?.crawlMaxDepth ?? null,
-        includeScreenshots: input.configuration?.includeScreenshots ?? true,
-        includePageSpeed: input.configuration?.includePageSpeed ?? true,
-        includeNiceGuyMetrics: input.configuration?.includeNiceGuyMetrics ?? true,
-        includeAiAnalysis: input.configuration?.includeAiAnalysis ?? true,
-        pageSpeedStrategies: input.configuration?.pageSpeedStrategies ?? ["mobile", "desktop"],
-    };
+    const configuration = normalizeAuditConfiguration(input.configuration);
 
     const auditRun = await createAuditRunRecord({
         websiteId: input.websiteId,

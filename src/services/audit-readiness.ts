@@ -205,7 +205,8 @@ export function calculateAuditReadiness(input: {
 
     if (
         input.aiSummary?.status === "complete" &&
-        input.website.aiAnalysisStatus !== "failed"
+        input.website.aiAnalysisStatus !== "failed" &&
+        !input.aiSummary.visuallyAnalyzed
     ) {
         warnings.push("This AI analysis was generated without visual screenshot analysis.");
     }

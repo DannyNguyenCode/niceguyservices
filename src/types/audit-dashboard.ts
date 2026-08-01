@@ -87,8 +87,12 @@ export type AuditRelationWarning = {
     message: string;
 };
 
+import type { SerializableAuditJob } from "@/src/services/audit-pipeline/types";
+
 export type WebsiteAuditDashboardData = {
     website: SerializableWebsite;
+    selectedAuditRunId: string | null;
+    activeJob: SerializableAuditJob | null;
     auditStatus: {
         crawl: AuditStageStatus;
         screenshots: AuditStageStatus;
@@ -131,5 +135,5 @@ export type WebsiteAuditDashboardData = {
         niceGuyRuns: AuditHistoryItem[];
         aiRuns: AuditHistoryItem[];
     };
-    activity: SerializableActivityItem[];
+    activity?: SerializableActivityItem[];
 };

@@ -89,9 +89,9 @@ const PublicReportSchema = new Schema(
             required: true,
         },
         revisionNumber: { type: Number, required: true, min: 1 },
-        tokenHash: { type: String, default: null, trim: true },
-        tokenPrefix: { type: String, default: null, trim: true },
-        publicPath: { type: String, default: null, trim: true },
+        tokenHash: { type: String, trim: true },
+        tokenPrefix: { type: String, trim: true },
+        publicPath: { type: String, trim: true },
         title: { type: String, required: true, trim: true, maxlength: 200 },
         subtitle: { type: String, default: null, trim: true, maxlength: 200 },
         settings: { type: PublicReportSettingsSchema, default: () => ({}) },
@@ -113,7 +113,15 @@ const PublicReportSchema = new Schema(
 );
 
 indexWebsiteForeignKey(PublicReportSchema);
-PublicReportSchema.index({ tokenHash: 1 }, { unique: true, sparse: true });
+PublicReportSchema.index(
+    { tokenHash: 1 },
+    {
+        unique: true,
+        partialFilterExpression: {
+            tokenHash: { $type: "string" },
+        },
+    },
+);
 PublicReportSchema.index({ websiteId: 1, revisionNumber: -1 });
 PublicReportSchema.index({ websiteId: 1, revisionNumber: 1 }, { unique: true });
 PublicReportSchema.index({ websiteId: 1, status: 1, createdAt: -1 });

@@ -9,10 +9,11 @@ import {
 } from "@/src/data/ai-summaries";
 import { createActivityLog } from "@/src/data/activity-logs";
 import { createAiMetadataRecord } from "@/src/data/ai-metadata";
-import { getLatestCrawlForWebsite } from "@/src/data/crawls";
+import { getLatestCrawlForWebsite, getCrawlById } from "@/src/data/crawls";
+import { getAuditRunById } from "@/src/data/audit-runs";
 import { createHeroSuggestionRecords } from "@/src/data/hero-suggestions";
 import { getGoogleMetricsForCrawl } from "@/src/data/google-metrics";
-import { getLatestNiceGuyMetricForWebsite } from "@/src/data/niceguy-metrics";
+import { getLatestNiceGuyMetricForWebsite, getNiceGuyMetricById } from "@/src/data/niceguy-metrics";
 import { getScreenshotsForCrawl } from "@/src/data/screenshots";
 import {
     getWebsiteById,
@@ -153,7 +154,9 @@ export async function runAiAnalysis(
         };
     }
 
-    const latestCrawl = await getLatestCrawlForWebsite(websiteId);
+    const latestCrawl = options?.crawlId
+        ? await getCrawlById(options.crawlId)
+        : await getLatestCrawlForWebsite(websiteId);
     if (!latestCrawl || latestCrawl.status !== "complete") {
         return {
             success: false,
@@ -175,7 +178,13 @@ export async function runAiAnalysis(
         };
     }
 
-    const niceGuyMetric = await getLatestNiceGuyMetricForWebsite(websiteId);
+    const niceGuyMetric = options?.auditRunId
+        ? await (async () => {
+              const auditRun = await getAuditRunById(options.auditRunId!);
+              const metricId = auditRun?.references.niceGuyMetricsId;
+              return metricId ? getNiceGuyMetricById(metricId) : null;
+          })()
+        : await getLatestNiceGuyMetricForWebsite(websiteId);
     if (!niceGuyMetric || niceGuyMetric.status !== "complete") {
         return {
             success: false,
@@ -200,7 +209,8 @@ export async function runAiAnalysis(
 
     const googleMetrics = await getGoogleMetricsForCrawl(latestCrawl.id);
     const pagespeed = getCompleteGoogleMetricsForCrawl(googleMetrics);
-    if (!hasAtLeastOnePageSpeedResult(pagespeed)) {
+    const requirePageSpeed = options?.requirePageSpeed ?? true;
+    if (requirePageSpeed && !hasAtLeastOnePageSpeedResult(pagespeed)) {
         return {
             success: false,
             error: {
@@ -270,6 +280,9 @@ export async function runAiAnalysis(
             promptVersion: AI_CONFIG.analysisPromptVersion,
             sourceSnapshot,
             status: "queued",
+            visuallyAnalyzed: false,
+            inputModalities: ["text", "dom"],
+            screenshotIds: [],
         });
         summaryRecordId = summaryRecord.id;
 
@@ -332,6 +345,11 @@ export async function runAiAnalysis(
                 durationMs: summaryGeneration.durationMs,
                 promptVersion: summaryGeneration.promptVersion,
                 analysisVersion: AI_ANALYSIS_VERSION,
+                visuallyAnalyzed: analysisInput.screenshots.visuallyAnalyzed,
+                inputModalities: analysisInput.screenshots.visuallyAnalyzed
+                    ? ["text", "dom", "vision"]
+                    : ["text", "dom"],
+                screenshotIds: [],
             });
 
             await createAiMetadataRecord({
@@ -527,10 +545,12 @@ export async function runAiAnalysis(
                       ? "partial"
                       : "failed",
             );
-            try {
-                await finalizeAuditRun({ auditRunId });
-            } catch (finalizeError) {
-                console.error("Audit finalization after AI analysis:", finalizeError);
+            if (!options?.managedByPipeline) {
+                try {
+                    await finalizeAuditRun({ auditRunId });
+                } catch (finalizeError) {
+                    console.error("Audit finalization after AI analysis:", finalizeError);
+                }
             }
         }
 

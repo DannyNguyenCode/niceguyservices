@@ -103,6 +103,16 @@ const GoogleMetricSchema = new Schema(
             enum: GOOGLE_METRIC_STATUSES,
             default: "queued",
         },
+        idempotencyKey: {
+            type: String,
+            trim: true,
+            default: null,
+            index: true,
+        },
+        attempt: { type: Number, default: 1, min: 1 },
+        startedAt: { type: Date, default: null },
+        heartbeatAt: { type: Date, default: null },
+        completedAt: { type: Date, default: null },
         requestedUrl: { type: String, required: true, trim: true, maxlength: 2048 },
         finalUrl: { type: String, default: "", trim: true, maxlength: 2048 },
         fetchTime: { type: Date, default: null },
@@ -194,6 +204,16 @@ GoogleMetricSchema.index({ websiteId: 1, createdAt: -1 });
 GoogleMetricSchema.index({ crawlId: 1, strategy: 1 });
 GoogleMetricSchema.index({ websiteId: 1, strategy: 1, createdAt: -1 });
 GoogleMetricSchema.index({ websiteId: 1, auditRunId: 1, strategy: 1 });
+GoogleMetricSchema.index(
+    { idempotencyKey: 1 },
+    {
+        unique: true,
+        partialFilterExpression: {
+            idempotencyKey: { $type: "string" },
+            status: { $in: ["queued", "processing"] },
+        },
+    },
+);
 
 export type GoogleMetricDocument = InferSchemaType<typeof GoogleMetricSchema> & {
     _id: mongoose.Types.ObjectId;

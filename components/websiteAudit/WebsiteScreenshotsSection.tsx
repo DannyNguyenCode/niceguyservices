@@ -1,5 +1,7 @@
+import Image from "next/image";
 import AuditSectionCard from "@/components/websiteAudit/AuditSectionCard";
 import { formatWebsiteDate } from "@/lib/websiteAudit/format";
+import { buildScreenshotThumbnailUrl } from "@/src/lib/cloudinary-screenshot-url";
 import type { SerializableScreenshot } from "@/src/data/screenshots";
 
 function formatFileSize(bytes: number | null): string {
@@ -77,14 +79,16 @@ export default function WebsiteScreenshotsSection({
                             </div>
 
                             {shot?.secureUrl ? (
-                                <div className="overflow-hidden rounded-xl bg-base-100">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img
-                                        src={shot.secureUrl}
+                                <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-base-100">
+                                    <Image
+                                        src={buildScreenshotThumbnailUrl(shot.secureUrl, {
+                                            width: 640,
+                                            height: 480,
+                                        })}
                                         alt={`${formatLabel(type)} screenshot`}
-                                        width={shot.width ?? shot.viewport.width}
-                                        height={shot.height ?? shot.viewport.height}
-                                        className="h-auto max-h-72 w-full object-contain object-top"
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 50vw"
+                                        className="object-contain object-top"
                                         loading="lazy"
                                     />
                                 </div>

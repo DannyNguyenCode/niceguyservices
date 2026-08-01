@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { runNiceGuyAnalysis } from "@/src/services/run-niceguy-analysis";
+import { requireAdministratorSession } from "@/src/services/auth/administrator-session";
 import { mapRateLimitErrorToActionState } from "@/src/services/rate-limit/map-rate-limit-action-state";
 
 export type RunNiceGuyActionState = {
@@ -17,6 +18,8 @@ export type RunNiceGuyActionState = {
 export async function runNiceGuyAnalysisAction(
     websiteId: string,
 ): Promise<RunNiceGuyActionState> {
+    await requireAdministratorSession(`/dashboard/websites/${websiteId}`);
+
     try {
         const result = await runNiceGuyAnalysis(websiteId);
 

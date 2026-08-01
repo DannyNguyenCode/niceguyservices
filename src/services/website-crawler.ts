@@ -23,6 +23,11 @@ import {
     PublicUrlValidationError,
     validatePublicCrawlUrl,
 } from "@/src/lib/validate-public-url";
+import { installPlaywrightNetworkGuard } from "@/src/services/playwright-network-guard";
+import {
+    evaluateDiscoverLinks,
+    evaluateExtractPageData,
+} from "@/src/services/crawl-browser-evaluate";
 import { normalizeWebsiteUrl } from "@/src/lib/normalize-domain";
 import type { CrawlPageResult } from "@/src/schemas/crawl-data";
 import type { PageType } from "@/src/schemas/enums";
@@ -100,127 +105,7 @@ async function extractPageData(
     const url = page.url();
     const path = getUrlPath(url);
 
-    const extracted = await page.evaluate(() => {
-        const isVisible = (element: Element) => {
-            const style = window.getComputedStyle(element);
-            if (style.display === "none" || style.visibility === "hidden") return false;
-            const rect = element.getBoundingClientRect();
-            return rect.width > 0 && rect.height > 0;
-        };
-
-        const headings = Array.from(document.querySelectorAll("h1,h2,h3,h4,h5,h6"))
-            .filter(isVisible)
-            .map((element) => ({
-                level: Number.parseInt(element.tagName.slice(1), 10),
-                text: element.textContent?.replace(/\s+/g, " ").trim() ?? "",
-            }))
-            .filter((heading) => heading.text.length > 0);
-
-        const buttons = Array.from(
-            document.querySelectorAll("button, [role='button'], a.btn, a.button"),
-        )
-            .filter(isVisible)
-            .map((element) => ({
-                text: element.textContent?.replace(/\s+/g, " ").trim() ?? "",
-                href:
-                    element instanceof HTMLAnchorElement
-                        ? element.href || undefined
-                        : undefined,
-            }))
-            .filter((button) => button.text.length > 0)
-            .slice(0, 50);
-
-        const forms = Array.from(document.querySelectorAll("form"))
-            .filter(isVisible)
-            .map((form) => {
-                const fields = Array.from(
-                    form.querySelectorAll("input, textarea, select"),
-                )
-                    .filter(isVisible)
-                    .map((field) => {
-                        const input = field as HTMLInputElement;
-                        const labelElement = input.id
-                            ? document.querySelector(`label[for='${input.id}']`)
-                            : field.closest("label");
-                        return {
-                            type: input.type || field.tagName.toLowerCase(),
-                            name: input.name || undefined,
-                            label:
-                                labelElement?.textContent?.replace(/\s+/g, " ").trim() ||
-                                input.getAttribute("aria-label") ||
-                                undefined,
-                            required: input.required,
-                        };
-                    });
-
-                return {
-                    action: form.getAttribute("action") || undefined,
-                    method: form.getAttribute("method") || undefined,
-                    fields,
-                };
-            })
-            .slice(0, 10);
-
-        const images = Array.from(document.querySelectorAll("img"))
-            .filter(isVisible)
-            .map((image) => ({
-                src: image.getAttribute("src") || image.getAttribute("data-src") || undefined,
-                alt: image.getAttribute("alt") || undefined,
-            }))
-            .slice(0, 100);
-
-        const anchors = Array.from(document.querySelectorAll("a[href]"));
-        const linkUrls: string[] = [];
-        const mailtoLinks: string[] = [];
-        const telLinks: string[] = [];
-
-        for (const anchor of anchors) {
-            const href = anchor.getAttribute("href")?.trim();
-            if (!href) continue;
-            if (href.startsWith("mailto:")) {
-                mailtoLinks.push(href);
-                continue;
-            }
-            if (href.startsWith("tel:")) {
-                telLinks.push(href);
-                continue;
-            }
-            try {
-                const resolved = new URL(href, window.location.href);
-                if (resolved.protocol !== "http:" && resolved.protocol !== "https:") {
-                    continue;
-                }
-                linkUrls.push(resolved.toString());
-            } catch {
-                // Ignore invalid URLs.
-            }
-        }
-
-        const clone = document.body.cloneNode(true) as HTMLElement;
-        clone
-            .querySelectorAll("script, style, noscript, svg, nav, header, footer")
-            .forEach((element) => element.remove());
-
-        const visibleText = clone.textContent?.replace(/\s+/g, " ").trim() ?? "";
-
-        return {
-            title: document.title?.trim() ?? "",
-            metaDescription:
-                document
-                    .querySelector("meta[name='description']")
-                    ?.getAttribute("content")
-                    ?.trim() ?? "",
-            language: document.documentElement.lang?.trim() ?? "",
-            headings,
-            buttons,
-            forms,
-            images,
-            linkUrls,
-            mailtoLinks,
-            telLinks,
-            visibleText,
-        };
-    });
+    const extracted = await evaluateExtractPageData(page);
 
     const internalLinks: string[] = [];
     const externalLinks: string[] = [];
@@ -287,12 +172,7 @@ async function discoverLinks(
     page: Page,
     baseDomain: string,
 ): Promise<{ internal: DiscoveredLink[]; external: string[] }> {
-    const rawLinks = await page.evaluate(() =>
-        Array.from(document.querySelectorAll("a[href]")).map((anchor) => ({
-            href: anchor.getAttribute("href") ?? "",
-            text: anchor.textContent?.replace(/\s+/g, " ").trim() ?? "",
-        })),
-    );
+    const rawLinks = await evaluateDiscoverLinks(page);
 
     const internal: DiscoveredLink[] = [];
     const external: string[] = [];
@@ -355,16 +235,10 @@ export async function crawlWebsite(
             userAgent: CRAWL_CONFIG.desktopUserAgent,
             viewport: CRAWL_CONFIG.desktopViewport,
             ignoreHTTPSErrors: false,
+            serviceWorkers: "block",
         });
 
-        await context.route("**/*", (route) => {
-            const resourceType = route.request().resourceType();
-            if (resourceType === "media" || resourceType === "font") {
-                void route.abort();
-                return;
-            }
-            void route.continue();
-        });
+        await installPlaywrightNetworkGuard(context);
 
         while (queue.length > 0 && pageResults.length < maxPages) {
             const current = queue.shift()!;

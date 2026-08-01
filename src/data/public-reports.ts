@@ -65,7 +65,8 @@ export async function getNextRevisionNumber(websiteId: string): Promise<number> 
         .sort({ revisionNumber: -1 })
         .select("revisionNumber")
         .lean();
-    return (latest?.revisionNumber ?? 0) + 1;
+    const current = Number(latest?.revisionNumber ?? 0);
+    return Number.isFinite(current) ? current + 1 : 1;
 }
 
 export async function createPublicReportDraft(input: {
@@ -103,9 +104,6 @@ export async function createPublicReportDraft(input: {
         status: "draft",
         reportVersion: PUBLIC_REPORT_VERSION,
         revisionNumber: input.revisionNumber,
-        tokenHash: null,
-        tokenPrefix: null,
-        publicPath: null,
         title: input.title,
         subtitle: input.subtitle ?? null,
         settings: input.settings,
@@ -115,6 +113,20 @@ export async function createPublicReportDraft(input: {
     });
 
     return toSerializable(created.toObject() as Record<string, unknown>);
+}
+
+export async function getPublicReportDraftForAuditRun(
+    auditRunId: string,
+): Promise<SerializablePublicReport | null> {
+    await connectToDatabase();
+    const auditRunObjectId = assertObjectId(auditRunId);
+    const doc = await PublicReport.findOne({
+        status: "draft",
+        $or: [{ sourceAuditRunId: auditRunObjectId }, { auditRunId: auditRunObjectId }],
+    })
+        .sort({ createdAt: -1 })
+        .lean();
+    return doc ? toSerializable(doc as Record<string, unknown>) : null;
 }
 
 export async function getPublicReportById(id: string): Promise<SerializablePublicReport | null> {

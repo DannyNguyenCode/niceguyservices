@@ -14,6 +14,7 @@ import {
     formatZodErrors,
     updateWebsiteSchema,
 } from "@/src/lib/website-validation";
+import { StartAuditJobError, startAuditJob } from "@/src/services/audit-pipeline/start-audit-job";
 
 export type WebsiteActionState = {
     ok: boolean;
@@ -78,8 +79,33 @@ export async function createWebsiteAction(
 
     try {
         const website = await createWebsite(parsed.data);
+        const intent = String(formData.get("intent") ?? "save");
         revalidatePath("/dashboard");
         revalidatePath("/dashboard/websites");
+
+        if (intent === "save-and-start") {
+            try {
+                const started = await startAuditJob({
+                    websiteId: website.id,
+                    trigger: { type: "administrator", actorId: null, actorName: null },
+                });
+                redirect(
+                    `/dashboard/websites/${website.id}?auditRunId=${started.auditRunId}&jobId=${started.job.id}`,
+                );
+            } catch (error) {
+                if (error instanceof StartAuditJobError) {
+                    return {
+                        ok: false,
+                        message: error.message,
+                        fieldErrors: error.code.includes("PREFLIGHT")
+                            ? { websiteUrl: error.message }
+                            : undefined,
+                    };
+                }
+                throw error;
+            }
+        }
+
         redirect(`/dashboard/websites/${website.id}?created=1`);
     } catch (error) {
         if (isRedirectError(error)) throw error;

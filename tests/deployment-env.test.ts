@@ -75,6 +75,7 @@ describe("deployment environment validation", () => {
             NEXT_PUBLIC_SITE_URL: "https://audit.example.com",
             MONGODB_URI: "mongodb+srv://user:pass@cluster.mongodb.net",
             MONGODB_DB_NAME: "niceguy_audit_production",
+            AUTH_SECRET: "production-auth-secret",
             PDF_RENDER_SECRET: "pdf-secret",
             CLOUDINARY_CLOUD_NAME: "cloud",
             CLOUDINARY_API_KEY: "key",
@@ -93,9 +94,42 @@ describe("deployment environment validation", () => {
             NODE_ENV: "production",
             DEPLOYMENT_ENV: "production",
             APP_URL: "https://audit.example.com",
+            AUTH_SECRET: "production-auth-secret",
         });
+        delete process.env.MONGODB_URI;
+        delete process.env.MONGODB_DB_NAME;
 
         const { getAppEnv } = await import("@/src/config/app-env");
         assert.throws(() => getAppEnv(), /MONGODB_URI/);
+    });
+
+    it("requires preview-safe MongoDB configuration", async () => {
+        Object.assign(process.env, {
+            NODE_ENV: "production",
+            DEPLOYMENT_ENV: "preview",
+            MONGODB_URI: "mongodb+srv://user:pass@cluster.mongodb.net",
+            MONGODB_DB_NAME: "niceguy_audit_production",
+            AUTH_SECRET: "preview-auth-secret",
+        });
+
+        const { getAppEnv } = await import("@/src/config/app-env");
+        assert.throws(() => getAppEnv(), /Preview deployments must not use production MongoDB/);
+    });
+
+    it("disables expensive audit providers in preview by default", async () => {
+        Object.assign(process.env, {
+            NODE_ENV: "production",
+            DEPLOYMENT_ENV: "preview",
+            MONGODB_URI: "mongodb+srv://user:pass@cluster.mongodb.net",
+            MONGODB_DB_NAME: "niceguy_audit_preview",
+            AUTH_SECRET: "preview-auth-secret",
+        });
+
+        const { getAppEnv, getAuditOperationFlags } = await import("@/src/config/app-env");
+        getAppEnv();
+        const flags = getAuditOperationFlags();
+        assert.equal(flags.pageSpeedEnabled, false);
+        assert.equal(flags.aiGenerationEnabled, false);
+        assert.equal(flags.crawlEnabled, false);
     });
 });

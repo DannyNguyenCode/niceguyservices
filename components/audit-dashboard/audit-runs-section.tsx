@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { formatWebsiteDate } from "@/lib/websiteAudit/format";
 import StatusBadge from "@/components/audit-dashboard/status-badge";
+import AuditSection from "@/components/audit/shared/audit-section";
+import { AUDIT_SECTIONS } from "@/src/lib/audit-sections";
 import { getAuditRunCountsForWebsite, getAuditRunsForWebsite } from "@/src/data/audit-runs";
 import type { AuditRunListItem } from "@/src/services/audit-history/types";
 
@@ -82,21 +84,25 @@ export default async function AuditRunsSection({ websiteId }: AuditRunsSectionPr
     const previous = items.find((item) => !item.isCurrent && item.status === "complete") ?? null;
 
     return (
-        <section id="audit-runs" className="rounded-2xl bg-base-100 p-6 shadow-sm">
+        <AuditSection
+            id={AUDIT_SECTIONS.auditRuns.id}
+            headingId={AUDIT_SECTIONS.auditRuns.headingId}
+            title="Audit runs"
+            description="Complete end-to-end audit executions with immutable snapshots of crawl, metrics, AI analysis, and linked outputs."
+        >
             <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                <div>
-                    <h2 className="text-lg font-semibold text-base-content">Audit history</h2>
-                    <p className="mt-2 text-sm text-base-content/70">
-                        Each audit run preserves crawl, metrics, AI analysis, and linked outputs at
-                        that point in time.
-                    </p>
+                <div className="sr-only" aria-hidden="true">
+                    Audit run history summary
                 </div>
-                <Link className="btn btn-sm btn-outline" href={`/dashboard/websites/${websiteId}/audits`}>
+                <Link
+                    className="btn btn-sm btn-outline w-full sm:w-auto"
+                    href={`/dashboard/websites/${websiteId}/audits`}
+                >
                     View all audits
                 </Link>
             </div>
 
-            <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <div className="rounded-xl bg-base-200 p-4">
                     <p className="text-sm text-base-content/70">Audit count</p>
                     <p className="mt-1 text-2xl font-semibold">{counts.total}</p>
@@ -127,31 +133,38 @@ export default async function AuditRunsSection({ websiteId }: AuditRunsSectionPr
             {items.length === 0 ? (
                 <p className="mt-6 text-sm text-base-content/70">No audit runs yet.</p>
             ) : (
-                <div className="mt-6 overflow-x-auto">
-                    <table className="table table-sm">
-                        <caption className="sr-only">Recent audit runs</caption>
-                        <thead>
-                            <tr>
-                                <th>Audit</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                                <th>Score</th>
-                                <th>Mobile</th>
-                                <th>Desktop</th>
-                                <th>Pages</th>
-                                <th>Warnings</th>
-                                <th>Errors</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {items.map((run) => (
-                                <AuditRunRow key={run.id} run={run} websiteId={websiteId} />
-                            ))}
-                        </tbody>
-                    </table>
+                <div className="mt-6">
+                    <p className="mb-2 text-xs text-base-content/60 md:hidden">
+                        Swipe horizontally to view all columns.
+                    </p>
+                    <div className="overflow-x-auto rounded-xl border border-base-200">
+                        <table className="table table-sm">
+                            <caption className="sr-only">Recent audit runs</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Audit</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Score</th>
+                                    <th scope="col">Mobile</th>
+                                    <th scope="col">Desktop</th>
+                                    <th scope="col">Pages</th>
+                                    <th scope="col">Warnings</th>
+                                    <th scope="col">Errors</th>
+                                    <th scope="col">
+                                        <span className="sr-only">Actions</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {items.map((run) => (
+                                    <AuditRunRow key={run.id} run={run} websiteId={websiteId} />
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             )}
-        </section>
+        </AuditSection>
     );
 }

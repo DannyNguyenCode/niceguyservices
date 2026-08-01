@@ -43,4 +43,5 @@ export const MONGODB_COLLECTIONS = {
     ),
     demoAssets: collectionName("MONGODB_COLLECTION_DEMO_ASSETS", "demo_assets"),
     auditRuns: collectionName("MONGODB_COLLECTION_AUDIT_RUNS", "audit_runs"),
+    auditJobs: collectionName("MONGODB_COLLECTION_AUDIT_JOBS", "audit_jobs"),
 } as const;

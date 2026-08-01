@@ -87,6 +87,10 @@ describe("Phase 16 — Authentication", () => {
 
     describe("auth configuration", () => {
         it("reports whether AUTH_SECRET is configured without exposing it", () => {
+            Object.assign(process.env, {
+                NODE_ENV: "test",
+                DEPLOYMENT_ENV: "test",
+            });
             delete process.env.AUTH_SECRET;
             assert.equal(isAuthSecretConfigured(), false);
             process.env.AUTH_SECRET = "local-development-secret";

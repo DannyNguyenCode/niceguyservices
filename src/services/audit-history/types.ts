@@ -72,7 +72,9 @@ export type SerializableAuditRun = {
         includePageSpeed: boolean;
         includeNiceGuyMetrics: boolean;
         includeAiAnalysis: boolean;
+        generateReportDraft: boolean;
         pageSpeedStrategies: Array<"mobile" | "desktop">;
+        configurationVersion: string;
     };
     versions: {
         auditSchemaVersion: string;

@@ -83,8 +83,15 @@ function serializeAuditRun(doc: AuditRunDocument | Record<string, unknown>): Ser
             includeAiAnalysis: Boolean(
                 (doc.configuration as { includeAiAnalysis?: boolean })?.includeAiAnalysis ?? true,
             ),
+            generateReportDraft: Boolean(
+                (doc.configuration as { generateReportDraft?: boolean })?.generateReportDraft ?? true,
+            ),
             pageSpeedStrategies: ((doc.configuration as { pageSpeedStrategies?: string[] })
                 ?.pageSpeedStrategies ?? ["mobile", "desktop"]) as Array<"mobile" | "desktop">,
+            configurationVersion: String(
+                (doc.configuration as { configurationVersion?: string })?.configurationVersion ??
+                    "audit-config-v1",
+            ),
         },
         versions: {
             auditSchemaVersion: String(

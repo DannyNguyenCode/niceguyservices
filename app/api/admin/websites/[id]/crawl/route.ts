@@ -15,7 +15,6 @@ type RouteContext = {
     params: Promise<{ id: string }>;
 };
 
-// TODO: Require admin authentication before allowing crawl triggers in production.
 export async function POST(request: Request, context: RouteContext) {
     const writeGuard = await guardAdministratorWriteRoute(request);
     if (writeGuard) {
@@ -36,7 +35,7 @@ export async function POST(request: Request, context: RouteContext) {
                     ? 404
                     : result.code === "duplicate"
                       ? 409
-                      : result.code === "invalid-url"
+                      : result.code === "invalid-url" || result.code === "disabled"
                         ? 400
                         : 500;
 
@@ -46,9 +45,24 @@ export async function POST(request: Request, context: RouteContext) {
             );
         }
 
+        if (result.accepted) {
+            return NextResponse.json(
+                {
+                    ok: true,
+                    accepted: true,
+                    jobId: result.crawlId,
+                    crawlId: result.crawlId,
+                    auditRunId: result.auditRunId,
+                    message: result.message,
+                },
+                { status: 202 },
+            );
+        }
+
         return NextResponse.json({
             ok: true,
             crawlId: result.crawlId,
+            auditRunId: result.auditRunId,
             message: result.message,
         });
     } catch (error) {

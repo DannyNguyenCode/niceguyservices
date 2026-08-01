@@ -1,15 +1,17 @@
 import { NextResponse } from "next/server";
-import { getAuditRunById, getAuditRunsForWebsite, getOpenAuditRunForWebsite } from "@/src/data/audit-runs";
 import { getWebsiteById } from "@/src/data/websites";
-import { runWebsiteCrawl } from "@/src/services/run-website-crawl";
-import { AuditHistoryError } from "@/src/services/audit-history/create-audit-run";
+import {
+    StartAuditJobError,
+    startAuditJob,
+} from "@/src/services/audit-pipeline/start-audit-job";
 import {
     guardAdministratorReadRoute,
     guardAdministratorWriteRoute,
     resolveRouteAdministratorIdentity,
 } from "@/src/services/rate-limit/admin-route-guards";
 import { handleRouteRateLimitError } from "@/src/services/rate-limit/handle-route-rate-limit-error";
-import { isTrustedInternalWorker } from "@/src/services/rate-limit/administrator-context";
+import { AuditHistoryError } from "@/src/services/audit-history/create-audit-run";
+import { getAuditRunsForWebsite } from "@/src/data/audit-runs";
 import {
     auditCreateBodySchema,
     auditListQuerySchema,
@@ -20,7 +22,6 @@ export const dynamic = "force-dynamic";
 
 type RouteContext = { params: Promise<{ id: string }> };
 
-// TODO: Require admin authentication before exposing audit history in production.
 export async function GET(request: Request, context: RouteContext) {
     const readGuard = await guardAdministratorReadRoute(request);
     if (readGuard) {
@@ -142,31 +143,30 @@ export async function POST(request: Request, context: RouteContext) {
         );
     }
 
-    try {
-        const crawlResult = await runWebsiteCrawl(websiteId, {
-            policyId: "audit-start",
-            administratorIdentity: await resolveRouteAdministratorIdentity(request),
-            internalWorker: isTrustedInternalWorker(request),
-        });
-        if (!crawlResult.ok) {
-            const openAudit = await getOpenAuditRunForWebsite(websiteId);
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: { code: "AUDIT_HISTORY_SAVE_FAILED", message: crawlResult.message },
-                    auditRun: openAudit,
-                },
-                { status: crawlResult.code === "duplicate" ? 409 : 500 },
-            );
-        }
+    const identity = await resolveRouteAdministratorIdentity(request);
 
-        const openAudit = await getOpenAuditRunForWebsite(websiteId);
-        const refreshed = openAudit ? await getAuditRunById(openAudit.id) : null;
-        return NextResponse.json({
-            success: true,
-            auditRun: refreshed ?? openAudit,
-            crawlId: crawlResult.crawlId,
+    try {
+        const started = await startAuditJob({
+            websiteId,
+            configuration: parsed.data.configuration,
+            trigger: {
+                type: parsed.data.trigger?.type ?? "administrator",
+                actorId: parsed.data.trigger?.actorId ?? identity,
+                actorName: parsed.data.trigger?.actorName ?? null,
+            },
         });
+
+        return NextResponse.json(
+            {
+                jobId: started.job.id,
+                auditRunId: started.auditRunId,
+                websiteId: started.websiteId,
+                status: started.job.status,
+                reused: started.reused,
+                statusUrl: started.statusUrl,
+            },
+            { status: started.reused ? 200 : 202 },
+        );
     } catch (error) {
         const rateLimitResponse = await handleRouteRateLimitError(error, {
             policyId: "audit-start",
@@ -176,12 +176,19 @@ export async function POST(request: Request, context: RouteContext) {
             return rateLimitResponse;
         }
 
-        if (error instanceof AuditHistoryError) {
+        if (error instanceof StartAuditJobError || error instanceof AuditHistoryError) {
             return NextResponse.json(
                 { success: false, error: { code: error.code, message: error.message } },
-                { status: error.code === "AUDIT_HISTORY_DUPLICATE_ACTIVE_RUN" ? 409 : 400 },
+                {
+                    status:
+                        error.code === "AUDIT_HISTORY_DUPLICATE_ACTIVE_RUN" ||
+                        error.code === "AUDIT_PREFLIGHT_URL_INVALID"
+                            ? 409
+                            : 400,
+                },
             );
         }
+
         console.error("Audit creation failed:", error);
         return NextResponse.json(
             {

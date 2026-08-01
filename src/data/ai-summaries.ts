@@ -16,6 +16,9 @@ export type SerializableAiSummary = {
     status: AiSummaryStatus;
     analysisVersion: string;
     promptVersion: string;
+    visuallyAnalyzed: boolean;
+    inputModalities: string[];
+    screenshotIds: string[];
     sourceSnapshot: {
         scoringVersion: string;
         overallScore: number;
@@ -70,6 +73,13 @@ function toSerializable(doc: Record<string, unknown>): SerializableAiSummary {
         status: doc.status as AiSummaryStatus,
         analysisVersion: String(doc.analysisVersion ?? AI_ANALYSIS_VERSION),
         promptVersion: String(doc.promptVersion ?? ""),
+        visuallyAnalyzed: Boolean(doc.visuallyAnalyzed ?? false),
+        inputModalities: Array.isArray(doc.inputModalities)
+            ? (doc.inputModalities as string[])
+            : ["text", "dom"],
+        screenshotIds: Array.isArray(doc.screenshotIds)
+            ? (doc.screenshotIds as unknown[]).map((id) => String(id))
+            : [],
         sourceSnapshot: {
             scoringVersion: String(sourceSnapshot.scoringVersion ?? ""),
             overallScore: Number(sourceSnapshot.overallScore ?? 0),
@@ -107,6 +117,9 @@ export async function createAiSummaryRecord(input: {
     promptVersion: string;
     sourceSnapshot: SerializableAiSummary["sourceSnapshot"];
     status?: AiSummaryStatus;
+    visuallyAnalyzed?: boolean;
+    inputModalities?: string[];
+    screenshotIds?: string[];
 }): Promise<SerializableAiSummary> {
     await connectToDatabase();
 
@@ -118,6 +131,9 @@ export async function createAiSummaryRecord(input: {
         status: input.status ?? "queued",
         analysisVersion: input.analysisVersion,
         promptVersion: input.promptVersion,
+        visuallyAnalyzed: input.visuallyAnalyzed ?? false,
+        inputModalities: input.inputModalities ?? ["text", "dom"],
+        screenshotIds: (input.screenshotIds ?? []).map((id) => assertObjectId(id)),
         sourceSnapshot: input.sourceSnapshot,
     });
 
@@ -221,6 +237,9 @@ export async function completeAiSummaryRecord(
         durationMs: number;
         promptVersion: string;
         analysisVersion: string;
+        visuallyAnalyzed?: boolean;
+        inputModalities?: string[];
+        screenshotIds?: string[];
     },
 ): Promise<SerializableAiSummary> {
     await connectToDatabase();
@@ -232,6 +251,11 @@ export async function completeAiSummaryRecord(
                 status: "complete",
                 analysisVersion: payload.analysisVersion,
                 promptVersion: payload.promptVersion,
+                visuallyAnalyzed: payload.visuallyAnalyzed ?? false,
+                inputModalities: payload.inputModalities ?? ["text", "dom"],
+                screenshotIds: (payload.screenshotIds ?? []).map((value) =>
+                    assertObjectId(value),
+                ),
                 executiveSummary: payload.executiveSummary,
                 businessImpactSummary: payload.businessImpactSummary,
                 strengths: payload.strengths,

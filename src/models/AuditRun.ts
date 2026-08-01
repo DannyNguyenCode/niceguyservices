@@ -79,11 +79,13 @@ const AuditRunSchema = new Schema(
             includePageSpeed: { type: Boolean, default: true },
             includeNiceGuyMetrics: { type: Boolean, default: true },
             includeAiAnalysis: { type: Boolean, default: true },
+            generateReportDraft: { type: Boolean, default: true },
             pageSpeedStrategies: {
                 type: [String],
                 enum: ["mobile", "desktop"],
                 default: ["mobile", "desktop"],
             },
+            configurationVersion: { type: String, default: "audit-config-v1" },
         },
         versions: {
             auditSchemaVersion: {

@@ -230,7 +230,7 @@ export default async function AuditRunDetailPage({
                     />
                     <ResourceLink
                         count={refs.publicReportIds.length}
-                        href={`/dashboard/websites/${id}#reports`}
+                        href={`/dashboard/websites/${id}#public-reports`}
                         label="Public reports"
                     />
                 </ul>

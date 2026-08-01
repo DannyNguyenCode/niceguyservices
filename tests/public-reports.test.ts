@@ -159,6 +159,9 @@ describe("public report validation", () => {
             status: "complete",
             analysisVersion: "audit-analysis-v1",
             promptVersion: "audit-analysis-v1",
+            visuallyAnalyzed: false,
+            inputModalities: ["text", "dom"],
+            screenshotIds: [],
             sourceSnapshot: {
                 scoringVersion: "niceguy-v1",
                 overallScore: 70,

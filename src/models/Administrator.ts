@@ -25,6 +25,7 @@ const administratorSchema = new Schema(
             required: true,
         },
         lastLoginAt: { type: Date, default: null },
+        sessionVersion: { type: Number, default: 1, min: 1 },
     },
     {
         collection: "administrators",

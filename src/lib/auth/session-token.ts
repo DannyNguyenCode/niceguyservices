@@ -3,6 +3,8 @@ export type AdministratorSessionPayload = {
     email: string;
     name: string;
     role: string;
+    /** Session version for revocation; required in protected environments. */
+    sv?: number;
     exp: number;
 };
 
@@ -84,7 +86,7 @@ export async function verifyAdministratorSessionToken(
 
     try {
         const payload = JSON.parse(fromBase64Url(encodedPayload)) as AdministratorSessionPayload;
-        if (!payload.sub || !payload.email || !payload.exp) {
+        if (!payload.sub || !payload.email || !payload.exp || payload.role == null) {
             return null;
         }
         if (Date.now() > payload.exp) {

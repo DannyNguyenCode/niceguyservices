@@ -5,6 +5,10 @@ import {
     hasValidAdministratorSessionCookie,
     isAuthSecretConfigured,
 } from "@/src/lib/auth/middleware-auth";
+import {
+    isAuthenticationConfigured,
+    isProtectedDeploymentEnvironment,
+} from "@/src/lib/auth/auth-requirements";
 import { resolveRequestId } from "@/src/lib/request-id";
 
 const SECURITY_HEADERS: Record<string, string> = {
@@ -19,13 +23,48 @@ function applySecurityHeaders(response: NextResponse): NextResponse {
     for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
         response.headers.set(key, value);
     }
-  if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === "production") {
         response.headers.set(
             "Strict-Transport-Security",
             "max-age=63072000; includeSubDomains; preload",
         );
     }
     return response;
+}
+
+function authConfigurationUnavailableResponse(): NextResponse {
+    return applySecurityHeaders(
+        NextResponse.json(
+            {
+                success: false,
+                error: {
+                    code: "AUTH_CONFIGURATION_UNAVAILABLE",
+                    message: "Authentication is not configured for this environment.",
+                },
+            },
+            {
+                status: 503,
+                headers: {
+                    "Cache-Control": "private, no-store",
+                },
+            },
+        ),
+    );
+}
+
+function unauthorizedApiResponse(): NextResponse {
+    return applySecurityHeaders(
+        NextResponse.json(
+            {
+                success: false,
+                error: {
+                    code: "UNAUTHORIZED",
+                    message: "Authentication required.",
+                },
+            },
+            { status: 401 },
+        ),
+    );
 }
 
 export async function middleware(request: NextRequest) {
@@ -39,12 +78,26 @@ export async function middleware(request: NextRequest) {
     applySecurityHeaders(response);
 
     const pathname = request.nextUrl.pathname;
-    if (pathname.startsWith("/dashboard") || pathname.startsWith("/api/admin")) {
+    const isProtectedPath =
+        pathname.startsWith("/dashboard") || pathname.startsWith("/api/admin");
+
+    if (isProtectedPath) {
         response.headers.set("Cache-Control", "private, no-store");
         response.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
     }
 
-    if (isAuthSecretConfigured()) {
+    if (isProtectedPath) {
+        if (isProtectedDeploymentEnvironment() && !isAuthenticationConfigured()) {
+            if (pathname.startsWith("/dashboard")) {
+                return authConfigurationUnavailableResponse();
+            }
+            return authConfigurationUnavailableResponse();
+        }
+
+        if (!isAuthSecretConfigured()) {
+            return response;
+        }
+
         const token = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
         const isAuthenticated = await hasValidAdministratorSessionCookie(token);
 
@@ -61,18 +114,7 @@ export async function middleware(request: NextRequest) {
                 workerSecret && providedSecret && providedSecret === workerSecret,
             );
             if (!trustedWorker) {
-                return applySecurityHeaders(
-                    NextResponse.json(
-                        {
-                            success: false,
-                            error: {
-                                code: "UNAUTHORIZED",
-                                message: "Authentication required.",
-                            },
-                        },
-                        { status: 401 },
-                    ),
-                );
+                return unauthorizedApiResponse();
             }
         }
     }

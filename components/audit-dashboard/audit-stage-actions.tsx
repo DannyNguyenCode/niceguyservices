@@ -9,9 +9,14 @@ import type { WebsiteAuditDashboardData } from "@/src/types/audit-dashboard";
 type AuditStageActionsProps = {
     websiteId: string;
     data: WebsiteAuditDashboardData;
+    embedded?: boolean;
 };
 
-export default function AuditStageActions({ websiteId, data }: AuditStageActionsProps) {
+export default function AuditStageActions({
+    websiteId,
+    data,
+    embedded = false,
+}: AuditStageActionsProps) {
     const { website, readiness, latest } = data;
     const crawlComplete = latest.crawl?.status === "complete";
     const homepageOk = Boolean(
@@ -31,14 +36,18 @@ export default function AuditStageActions({ websiteId, data }: AuditStageActions
             latest.niceGuy.crawlId === latest.crawl?.id,
     );
 
-    return (
-        <section className="rounded-2xl bg-base-100 p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-base-content">Run audit stages</h2>
-            <p className="mt-2 text-sm text-base-content/70">
-                Screenshots are captured automatically when a crawl completes. Stages must run in
-                order; disabled actions indicate missing prerequisites or an active run.
-            </p>
-            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+    const content = (
+        <>
+            {!embedded ? (
+                <>
+                    <h2 className="text-lg font-semibold text-base-content">Run audit stages</h2>
+                    <p className="mt-2 text-sm text-base-content/70">
+                        Screenshots are captured automatically when a crawl completes. Stages must run
+                        in order; disabled actions indicate missing prerequisites or an active run.
+                    </p>
+                </>
+            ) : null}
+            <div className={`${embedded ? "" : "mt-4 "}grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3`}>
                 <div className="rounded-xl bg-base-200 p-4 shadow-sm">
                     <p className="text-sm font-medium text-base-content">Crawl</p>
                     <div className="mt-3">
@@ -89,6 +98,12 @@ export default function AuditStageActions({ websiteId, data }: AuditStageActions
                     </div>
                 </div>
             </div>
-        </section>
+        </>
     );
+
+    if (embedded) {
+        return <div>{content}</div>;
+    }
+
+    return <section className="rounded-2xl bg-base-100 p-4 shadow-sm sm:p-6">{content}</section>;
 }

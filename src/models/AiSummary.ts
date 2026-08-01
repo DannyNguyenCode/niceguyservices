@@ -126,6 +126,15 @@ const AiSummarySchema = new Schema(
         },
         analysisVersion: { type: String, required: true },
         promptVersion: { type: String, required: true },
+        visuallyAnalyzed: { type: Boolean, default: false },
+        inputModalities: {
+            type: [String],
+            default: ["text", "dom"],
+        },
+        screenshotIds: {
+            type: [Schema.Types.ObjectId],
+            default: [],
+        },
         sourceSnapshot: { type: SourceSnapshotSchema, required: true },
         executiveSummary: { type: String, default: "", trim: true },
         businessImpactSummary: { type: String, default: "", trim: true },

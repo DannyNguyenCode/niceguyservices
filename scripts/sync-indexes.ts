@@ -25,6 +25,7 @@ import { PdfReport } from "../src/models/PdfReport";
 import { PublicReport } from "../src/models/PublicReport";
 import { Screenshot } from "../src/models/Screenshot";
 import { Website } from "../src/models/Website";
+import { AuditJob } from "../src/models/AuditJob";
 import { Administrator } from "../src/models/Administrator";
 
 const apply = process.argv.includes("--apply");
@@ -46,6 +47,7 @@ const MODELS = [
     { name: "DemoAsset", model: DemoAsset },
     { name: "ActivityLog", model: ActivityLog },
     { name: "AuditRun", model: AuditRun },
+    { name: "AuditJob", model: AuditJob },
     { name: "Administrator", model: Administrator },
 ];
 

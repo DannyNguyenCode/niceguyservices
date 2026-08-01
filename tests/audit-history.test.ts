@@ -25,7 +25,9 @@ function buildRun(overrides: Partial<SerializableAuditRun>): SerializableAuditRu
             includePageSpeed: true,
             includeNiceGuyMetrics: true,
             includeAiAnalysis: true,
+            generateReportDraft: true,
             pageSpeedStrategies: ["mobile", "desktop"],
+            configurationVersion: "audit-config-v1",
         },
         versions: {
             auditSchemaVersion: "audit-run-v1",

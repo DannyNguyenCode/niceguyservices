@@ -67,11 +67,16 @@ export default function AuditHistorySection({
         aiRuns.length > 0;
 
     return (
-        <section id="history" className="rounded-2xl bg-base-100 p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-base-content">Audit history</h2>
+        <section
+            id="stage-execution-log"
+            className="rounded-2xl bg-base-100 p-4 shadow-sm sm:p-6 scroll-mt-24"
+        >
+            <h2 id="stage-execution-log-heading" className="text-lg font-semibold text-base-content">
+                Stage execution log
+            </h2>
             <p className="mt-2 text-sm text-base-content/70">
-                Previous runs are preserved. Rerunning a stage creates a new record without
-                overwriting older results.
+                Technical stage-level attempts and reruns. Use audit runs above for complete
+                end-to-end executions.
             </p>
 
             {!hasHistory ? (

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { assertProductionApplicationUrl } from "@/src/lib/application-url";
+import { resolveAuthSecretForRuntime } from "@/src/lib/auth/auth-requirements";
 
 const deploymentEnvironmentSchema = z.enum([
     "development",
@@ -39,6 +40,14 @@ const optionalUrlSchema = z
         return trimmed || undefined;
     });
 
+const booleanFlagSchema = z
+    .string()
+    .optional()
+    .transform((value) => {
+        const normalized = value?.trim().toLowerCase();
+        return normalized === "1" || normalized === "true" || normalized === "yes";
+    });
+
 const appEnvSchema = z.object({
     deploymentEnvironment: deploymentEnvironmentSchema,
     nodeEnv: z.string(),
@@ -57,9 +66,27 @@ const appEnvSchema = z.object({
     aiApiKey: z.string().optional(),
     pdfRenderSecret: z.string().optional(),
     internalWorkerSecret: z.string().optional(),
+    previewAllowProductionDatabase: booleanFlagSchema,
+    auditCrawlEnabled: booleanFlagSchema,
+    auditScreenshotEnabled: booleanFlagSchema,
+    auditPageSpeedEnabled: booleanFlagSchema,
+    auditAiEnabled: booleanFlagSchema,
+    auditCloudinaryEnabled: booleanFlagSchema,
+    auditEmailEnabled: booleanFlagSchema,
+    auditSyncExecution: booleanFlagSchema,
 });
 
 export type AppEnv = z.infer<typeof appEnvSchema>;
+
+export type AuditOperationFlags = {
+    crawlEnabled: boolean;
+    screenshotEnabled: boolean;
+    pageSpeedEnabled: boolean;
+    aiGenerationEnabled: boolean;
+    cloudinaryUploadsEnabled: boolean;
+    emailSendingEnabled: boolean;
+    syncExecution: boolean;
+};
 
 let cachedAppEnv: AppEnv | null = null;
 
@@ -73,7 +100,10 @@ const PLACEHOLDER_SECRETS = new Set([
     "your-cloudinary-cloud-name",
     "your-cloudinary-api-key",
     "your-cloudinary-api-secret",
+    "your-auth-secret",
 ]);
+
+const PRODUCTION_DB_NAME_PATTERNS = [/production/i, /_prod$/i, /-prod$/i];
 
 function readSecret(value: string | undefined): string | undefined {
     const trimmed = value?.trim();
@@ -83,9 +113,57 @@ function readSecret(value: string | undefined): string | undefined {
     return trimmed;
 }
 
+function defaultAuditFlagsForEnvironment(
+    deploymentEnvironment: AppEnv["deploymentEnvironment"],
+): Pick<
+    AppEnv,
+    | "auditCrawlEnabled"
+    | "auditScreenshotEnabled"
+    | "auditPageSpeedEnabled"
+    | "auditAiEnabled"
+    | "auditCloudinaryEnabled"
+    | "auditEmailEnabled"
+    | "auditSyncExecution"
+> {
+    if (deploymentEnvironment === "production") {
+        return {
+            auditCrawlEnabled: true,
+            auditScreenshotEnabled: true,
+            auditPageSpeedEnabled: true,
+            auditAiEnabled: true,
+            auditCloudinaryEnabled: true,
+            auditEmailEnabled: true,
+            auditSyncExecution: false,
+        };
+    }
+
+    if (deploymentEnvironment === "preview") {
+        return {
+            auditCrawlEnabled: false,
+            auditScreenshotEnabled: false,
+            auditPageSpeedEnabled: false,
+            auditAiEnabled: false,
+            auditCloudinaryEnabled: false,
+            auditEmailEnabled: false,
+            auditSyncExecution: false,
+        };
+    }
+
+    return {
+        auditCrawlEnabled: true,
+        auditScreenshotEnabled: true,
+        auditPageSpeedEnabled: true,
+        auditAiEnabled: true,
+        auditCloudinaryEnabled: true,
+        auditEmailEnabled: false,
+        auditSyncExecution: true,
+    };
+}
+
 function parseAppEnv(): AppEnv {
     const deploymentEnvironment = resolveDeploymentEnvironment();
     const nodeEnv = process.env.NODE_ENV ?? "development";
+    const defaults = defaultAuditFlagsForEnvironment(deploymentEnvironment);
 
     const parsed = appEnvSchema.parse({
         deploymentEnvironment,
@@ -98,7 +176,7 @@ function parseAppEnv(): AppEnv {
             process.env.npm_package_version?.trim(),
         mongodbUri: readSecret(process.env.MONGODB_URI),
         mongodbDbName: process.env.MONGODB_DB_NAME?.trim(),
-        authSecret: readSecret(process.env.AUTH_SECRET),
+        authSecret: resolveAuthSecretForRuntime(),
         authUrl: process.env.AUTH_URL,
         cloudinaryCloudName: readSecret(process.env.CLOUDINARY_CLOUD_NAME),
         cloudinaryApiKey: readSecret(process.env.CLOUDINARY_API_KEY),
@@ -111,6 +189,18 @@ function parseAppEnv(): AppEnv {
             readSecret(process.env.ANTHROPIC_API_KEY),
         pdfRenderSecret: readSecret(process.env.PDF_RENDER_SECRET),
         internalWorkerSecret: readSecret(process.env.INTERNAL_WORKER_SECRET),
+        previewAllowProductionDatabase: process.env.PREVIEW_ALLOW_PRODUCTION_DATABASE,
+        auditCrawlEnabled: process.env.AUDIT_CRAWL_ENABLED ?? String(defaults.auditCrawlEnabled),
+        auditScreenshotEnabled:
+            process.env.AUDIT_SCREENSHOT_ENABLED ?? String(defaults.auditScreenshotEnabled),
+        auditPageSpeedEnabled:
+            process.env.AUDIT_PAGESPEED_ENABLED ?? String(defaults.auditPageSpeedEnabled),
+        auditAiEnabled: process.env.AUDIT_AI_ENABLED ?? String(defaults.auditAiEnabled),
+        auditCloudinaryEnabled:
+            process.env.AUDIT_CLOUDINARY_ENABLED ?? String(defaults.auditCloudinaryEnabled),
+        auditEmailEnabled: process.env.AUDIT_EMAIL_ENABLED ?? String(defaults.auditEmailEnabled),
+        auditSyncExecution:
+            process.env.AUDIT_SYNC_EXECUTION ?? String(defaults.auditSyncExecution),
     });
 
     if (deploymentEnvironment === "production") {
@@ -130,6 +220,9 @@ function validateProductionRequirements(env: AppEnv): void {
     }
     if (!env.mongodbDbName) {
         throw new Error("Production requires MONGODB_DB_NAME.");
+    }
+    if (!env.authSecret) {
+        throw new Error("Production requires AUTH_SECRET.");
     }
     if (!env.appUrl && !env.publicAppUrl) {
         throw new Error("Production requires APP_URL or NEXT_PUBLIC_SITE_URL.");
@@ -156,6 +249,18 @@ function validatePreviewRequirements(env: AppEnv): void {
     }
     if (!env.mongodbDbName) {
         throw new Error("Preview deployments require MONGODB_DB_NAME.");
+    }
+    if (!env.authSecret) {
+        throw new Error("Preview deployments require AUTH_SECRET.");
+    }
+
+    const looksLikeProductionDb = PRODUCTION_DB_NAME_PATTERNS.some((pattern) =>
+        pattern.test(env.mongodbDbName ?? ""),
+    );
+    if (looksLikeProductionDb && !env.previewAllowProductionDatabase) {
+        throw new Error(
+            "Preview deployments must not use production MongoDB collections unless PREVIEW_ALLOW_PRODUCTION_DATABASE is explicitly enabled.",
+        );
     }
 }
 
@@ -184,4 +289,30 @@ export function isProductionDeployment(): boolean {
 
 export function isPreviewDeployment(): boolean {
     return getDeploymentEnvironment() === "preview";
+}
+
+export function getAuditOperationFlags(): AuditOperationFlags {
+    const env = getAppEnv();
+    return {
+        crawlEnabled: env.auditCrawlEnabled,
+        screenshotEnabled: env.auditScreenshotEnabled,
+        pageSpeedEnabled: env.auditPageSpeedEnabled,
+        aiGenerationEnabled: env.auditAiEnabled,
+        cloudinaryUploadsEnabled: env.auditCloudinaryEnabled,
+        emailSendingEnabled: env.auditEmailEnabled,
+        syncExecution: env.auditSyncExecution,
+    };
+}
+
+export function getDisabledAuditOperationMessage(operation: keyof AuditOperationFlags): string {
+    const labels: Record<keyof AuditOperationFlags, string> = {
+        crawlEnabled: "Website crawling",
+        screenshotEnabled: "Screenshot capture",
+        pageSpeedEnabled: "Google PageSpeed analysis",
+        aiGenerationEnabled: "AI analysis generation",
+        cloudinaryUploadsEnabled: "Cloudinary uploads",
+        emailSendingEnabled: "Outreach email sending",
+        syncExecution: "Synchronous audit execution",
+    };
+    return `${labels[operation]} is disabled in this deployment environment.`;
 }

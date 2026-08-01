@@ -1,6 +1,6 @@
 import "server-only";
 
-import { getLatestCrawlForWebsite } from "@/src/data/crawls";
+import { getLatestCrawlForWebsite, getCrawlById } from "@/src/data/crawls";
 import { createActivityLog } from "@/src/data/activity-logs";
 import {
     completeGoogleMetricRecord,
@@ -179,7 +179,9 @@ export async function runPageSpeedAnalysis(
         };
     }
 
-    const latestCrawl = await getLatestCrawlForWebsite(websiteId);
+    const latestCrawl = options?.crawlId
+        ? await getCrawlById(options.crawlId)
+        : await getLatestCrawlForWebsite(websiteId);
     if (!latestCrawl || latestCrawl.status !== "complete") {
         return {
             success: false,

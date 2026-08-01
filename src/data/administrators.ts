@@ -10,6 +10,7 @@ export type SerializableAdministrator = {
     email: string;
     role: AdministratorLean["role"];
     status: AdministratorLean["status"];
+    sessionVersion: number;
     lastLoginAt: string | null;
     createdAt: string;
     updatedAt: string;
@@ -22,6 +23,7 @@ function toSerializable(doc: AdministratorLean): SerializableAdministrator {
         email: doc.email,
         role: doc.role,
         status: doc.status,
+        sessionVersion: Number(doc.sessionVersion ?? 1),
         lastLoginAt: doc.lastLoginAt ? new Date(doc.lastLoginAt).toISOString() : null,
         createdAt: new Date(doc.createdAt).toISOString(),
         updatedAt: new Date(doc.updatedAt).toISOString(),
@@ -74,4 +76,62 @@ export async function createAdministrator(input: {
 export async function updateAdministratorLastLogin(id: string): Promise<void> {
     await connectToDatabase();
     await Administrator.findByIdAndUpdate(id, { $set: { lastLoginAt: new Date() } });
+}
+
+export async function getAdministratorSessionVersion(id: string): Promise<number | null> {
+    await connectToDatabase();
+    const doc = await Administrator.findById(id).select("sessionVersion status").lean<{
+        sessionVersion?: number;
+        status?: string;
+    } | null>();
+    if (!doc || doc.status !== "active") {
+        return null;
+    }
+    return Number(doc.sessionVersion ?? 1);
+}
+
+export async function incrementAdministratorSessionVersion(id: string): Promise<number> {
+    await connectToDatabase();
+    const updated = await Administrator.findByIdAndUpdate(
+        id,
+        { $inc: { sessionVersion: 1 } },
+        { new: true },
+    )
+        .select("sessionVersion")
+        .lean<{ sessionVersion?: number } | null>();
+    return Number(updated?.sessionVersion ?? 1);
+}
+
+export async function revokeAllAdministratorSessions(id: string): Promise<number> {
+    return incrementAdministratorSessionVersion(id);
+}
+
+export async function updateAdministratorPassword(
+    id: string,
+    passwordHash: string,
+): Promise<void> {
+    await connectToDatabase();
+    await Administrator.findByIdAndUpdate(id, {
+        $set: { passwordHash },
+        $inc: { sessionVersion: 1 },
+    });
+}
+
+export async function deactivateAdministrator(id: string): Promise<void> {
+    await connectToDatabase();
+    await Administrator.findByIdAndUpdate(id, {
+        $set: { status: "inactive" },
+        $inc: { sessionVersion: 1 },
+    });
+}
+
+export async function updateAdministratorRole(
+    id: string,
+    role: AdministratorLean["role"],
+): Promise<void> {
+    await connectToDatabase();
+    await Administrator.findByIdAndUpdate(id, {
+        $set: { role },
+        $inc: { sessionVersion: 1 },
+    });
 }

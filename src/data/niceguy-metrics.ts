@@ -62,18 +62,46 @@ export async function createNiceGuyMetricRecord(input: {
     auditRunId?: string | null;
     scoringVersion: string;
     status?: NiceGuyMetricStatus;
+    idempotencyKey?: string;
 }): Promise<SerializableNiceGuyMetric> {
     await connectToDatabase();
 
-    const created = await NiceGuyMetric.create({
-        websiteId: assertObjectId(input.websiteId),
-        crawlId: assertObjectId(input.crawlId),
-        auditRunId: input.auditRunId ? assertObjectId(input.auditRunId) : null,
-        scoringVersion: input.scoringVersion,
-        status: input.status ?? "queued",
+    const websiteObjectId = assertObjectId(input.websiteId);
+    const crawlObjectId = assertObjectId(input.crawlId);
+    const idempotencyKey =
+        input.idempotencyKey ??
+        `niceguy:${input.websiteId}:${input.crawlId}:${input.scoringVersion}`;
+
+    const { acquireOrReuseActiveJob } = await import("@/src/services/audit-jobs/stage-job");
+    const result = await acquireOrReuseActiveJob({
+        idempotencyKey,
+        findActive: async () =>
+            NiceGuyMetric.findOne({
+                websiteId: websiteObjectId,
+                crawlId: crawlObjectId,
+                scoringVersion: input.scoringVersion,
+                status: { $in: ["queued", "processing"] },
+            }).lean(),
+        createDocument: async () => {
+            const created = await NiceGuyMetric.create({
+                websiteId: websiteObjectId,
+                crawlId: crawlObjectId,
+                auditRunId: input.auditRunId ? assertObjectId(input.auditRunId) : null,
+                scoringVersion: input.scoringVersion,
+                status: input.status ?? "queued",
+                idempotencyKey,
+                attempt: 1,
+            });
+            return created.toObject() as { _id: unknown };
+        },
+        serialize: (doc) => ({ id: String(doc._id) }),
     });
 
-    return toSerializable(created.toObject() as Record<string, unknown>);
+    const record = await getNiceGuyMetricById(result.record.id);
+    if (!record) {
+        throw new Error("Nice Guy metric record not found.");
+    }
+    return record;
 }
 
 export async function getNiceGuyMetricById(
@@ -127,11 +155,17 @@ export async function getNiceGuyMetricsForCrawl(
 export async function updateNiceGuyMetricStatus(
     id: string,
     status: NiceGuyMetricStatus,
+    extra: Partial<{
+        startedAt: Date | null;
+        heartbeatAt: Date | null;
+        completedAt: Date | null;
+        idempotencyKey: string | null;
+    }> = {},
 ): Promise<SerializableNiceGuyMetric> {
     await connectToDatabase();
     const updated = await NiceGuyMetric.findByIdAndUpdate(
         assertObjectId(id),
-        { $set: { status } },
+        { $set: { status, ...extra } },
         { new: true, runValidators: true },
     ).lean();
 
@@ -153,11 +187,14 @@ export async function completeNiceGuyMetricRecord(
         {
             $set: {
                 status: "complete",
+                generatedAt: new Date(),
+                completedAt: new Date(),
+                heartbeatAt: new Date(),
+                idempotencyKey: null,
                 scoringVersion: payload.scoringVersion,
                 overallScore: payload.overallScore,
                 categories: payload.categories,
                 summary: payload.summary,
-                generatedAt: new Date(),
                 durationMs: payload.durationMs,
                 errorCode: "",
                 errorMessage: "",
@@ -188,6 +225,9 @@ export async function failNiceGuyMetricRecord(
         {
             $set: {
                 status: "failed",
+                completedAt: new Date(),
+                heartbeatAt: new Date(),
+                idempotencyKey: null,
                 errorCode: input.errorCode,
                 errorMessage: input.errorMessage,
                 durationMs: input.durationMs ?? null,

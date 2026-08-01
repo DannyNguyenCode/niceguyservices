@@ -1,6 +1,8 @@
 import "server-only";
 
 import { getRecentActivityForWebsite } from "@/src/data/activity-logs";
+import { getActiveAuditJobForWebsite } from "@/src/data/audit-jobs";
+import { getOpenAuditRunForWebsite, getLatestCompletedAuditRunForWebsite } from "@/src/data/audit-runs";
 import { getAiMetadataForRelatedRecord } from "@/src/data/ai-metadata";
 import {
     getAiSummariesForWebsite,
@@ -38,9 +40,36 @@ import type { SerializableCrawl } from "@/src/data/crawls";
 import type { SerializableGoogleMetric } from "@/src/data/google-metrics";
 import type { SerializableScreenshot } from "@/src/data/screenshots";
 import type { SerializableWebsite } from "@/src/data/websites";
+import { loadAuditRunResources } from "@/src/services/audit-history/load-audit-run-resources";
+import type { SerializableAuditJob } from "@/src/services/audit-pipeline/types";
 
 const HISTORY_LIMIT = 10;
 const ACTIVITY_LIMIT = 50;
+
+export type WebsiteAuditDashboardOptions = {
+    auditRunId?: string | null;
+    includeHistory?: boolean;
+    includeActivity?: boolean;
+};
+
+async function resolveSelectedAuditRunId(input: {
+    websiteId: string;
+    requestedAuditRunId?: string | null;
+    activeJobAuditRunId?: string | null;
+}): Promise<string | null> {
+    if (input.requestedAuditRunId?.trim()) {
+        return input.requestedAuditRunId.trim();
+    }
+    if (input.activeJobAuditRunId) {
+        return input.activeJobAuditRunId;
+    }
+    const openAuditRun = await getOpenAuditRunForWebsite(input.websiteId);
+    if (openAuditRun) {
+        return openAuditRun.id;
+    }
+    const latestCompleted = await getLatestCompletedAuditRunForWebsite(input.websiteId);
+    return latestCompleted?.id ?? null;
+}
 
 function mapWebsiteStatus(
     status: string,
@@ -208,16 +237,48 @@ function toCrawlHistory(crawls: SerializableCrawl[]): AuditHistoryItem[] {
     }));
 }
 
+export async function getWebsiteAuditDashboardHistory(websiteId: string) {
+    const [crawlHistory, pageSpeedHistory, niceGuyHistory, aiHistory] = await Promise.all([
+        getCrawlsForWebsite(websiteId),
+        getGoogleMetricsForWebsite(websiteId, HISTORY_LIMIT),
+        getNiceGuyMetricsForWebsite(websiteId, HISTORY_LIMIT),
+        getAiSummariesForWebsite(websiteId, HISTORY_LIMIT),
+    ]);
+
+    return {
+        crawlRuns: toCrawlHistory(crawlHistory),
+        pageSpeedRuns: pageSpeedHistory,
+        niceGuyRuns: niceGuyHistory,
+        aiRuns: aiHistory,
+    };
+}
+
 export async function getWebsiteAuditDashboard(
     websiteId: string,
+    options?: WebsiteAuditDashboardOptions,
 ): Promise<WebsiteAuditDashboardData | null> {
     const website = await getWebsiteById(websiteId);
     if (!website || website.deletedAt) {
         return null;
     }
 
-    const latestCrawl = await getLatestCrawlForWebsite(website.id);
+    const activeJob = await getActiveAuditJobForWebsite(websiteId);
+    const selectedAuditRunId = await resolveSelectedAuditRunId({
+        websiteId,
+        requestedAuditRunId: options?.auditRunId,
+        activeJobAuditRunId: activeJob?.auditRunId ?? null,
+    });
+
+    const auditRunResources = selectedAuditRunId
+        ? await loadAuditRunResources({ websiteId, auditRunId: selectedAuditRunId })
+        : null;
+
+    const latestCrawl =
+        auditRunResources?.crawl ?? (await getLatestCrawlForWebsite(website.id));
     const crawlId = latestCrawl?.id;
+
+    const includeHistory = options?.includeHistory ?? false;
+    const includeActivity = options?.includeActivity ?? false;
 
     const [
         screenshots,
@@ -233,15 +294,31 @@ export async function getWebsiteAuditDashboard(
         hasActivePageSpeed,
         hasActiveNiceGuy,
     ] = await Promise.all([
-        getLatestScreenshotsForWebsite(website.id),
-        getLatestGoogleMetricsForWebsite(website.id),
-        getLatestNiceGuyMetricForWebsite(website.id),
-        getLatestAiSummaryForWebsite(website.id),
-        getRecentActivityForWebsite({ websiteId: website.id, limit: ACTIVITY_LIMIT }),
-        getCrawlsForWebsite(website.id),
-        getGoogleMetricsForWebsite(website.id, HISTORY_LIMIT),
-        getNiceGuyMetricsForWebsite(website.id, HISTORY_LIMIT),
-        getAiSummariesForWebsite(website.id, HISTORY_LIMIT),
+        auditRunResources
+            ? Promise.resolve(auditRunResources.screenshots)
+            : getLatestScreenshotsForWebsite(website.id),
+        auditRunResources
+            ? Promise.resolve(auditRunResources.pageSpeed)
+            : getLatestGoogleMetricsForWebsite(website.id),
+        auditRunResources
+            ? Promise.resolve(auditRunResources.niceGuy)
+            : getLatestNiceGuyMetricForWebsite(website.id),
+        auditRunResources
+            ? Promise.resolve(auditRunResources.aiSummary)
+            : getLatestAiSummaryForWebsite(website.id),
+        includeActivity
+            ? getRecentActivityForWebsite({ websiteId: website.id, limit: ACTIVITY_LIMIT })
+            : Promise.resolve([]),
+        includeHistory ? getCrawlsForWebsite(website.id) : Promise.resolve([]),
+        includeHistory
+            ? getGoogleMetricsForWebsite(website.id, HISTORY_LIMIT)
+            : Promise.resolve([]),
+        includeHistory
+            ? getNiceGuyMetricsForWebsite(website.id, HISTORY_LIMIT)
+            : Promise.resolve([]),
+        includeHistory
+            ? getAiSummariesForWebsite(website.id, HISTORY_LIMIT)
+            : Promise.resolve([]),
         hasActiveCrawlForWebsite(website.id),
         hasActivePageSpeedRun(website.id, crawlId),
         crawlId ? hasActiveNiceGuyRun(website.id, crawlId) : Promise.resolve(false),
@@ -253,7 +330,9 @@ export async function getWebsiteAuditDashboard(
             : false;
 
     const heroSuggestions = aiSummary
-        ? await getHeroSuggestionsForSummary(aiSummary.id)
+        ? auditRunResources?.heroSuggestions?.length
+            ? auditRunResources.heroSuggestions
+            : await getHeroSuggestionsForSummary(aiSummary.id)
         : [];
 
     const aiMetadata = aiSummary
@@ -320,6 +399,8 @@ export async function getWebsiteAuditDashboard(
 
     return {
         website,
+        selectedAuditRunId,
+        activeJob: activeJob as SerializableAuditJob | null,
         auditStatus: {
             crawl: buildCrawlStage(website, latestCrawl),
             screenshots: screenshotStage,
@@ -364,6 +445,6 @@ export async function getWebsiteAuditDashboard(
             niceGuyRuns: niceGuyHistory,
             aiRuns: aiHistory,
         },
-        activity,
+        ...(includeActivity ? { activity } : {}),
     };
 }
