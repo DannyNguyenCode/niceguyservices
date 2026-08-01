@@ -133,12 +133,10 @@ describe("screenshot targets", () => {
     });
 });
 
-describe("public form remains UI-only", () => {
-    it("does not expose a dedicated public audit submission API route file", async () => {
+describe("public audit submission", () => {
+    it("exposes a server action for public audit requests", async () => {
         const fs = await import("node:fs/promises");
-        await assert.rejects(async () => {
-            await fs.access("app/api/public/website-audit/submit/route.ts");
-        });
+        await fs.access("src/actions/public-audit-request.ts");
     });
 });
 

@@ -13,6 +13,7 @@ import {
 import { enforceLoginRateLimitsFromRequest } from "@/src/services/rate-limit/enforce-login-rate-limit";
 import { normalizeLoginEmail } from "@/src/services/rate-limit/rate-limit-identity";
 import { createRateLimitResponseFromError } from "@/src/services/rate-limit/create-rate-limit-response";
+import { ensureEnvAdministrator } from "@/src/services/auth/ensure-env-administrator";
 
 export const dynamic = "force-dynamic";
 
@@ -67,6 +68,8 @@ export async function POST(request: Request) {
         }
         throw error;
     }
+
+    await ensureEnvAdministrator();
 
     const session = await authenticateAdministrator(normalizedEmail, password);
     if (!session) {

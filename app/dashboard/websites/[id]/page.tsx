@@ -51,7 +51,16 @@ export default async function DashboardWebsiteDetailPage({
         notFound();
     }
 
-    const { website, latest, readiness, selectedAuditRunId, activeJob } = dashboard;
+    const {
+        website,
+        latest,
+        readiness,
+        selectedAuditRunId,
+        activeJob,
+        cursorAnalysis,
+        cursorAnalysisReadiness,
+    } = dashboard;
+    const useCursorAutomation = dashboard.useCursorAutomation;
     const selectedAuditRun = selectedAuditRunId
         ? await getAuditRunById(selectedAuditRunId)
         : null;
@@ -155,6 +164,7 @@ export default async function DashboardWebsiteDetailPage({
                 <div id={AUDIT_SECTIONS.ai.id} className="scroll-mt-24">
                     <WebsiteAiSection
                         websiteId={website.id}
+                        auditRunId={selectedAuditRunId}
                         aiAnalysisStatus={displayAiSummary?.status ?? website.aiAnalysisStatus}
                         latestAiAnalysisRunAt={
                             displayAiSummary?.generatedAt ?? website.latestAiAnalysisRunAt
@@ -163,6 +173,9 @@ export default async function DashboardWebsiteDetailPage({
                         latestSummary={displayAiSummary}
                         heroSuggestions={displayHeroSuggestions}
                         niceGuyMetric={displayNiceGuy}
+                        useCursorAutomation={useCursorAutomation}
+                        cursorAnalysis={cursorAnalysis}
+                        cursorReadiness={cursorAnalysisReadiness}
                     />
                 </div>
             </div>

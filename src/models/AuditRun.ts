@@ -164,6 +164,43 @@ const AuditRunSchema = new Schema(
         completedAt: { type: Date, default: null },
         archivedAt: { type: Date, default: null },
         migrationWarning: { type: String, default: null },
+        analysis: {
+            status: {
+                type: String,
+                enum: [
+                    "not_started",
+                    "queued",
+                    "triggered",
+                    "analyzing",
+                    "validating",
+                    "completed",
+                    "failed",
+                    "retry_pending",
+                ],
+                default: "not_started",
+            },
+            provider: { type: String, default: null },
+            attempt: { type: Number, default: 0, min: 0 },
+            analysisRequestId: { type: String, default: null },
+            triggeredAt: { type: Date, default: null },
+            completedAt: { type: Date, default: null },
+            promptVersion: { type: String, default: "1.0" },
+            packageVersion: { type: String, default: "1.0" },
+            externalJobId: { type: String, default: null },
+            lastError: { type: String, default: null },
+            failureHistory: {
+                type: [
+                    {
+                        attempt: { type: Number, required: true },
+                        analysisRequestId: { type: String, required: true },
+                        error: { type: String, required: true },
+                        failedAt: { type: Date, required: true },
+                    },
+                ],
+                default: [],
+            },
+            result: { type: Schema.Types.Mixed, default: null },
+        },
     },
     {
         timestamps: true,

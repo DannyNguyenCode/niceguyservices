@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://niceguyservices.dev/schemas/audit-package/1.0",
+  "title": "CursorAuditPackage",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "auditId",
+    "website",
+    "screenshots",
+    "googleMetrics",
+    "niceGuyMetrics",
+    "crawl",
+    "requestedOutputs",
+    "metadata"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "auditId": { "type": "string", "minLength": 1 },
+    "website": {
+      "type": "object",
+      "required": ["url", "businessName", "industry", "pagesAnalyzed"],
+      "additionalProperties": false,
+      "properties": {
+        "url": { "type": "string", "format": "uri" },
+        "businessName": { "type": ["string", "null"] },
+        "industry": { "type": ["string", "null"] },
+        "pagesAnalyzed": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "screenshots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "page", "device", "url", "width", "height", "capturedAt"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "page": { "type": "string" },
+          "device": { "enum": ["desktop", "mobile"] },
+          "url": { "type": "string", "format": "uri" },
+          "width": { "type": "number" },
+          "height": { "type": "number" },
+          "capturedAt": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "googleMetrics": {
+      "type": "object",
+      "required": ["mobile", "desktop"],
+      "additionalProperties": false,
+      "properties": {
+        "mobile": { "type": "object" },
+        "desktop": { "type": "object" }
+      }
+    },
+    "niceGuyMetrics": { "type": "object" },
+    "crawl": { "type": "object" },
+    "requestedOutputs": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "executive_summary",
+          "strengths",
+          "prioritized_issues",
+          "hero_recommendations",
+          "outreach_email"
+        ]
+      },
+      "minItems": 1
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["packageCreatedAt", "packageVersion"],
+      "additionalProperties": false,
+      "properties": {
+        "packageCreatedAt": { "type": "string", "format": "date-time" },
+        "packageVersion": { "const": "1.0" }
+      }
+    }
+  }
+}

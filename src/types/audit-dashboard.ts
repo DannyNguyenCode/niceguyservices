@@ -6,6 +6,8 @@ import type { SerializableHeroSuggestion } from "@/src/data/hero-suggestions";
 import type { SerializableNiceGuyMetric } from "@/src/data/niceguy-metrics";
 import type { SerializableScreenshot } from "@/src/data/screenshots";
 import type { SerializableWebsite } from "@/src/data/websites";
+import type { SerializableAuditRunAnalysis } from "@/src/services/cursor-analysis/types";
+import type { CursorAnalysisReadiness } from "@/src/services/cursor-analysis/readiness";
 
 export type AuditStageStatusValue =
     | "not-started"
@@ -135,5 +137,8 @@ export type WebsiteAuditDashboardData = {
         niceGuyRuns: AuditHistoryItem[];
         aiRuns: AuditHistoryItem[];
     };
+    cursorAnalysis: SerializableAuditRunAnalysis | null;
+    cursorAnalysisReadiness: CursorAnalysisReadiness;
+    useCursorAutomation: boolean;
     activity?: SerializableActivityItem[];
 };

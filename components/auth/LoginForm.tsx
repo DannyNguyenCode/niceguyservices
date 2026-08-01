@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function LoginForm() {
+export default function LoginForm({ defaultEmail = "" }: { defaultEmail?: string }) {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState(defaultEmail);
     const [password, setPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [pending, setPending] = useState(false);

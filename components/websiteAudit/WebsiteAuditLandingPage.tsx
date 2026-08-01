@@ -73,7 +73,7 @@ export default function WebsiteAuditLandingPage() {
 
                 <AuditSectionCard
                     title="Already requested an audit?"
-                    description="Returning visitor lookup will be connected in a later step. The placeholder below reserves the UI for report retrieval."
+                    description="If you submitted a request recently, our team is reviewing it in the audit dashboard."
                 >
                     <form className="grid grid-cols-1 gap-5 md:grid-cols-2" noValidate>
                         <div>
@@ -110,7 +110,7 @@ export default function WebsiteAuditLandingPage() {
                     }
                 >
                     <p className="max-w-3xl text-sm leading-relaxed text-base-content/75">
-                        The Website Audit foundation is in place here, and future steps will connect automated generation, saved reports, and demo delivery without changing the public route structure.
+                        Public audit requests are saved to the administrator dashboard. Sign in to review new submissions and start the audit pipeline from there.
                     </p>
                 </AuditSectionCard>
             </div>

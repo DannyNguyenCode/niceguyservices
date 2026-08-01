@@ -57,6 +57,21 @@ const websiteUrlField = z
         }
     });
 
+const requiredEmail = z
+    .string()
+    .trim()
+    .min(1, "Please enter a business email address.")
+    .max(254, "Email address is too long.")
+    .transform((value) => value.toLowerCase())
+    .refine((value) => z.string().email().safeParse(value).success, {
+        message: "Please enter a valid email address.",
+    });
+
+export const publicAuditRequestSchema = z.object({
+    websiteUrl: websiteUrlField,
+    businessEmail: requiredEmail,
+});
+
 export const createWebsiteSchema = z.object({
     businessName: optionalTrimmed(120),
     websiteUrl: websiteUrlField,
@@ -91,6 +106,7 @@ export const updateWebsiteSchema = z.object({
     }),
 });
 
+export type PublicAuditRequestInput = z.infer<typeof publicAuditRequestSchema>;
 export type CreateWebsiteInput = z.infer<typeof createWebsiteSchema>;
 export type UpdateWebsiteInput = z.infer<typeof updateWebsiteSchema>;
 

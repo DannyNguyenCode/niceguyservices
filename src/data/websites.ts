@@ -9,6 +9,7 @@ import type {
 } from "@/src/lib/website-validation";
 import { Website, type WebsiteLean } from "@/src/models/Website";
 import { ACTIVITY_EVENTS } from "@/src/constants/activity-events";
+import type { ActivityActorType } from "@/src/constants/activity-events";
 import { createActivityEvent } from "@/src/services/activity/create-activity-event";
 
 export class WebsiteDataError extends Error {
@@ -88,6 +89,27 @@ function assertObjectId(id: string): mongoose.Types.ObjectId {
     return new mongoose.Types.ObjectId(id);
 }
 
+function toIsoString(value: unknown): string | null {
+    if (value == null || value === "") {
+        return null;
+    }
+
+    const date = value instanceof Date ? value : new Date(value as string | number);
+    if (Number.isNaN(date.getTime())) {
+        return null;
+    }
+
+    try {
+        return date.toISOString();
+    } catch {
+        return null;
+    }
+}
+
+function toRequiredIsoString(value: unknown): string {
+    return toIsoString(value) ?? new Date(0).toISOString();
+}
+
 function toSerializable(doc: WebsiteLean): SerializableWebsite {
     return {
         id: String(doc._id),
@@ -102,39 +124,25 @@ function toSerializable(doc: WebsiteLean): SerializableWebsite {
         auditStatus: doc.auditStatus,
         crawlStatus: doc.crawlStatus ?? "not-started",
         pageSpeedStatus: doc.pageSpeedStatus ?? "not-started",
-        latestPageSpeedRunAt: doc.latestPageSpeedRunAt
-            ? new Date(doc.latestPageSpeedRunAt).toISOString()
-            : null,
+        latestPageSpeedRunAt: toIsoString(doc.latestPageSpeedRunAt),
         niceGuyStatus: doc.niceGuyStatus ?? "not-started",
-        latestNiceGuyRunAt: doc.latestNiceGuyRunAt
-            ? new Date(doc.latestNiceGuyRunAt).toISOString()
-            : null,
+        latestNiceGuyRunAt: toIsoString(doc.latestNiceGuyRunAt),
         aiAnalysisStatus: doc.aiAnalysisStatus ?? "not-started",
-        latestAiAnalysisRunAt: doc.latestAiAnalysisRunAt
-            ? new Date(doc.latestAiAnalysisRunAt).toISOString()
-            : null,
+        latestAiAnalysisRunAt: toIsoString(doc.latestAiAnalysisRunAt),
         demoStatus: doc.demoStatus,
         outreachStatus: doc.outreachStatus,
         publicReportStatus: doc.publicReportStatus ?? "not-created",
-        latestPublicReportAt: doc.latestPublicReportAt
-            ? new Date(doc.latestPublicReportAt).toISOString()
-            : null,
-        latestPublishedReportAt: doc.latestPublishedReportAt
-            ? new Date(doc.latestPublishedReportAt).toISOString()
-            : null,
+        latestPublicReportAt: toIsoString(doc.latestPublicReportAt),
+        latestPublishedReportAt: toIsoString(doc.latestPublishedReportAt),
         pdfReportStatus: doc.pdfReportStatus ?? "not-generated",
-        latestPdfReportAt: doc.latestPdfReportAt
-            ? new Date(doc.latestPdfReportAt).toISOString()
-            : null,
+        latestPdfReportAt: toIsoString(doc.latestPdfReportAt),
         outreachDraftStatus: doc.outreachDraftStatus ?? "not-generated",
-        latestOutreachDraftAt: doc.latestOutreachDraftAt
-            ? new Date(doc.latestOutreachDraftAt).toISOString()
-            : null,
+        latestOutreachDraftAt: toIsoString(doc.latestOutreachDraftAt),
         demoProjectStatus: doc.demoProjectStatus ?? "not-created",
-        latestDemoAt: doc.latestDemoAt ? new Date(doc.latestDemoAt).toISOString() : null,
-        deletedAt: doc.deletedAt ? new Date(doc.deletedAt).toISOString() : null,
-        createdAt: new Date(doc.createdAt).toISOString(),
-        updatedAt: new Date(doc.updatedAt).toISOString(),
+        latestDemoAt: toIsoString(doc.latestDemoAt),
+        deletedAt: toIsoString(doc.deletedAt),
+        createdAt: toRequiredIsoString(doc.createdAt),
+        updatedAt: toRequiredIsoString(doc.updatedAt),
     };
 }
 
@@ -166,8 +174,15 @@ export async function getWebsiteByNormalizedDomain(
     return doc ? toSerializable(doc) : null;
 }
 
+export type CreateWebsiteOptions = {
+    activityActor?: { type: ActivityActorType };
+    activityTitle?: string;
+    activityDescription?: string;
+};
+
 export async function createWebsite(
     input: CreateWebsiteInput,
+    options?: CreateWebsiteOptions,
 ): Promise<SerializableWebsite> {
     await connectToDatabase();
 
@@ -210,9 +225,11 @@ export async function createWebsite(
         await createActivityEvent({
             websiteId: website.id,
             eventType: ACTIVITY_EVENTS.WEBSITE_CREATED,
-            title: "Website created",
-            description: `Website record created for ${website.normalizedDomain}.`,
-            actor: { type: "administrator" },
+            title: options?.activityTitle ?? "Website created",
+            description:
+                options?.activityDescription ??
+                `Website record created for ${website.normalizedDomain}.`,
+            actor: options?.activityActor ?? { type: "administrator" },
             metadata: {
                 normalizedDomain: website.normalizedDomain,
                 source: website.source,

@@ -29,6 +29,8 @@ import { getLatestScreenshotsForWebsite } from "@/src/data/screenshots";
 import { getWebsiteById } from "@/src/data/websites";
 import { formatAuditStageStatus } from "@/src/lib/audit-dashboard-labels";
 import { calculateAuditReadiness } from "@/src/services/audit-readiness";
+import { calculateCursorAnalysisReadiness } from "@/src/services/cursor-analysis/readiness";
+import { isCursorAutomationProvider } from "@/src/services/cursor-analysis/config";
 import type {
     AuditHistoryItem,
     AuditRelationWarning,
@@ -397,6 +399,15 @@ export async function getWebsiteAuditDashboard(
           )
         : null;
 
+    const cursorAnalysisReadiness = calculateCursorAnalysisReadiness({
+        auditId: selectedAuditRunId,
+        website,
+        crawl: latestCrawl,
+        screenshots,
+        pageSpeed,
+        niceGuy,
+    });
+
     return {
         website,
         selectedAuditRunId,
@@ -445,6 +456,9 @@ export async function getWebsiteAuditDashboard(
             niceGuyRuns: niceGuyHistory,
             aiRuns: aiHistory,
         },
+        cursorAnalysis: auditRunResources?.auditRun.analysis ?? null,
+        cursorAnalysisReadiness,
+        useCursorAutomation: isCursorAutomationProvider(),
         ...(includeActivity ? { activity } : {}),
     };
 }

@@ -7,6 +7,8 @@ import {
     restoreHeroSuggestionAction,
     selectHeroSuggestionAction,
 } from "@/src/actions/ai";
+import CursorAnalysisResultsPanel from "@/components/audit-dashboard/cursor-analysis-results-panel";
+import CursorAnalysisStatusPoller from "@/components/audit-dashboard/cursor-analysis-status-poller";
 import AuditSectionCard from "@/components/websiteAudit/AuditSectionCard";
 import RunAiAnalysisButton from "@/components/websiteAudit/RunAiAnalysisButton";
 import { AiAnalysisStatusBadge } from "@/components/websiteAudit/StatusBadges";
@@ -25,15 +27,21 @@ import type { SerializableAiSummary } from "@/src/data/ai-summaries";
 import type { SerializableHeroSuggestion } from "@/src/data/hero-suggestions";
 import type { SerializableNiceGuyMetric } from "@/src/data/niceguy-metrics";
 import type { AiAnalysisStatus } from "@/src/schemas/enums";
+import type { CursorAnalysisReadiness } from "@/src/services/cursor-analysis/readiness";
+import type { SerializableAuditRunAnalysis } from "@/src/services/cursor-analysis/types";
 
 type WebsiteAiSectionProps = {
     websiteId: string;
+    auditRunId?: string | null;
     aiAnalysisStatus: AiAnalysisStatus;
     latestAiAnalysisRunAt: string | null;
     prerequisitesMet: boolean;
     latestSummary: SerializableAiSummary | null;
     heroSuggestions: SerializableHeroSuggestion[];
     niceGuyMetric: SerializableNiceGuyMetric | null;
+    useCursorAutomation?: boolean;
+    cursorAnalysis?: SerializableAuditRunAnalysis | null;
+    cursorReadiness?: CursorAnalysisReadiness;
 };
 
 function FindingListItem({
@@ -220,12 +228,16 @@ function HeroSuggestionCard({
 
 export default function WebsiteAiSection({
     websiteId,
+    auditRunId,
     aiAnalysisStatus,
     latestAiAnalysisRunAt,
     prerequisitesMet,
     latestSummary,
     heroSuggestions,
     niceGuyMetric,
+    useCursorAutomation = false,
+    cursorAnalysis = null,
+    cursorReadiness,
 }: WebsiteAiSectionProps) {
     const labelMap = buildCheckLabelMap(niceGuyMetric);
     const weaknesses = [...(latestSummary?.weaknesses ?? [])].sort(
@@ -266,12 +278,27 @@ export default function WebsiteAiSection({
                     </div>
                     <RunAiAnalysisButton
                         websiteId={websiteId}
+                        auditRunId={auditRunId}
                         aiAnalysisStatus={aiAnalysisStatus}
                         prerequisitesMet={prerequisitesMet}
+                        useCursorAutomation={useCursorAutomation}
+                        cursorAnalysis={cursorAnalysis}
+                        cursorReadiness={cursorReadiness}
                     />
                 </div>
 
-                {latestSummary?.status === "complete" ? (
+                {useCursorAutomation && auditRunId && cursorAnalysis ? (
+                    <CursorAnalysisStatusPoller
+                        auditRunId={auditRunId}
+                        status={cursorAnalysis.status}
+                    />
+                ) : null}
+
+                {useCursorAutomation && cursorAnalysis ? (
+                    <CursorAnalysisResultsPanel analysis={cursorAnalysis} />
+                ) : null}
+
+                {!useCursorAutomation && latestSummary?.status === "complete" ? (
                     <>
                         <div className="rounded-2xl bg-base-200 p-5 shadow-sm">
                             <h3 className="text-lg font-semibold text-base-content">
@@ -421,7 +448,7 @@ export default function WebsiteAiSection({
                     </>
                 ) : null}
 
-                {heroSuggestions.length > 0 ? (
+                {!useCursorAutomation && heroSuggestions.length > 0 ? (
                     <div>
                         <h3 className="text-lg font-semibold text-base-content">
                             Hero suggestions

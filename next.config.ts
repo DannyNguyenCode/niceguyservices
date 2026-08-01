@@ -5,6 +5,9 @@ const reactPdfBrowserEntry =
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  outputFileTracingIncludes: {
+    "/*": ["./src/services/crawl-browser-extract.js"],
+  },
   turbopack: {
     resolveAlias: {
       "@react-pdf/renderer": reactPdfBrowserEntry,

@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "1.0",
+  "auditId": "audit_example_123",
+  "website": {
+    "url": "https://example.com",
+    "businessName": "Example Business",
+    "industry": "Home services",
+    "pagesAnalyzed": ["https://example.com/"]
+  },
+  "screenshots": [
+    {
+      "id": "shot_desktop_home",
+      "page": "home",
+      "device": "desktop",
+      "url": "https://res.cloudinary.com/demo/image/upload/v1/example-desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "capturedAt": "2026-08-01T12:00:00.000Z"
+    },
+    {
+      "id": "shot_mobile_home",
+      "page": "home",
+      "device": "mobile",
+      "url": "https://res.cloudinary.com/demo/image/upload/v1/example-mobile.png",
+      "width": 390,
+      "height": 844,
+      "capturedAt": "2026-08-01T12:00:00.000Z"
+    }
+  ],
+  "googleMetrics": {
+    "mobile": {
+      "strategy": "mobile",
+      "status": "complete",
+      "scores": { "performance": 62, "accessibility": 88, "bestPractices": 90, "seo": 85 }
+    },
+    "desktop": {
+      "strategy": "desktop",
+      "status": "complete",
+      "scores": { "performance": 78, "accessibility": 90, "bestPractices": 92, "seo": 88 }
+    }
+  },
+  "niceGuyMetrics": {
+    "status": "complete",
+    "overallScore": 71,
+    "categories": {}
+  },
+  "crawl": {
+    "status": "complete",
+    "finalUrl": "https://example.com/",
+    "homepageTitle": "Example Business",
+    "pageResults": [
+      {
+        "url": "https://example.com/",
+        "pageType": "home",
+        "title": "Example Business",
+        "visibleText": "Professional services for local customers."
+      }
+    ]
+  },
+  "requestedOutputs": [
+    "executive_summary",
+    "strengths",
+    "prioritized_issues",
+    "hero_recommendations",
+    "outreach_email"
+  ],
+  "metadata": {
+    "packageCreatedAt": "2026-08-01T12:00:00.000Z",
+    "packageVersion": "1.0"
+  }
+}

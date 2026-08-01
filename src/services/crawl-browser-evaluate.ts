@@ -3,10 +3,28 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Page } from "playwright";
 
-const CRAWL_BROWSER_SCRIPT = readFileSync(
-    join(dirname(fileURLToPath(import.meta.url)), "crawl-browser-extract.js"),
-    "utf8",
-);
+function loadCrawlBrowserScript(): string {
+    const candidates = [
+        join(process.cwd(), "src/services/crawl-browser-extract.js"),
+        join(dirname(fileURLToPath(import.meta.url)), "crawl-browser-extract.js"),
+    ];
+
+    for (const candidate of candidates) {
+        try {
+            return readFileSync(candidate, "utf8");
+        } catch (error) {
+            if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+                throw error;
+            }
+        }
+    }
+
+    throw new Error(
+        "Unable to locate crawl-browser-extract.js. Expected src/services/crawl-browser-extract.js in the project root.",
+    );
+}
+
+const CRAWL_BROWSER_SCRIPT = loadCrawlBrowserScript();
 
 type ExtractedPagePayload = {
     title: string;

@@ -91,9 +91,13 @@ export default function AuditStageActions({
                     <div className="mt-3">
                         <RunAiAnalysisButton
                             websiteId={websiteId}
+                            auditRunId={data.selectedAuditRunId}
                             aiAnalysisStatus={website.aiAnalysisStatus}
                             prerequisitesMet={niceGuyReady}
                             canRun={readiness.canRunAiAnalysis}
+                            useCursorAutomation={data.useCursorAutomation}
+                            cursorAnalysis={data.cursorAnalysis}
+                            cursorReadiness={data.cursorAnalysisReadiness}
                         />
                     </div>
                 </div>

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0",
+  "auditId": "audit_example_123",
+  "analysisRequestId": "req_example_456",
+  "status": "completed",
+  "overallScore": 71,
+  "executiveSummary": "The website presents a credible local business with clear contact paths, but mobile performance and homepage messaging can be strengthened.",
+  "strengths": [
+    {
+      "title": "Clear contact information",
+      "evidence": "The crawl found a dedicated contact page and visible phone number on the homepage.",
+      "sources": ["crawl", "content"]
+    }
+  ],
+  "issues": [
+    {
+      "id": "perf-mobile-lcp",
+      "category": "performance",
+      "severity": "high",
+      "title": "Mobile performance is below a comfortable threshold",
+      "evidence": "PageSpeed mobile performance scored 62.",
+      "recommendation": "Optimize hero imagery and defer non-critical scripts on the homepage.",
+      "sources": ["pagespeed"],
+      "confidence": 0.86
+    }
+  ],
+  "heroSuggestions": {
+    "headline": "Trusted local service, done right",
+    "supportingCopy": "Help visitors understand your offer and next step within the first screen.",
+    "primaryCTA": "Request a quote",
+    "secondaryCTA": "Call now",
+    "designDirection": "Use a clean hero with one primary action and a supporting trust line."
+  },
+  "outreachEmail": {
+    "subject": "A few practical ideas for your website",
+    "body": "Hi there,\n\nI reviewed your website and noticed a few opportunities to improve mobile performance and homepage clarity. If helpful, I can walk you through the findings.\n\nBest,\nNice Guy Web Design"
+  },
+  "metadata": {
+    "analysisMethod": "cursor-automation-poc",
+    "promptVersion": "1.0",
+    "completedAt": "2026-08-01T12:15:00.000Z"
+  }
+}

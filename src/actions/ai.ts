@@ -10,23 +10,56 @@ import { createActivityLog } from "@/src/data/activity-logs";
 import { runAiAnalysis } from "@/src/services/run-ai-analysis";
 import { requireAdministratorSession } from "@/src/services/auth/administrator-session";
 import { mapRateLimitErrorToActionState } from "@/src/services/rate-limit/map-rate-limit-action-state";
+import { isCursorAutomationProvider } from "@/src/services/cursor-analysis/config";
+import { requestCursorAnalysisForAuditRun } from "@/src/services/cursor-analysis/request-cursor-analysis";
 
 export type RunAiAnalysisActionState = {
     ok: boolean;
     message?: string;
-    status?: "complete" | "partial";
+    status?: "complete" | "partial" | "triggered" | "queued";
+    analysisRequestId?: string;
+    missing?: string[];
     rateLimited?: boolean;
     retryAfterSeconds?: number;
     resetAt?: string;
 };
 
-// TODO: Require admin authentication before allowing AI analysis in production.
 export async function runAiAnalysisAction(
     websiteId: string,
+    auditRunId?: string | null,
 ): Promise<RunAiAnalysisActionState> {
     await requireAdministratorSession(`/dashboard/websites/${websiteId}`);
 
     try {
+        if (isCursorAutomationProvider()) {
+            if (!auditRunId) {
+                return {
+                    ok: false,
+                    message: "Select an audit run before generating Cursor analysis.",
+                };
+            }
+
+            const result = await requestCursorAnalysisForAuditRun(auditRunId);
+            revalidatePath("/dashboard");
+            revalidatePath("/dashboard/websites");
+            revalidatePath(`/dashboard/websites/${websiteId}`);
+
+            if (!result.ok) {
+                return {
+                    ok: false,
+                    message: result.message,
+                    missing: result.missing,
+                };
+            }
+
+            return {
+                ok: true,
+                status: "triggered",
+                analysisRequestId: result.analysisRequestId,
+                message: "Cursor analysis triggered. Results will appear when the callback completes.",
+            };
+        }
+
         const result = await runAiAnalysis(websiteId);
 
         revalidatePath("/dashboard");

@@ -1,8 +1,11 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useActionState, useEffect, useId, useState } from "react";
 import { siteFieldFocusClass } from "@/components/pricing/pricingLayoutConstants";
-import { isValidEmail, isValidHttpUrl } from "@/lib/websiteAudit/validation";
+import {
+    submitPublicAuditRequestAction,
+    type PublicAuditRequestState,
+} from "@/src/actions/public-audit-request";
 
 type WebsiteAuditFormProps = {
     title?: string;
@@ -14,61 +17,32 @@ type FormValues = {
     businessEmail: string;
 };
 
-type FormErrors = Partial<Record<keyof FormValues, string>>;
-
 const initialValues: FormValues = {
     websiteUrl: "",
     businessEmail: "",
 };
 
+const initialState: PublicAuditRequestState = { ok: true };
+
 export default function WebsiteAuditForm({
     title = "Request a website audit",
-    description = "Enter a public website URL to preview the audit workflow. Audit generation will be connected in a later step.",
+    description = "Enter your website URL and business email. Your request is saved for our team to review in the audit dashboard.",
 }: WebsiteAuditFormProps) {
     const formId = useId();
     const [values, setValues] = useState<FormValues>(initialValues);
-    const [errors, setErrors] = useState<FormErrors>({});
-    const [statusMessage, setStatusMessage] = useState(
-        "Audit generation is not connected yet. This form currently validates your inputs only.",
+    const [state, formAction, pending] = useActionState(
+        submitPublicAuditRequestAction,
+        initialState,
     );
 
-    function validate(nextValues: FormValues): FormErrors {
-        const nextErrors: FormErrors = {};
-
-        if (!nextValues.websiteUrl.trim()) {
-            nextErrors.websiteUrl = "Please enter a website URL.";
-        } else if (!isValidHttpUrl(nextValues.websiteUrl.trim())) {
-            nextErrors.websiteUrl = "Please enter a valid http or https website URL.";
+    useEffect(() => {
+        if (state.ok && state.message) {
+            setValues(initialValues);
         }
-
-        if (
-            nextValues.businessEmail.trim() &&
-            !isValidEmail(nextValues.businessEmail.trim())
-        ) {
-            nextErrors.businessEmail = "Please enter a valid email address.";
-        }
-
-        return nextErrors;
-    }
-
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        const nextErrors = validate(values);
-        setErrors(nextErrors);
-
-        if (Object.keys(nextErrors).length > 0) {
-            setStatusMessage("Please fix the highlighted fields before continuing.");
-            return;
-        }
-
-        setStatusMessage(
-            "Thanks. The audit request UI is in place, and generation will be connected in a later implementation step.",
-        );
-    }
+    }, [state.ok, state.message]);
 
     function updateField(field: keyof FormValues, value: string) {
         setValues((prev) => ({ ...prev, [field]: value }));
-        setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
 
     return (
@@ -86,9 +60,16 @@ export default function WebsiteAuditForm({
                 </p>
             </div>
 
-            <form className="grid grid-cols-1 gap-5 md:grid-cols-2" onSubmit={handleSubmit} noValidate>
+            <form
+                className="grid grid-cols-1 gap-5 md:grid-cols-2"
+                action={formAction}
+                noValidate
+            >
                 <div className="md:col-span-2">
-                    <label className="mb-2 block text-sm font-medium text-base-content" htmlFor={`${formId}-website`}>
+                    <label
+                        className="mb-2 block text-sm font-medium text-base-content"
+                        htmlFor={`${formId}-website`}
+                    >
                         Website URL
                     </label>
                     <input
@@ -98,23 +79,29 @@ export default function WebsiteAuditForm({
                         value={values.websiteUrl}
                         onChange={(event) => updateField("websiteUrl", event.target.value)}
                         placeholder="https://example.com"
-                        aria-invalid={errors.websiteUrl ? "true" : "false"}
-                        aria-describedby={errors.websiteUrl ? `${formId}-website-error` : undefined}
+                        required
+                        aria-invalid={state.fieldErrors?.websiteUrl ? "true" : "false"}
+                        aria-describedby={
+                            state.fieldErrors?.websiteUrl ? `${formId}-website-error` : undefined
+                        }
                         className={`input input-bordered w-full bg-base-100 ${siteFieldFocusClass}`}
                     />
-                    {errors.websiteUrl ? (
+                    {state.fieldErrors?.websiteUrl ? (
                         <p
                             id={`${formId}-website-error`}
                             className="mt-2 text-sm text-error"
                         >
-                            {errors.websiteUrl}
+                            {state.fieldErrors.websiteUrl}
                         </p>
                     ) : null}
                 </div>
 
                 <div>
-                    <label className="mb-2 block text-sm font-medium text-base-content" htmlFor={`${formId}-email`}>
-                        Business email <span className="text-base-content/60">(optional)</span>
+                    <label
+                        className="mb-2 block text-sm font-medium text-base-content"
+                        htmlFor={`${formId}-email`}
+                    >
+                        Business email
                     </label>
                     <input
                         id={`${formId}-email`}
@@ -123,26 +110,44 @@ export default function WebsiteAuditForm({
                         value={values.businessEmail}
                         onChange={(event) => updateField("businessEmail", event.target.value)}
                         placeholder="name@business.com"
-                        aria-invalid={errors.businessEmail ? "true" : "false"}
-                        aria-describedby={errors.businessEmail ? `${formId}-email-error` : undefined}
+                        required
+                        autoComplete="email"
+                        aria-invalid={state.fieldErrors?.businessEmail ? "true" : "false"}
+                        aria-describedby={
+                            state.fieldErrors?.businessEmail ? `${formId}-email-error` : undefined
+                        }
                         className={`input input-bordered w-full bg-base-100 ${siteFieldFocusClass}`}
                     />
-                    {errors.businessEmail ? (
+                    {state.fieldErrors?.businessEmail ? (
                         <p id={`${formId}-email-error`} className="mt-2 text-sm text-error">
-                            {errors.businessEmail}
+                            {state.fieldErrors.businessEmail}
                         </p>
                     ) : null}
                 </div>
 
                 <div className="flex items-end">
-                    <button type="submit" className="btn btn-primary w-full md:w-auto">
-                        Submit audit request
+                    <button
+                        type="submit"
+                        className="btn btn-primary w-full md:w-auto"
+                        disabled={pending}
+                    >
+                        {pending ? "Submitting…" : "Submit audit request"}
                     </button>
                 </div>
 
                 <div className="md:col-span-2" aria-live="polite">
-                    <p className="rounded-xl bg-base-200 p-4 text-sm leading-relaxed text-base-content/80">
-                        {statusMessage}
+                    <p
+                        className={`rounded-xl p-4 text-sm leading-relaxed ${
+                            state.message && !state.ok
+                                ? "bg-error/10 text-error"
+                                : state.ok && state.message
+                                  ? "bg-success/10 text-base-content"
+                                  : "bg-base-200 text-base-content/80"
+                        }`}
+                        role={state.message && !state.ok ? "alert" : undefined}
+                    >
+                        {state.message ??
+                            "Submit your website to add it to our audit queue. An administrator can start the audit from the dashboard."}
                     </p>
                 </div>
             </form>

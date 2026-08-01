@@ -24,7 +24,15 @@ export default async function DashboardWebsitesPage({
                 : "Unable to load websites right now. Please try again later.";
     }
 
-    const items = toWebsiteListViewModels(websites);
+    let items: ReturnType<typeof toWebsiteListViewModels> = [];
+    if (!loadError) {
+        try {
+            items = toWebsiteListViewModels(websites);
+        } catch (error) {
+            console.error("Failed to load websites:", error);
+            loadError = "Unable to load websites right now. Please try again later.";
+        }
+    }
 
     return (
         <section className="rounded-2xl bg-base-100 p-4 shadow-sm sm:p-6 lg:p-8">

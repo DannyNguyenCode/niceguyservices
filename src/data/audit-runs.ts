@@ -16,6 +16,8 @@ import type {
     AuditRunStatus,
     SerializableAuditRun,
 } from "@/src/services/audit-history/types";
+import type { SerializableAuditRunAnalysis } from "@/src/services/cursor-analysis/types";
+import type { CursorAnalysisStatus } from "@/src/services/cursor-analysis/constants";
 
 export class AuditRunDataError extends Error {
     readonly code: string;
@@ -41,6 +43,46 @@ function toId(value: unknown): string | null {
 
 function toIds(values: unknown[] | undefined): string[] {
     return (values ?? []).map((value) => String(value));
+}
+
+function serializeAuditRunAnalysis(
+    doc: Record<string, unknown> | null | undefined,
+): SerializableAuditRunAnalysis {
+    const analysis = doc ?? {};
+    const failureHistory = Array.isArray(analysis.failureHistory)
+        ? analysis.failureHistory.map((entry) => {
+              const record = entry as Record<string, unknown>;
+              const failedAt = record.failedAt ? new Date(record.failedAt as Date) : null;
+              return {
+                  attempt: Number(record.attempt ?? 0),
+                  analysisRequestId: String(record.analysisRequestId ?? ""),
+                  error: String(record.error ?? ""),
+                  failedAt:
+                      failedAt && !Number.isNaN(failedAt.getTime())
+                          ? failedAt.toISOString()
+                          : new Date(0).toISOString(),
+              };
+          })
+        : [];
+
+    return {
+        status: (analysis.status as CursorAnalysisStatus) ?? "not_started",
+        provider: analysis.provider ? String(analysis.provider) : null,
+        attempt: Number(analysis.attempt ?? 0),
+        analysisRequestId: analysis.analysisRequestId ? String(analysis.analysisRequestId) : null,
+        triggeredAt: analysis.triggeredAt
+            ? new Date(analysis.triggeredAt as Date).toISOString()
+            : null,
+        completedAt: analysis.completedAt
+            ? new Date(analysis.completedAt as Date).toISOString()
+            : null,
+        promptVersion: String(analysis.promptVersion ?? "1.0"),
+        packageVersion: String(analysis.packageVersion ?? "1.0"),
+        externalJobId: analysis.externalJobId ? String(analysis.externalJobId) : null,
+        lastError: analysis.lastError ? String(analysis.lastError) : null,
+        failureHistory,
+        result: (analysis.result as SerializableAuditRunAnalysis["result"]) ?? null,
+    };
 }
 
 function serializeAuditRun(doc: AuditRunDocument | Record<string, unknown>): SerializableAuditRun {
@@ -169,6 +211,7 @@ function serializeAuditRun(doc: AuditRunDocument | Record<string, unknown>): Ser
                   errorMessage: (doc.failure as { errorMessage?: string | null }).errorMessage ?? null,
               }
             : null,
+        analysis: serializeAuditRunAnalysis(doc.analysis as Record<string, unknown> | undefined),
         startedAt: doc.startedAt ? new Date(doc.startedAt as Date).toISOString() : null,
         completedAt: doc.completedAt ? new Date(doc.completedAt as Date).toISOString() : null,
         archivedAt: doc.archivedAt ? new Date(doc.archivedAt as Date).toISOString() : null,

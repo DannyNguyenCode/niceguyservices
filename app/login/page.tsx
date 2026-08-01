@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import LoginForm from "@/components/auth/LoginForm";
 import { isAuthConfigured } from "@/src/lib/auth/config";
+import { getEnvAdministratorEmailForLoginForm } from "@/src/services/auth/ensure-env-administrator";
 
 export const metadata: Metadata = {
     title: "Administrator sign in",
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
     const authConfigured = isAuthConfigured();
+    const defaultEmail = getEnvAdministratorEmailForLoginForm() ?? "";
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-base-200 px-4 py-10">
@@ -30,7 +32,7 @@ export default function LoginPage() {
                 ) : (
                     <div className="mt-6">
                         <Suspense fallback={<p className="text-sm text-base-content/70">Loading…</p>}>
-                            <LoginForm />
+                            <LoginForm defaultEmail={defaultEmail} />
                         </Suspense>
                     </div>
                 )}

@@ -111,6 +111,7 @@ export type SerializableAuditRun = {
         errorCode: string | null;
         errorMessage: string | null;
     } | null;
+    analysis?: import("@/src/services/cursor-analysis/types").SerializableAuditRunAnalysis;
     startedAt: string | null;
     completedAt: string | null;
     archivedAt: string | null;
