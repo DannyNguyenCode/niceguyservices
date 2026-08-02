@@ -35,19 +35,46 @@ const rateLimitEnvSchema = z.object({
 
 type ParsedRateLimitEnv = z.infer<typeof rateLimitEnvSchema>;
 
+type RateLimitDeployment = "development" | "test" | "preview" | "production";
+
 let cachedEnv: ParsedRateLimitEnv | null = null;
 let warnedInMemory = false;
 
-function parseRateLimitEnv(): ParsedRateLimitEnv {
+function resolveRateLimitDeployment(): RateLimitDeployment {
+    const explicit = process.env.DEPLOYMENT_ENV?.trim().toLowerCase();
+    if (explicit === "preview" || explicit === "staging") {
+        return "preview";
+    }
+    if (explicit === "production") {
+        return "production";
+    }
+    if (explicit === "test") {
+        return "test";
+    }
+
     const nodeEnv = process.env.NODE_ENV ?? "development";
-    const isProduction = nodeEnv === "production";
-    const isTest = nodeEnv === "test";
+    if (nodeEnv === "test") {
+        return "test";
+    }
+    if (nodeEnv === "production") {
+        if (process.env.VERCEL_ENV === "preview") {
+            return "preview";
+        }
+        return "production";
+    }
+    return "development";
+}
+
+function parseRateLimitEnv(): ParsedRateLimitEnv {
+    const deployment = resolveRateLimitDeployment();
+    const requiresDistributedRateLimit = deployment === "production";
+    const isTest = deployment === "test";
 
     const providerInput = process.env.RATE_LIMIT_PROVIDER?.trim();
     const provider =
         providerInput && rateLimitProviderSchema.safeParse(providerInput).success
             ? (providerInput as ParsedRateLimitEnv["provider"])
-            : isProduction
+            : requiresDistributedRateLimit
               ? "redis"
               : "memory";
 
@@ -78,7 +105,7 @@ function parseRateLimitEnv(): ParsedRateLimitEnv {
         publicReportWindowSeconds: process.env.RATE_LIMIT_PUBLIC_REPORT_WINDOW_SECONDS,
     });
 
-    if (isProduction) {
+    if (requiresDistributedRateLimit) {
         if (parsed.provider === "memory" || parsed.provider === "noop") {
             throw new Error(
                 "Production requires a distributed rate-limit provider (redis).",
@@ -97,7 +124,7 @@ function parseRateLimitEnv(): ParsedRateLimitEnv {
         }
     }
 
-    if (!isProduction && !isTest && parsed.provider === "memory" && !warnedInMemory) {
+    if (!requiresDistributedRateLimit && !isTest && parsed.provider === "memory" && !warnedInMemory) {
         warnedInMemory = true;
         console.warn(
             "[rate-limit] Using in-memory provider. Configure RATE_LIMIT_PROVIDER=redis for distributed limits.",

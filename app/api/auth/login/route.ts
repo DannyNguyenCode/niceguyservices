@@ -14,6 +14,7 @@ import { enforceLoginRateLimitsFromRequest } from "@/src/services/rate-limit/enf
 import { normalizeLoginEmail } from "@/src/services/rate-limit/rate-limit-identity";
 import { createRateLimitResponseFromError } from "@/src/services/rate-limit/create-rate-limit-response";
 import { ensureEnvAdministrator } from "@/src/services/auth/ensure-env-administrator";
+import { logError, sanitizeErrorMessage } from "@/src/lib/safe-log";
 
 export const dynamic = "force-dynamic";
 
@@ -66,27 +67,49 @@ export async function POST(request: Request) {
         if (rateLimitResponse) {
             return rateLimitResponse;
         }
-        throw error;
-    }
-
-    await ensureEnvAdministrator();
-
-    const session = await authenticateAdministrator(normalizedEmail, password);
-    if (!session) {
+        logError("auth.login_rate_limit_failed", {
+            message: sanitizeErrorMessage(error),
+        });
         return NextResponse.json(
-            { success: false, error: INVALID_CREDENTIALS_MESSAGE },
-            { status: 401 },
+            { success: false, error: "Unable to sign in right now. Please try again shortly." },
+            { status: 503 },
         );
     }
 
-    const token = await createAdministratorSessionCookie(session);
-    const response = NextResponse.json({ success: true });
-    response.cookies.set(ADMIN_SESSION_COOKIE, token, {
-        httpOnly: true,
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
-        path: "/",
-        maxAge: ADMIN_SESSION_MAX_AGE_SECONDS,
-    });
-    return response;
+    try {
+        await ensureEnvAdministrator();
+    } catch (error) {
+        logError("auth.ensure_env_administrator_failed", {
+            message: sanitizeErrorMessage(error),
+        });
+    }
+
+    try {
+        const session = await authenticateAdministrator(normalizedEmail, password);
+        if (!session) {
+            return NextResponse.json(
+                { success: false, error: INVALID_CREDENTIALS_MESSAGE },
+                { status: 401 },
+            );
+        }
+
+        const token = await createAdministratorSessionCookie(session);
+        const response = NextResponse.json({ success: true });
+        response.cookies.set(ADMIN_SESSION_COOKIE, token, {
+            httpOnly: true,
+            sameSite: "lax",
+            secure: process.env.NODE_ENV === "production",
+            path: "/",
+            maxAge: ADMIN_SESSION_MAX_AGE_SECONDS,
+        });
+        return response;
+    } catch (error) {
+        logError("auth.login_failed", {
+            message: sanitizeErrorMessage(error),
+        });
+        return NextResponse.json(
+            { success: false, error: "Unable to sign in right now. Please try again shortly." },
+            { status: 503 },
+        );
+    }
 }

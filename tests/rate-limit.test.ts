@@ -223,6 +223,7 @@ describe("production safeguards", () => {
     it("rejects in-memory provider in production", () => {
         Object.assign(process.env, {
             NODE_ENV: "production",
+            DEPLOYMENT_ENV: "production",
             RATE_LIMIT_PROVIDER: "memory",
         });
         resetRateLimitEnvCacheForTests();
@@ -231,5 +232,18 @@ describe("production safeguards", () => {
             () => getRateLimitEnv(),
             /Production requires a distributed rate-limit provider/,
         );
+    });
+
+    it("allows in-memory provider in preview without Redis credentials", () => {
+        Object.assign(process.env, {
+            NODE_ENV: "production",
+            VERCEL_ENV: "preview",
+        });
+        delete process.env.RATE_LIMIT_PROVIDER;
+        delete process.env.RATE_LIMIT_REDIS_URL;
+        delete process.env.RATE_LIMIT_REDIS_TOKEN;
+        resetRateLimitEnvCacheForTests();
+
+        assert.equal(getRateLimitEnv().provider, "memory");
     });
 });
