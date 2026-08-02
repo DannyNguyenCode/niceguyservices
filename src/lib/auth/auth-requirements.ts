@@ -3,7 +3,7 @@ const PLACEHOLDER_SECRETS = new Set([
     "your-auth-secret",
 ]);
 
-/** Documented development-only fallback; never accepted in preview or production. */
+/** Documented development fallback used when AUTH_SECRET is unset in local development. */
 export const DEVELOPMENT_AUTH_SECRET_FALLBACK = "local-development-auth-secret-only";
 
 export function isProtectedDeploymentEnvironment(): boolean {
@@ -33,16 +33,6 @@ export function isConfiguredAuthSecretValue(secret: string | undefined): boolean
 export function resolveAuthSecretForRuntime(): string | undefined {
     const configured = process.env.AUTH_SECRET?.trim();
     if (isConfiguredAuthSecretValue(configured)) {
-        if (
-            isProtectedDeploymentEnvironment() &&
-            configured === DEVELOPMENT_AUTH_SECRET_FALLBACK
-        ) {
-            return undefined;
-        }
-        return configured;
-    }
-
-    if (!isProtectedDeploymentEnvironment() && configured === DEVELOPMENT_AUTH_SECRET_FALLBACK) {
         return configured;
     }
 

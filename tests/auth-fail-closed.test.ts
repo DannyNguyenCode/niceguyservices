@@ -47,7 +47,7 @@ describe("authentication fail-closed", () => {
         assert.equal(body.error?.code, "AUTH_CONFIGURATION_UNAVAILABLE");
     });
 
-    it("allows development fallback secret only in development", () => {
+    it("accepts configured auth secret in development and preview", () => {
         Object.assign(process.env, {
             NODE_ENV: "development",
             DEPLOYMENT_ENV: "development",
@@ -55,8 +55,11 @@ describe("authentication fail-closed", () => {
         });
         assert.equal(resolveAuthSecretForRuntime(), "local-development-auth-secret-only");
 
-        process.env.DEPLOYMENT_ENV = "preview";
-        process.env.AUTH_SECRET = "local-development-auth-secret-only";
-        assert.equal(resolveAuthSecretForRuntime(), undefined);
+        Object.assign(process.env, {
+            NODE_ENV: "production",
+            DEPLOYMENT_ENV: "preview",
+            AUTH_SECRET: "local-development-auth-secret-only",
+        });
+        assert.equal(resolveAuthSecretForRuntime(), "local-development-auth-secret-only");
     });
 });

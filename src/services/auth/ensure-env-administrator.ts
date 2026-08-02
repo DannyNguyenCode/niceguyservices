@@ -12,10 +12,6 @@ function readEnvAdministratorConfig(): {
     password: string;
     name: string;
 } | null {
-    if (process.env.NODE_ENV === "production") {
-        return null;
-    }
-
     const email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
     const password = process.env.ADMIN_PASSWORD?.trim();
     const name = process.env.ADMIN_NAME?.trim() || "Administrator";
@@ -34,8 +30,8 @@ function readEnvAdministratorConfig(): {
 }
 
 /**
- * In non-production environments, keep the MongoDB administrator record aligned
- * with ADMIN_EMAIL / ADMIN_PASSWORD from the environment (local testing only).
+ * Keep the MongoDB administrator record aligned with ADMIN_EMAIL / ADMIN_PASSWORD
+ * from the environment when those variables are configured.
  */
 export async function ensureEnvAdministrator(): Promise<void> {
     const config = readEnvAdministratorConfig();

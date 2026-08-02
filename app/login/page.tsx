@@ -4,6 +4,8 @@ import LoginForm from "@/components/auth/LoginForm";
 import { isAuthConfigured } from "@/src/lib/auth/config";
 import { getEnvAdministratorEmailForLoginForm } from "@/src/services/auth/ensure-env-administrator";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
     title: "Administrator sign in",
     robots: { index: false, follow: false },
