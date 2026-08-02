@@ -1,4 +1,4 @@
-import type { BrowserContext, Route } from "playwright";
+import type { BrowserContext, Route } from "playwright-core";
 import { CRAWL_CONFIG } from "@/src/lib/crawl-config";
 import {
     OutboundRequestSecurityError,

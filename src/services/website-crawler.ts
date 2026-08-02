@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { Browser, BrowserContext, Page } from "playwright";
+import type { Browser, BrowserContext, Page } from "playwright-core";
 import { CRAWL_CONFIG } from "@/src/lib/crawl-config";
 import { launchChromium } from "@/src/lib/playwright-config";
 import {

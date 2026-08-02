@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import type { Page } from "playwright";
+import type { Page } from "playwright-core";
 
 function loadCrawlBrowserScript(): string {
     const candidates = [

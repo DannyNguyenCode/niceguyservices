@@ -1,7 +1,4 @@
 {
-  "env": {
-    "PLAYWRIGHT_BROWSERS_PATH": "0"
-  },
   "functions": {
     "app/api/admin/websites/[id]/crawl/route.ts": {
       "maxDuration": 300,

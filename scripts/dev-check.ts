@@ -13,11 +13,12 @@ import { getDeploymentEnvironment } from "../src/config/app-env";
 import { pingDatabase } from "../src/lib/mongodb";
 import { isPageSpeedConfigured } from "../src/lib/pagespeed-config";
 
+import { getPlaywrightLaunchOptions } from "../src/lib/playwright-config";
+
 async function checkPlaywright(): Promise<"available" | "unavailable"> {
     try {
-        const { chromium } = await import("playwright");
-        const executablePath = chromium.executablePath();
-        if (!executablePath) {
+        const launchOptions = await getPlaywrightLaunchOptions();
+        if (!launchOptions.executablePath) {
             return "unavailable";
         }
         return "available";

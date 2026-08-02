@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, describe, it } from "node:test";
 import {
-    ensureBundledPlaywrightBrowsersPath,
     getPlaywrightLaunchOptions,
+    resolveChromiumRuntime,
 } from "@/src/lib/playwright-config";
 
 const ORIGINAL_ENV = { ...process.env };
@@ -15,34 +15,32 @@ afterEach(() => {
     process.env = { ...ORIGINAL_ENV };
 });
 
-describe("playwright serverless configuration", () => {
-    it("defaults bundled browser path on Vercel when unset", () => {
-        delete process.env.PLAYWRIGHT_BROWSERS_PATH;
-        process.env.VERCEL = "1";
+describe("playwright chromium configuration", () => {
+    it("uses Sparticuz when PLAYWRIGHT_USE_SPARTICUZ=1", () => {
+        process.env.PLAYWRIGHT_USE_SPARTICUZ = "1";
 
-        ensureBundledPlaywrightBrowsersPath();
-
-        assert.equal(process.env.PLAYWRIGHT_BROWSERS_PATH, "0");
+        assert.equal(resolveChromiumRuntime(), "sparticuz");
     });
 
-    it("adds serverless chromium flags on Vercel", () => {
-        process.env.VERCEL = "1";
-        process.env.PLAYWRIGHT_BROWSERS_PATH = "0";
+    it("uses local Chromium when PLAYWRIGHT_USE_SPARTICUZ=0", () => {
+        process.env.PLAYWRIGHT_USE_SPARTICUZ = "0";
 
-        const options = getPlaywrightLaunchOptions();
-
-        assert.equal(options.headless, true);
-        assert.ok(options.args?.includes("--no-sandbox"));
-        assert.ok(options.args?.includes("--disable-dev-shm-usage"));
+        assert.equal(resolveChromiumRuntime(), "local");
     });
 
-    it("does not add serverless chromium flags during local development", () => {
-        delete process.env.VERCEL;
-        delete process.env.AWS_LAMBDA_FUNCTION_NAME;
-        delete process.env.AWS_EXECUTION_ENV;
+    it("prefers a custom executable path over Sparticuz", () => {
+        process.env.PLAYWRIGHT_USE_SPARTICUZ = "1";
+        process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH = "/custom/chromium";
 
-        const options = getPlaywrightLaunchOptions();
+        assert.equal(resolveChromiumRuntime(), "local");
+    });
 
-        assert.equal(options.args, undefined);
+    it("returns a custom executable path when configured", async () => {
+        process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH = "/custom/chromium";
+
+        const options = await getPlaywrightLaunchOptions();
+
+        assert.equal(options.executablePath, "/custom/chromium");
+        assert.deepEqual(options.args, []);
     });
 });

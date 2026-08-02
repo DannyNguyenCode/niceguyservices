@@ -1,13 +1,13 @@
 import "server-only";
 
-import type { Browser, BrowserContext } from "playwright";
+import type { Browser, BrowserContext } from "playwright-core";
 import { CRAWL_CONFIG } from "@/src/lib/crawl-config";
 import { launchChromium } from "@/src/lib/playwright-config";
 import { validatePublicCrawlUrl } from "@/src/lib/validate-public-url";
 import { installPlaywrightNetworkGuard } from "@/src/services/playwright-network-guard";
 import { screenshotFilenameForTarget } from "@/src/services/screenshot-targets";
 
-async function navigateSafely(page: import("playwright").Page, targetUrl: string): Promise<void> {
+async function navigateSafely(page: import("playwright-core").Page, targetUrl: string): Promise<void> {
     await validatePublicCrawlUrl(targetUrl);
     await page.goto(targetUrl, {
         waitUntil: "domcontentloaded",

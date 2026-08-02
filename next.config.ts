@@ -3,18 +3,18 @@ import type { NextConfig } from "next";
 const reactPdfBrowserEntry =
   "./node_modules/@react-pdf/renderer/lib/react-pdf.browser.js";
 
-const playwrightTraceIncludes = [
+const chromiumTraceIncludes = [
+  "./node_modules/@sparticuz/chromium/**",
   "./node_modules/playwright-core/**",
-  "./node_modules/playwright/**",
 ];
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
-  serverExternalPackages: ["playwright", "playwright-core"],
+  serverExternalPackages: ["playwright-core", "@sparticuz/chromium"],
   outputFileTracingIncludes: {
     "/*": ["./src/services/crawl-browser-extract.js"],
-    "/api/admin/websites/**": playwrightTraceIncludes,
-    "/api/admin/reports/**": playwrightTraceIncludes,
+    "/api/admin/websites/[id]/crawl": chromiumTraceIncludes,
+    "/api/admin/reports/[reportId]/pdf": chromiumTraceIncludes,
   },
   turbopack: {
     resolveAlias: {

@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { Browser } from "playwright";
+import type { Browser } from "playwright-core";
 import { launchChromium } from "@/src/lib/playwright-config";
 import { buildPdfRenderToken } from "@/src/services/pdf-reports/build-pdf-render-token";
 import {
@@ -14,7 +14,7 @@ import {
     PDF_RENDER_ENGINE,
 } from "@/src/services/pdf-reports/constants";
 
-async function waitForImages(page: import("playwright").Page): Promise<void> {
+async function waitForImages(page: import("playwright-core").Page): Promise<void> {
     await page.evaluate(async () => {
         const images = Array.from(document.images);
         await Promise.all(

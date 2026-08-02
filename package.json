@@ -6,7 +6,6 @@
     "node": ">=22"
   },
   "scripts": {
-    "postinstall": "npm run playwright:install",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -21,7 +20,7 @@
     "db:indexes:apply": "npx tsx --import ./scripts/preload-cli.ts scripts/sync-indexes.ts --apply",
     "smoke:production": "npx tsx --import ./scripts/preload-cli.ts scripts/production-smoke-test.ts",
     "playwright:install": "node scripts/install-playwright.mjs",
-    "playwright:check": "node scripts/check-playwright.mjs",
+    "playwright:check": "npx tsx --import ./scripts/preload-cli.ts scripts/check-playwright.ts",
     "test:playwright": "playwright test",
     "test:playwright:ui": "playwright test --ui",
     "test:pagespeed": "npx tsx --test tests/pagespeed-parser.test.ts",
@@ -73,13 +72,14 @@
     "@mui/icons-material": "^7.3.5",
     "@mui/material-nextjs": "^7.3.5",
     "@react-pdf/renderer": "^4.5.1",
+    "@sparticuz/chromium": "^149.0.0",
     "cloudinary": "^2.10.0",
     "framer-motion": "^12.23.24",
     "lucide-react": "^1.23.0",
     "mongodb": "^7.4.0",
     "mongoose": "^9.7.4",
     "next": "16.0.10",
-    "playwright": "^1.62.0",
+    "playwright-core": "1.61.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-social-icons": "^6.26.0",
@@ -88,7 +88,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@playwright/test": "^1.62.0",
+    "@playwright/test": "1.61.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -97,6 +97,7 @@
     "daisyui": "^5.5.19",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
+    "playwright": "1.61.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
