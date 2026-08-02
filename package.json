@@ -6,6 +6,7 @@
     "node": ">=22"
   },
   "scripts": {
+    "postinstall": "npm run playwright:install",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
