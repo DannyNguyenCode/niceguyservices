@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import {
     createWebsite,
-    softDeleteWebsite,
+    deleteWebsite,
     updateWebsite,
     WebsiteDataError,
 } from "@/src/data/websites";
@@ -141,12 +141,10 @@ export async function updateWebsiteAction(
     }
 }
 
-export async function softDeleteWebsiteAction(
-    id: string,
-): Promise<WebsiteActionState> {
+export async function deleteWebsiteAction(id: string): Promise<WebsiteActionState> {
     // TODO: Require admin authentication before allowing website mutations.
     try {
-        await softDeleteWebsite(id);
+        await deleteWebsite(id);
         revalidatePath("/dashboard");
         revalidatePath("/dashboard/websites");
         revalidatePath(`/dashboard/websites/${id}`);
@@ -155,4 +153,11 @@ export async function softDeleteWebsiteAction(
         if (isRedirectError(error)) throw error;
         return toActionError(error);
     }
+}
+
+/** @deprecated Use `deleteWebsiteAction`. */
+export async function softDeleteWebsiteAction(
+    id: string,
+): Promise<WebsiteActionState> {
+    return deleteWebsiteAction(id);
 }

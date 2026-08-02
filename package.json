@@ -20,7 +20,7 @@
     "db:indexes": "npx tsx --import ./scripts/preload-cli.ts scripts/sync-indexes.ts",
     "db:indexes:apply": "npx tsx --import ./scripts/preload-cli.ts scripts/sync-indexes.ts --apply",
     "smoke:production": "npx tsx --import ./scripts/preload-cli.ts scripts/production-smoke-test.ts",
-    "playwright:install": "playwright install chromium",
+    "playwright:install": "node scripts/install-playwright.mjs",
     "playwright:check": "node scripts/check-playwright.mjs",
     "test:playwright": "playwright test",
     "test:playwright:ui": "playwright test --ui",

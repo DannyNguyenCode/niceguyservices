@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { softDeleteWebsiteAction } from "@/src/actions/websites";
+import { deleteWebsiteAction } from "@/src/actions/websites";
 
 type SoftDeleteWebsiteButtonProps = {
     websiteId: string;
@@ -19,13 +19,13 @@ export default function SoftDeleteWebsiteButton({
 
     function handleClick() {
         const confirmed = window.confirm(
-            `Archive "${businessLabel}"? This soft-deletes the record and hides it from the list.`,
+            `Permanently delete "${businessLabel}"? This removes the website, audit history, screenshots, reports, and all related data from MongoDB and Cloudinary. This cannot be undone.`,
         );
         if (!confirmed) return;
 
         setErrorMessage(null);
         startTransition(async () => {
-            const result = await softDeleteWebsiteAction(websiteId);
+            const result = await deleteWebsiteAction(websiteId);
             if (result && !result.ok) {
                 setErrorMessage(result.message ?? "Unable to delete this website.");
             }

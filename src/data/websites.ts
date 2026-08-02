@@ -11,6 +11,8 @@ import { Website, type WebsiteLean } from "@/src/models/Website";
 import { ACTIVITY_EVENTS } from "@/src/constants/activity-events";
 import type { ActivityActorType } from "@/src/constants/activity-events";
 import { createActivityEvent } from "@/src/services/activity/create-activity-event";
+import { deleteWebsiteAndRelatedData } from "@/src/services/websites/delete-website";
+import { logInfo } from "@/src/lib/safe-log";
 
 export class WebsiteDataError extends Error {
     readonly code:
@@ -386,36 +388,35 @@ export async function updateWebsite(
     }
 }
 
-export async function softDeleteWebsite(id: string): Promise<void> {
-    await connectToDatabase();
-
+export async function deleteWebsite(id: string): Promise<void> {
     const objectId = assertObjectId(id);
-    const result = await Website.findOneAndUpdate(
-        {
-            _id: objectId,
-            ...activeFilter,
-        },
-        {
-            $set: {
-                deletedAt: new Date(),
-                status: "archived",
-            },
-        },
-        { new: true },
-    );
-
-    if (!result) {
+    const website = await Website.findById(objectId).lean();
+    if (!website) {
         throw new WebsiteDataError("not-found", "Website not found.");
     }
 
-    await createActivityEvent({
-        websiteId: id,
-        eventType: ACTIVITY_EVENTS.WEBSITE_ARCHIVED,
-        title: "Website archived",
-        description: "Website was soft-deleted from active lists.",
-        severity: "warning",
-        actor: { type: "administrator" },
-    });
+    try {
+        const counts = await deleteWebsiteAndRelatedData(id);
+        logInfo("website.deleted", {
+            websiteId: id,
+            normalizedDomain: website.normalizedDomain,
+            deletedRecords: counts,
+        });
+    } catch (error) {
+        if (error instanceof Error && error.message === "WEBSITE_NOT_FOUND") {
+            throw new WebsiteDataError("not-found", "Website not found.");
+        }
+        throw new WebsiteDataError(
+            "database",
+            "Unable to delete the website right now. Please try again.",
+            { cause: error },
+        );
+    }
+}
+
+/** @deprecated Use `deleteWebsite`. */
+export async function softDeleteWebsite(id: string): Promise<void> {
+    await deleteWebsite(id);
 }
 
 export async function updateWebsitePageSpeedStatus(

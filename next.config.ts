@@ -3,10 +3,18 @@ import type { NextConfig } from "next";
 const reactPdfBrowserEntry =
   "./node_modules/@react-pdf/renderer/lib/react-pdf.browser.js";
 
+const playwrightTraceIncludes = [
+  "./node_modules/playwright-core/**",
+  "./node_modules/playwright/**",
+];
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  serverExternalPackages: ["playwright", "playwright-core"],
   outputFileTracingIncludes: {
     "/*": ["./src/services/crawl-browser-extract.js"],
+    "/api/admin/websites/**": playwrightTraceIncludes,
+    "/api/admin/reports/**": playwrightTraceIncludes,
   },
   turbopack: {
     resolveAlias: {

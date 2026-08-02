@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { runWebsiteCrawl } from "@/src/services/run-website-crawl";
+import { AuditHistoryError } from "@/src/services/audit-history/create-audit-run";
 import { requireAdministratorSession } from "@/src/services/auth/administrator-session";
 import { mapRateLimitErrorToActionState } from "@/src/services/rate-limit/map-rate-limit-action-state";
 
@@ -32,6 +33,12 @@ export async function runWebsiteCrawlAction(
             message: result.message,
         };
     } catch (error) {
+        if (error instanceof AuditHistoryError) {
+            return {
+                ok: false,
+                message: error.message,
+            };
+        }
         const rateLimited = await mapRateLimitErrorToActionState(error, {
             policyId: "crawl-start",
             websiteId,

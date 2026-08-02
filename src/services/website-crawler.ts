@@ -1,8 +1,8 @@
 import "server-only";
 
-import { chromium, type Browser, type BrowserContext, type Page } from "playwright";
+import type { Browser, BrowserContext, Page } from "playwright";
 import { CRAWL_CONFIG } from "@/src/lib/crawl-config";
-import { getPlaywrightLaunchOptions } from "@/src/lib/playwright-config";
+import { launchChromium } from "@/src/lib/playwright-config";
 import {
     classifyPageType,
     dedupeStrings,
@@ -230,7 +230,7 @@ export async function crawlWebsite(
     const visited = new Set<string>();
 
     try {
-        browser = await chromium.launch(getPlaywrightLaunchOptions());
+        browser = await launchChromium();
         context = await browser.newContext({
             userAgent: CRAWL_CONFIG.desktopUserAgent,
             viewport: CRAWL_CONFIG.desktopViewport,

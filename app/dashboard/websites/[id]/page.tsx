@@ -215,7 +215,7 @@ export default async function DashboardWebsiteDetailPage({
                 id={AUDIT_SECTIONS.administration.id}
                 headingId={AUDIT_SECTIONS.administration.headingId}
                 title="Website administration"
-                description="Soft-delete removes the website from active lists while preserving audit history."
+                description="Permanently deletes the website and all related audit data, including MongoDB records and Cloudinary screenshots/PDFs."
             >
                 <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
                     <SoftDeleteWebsiteButton

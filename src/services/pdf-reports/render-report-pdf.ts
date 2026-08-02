@@ -1,7 +1,7 @@
 import "server-only";
 
-import { chromium } from "playwright";
-import { getPlaywrightLaunchOptions } from "@/src/lib/playwright-config";
+import type { Browser } from "playwright";
+import { launchChromium } from "@/src/lib/playwright-config";
 import { buildPdfRenderToken } from "@/src/services/pdf-reports/build-pdf-render-token";
 import {
     getPdfMaxRetries,
@@ -50,9 +50,9 @@ export async function renderReportPdf(input: {
     let lastError: unknown = null;
 
     for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
-        let browser: Awaited<ReturnType<typeof chromium.launch>> | null = null;
+        let browser: Browser | null = null;
         try {
-            browser = await chromium.launch(getPlaywrightLaunchOptions());
+            browser = await launchChromium();
             const context = await browser.newContext();
             const page = await context.newPage();
             page.setDefaultTimeout(timeout);

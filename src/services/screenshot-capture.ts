@@ -1,8 +1,8 @@
 import "server-only";
 
-import { chromium, type Browser, type BrowserContext } from "playwright";
+import type { Browser, BrowserContext } from "playwright";
 import { CRAWL_CONFIG } from "@/src/lib/crawl-config";
-import { getPlaywrightLaunchOptions } from "@/src/lib/playwright-config";
+import { launchChromium } from "@/src/lib/playwright-config";
 import { validatePublicCrawlUrl } from "@/src/lib/validate-public-url";
 import { installPlaywrightNetworkGuard } from "@/src/services/playwright-network-guard";
 import { screenshotFilenameForTarget } from "@/src/services/screenshot-targets";
@@ -40,7 +40,7 @@ export async function capturePageScreenshots(input: {
     const shots: CapturedPageScreenshots["shots"] = [];
 
     try {
-        browser = await chromium.launch(getPlaywrightLaunchOptions());
+        browser = await launchChromium();
 
         desktopContext = await browser.newContext({
             userAgent: CRAWL_CONFIG.desktopUserAgent,

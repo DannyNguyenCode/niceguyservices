@@ -1,3 +1,5 @@
+process.env.PLAYWRIGHT_BROWSERS_PATH = process.env.PLAYWRIGHT_BROWSERS_PATH?.trim() || "0";
+
 import { chromium } from "playwright";
 
 const launchOptions = {

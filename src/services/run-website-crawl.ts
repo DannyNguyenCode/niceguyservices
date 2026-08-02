@@ -5,7 +5,8 @@ import { toSafePublicErrorMessage, validatePublicCrawlUrl } from "@/src/lib/vali
 import { createActivityLog } from "@/src/data/activity-logs";
 import { createCrawlRecord, hasActiveCrawlForWebsite } from "@/src/data/crawls";
 import { getWebsiteById, updateWebsiteCrawlStatus } from "@/src/data/websites";
-import { createAuditRun } from "@/src/services/audit-history/create-audit-run";
+import { createAuditRun, AuditHistoryError } from "@/src/services/audit-history/create-audit-run";
+import { recoverOrphanedActiveAuditRunForWebsite } from "@/src/services/audit-history/recover-orphaned-audit-run";
 import { updateAuditRunStage } from "@/src/services/audit-history/finalize-audit-run";
 import { registerAuditReference } from "@/src/services/audit-history/register-audit-reference";
 import { updateAuditRunStatus } from "@/src/data/audit-runs";
@@ -19,6 +20,7 @@ import {
     shouldExecuteAuditStageSynchronously,
 } from "@/src/services/audit-jobs/stage-execution";
 import { executeWebsiteCrawlWork } from "@/src/services/audit-jobs/execute-crawl-work";
+import { recoverLegacyStageJobs } from "@/src/services/audit-jobs/audit-worker";
 
 export type RunWebsiteCrawlResult =
     | {
@@ -60,6 +62,9 @@ export async function runWebsiteCrawl(
         return { ok: false, code: "not-found", message: "Website not found." };
     }
 
+    await recoverLegacyStageJobs();
+    await recoverOrphanedActiveAuditRunForWebsite(websiteId);
+
     if (await hasActiveCrawlForWebsite(websiteId)) {
         return {
             ok: false,
@@ -92,10 +97,29 @@ export async function runWebsiteCrawl(
         internalWorker: options?.internalWorker,
     });
 
-    const auditRun = await createAuditRun({
-        websiteId,
-        trigger: { type: "administrator", actorId: null, actorName: null },
-    });
+    let auditRun;
+    try {
+        auditRun = await createAuditRun({
+            websiteId,
+            trigger: { type: "administrator", actorId: null, actorName: null },
+        });
+    } catch (error) {
+        if (error instanceof AuditHistoryError) {
+            if (error.code === "AUDIT_HISTORY_DUPLICATE_ACTIVE_RUN") {
+                return {
+                    ok: false,
+                    code: "duplicate",
+                    message: error.message,
+                };
+            }
+            return {
+                ok: false,
+                code: "database",
+                message: error.message,
+            };
+        }
+        throw error;
+    }
 
     await updateAuditRunStatus(auditRun.id, "crawling", { startedAt: new Date() });
     await updateAuditRunStage(auditRun.id, "crawl", "running", "crawling");

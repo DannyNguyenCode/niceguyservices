@@ -24,6 +24,7 @@ describe("Phase 5 — Crawl and screenshot integration", () => {
     it("documents playwright verification commands", () => {
         assertFileExists("playwright.config.ts");
         assertFileExists("scripts/check-playwright.mjs");
+        assertFileExists("scripts/install-playwright.mjs");
         assertFileExists("tests/playwright/setup.spec.ts");
     });
 });
