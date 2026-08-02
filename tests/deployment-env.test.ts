@@ -116,7 +116,7 @@ describe("deployment environment validation", () => {
         assert.throws(() => getAppEnv(), /Preview deployments must not use production MongoDB/);
     });
 
-    it("disables expensive audit providers in preview by default", async () => {
+    it("enables crawl and screenshots in preview while keeping paid providers opt-in", async () => {
         Object.assign(process.env, {
             NODE_ENV: "production",
             DEPLOYMENT_ENV: "preview",
@@ -128,8 +128,10 @@ describe("deployment environment validation", () => {
         const { getAppEnv, getAuditOperationFlags } = await import("@/src/config/app-env");
         getAppEnv();
         const flags = getAuditOperationFlags();
+        assert.equal(flags.crawlEnabled, true);
+        assert.equal(flags.screenshotEnabled, true);
+        assert.equal(flags.cloudinaryUploadsEnabled, true);
         assert.equal(flags.pageSpeedEnabled, false);
         assert.equal(flags.aiGenerationEnabled, false);
-        assert.equal(flags.crawlEnabled, false);
     });
 });

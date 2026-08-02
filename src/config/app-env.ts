@@ -139,11 +139,11 @@ function defaultAuditFlagsForEnvironment(
 
     if (deploymentEnvironment === "preview") {
         return {
-            auditCrawlEnabled: false,
-            auditScreenshotEnabled: false,
+            auditCrawlEnabled: true,
+            auditScreenshotEnabled: true,
             auditPageSpeedEnabled: false,
             auditAiEnabled: false,
-            auditCloudinaryEnabled: false,
+            auditCloudinaryEnabled: true,
             auditEmailEnabled: false,
             auditSyncExecution: false,
         };
