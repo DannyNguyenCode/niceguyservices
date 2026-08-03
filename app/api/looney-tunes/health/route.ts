@@ -1,12 +1,13 @@
-import { isMongoDbConfigured, pingTemplateDb } from "@/lib/templates/db";
+import { getTemplateDatabaseName, isMongoDbConfigured, pingTemplateDb } from "@/lib/templates/db";
 import { DATABASE_UNAVAILABLE_CODE, isDatabaseConnectionError } from "@/lib/templates/db/errors";
 import { jsonOk } from "../_lib/http";
 
 /** GET /api/looney-tunes/health */
 export async function GET() {
+  const database = getTemplateDatabaseName();
   const configured = isMongoDbConfigured();
   if (!configured) {
-    return jsonOk({ ok: false, configured: false, database: "template_database" });
+    return jsonOk({ ok: false, configured: false, database });
   }
 
   try {
@@ -14,7 +15,7 @@ export async function GET() {
     return jsonOk({
       ok: connected,
       configured: true,
-      database: "template_database",
+      database,
       collection: "looney_tunes",
       ...(connected ? {} : { code: DATABASE_UNAVAILABLE_CODE, error: "Cannot connect to database." }),
     });
@@ -22,7 +23,7 @@ export async function GET() {
     return jsonOk({
       ok: false,
       configured: true,
-      database: "template_database",
+      database,
       collection: "looney_tunes",
       code: DATABASE_UNAVAILABLE_CODE,
       error: isDatabaseConnectionError(error)

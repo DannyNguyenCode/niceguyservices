@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { resolveAuditDatabaseName } from "@/src/config/mongodb-databases";
 import { assertProductionApplicationUrl } from "@/src/lib/application-url";
 import { resolveAuthSecretForRuntime } from "@/src/lib/auth/auth-requirements";
 
@@ -175,7 +176,7 @@ function parseAppEnv(): AppEnv {
             process.env.VERCEL_GIT_COMMIT_SHA?.trim() ||
             process.env.npm_package_version?.trim(),
         mongodbUri: readSecret(process.env.MONGODB_URI),
-        mongodbDbName: process.env.MONGODB_DB_NAME?.trim(),
+        mongodbDbName: resolveAuditDatabaseName(),
         authSecret: resolveAuthSecretForRuntime(),
         authUrl: process.env.AUTH_URL,
         cloudinaryCloudName: readSecret(process.env.CLOUDINARY_CLOUD_NAME),

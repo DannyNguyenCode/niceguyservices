@@ -14,7 +14,14 @@
  * ```
  */
 
-export { getMongoDbConfig, isMongoDbConfigured, requireMongoDbConfig, type MongoDbConfig } from "./env";
+export {
+  DEFAULT_TEMPLATE_DATABASE_NAME,
+  getMongoDbConfig,
+  getTemplateDatabaseName,
+  isMongoDbConfigured,
+  requireMongoDbConfig,
+  type MongoDbConfig,
+} from "./env";
 export { getMongoClient, getTemplateDb, pingTemplateDb } from "./mongodb";
 export { getTemplateCollection, TEMPLATE_DB_COLLECTIONS, type TemplateDbCollection } from "./collections";
 export { isTemplateDatabaseAvailable } from "./availability";

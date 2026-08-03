@@ -4,7 +4,7 @@ function collectionName(envKey: string, fallback: string): string {
     return process.env[envKey]?.trim() || fallback;
 }
 
-/** MongoDB collection names for the Website Audit feature (see `MONGODB_DB_NAME`). */
+/** MongoDB collection names for the Website Audit feature (see `MONGODB_DB_NAME` / `MONGODB_AUDIT_DB_NAME`). */
 export const MONGODB_COLLECTIONS = {
     website: collectionName("MONGODB_COLLECTION_WEBSITE", "website_collection"),
     crawlData: collectionName("MONGODB_COLLECTION_CRAWL_DATA", "crawl_data"),

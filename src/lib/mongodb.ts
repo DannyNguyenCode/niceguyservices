@@ -1,6 +1,7 @@
 import "server-only";
 
 import mongoose from "mongoose";
+import { resolveAuditDatabaseName } from "@/src/config/mongodb-databases";
 import { logError, logInfo } from "@/src/lib/safe-log";
 
 declare global {
@@ -40,7 +41,7 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
     }
 
     const uri = requireMongoUri();
-    const dbName = process.env.MONGODB_DB_NAME?.trim() || undefined;
+    const dbName = resolveAuditDatabaseName();
 
     mongoose.set("bufferCommands", false);
 
@@ -48,7 +49,7 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
         .connect(uri, {
             bufferCommands: false,
             serverSelectionTimeoutMS: 10_000,
-            ...(dbName ? { dbName } : {}),
+            dbName,
         })
         .then((connection) => {
             logInfo("mongodb.connected", {
