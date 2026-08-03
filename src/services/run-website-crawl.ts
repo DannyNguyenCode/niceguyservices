@@ -21,6 +21,7 @@ import {
 } from "@/src/services/audit-jobs/stage-execution";
 import { executeWebsiteCrawlWork } from "@/src/services/audit-jobs/execute-crawl-work";
 import { recoverLegacyStageJobs } from "@/src/services/audit-jobs/audit-worker";
+import { recoverAbandonedQueuedCrawlForWebsite } from "@/src/services/audit-jobs/recover-abandoned-queued-crawl";
 
 export type RunWebsiteCrawlResult =
     | {
@@ -63,6 +64,7 @@ export async function runWebsiteCrawl(
     }
 
     await recoverLegacyStageJobs();
+    await recoverAbandonedQueuedCrawlForWebsite(websiteId);
     await recoverOrphanedActiveAuditRunForWebsite(websiteId);
 
     if (await hasActiveCrawlForWebsite(websiteId)) {

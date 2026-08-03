@@ -133,5 +133,6 @@ describe("deployment environment validation", () => {
         assert.equal(flags.cloudinaryUploadsEnabled, true);
         assert.equal(flags.pageSpeedEnabled, false);
         assert.equal(flags.aiGenerationEnabled, false);
+        assert.equal(flags.syncExecution, true);
     });
 });

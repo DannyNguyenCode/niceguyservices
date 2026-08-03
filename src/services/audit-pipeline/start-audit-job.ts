@@ -10,7 +10,9 @@ import {
 } from "@/src/data/audit-jobs";
 import { createAuditRun } from "@/src/services/audit-history/create-audit-run";
 import { AuditHistoryError } from "@/src/services/audit-history/create-audit-run";
+import { recoverAbandonedQueuedCrawlForWebsite } from "@/src/services/audit-jobs/recover-abandoned-queued-crawl";
 import { runAuditPreflight, AuditPreflightError } from "@/src/services/audit-pipeline/preflight";
+import { maybeRunAuditPipelineSynchronously } from "@/src/services/audit-pipeline/run-audit-pipeline-sync";
 import type { AuditConfigurationSnapshot, SerializableAuditJob } from "@/src/services/audit-pipeline/types";
 import { updateAuditRunStatus } from "@/src/data/audit-runs";
 
@@ -32,6 +34,21 @@ export type StartAuditJobResult = {
     statusUrl: string;
 };
 
+async function buildStartAuditJobResult(input: {
+    job: SerializableAuditJob;
+    websiteId: string;
+    reused: boolean;
+}): Promise<StartAuditJobResult> {
+    const job = await maybeRunAuditPipelineSynchronously(input.job);
+    return {
+        job,
+        auditRunId: job.auditRunId,
+        websiteId: input.websiteId,
+        reused: input.reused,
+        statusUrl: `/api/admin/audit-jobs/${job.id}`,
+    };
+}
+
 export async function startAuditJob(input: {
     websiteId: string;
     configuration?: Partial<AuditConfigurationSnapshot>;
@@ -47,6 +64,8 @@ export async function startAuditJob(input: {
         throw new StartAuditJobError("AUDIT_WEBSITE_NOT_FOUND", "Website not found.");
     }
 
+    await recoverAbandonedQueuedCrawlForWebsite(input.websiteId);
+
     const configuration = normalizeAuditConfiguration(input.configuration);
     const idempotencyKey = buildAuditJobIdempotencyKey({
         websiteId: input.websiteId,
@@ -55,24 +74,20 @@ export async function startAuditJob(input: {
 
     const existingJob = await getAuditJobByIdempotencyKey(idempotencyKey);
     if (existingJob) {
-        return {
+        return buildStartAuditJobResult({
             job: existingJob,
-            auditRunId: existingJob.auditRunId,
             websiteId: input.websiteId,
             reused: true,
-            statusUrl: `/api/admin/audit-jobs/${existingJob.id}`,
-        };
+        });
     }
 
     const activeJob = await getActiveAuditJobForWebsite(input.websiteId);
     if (activeJob) {
-        return {
+        return buildStartAuditJobResult({
             job: activeJob,
-            auditRunId: activeJob.auditRunId,
             websiteId: input.websiteId,
             reused: true,
-            statusUrl: `/api/admin/audit-jobs/${activeJob.id}`,
-        };
+        });
     }
 
     if (!input.skipPreflight) {
@@ -113,11 +128,9 @@ export async function startAuditJob(input: {
         configuration,
     });
 
-    return {
+    return buildStartAuditJobResult({
         job,
-        auditRunId: auditRun.id,
         websiteId: input.websiteId,
         reused: !created,
-        statusUrl: `/api/admin/audit-jobs/${job.id}`,
-    };
+    });
 }
