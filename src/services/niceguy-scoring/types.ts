@@ -1,6 +1,12 @@
 import type { NiceGuyCategoryKey } from "@/src/config/niceguy-scoring";
 
-export type CheckStatus = "passed" | "failed" | "partial" | "unavailable";
+export type CheckStatus =
+    | "passed"
+    | "failed"
+    | "partial"
+    | "unavailable"
+    | "not_detected"
+    | "not_applicable";
 
 export type CheckPriority = "high" | "medium" | "low";
 
@@ -51,6 +57,11 @@ export type CategoryScore = {
     strengths: string[];
     issues: string[];
     recommendations: CategoryRecommendation[];
+    evidenceCoverage?: number;
+    qualityScore?: number;
+    configuredWeight?: number;
+    effectiveWeight?: number;
+    limitations?: string[];
 };
 
 export type NiceGuyCategories = Record<NiceGuyCategoryKey, CategoryScore>;
@@ -161,4 +172,26 @@ export type NiceGuyScoreResult = {
     overallScore: number;
     categories: NiceGuyCategories;
     summary: NiceGuySummary;
+    completeness?: {
+        isComplete: boolean;
+        label: string;
+        provisionalScore: number;
+        blockers: string[];
+        overallEvidenceCoverage: number;
+    };
+    methodology?: {
+        scoringVersion: string;
+        rubricVersion: string;
+        applicabilityVersion: string;
+        disclaimer: string;
+        businessType: {
+            detected: string;
+            confidence: string;
+            evidence: string[];
+            applied: string;
+        };
+        deterministicCheckCount: number;
+        aiAssistedCheckCount: number;
+        limitations: string[];
+    };
 };

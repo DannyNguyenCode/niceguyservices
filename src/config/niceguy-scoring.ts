@@ -1,26 +1,16 @@
-export const NICEGUY_SCORING_VERSION = "niceguy-v1";
+import {
+    NICEGUY_SCORING_VERSION_V2,
+    CATEGORY_LABELS_V2,
+    CATEGORY_WEIGHTS_V2,
+} from "@/src/config/niceguy-scoring-v2";
+export const NICEGUY_SCORING_VERSION_V1 = "niceguy-v1";
+export const NICEGUY_SCORING_VERSION = NICEGUY_SCORING_VERSION_V2;
 
-export const CATEGORY_WEIGHTS = {
-    businessClarity: 0.15,
-    trustCredibility: 0.15,
-    conversionReadiness: 0.2,
-    userExperience: 0.15,
-    brandingConsistency: 0.1,
-    contentQuality: 0.1,
-    technicalFoundation: 0.15,
-} as const;
+export const CATEGORY_WEIGHTS = CATEGORY_WEIGHTS_V2;
 
 export type NiceGuyCategoryKey = keyof typeof CATEGORY_WEIGHTS;
 
-export const CATEGORY_LABELS: Record<NiceGuyCategoryKey, string> = {
-    businessClarity: "Business Clarity",
-    trustCredibility: "Trust and Credibility",
-    conversionReadiness: "Conversion Readiness",
-    userExperience: "User Experience",
-    brandingConsistency: "Branding and Visual Consistency",
-    contentQuality: "Content Quality",
-    technicalFoundation: "Technical Foundation",
-};
+export const CATEGORY_LABELS: Record<NiceGuyCategoryKey, string> = CATEGORY_LABELS_V2;
 
 const weightTotal = Object.values(CATEGORY_WEIGHTS).reduce((sum, w) => sum + w, 0);
 if (Math.abs(weightTotal - 1) > 0.0001) {

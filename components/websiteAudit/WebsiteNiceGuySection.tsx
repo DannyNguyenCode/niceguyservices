@@ -96,13 +96,13 @@ function CategoryCard({
           <p className="text-sm font-medium text-base-content">
             {formatCategoryLabel(categoryKey)}
           </p>
-          <p className="mt-1 text-sm text-base-content/70">
-            {formatScoreWithPresentation(category.score)}
-          </p>
-        </div>
-        <p className="text-sm text-base-content/70">
-          Confidence: {category.confidence}%
+        <p className="mt-1 text-sm text-base-content/70">
+          {formatScoreWithPresentation(category.qualityScore ?? category.score)}
         </p>
+      </div>
+      <p className="text-sm text-base-content/70">
+        Evidence coverage: {category.evidenceCoverage ?? category.confidence}%
+      </p>
       </div>
 
       <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -212,6 +212,9 @@ export default function WebsiteNiceGuySection({
                 Scoring version: {latestMetric.scoringVersion}
               </p>
             ) : null}
+            {latestMetric?.completeness ? (
+              <p className="text-sm text-base-content/70">{latestMetric.completeness.label}</p>
+            ) : null}
             {niceGuyStatus === "failed" ? (
               <p className="text-sm text-error">
                 Nice Guy scoring failed. You can rerun the analysis after resolving prerequisites.
@@ -262,9 +265,21 @@ export default function WebsiteNiceGuySection({
                 </div>
               </div>
               <p className="mt-4 text-sm text-base-content/70">
-                Confidence varies by category when crawl or PageSpeed evidence is missing.
-                Unavailable checks explain lower confidence without automatically reducing scores.
+                Evidence coverage varies by category when crawl, PageSpeed, or screenshot evidence is
+                missing. Unavailable checks reduce coverage without automatically failing the site.
               </p>
+              {latestMetric.methodology?.disclaimer ? (
+                <p className="mt-4 text-sm text-base-content/70">{latestMetric.methodology.disclaimer}</p>
+              ) : null}
+              {latestMetric.completeness?.blockers?.length ? (
+                <ul className="mt-3 flex flex-col gap-1">
+                  {latestMetric.completeness.blockers.map((blocker) => (
+                    <li key={blocker} className="text-sm text-base-content/70">
+                      {blocker}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

@@ -50,6 +50,8 @@ const NiceGuyMetricSchema = new Schema(
             technicalFoundation: { type: CategoryScoreSchema, default: emptyCategoryScore },
         },
         summary: { type: NiceGuySummarySchema, default: () => ({}) },
+        completeness: { type: Schema.Types.Mixed, default: null },
+        methodology: { type: Schema.Types.Mixed, default: null },
         generatedAt: { type: Date, default: null },
         durationMs: { type: Number, default: null, min: 0 },
         errorCode: { type: String, default: "" },

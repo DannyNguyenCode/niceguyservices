@@ -15,6 +15,8 @@ export type SerializableNiceGuyMetric = {
     overallScore: number;
     categories: NiceGuyScoreResult["categories"];
     summary: NiceGuyScoreResult["summary"];
+    completeness?: NiceGuyScoreResult["completeness"];
+    methodology?: NiceGuyScoreResult["methodology"];
     generatedAt: string | null;
     durationMs: number | null;
     errorCode: string | null;
@@ -47,6 +49,8 @@ function toSerializable(doc: Record<string, unknown>): SerializableNiceGuyMetric
             checksFailed: 0,
             checksUnavailable: 0,
         },
+        completeness: doc.completeness as SerializableNiceGuyMetric["completeness"],
+        methodology: doc.methodology as SerializableNiceGuyMetric["methodology"],
         generatedAt: doc.generatedAt ? new Date(doc.generatedAt as Date).toISOString() : null,
         durationMs: doc.durationMs != null ? Number(doc.durationMs) : null,
         errorCode: doc.errorCode ? String(doc.errorCode) : null,
@@ -195,6 +199,8 @@ export async function completeNiceGuyMetricRecord(
                 overallScore: payload.overallScore,
                 categories: payload.categories,
                 summary: payload.summary,
+                completeness: payload.completeness ?? null,
+                methodology: payload.methodology ?? null,
                 durationMs: payload.durationMs,
                 errorCode: "",
                 errorMessage: "",

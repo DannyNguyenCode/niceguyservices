@@ -263,19 +263,21 @@ Prerequisite: completed crawl with reachable homepage. Rate limits apply via Pha
 
 **Status:** Complete
 
+**Public methodology:** [`NICE_GUY_METRICS.md`](./NICE_GUY_METRICS.md) — client-facing guide to categories, weights, evidence, limitations, and what scores do not guarantee.
+
 ### How it works
 
-Nice Guy scoring runs **without any AI provider**. `runNiceGuyAnalysis` reads saved crawl data and PageSpeed results, then applies transparent TypeScript rules (`niceguy-v1`) across seven weighted categories:
+Nice Guy scoring runs **without any AI provider**. `runNiceGuyAnalysis` reads saved crawl data and PageSpeed results, then applies transparent TypeScript rules (`niceguy-v2`) across seven weighted categories:
 
 1. Business Clarity (15%)
-2. Trust & Credibility (15%)
+2. Trust and Credibility Signals (10%)
 3. Conversion Readiness (20%)
-4. User Experience (15%)
-5. Branding & Visual Consistency (10%)
-6. Content Quality (10%)
+4. Usability and Accessibility (20%)
+5. Brand and Visual Consistency (10%)
+6. Content Completeness and Usefulness (10%)
 7. Technical Foundation (15%)
 
-Each category produces checks with evidence, points, confidence, and recommendations. Scores are 0–100. Missing PageSpeed values are treated as unavailable — never coerced to zero. Each run creates a new `niceguy_metrics` record linked to `auditRunId`.
+Each category produces checks with evidence, points, coverage, and recommendations. Scores are 0–100. Missing PageSpeed or screenshot evidence is treated as unavailable — never coerced to zero or passed. Each run creates a new `niceguy_metrics` record linked to `auditRunId`. Historical `niceguy-v1` results remain readable.
 
 ### Key paths
 

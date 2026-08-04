@@ -20,6 +20,8 @@ export function formatCheckStatusLabel(status: CheckStatus): string {
         partial: "Partial",
         failed: "Failed",
         unavailable: "Unavailable",
+        not_detected: "Not detected",
+        not_applicable: "Not applicable",
     };
     return labels[status];
 }

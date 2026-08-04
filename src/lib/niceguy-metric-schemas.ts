@@ -37,7 +37,14 @@ export const MetricCheckSchema = new Schema<MetricCheck>(
         description: { type: String, required: true },
         status: {
             type: String,
-            enum: ["passed", "failed", "partial", "unavailable"],
+            enum: [
+                "passed",
+                "failed",
+                "partial",
+                "unavailable",
+                "not_detected",
+                "not_applicable",
+            ],
             required: true,
         },
         weight: { type: Number, required: true, min: 0 },
@@ -78,6 +85,11 @@ export const CategoryScoreSchema = new Schema<CategoryScore>(
         strengths: { type: [String], default: [] },
         issues: { type: [String], default: [] },
         recommendations: { type: [CategoryRecommendationSchema], default: [] },
+        evidenceCoverage: { type: Number, min: 0, max: 100 },
+        qualityScore: { type: Number, min: 0, max: 100 },
+        configuredWeight: { type: Number, min: 0, max: 1 },
+        effectiveWeight: { type: Number, min: 0, max: 1 },
+        limitations: { type: [String], default: [] },
     },
     { _id: false },
 );

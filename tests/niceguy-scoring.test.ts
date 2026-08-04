@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { CATEGORY_WEIGHTS } from "@/src/config/niceguy-scoring";
 import { calculateNiceGuyScore } from "@/src/services/niceguy-scoring/calculate-niceguy-score";
+import { calculateNiceGuyScoreV1 } from "@/src/services/niceguy-scoring/calculate-niceguy-score-v1";
 import { scoreBusinessClarity } from "@/src/services/niceguy-scoring/business-clarity";
 import {
     clampScore,
@@ -300,6 +301,11 @@ describe("calculateNiceGuyScore", () => {
         const result = calculateNiceGuyScore(baseInput());
         assert.equal(Object.keys(result.categories).length, 7);
         assert.ok(result.overallScore >= 0 && result.overallScore <= 100);
+        assert.equal(result.scoringVersion, "niceguy-v2");
+    });
+
+    it("preserves v1 scoring when explicitly requested", () => {
+        const result = calculateNiceGuyScoreV1(baseInput());
         assert.equal(result.scoringVersion, "niceguy-v1");
     });
 
