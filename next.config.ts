@@ -8,13 +8,29 @@ const chromiumTraceIncludes = [
   "./node_modules/playwright-core/**",
 ];
 
+/** Playwright resolves browsers.json via dynamic require; NFT misses it without an explicit include. */
+const playwrightCoreMinimalTraceIncludes = [
+  "./node_modules/playwright-core/browsers.json",
+  "./node_modules/playwright-core/package.json",
+];
+
+const playwrightServerRoutes = {
+  "/dashboard/websites/[id]": chromiumTraceIncludes,
+  "/dashboard/websites/new": chromiumTraceIncludes,
+  "/api/admin/websites/[id]/crawl": chromiumTraceIncludes,
+  "/api/admin/websites/[id]/audits": chromiumTraceIncludes,
+  "/api/admin/reports/[reportId]/pdf": chromiumTraceIncludes,
+} as const;
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   serverExternalPackages: ["playwright-core", "@sparticuz/chromium"],
   outputFileTracingIncludes: {
-    "/*": ["./src/services/crawl-browser-extract.js"],
-    "/api/admin/websites/[id]/crawl": chromiumTraceIncludes,
-    "/api/admin/reports/[reportId]/pdf": chromiumTraceIncludes,
+    "/*": [
+      "./src/services/crawl-browser-extract.js",
+      ...playwrightCoreMinimalTraceIncludes,
+    ],
+    ...playwrightServerRoutes,
   },
   turbopack: {
     resolveAlias: {
