@@ -9,7 +9,6 @@ const BLOCKED_RESOURCE_TYPES = new Set([
     "websocket",
     "eventsource",
     "media",
-    "font",
     "manifest",
     "other",
 ]);
