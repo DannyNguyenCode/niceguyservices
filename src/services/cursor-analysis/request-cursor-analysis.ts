@@ -27,7 +27,6 @@ import {
     isPublicUrlReachableForCursor,
 } from "@/src/services/cursor-analysis/config";
 import {
-    CURSOR_ANALYSIS_PROVIDER,
     PACKAGE_ACCESS_STATUSES,
 } from "@/src/services/cursor-analysis/constants";
 import { logAnalysisError, logAnalysisEvent } from "@/src/services/cursor-analysis/logging";
@@ -366,6 +365,16 @@ export async function handleCursorAnalysisCallback(input: {
     }
 
     if (tokenMatch.kind === "duplicate") {
+        // Idempotent reconciliation: ensure AuditRun AI completion + finalization resume.
+        if (analysis?.result) {
+            const { resumeAuditAfterCursorCallback } = await import(
+                "@/src/services/audit-pipeline/resume-audit-after-cursor"
+            );
+            await resumeAuditAfterCursorCallback({
+                auditRunId: input.auditRunId,
+                result: analysis.result as CursorAuditResult,
+            });
+        }
         return { ok: true, status: "duplicate" };
     }
 
@@ -490,6 +499,14 @@ export async function handleCursorAnalysisCallback(input: {
             analysisRequestId: analysis.analysisRequestId,
             assessmentPriority: sanitized.assessment.priority,
         },
+    });
+
+    const { resumeAuditAfterCursorCallback } = await import(
+        "@/src/services/audit-pipeline/resume-audit-after-cursor"
+    );
+    await resumeAuditAfterCursorCallback({
+        auditRunId: input.auditRunId,
+        result: sanitized,
     });
 
     return { ok: true, status: "completed" };

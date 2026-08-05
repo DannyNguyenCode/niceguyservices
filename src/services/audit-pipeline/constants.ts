@@ -18,7 +18,11 @@ export const AUDIT_PIPELINE_STAGES = [
 
 export type AuditPipelineStageName = (typeof AUDIT_PIPELINE_STAGES)[number];
 
-export const ACTIVE_AUDIT_JOB_STATUSES = ["queued", "processing"] as const;
+export const ACTIVE_AUDIT_JOB_STATUSES = [
+    "queued",
+    "processing",
+    "waiting_for_external",
+] as const;
 export const TERMINAL_AUDIT_JOB_STATUSES = [
     "completed",
     "completed_with_warnings",
@@ -26,10 +30,14 @@ export const TERMINAL_AUDIT_JOB_STATUSES = [
     "cancelled",
 ] as const;
 
+/** Jobs that are actively executing work and must keep a healthy heartbeat. */
+export const HEARTBEAT_REQUIRED_AUDIT_JOB_STATUSES = ["processing"] as const;
+
 export const AUDIT_STAGE_STATUSES = [
     "pending",
     "queued",
     "processing",
+    "waiting_for_external",
     "completed",
     "completed_with_warnings",
     "failed",

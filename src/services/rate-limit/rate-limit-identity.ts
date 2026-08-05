@@ -21,12 +21,16 @@ function normalizeIpAddress(value: string): string | null {
 }
 
 export function getClientIp(request: Request): string | null {
-    const trustProxy = process.env.RATE_LIMIT_TRUST_PROXY_HEADERS === "true";
+    const trustProxy =
+        process.env.RATE_LIMIT_TRUST_PROXY_HEADERS === "true" ||
+        process.env.VERCEL === "1" ||
+        Boolean(process.env.VERCEL_ENV?.trim());
     if (!trustProxy) {
         return null;
     }
 
     const candidates = [
+        request.headers.get("x-vercel-forwarded-for"),
         request.headers.get("cf-connecting-ip"),
         request.headers.get("x-real-ip"),
         request.headers.get("x-forwarded-for"),

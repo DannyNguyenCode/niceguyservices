@@ -105,4 +105,16 @@ describe("audit pipeline state machine", () => {
         ]);
         assert.equal(status, "completed_with_warnings");
     });
+
+    it("supports waiting_for_external without premature completion", () => {
+        assert.doesNotThrow(() => assertStageTransition("processing", "waiting_for_external"));
+        assert.doesNotThrow(() => assertStageTransition("waiting_for_external", "completed"));
+        assert.doesNotThrow(() => assertJobTransition("processing", "waiting_for_external"));
+        assert.doesNotThrow(() => assertJobTransition("waiting_for_external", "processing"));
+        const status = deriveJobStatusFromStages([
+            { required: true, status: "completed" },
+            { required: false, status: "waiting_for_external" },
+        ]);
+        assert.equal(status, "waiting_for_external");
+    });
 });

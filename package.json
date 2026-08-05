@@ -36,7 +36,7 @@
     "test:rate-limit": "npx tsx --test tests/rate-limit.test.ts",
     "test:deployment": "npx tsx --test tests/deployment-env.test.ts",
     "test:dev-setup": "npx tsx --test tests/dev-setup.test.ts",
-    "test:phases": "npx tsx --test tests/phases/phase-*.test.ts",
+    "test:phases": "npx tsx --import ./scripts/preload-cli.ts --test tests/phases/phase-*.test.ts",
     "test:phase:01": "npx tsx --test tests/phases/phase-01-foundation.test.ts",
     "test:phase:02": "npx tsx --test tests/phases/phase-02-website-crud.test.ts",
     "test:phase:03": "npx tsx --test tests/phases/phase-03-crawling.test.ts",
@@ -99,6 +99,7 @@
     "eslint-config-next": "16.0.3",
     "playwright": "1.61.0",
     "tailwindcss": "^4",
+    "tsx": "4.20.5",
     "typescript": "^5"
   }
 }

@@ -41,6 +41,7 @@ export const rateLimitPolicyIdSchema = z.enum([
     "public-report-view",
     "public-demo-view",
     "public-pdf-download",
+    "public-audit-submit",
     "administrator-note-create",
     "audit-compare",
 ]);

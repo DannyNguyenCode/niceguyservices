@@ -3,6 +3,7 @@
   "$id": "https://niceguywebdesign.com/schemas/audit-result-1.1.json",
   "title": "Nice Guy Audit Analysis Result",
   "type": "object",
+  "additionalProperties": false,
   "required": [
     "schemaVersion",
     "auditId",
@@ -16,29 +17,67 @@
   ],
   "properties": {
     "schemaVersion": { "const": "1.1" },
-    "auditId": { "type": "string" },
-    "analysisRequestId": { "type": "string" },
+    "auditId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "analysisRequestId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
     "assessment": {
       "type": "object",
+      "additionalProperties": false,
       "required": ["priority", "confidence", "summary"],
       "properties": {
         "priority": { "enum": ["critical", "high", "moderate", "low"] },
         "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
-        "summary": { "type": "string", "maxLength": 2000 }
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        }
       }
     },
-    "executiveSummary": { "type": "string", "maxLength": 8000 },
+    "executiveSummary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 8000
+    },
     "strengths": {
       "type": "array",
       "maxItems": 10,
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "required": ["title", "description", "sources"],
         "properties": {
-          "title": { "type": "string", "maxLength": 300 },
-          "description": { "type": "string", "maxLength": 4000 },
-          "category": { "type": "string" },
-          "sources": { "type": "array", "maxItems": 5, "items": { "type": "string" } }
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "category": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "sources": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          }
         }
       }
     },
@@ -47,23 +86,57 @@
       "maxItems": 20,
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "required": ["title", "description", "severity", "category", "recommendation", "sources"],
         "properties": {
-          "title": { "type": "string", "maxLength": 300 },
-          "description": { "type": "string", "maxLength": 4000 },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
           "severity": { "enum": ["critical", "high", "medium", "low"] },
-          "category": { "type": "string", "maxLength": 100 },
-          "recommendation": { "type": "string", "maxLength": 4000 },
-          "sources": { "type": "array", "maxItems": 5, "items": { "type": "string" } }
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "recommendation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "sources": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          }
         }
       }
     },
     "limitations": {
       "type": "array",
       "maxItems": 10,
-      "items": { "type": "string", "maxLength": 1000 }
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1000
+      }
     },
-    "analyzedAt": { "type": "string", "format": "date-time" },
+    "analyzedAt": {
+      "type": "string",
+      "format": "date-time",
+      "minLength": 1
+    },
     "deprecatedAiOverallScore": {
       "type": "number",
       "minimum": 0,

@@ -15,6 +15,7 @@ import {
     updateWebsiteSchema,
 } from "@/src/lib/website-validation";
 import { StartAuditJobError, startAuditJob } from "@/src/services/audit-pipeline/start-audit-job";
+import { requireAdministratorSession } from "@/src/services/auth/administrator-session";
 
 export type WebsiteActionState = {
     ok: boolean;
@@ -66,7 +67,7 @@ export async function createWebsiteAction(
     _prevState: WebsiteActionState,
     formData: FormData,
 ): Promise<WebsiteActionState> {
-    // TODO: Require admin authentication before allowing website mutations.
+    await requireAdministratorSession("/dashboard/websites/new");
     const parsed = createWebsiteSchema.safeParse(formDataToObject(formData));
 
     if (!parsed.success) {
@@ -118,7 +119,7 @@ export async function updateWebsiteAction(
     _prevState: WebsiteActionState,
     formData: FormData,
 ): Promise<WebsiteActionState> {
-    // TODO: Require admin authentication before allowing website mutations.
+    await requireAdministratorSession(`/dashboard/websites/${id}/edit`);
     const parsed = updateWebsiteSchema.safeParse(formDataToObject(formData));
 
     if (!parsed.success) {
@@ -142,7 +143,7 @@ export async function updateWebsiteAction(
 }
 
 export async function deleteWebsiteAction(id: string): Promise<WebsiteActionState> {
-    // TODO: Require admin authentication before allowing website mutations.
+    await requireAdministratorSession(`/dashboard/websites/${id}`);
     try {
         await deleteWebsite(id);
         revalidatePath("/dashboard");

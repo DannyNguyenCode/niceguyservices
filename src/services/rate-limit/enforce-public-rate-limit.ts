@@ -2,6 +2,7 @@ import "server-only";
 
 import {
     getClientIp,
+    getClientIpFromHeaders,
     getHashedIpRateLimitKey,
     getPublicTokenIdentityFromRawToken,
 } from "@/src/services/rate-limit/rate-limit-identity";
@@ -57,5 +58,17 @@ export async function enforcePublicPdfDownloadRateLimit(input: {
             ip ? getHashedIpRateLimitKey(ip) : "ip:unknown",
             `resource:${input.resourceKey.slice(0, 16)}`,
         ],
+    });
+}
+
+/**
+ * Rate-limits public audit intake before MongoDB writes.
+ * Defaults: 5 submissions / IP / hour (PUBLIC_AUDIT_SUBMIT_LIMIT / WINDOW_SECONDS).
+ */
+export async function enforcePublicAuditSubmitRateLimit(): Promise<void> {
+    const ip = await getClientIpFromHeaders();
+    await requireRateLimit({
+        policyId: "public-audit-submit",
+        identifiers: [ip ? getHashedIpRateLimitKey(ip) : "ip:unknown"],
     });
 }

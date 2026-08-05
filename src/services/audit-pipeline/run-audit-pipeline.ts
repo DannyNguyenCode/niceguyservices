@@ -4,18 +4,25 @@ import {
     completeAuditJob,
     getAuditJobById,
     markAuditJobProcessing,
+    parkAuditJobWaitingForExternal,
     toExecutionContext,
     touchAuditJobHeartbeat,
     updateAuditJobProgress,
     updateAuditJobStage,
 } from "@/src/data/audit-jobs";
-import { deriveJobStatusFromStages, isTerminalJobStatus } from "@/src/services/audit-pipeline/state";
+import {
+    deriveJobStatusFromStages,
+    isTerminalJobStatus,
+    isWaitingJobStatus,
+} from "@/src/services/audit-pipeline/state";
 import { updateAuditRunStatus } from "@/src/data/audit-runs";
 import { createActivityEvent } from "@/src/services/activity/create-activity-event";
 import { runAuditStage } from "@/src/services/audit-pipeline/run-audit-stage";
+import { withAuditJobHeartbeat } from "@/src/services/audit-pipeline/job-heartbeat";
 import {
     computePipelineProgress,
     getNextPipelineStage,
+    hasWaitingPipelineStage,
     isStageRequired,
     markSkippedStages,
     resolveEnabledPipelineStages,
@@ -42,6 +49,11 @@ export async function runAuditPipeline(jobId: string): Promise<SerializableAudit
         return job;
     }
 
+    // Waiting jobs are resumed explicitly after Cursor callback — do not re-enter here.
+    if (isWaitingJobStatus(job.status)) {
+        return job;
+    }
+
     await initializeSkippedStages(job);
     job = (await getAuditJobById(jobId)) ?? job;
     await markAuditJobProcessing(jobId);
@@ -56,6 +68,10 @@ export async function runAuditPipeline(jobId: string): Promise<SerializableAudit
         job = (await getAuditJobById(jobId)) ?? job;
         if (!job || job.status === "cancelled") {
             return job;
+        }
+
+        if (hasWaitingPipelineStage(job.stages)) {
+            break;
         }
 
         const nextStage = getNextPipelineStage({
@@ -84,7 +100,9 @@ export async function runAuditPipeline(jobId: string): Promise<SerializableAudit
             });
         }
 
-        const result = await runAuditStage(nextStage, context);
+        const result = await withAuditJobHeartbeat(jobId, () =>
+            runAuditStage(nextStage, context),
+        );
         await updateAuditJobStage({
             jobId,
             stage: nextStage,
@@ -100,6 +118,23 @@ export async function runAuditPipeline(jobId: string): Promise<SerializableAudit
             progressPercent: progress,
             currentStage: nextStage,
         });
+
+        if (result.status === "waiting_for_external") {
+            const parked = await parkAuditJobWaitingForExternal(jobId);
+            await updateAuditRunStatus(job.auditRunId, "generating-ai-analysis");
+            await syncWebsiteAuditSummary(job.websiteId);
+            await createActivityEvent({
+                websiteId: job.websiteId,
+                auditRunId: job.auditRunId,
+                eventType: "ai-analysis-started",
+                title: "Waiting for Cursor analysis",
+                description:
+                    "Deterministic audit stages finished. Audit is waiting for authenticated Cursor callback before finalization.",
+                actor: { type: "system" },
+                metadata: { jobId, stage: nextStage },
+            });
+            return parked;
+        }
 
         const required = isStageRequired(nextStage, job.configuration);
         if (required && result.status === "failed") {
@@ -128,13 +163,24 @@ export async function runAuditPipeline(jobId: string): Promise<SerializableAudit
     }
 
     job = (await getAuditJobById(jobId)) ?? job;
+    if (hasWaitingPipelineStage(job.stages) || isWaitingJobStatus(job.status)) {
+        return (await parkAuditJobWaitingForExternal(jobId)) ?? job;
+    }
+
     const enabledStages = resolveEnabledPipelineStages(job.configuration);
     const stageSummary = enabledStages.map((stage: AuditPipelineStageName) => ({
         required: isStageRequired(stage, job.configuration),
         status: job.stages[stage].status,
     }));
     const finalStatus = deriveJobStatusFromStages(stageSummary);
-    if (finalStatus === "queued" || finalStatus === "processing") {
+    if (
+        finalStatus === "queued" ||
+        finalStatus === "processing" ||
+        finalStatus === "waiting_for_external"
+    ) {
+        if (finalStatus === "waiting_for_external") {
+            return (await parkAuditJobWaitingForExternal(jobId)) ?? job;
+        }
         return job;
     }
 
@@ -149,7 +195,11 @@ export async function runAuditPipeline(jobId: string): Promise<SerializableAudit
 
     await updateAuditRunStatus(
         job.auditRunId,
-        finalStatus === "completed_with_warnings" ? "partial" : finalStatus === "completed" ? "complete" : "failed",
+        finalStatus === "completed_with_warnings"
+            ? "partial"
+            : finalStatus === "completed"
+              ? "complete"
+              : "failed",
     );
     await syncWebsiteAuditSummary(job.websiteId);
 

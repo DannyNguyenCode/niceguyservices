@@ -185,6 +185,18 @@ const BASE_POLICIES: Record<RateLimitPolicyId, RateLimitPolicy> = {
         failureMode: "closed",
         description: "Public PDF downloads per IP and resource key.",
     },
+    "public-audit-submit": {
+        id: "public-audit-submit",
+        algorithm: "sliding-window",
+        limit: Number.parseInt(process.env.PUBLIC_AUDIT_SUBMIT_LIMIT ?? "5", 10) || 5,
+        windowSeconds:
+            Number.parseInt(process.env.PUBLIC_AUDIT_SUBMIT_WINDOW_SECONDS ?? "3600", 10) ||
+            3600,
+        scope: "ip",
+        failureMode: "closed",
+        description:
+            "Public audit form submissions per IP (defaults: 5 per hour). Override with PUBLIC_AUDIT_SUBMIT_LIMIT / PUBLIC_AUDIT_SUBMIT_WINDOW_SECONDS.",
+    },
     "administrator-note-create": {
         id: "administrator-note-create",
         algorithm: "sliding-window",

@@ -370,8 +370,16 @@ export async function runAuditStage(
                 };
             }
 
+            await updateAuditRunStage(
+                context.auditRunId,
+                "ai",
+                "running",
+                "generating-ai-analysis",
+            );
+
             const result = await requestCursorAnalysisForAuditRun(context.auditRunId);
             if (!result.ok) {
+                await updateAuditRunStage(context.auditRunId, "ai", "failed");
                 return {
                     status: "completed_with_warnings",
                     errorCode: result.code,
@@ -380,10 +388,11 @@ export async function runAuditStage(
                 };
             }
 
+            // Successful webhook trigger means accepted/pending — not AI complete.
             return {
-                status: "completed_with_warnings",
-                errorMessage:
-                    "Cursor analysis triggered. Results will complete asynchronously via callback.",
+                status: "waiting_for_external",
+                errorCode: null,
+                errorMessage: "Cursor analysis accepted. Waiting for authenticated callback.",
             };
         }
         case "finalize": {

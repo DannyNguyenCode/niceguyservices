@@ -247,3 +247,31 @@ describe("production safeguards", () => {
         assert.equal(getRateLimitEnv().provider, "memory");
     });
 });
+
+describe("public audit submission rate limit", () => {
+    it("exposes a configurable IP policy with safe defaults", () => {
+        const policy = getRateLimitPolicy("public-audit-submit");
+        assert.equal(policy.scope, "ip");
+        assert.equal(policy.limit, 5);
+        assert.equal(policy.windowSeconds, 3600);
+        assert.equal(policy.failureMode, "closed");
+    });
+
+    it("enforces the public audit submit limit", async () => {
+        const identity = [getHashedIpRateLimitKey("203.0.113.10")];
+        for (let i = 0; i < 5; i += 1) {
+            await requireRateLimit({
+                policyId: "public-audit-submit",
+                identifiers: identity,
+            });
+        }
+        await assert.rejects(
+            () =>
+                requireRateLimit({
+                    policyId: "public-audit-submit",
+                    identifiers: identity,
+                }),
+            (error: unknown) => error instanceof RateLimitError,
+        );
+    });
+});

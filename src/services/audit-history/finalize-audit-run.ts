@@ -59,10 +59,8 @@ export async function finalizeAuditRun(input: {
     }
 
     if (["complete", "partial", "failed", "cancelled", "archived"].includes(auditRun.status)) {
-        throw new AuditFinalizationError(
-            "AUDIT_HISTORY_ALREADY_FINALIZED",
-            "Audit run is already finalized.",
-        );
+        // Idempotent: already finalized (e.g. duplicate callback resume).
+        return auditRun;
     }
 
     const summary = await buildAuditSummary(input.auditRunId);

@@ -1,8 +1,16 @@
 {
+  "crons": [
+    {
+      "path": "/api/internal/audit-worker",
+      "schedule": "* * * * *"
+    }
+  ],
   "functions": {
+    "app/api/internal/audit-worker/route.ts": {
+      "maxDuration": 300
+    },
     "app/api/admin/websites/[id]/crawl/route.ts": {
-      "maxDuration": 300,
-      "memory": 1024
+      "maxDuration": 300
     },
     "app/api/admin/websites/[id]/pagespeed/route.ts": {
       "maxDuration": 300
@@ -11,8 +19,7 @@
       "maxDuration": 120
     },
     "app/api/admin/reports/[reportId]/pdf/route.ts": {
-      "maxDuration": 120,
-      "memory": 1024
+      "maxDuration": 120
     },
     "app/api/admin/demo-projects/[demoProjectId]/generate/route.ts": {
       "maxDuration": 300

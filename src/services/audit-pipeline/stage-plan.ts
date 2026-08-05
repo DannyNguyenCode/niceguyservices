@@ -78,6 +78,12 @@ export function computePipelineProgress(
     return Math.round((completed / enabled.length) * 100);
 }
 
+export function hasWaitingPipelineStage(
+    stages: Record<AuditPipelineStageName, { status: string }>,
+): boolean {
+    return Object.values(stages).some((stage) => stage.status === "waiting_for_external");
+}
+
 export function getNextPipelineStage(input: {
     configuration: AuditConfigurationSnapshot;
     stages: Record<AuditPipelineStageName, { status: string }>;
@@ -85,6 +91,10 @@ export function getNextPipelineStage(input: {
     const enabled = resolveEnabledPipelineStages(input.configuration);
     for (const stage of enabled) {
         const status = input.stages[stage]?.status ?? "pending";
+        // Asynchronous external wait pauses the pipeline; do not re-select the waiting stage.
+        if (status === "waiting_for_external") {
+            return null;
+        }
         if (
             !["completed", "completed_with_warnings", "skipped", "failed"].includes(status)
         ) {

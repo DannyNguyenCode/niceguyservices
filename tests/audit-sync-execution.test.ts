@@ -33,6 +33,7 @@ describe("audit sync execution defaults", () => {
             NODE_ENV: "production",
             DEPLOYMENT_ENV: "production",
             APP_URL: "https://audit.example.com",
+            APP_PUBLIC_URL: "https://audit.example.com",
             MONGODB_URI: "mongodb+srv://user:pass@cluster.mongodb.net",
             MONGODB_DB_NAME: "niceguy_audit_production",
             AUTH_SECRET: "production-auth-secret",
@@ -41,8 +42,14 @@ describe("audit sync execution defaults", () => {
             CLOUDINARY_API_KEY: "key",
             CLOUDINARY_API_SECRET: "secret",
             GOOGLE_PAGESPEED_API_KEY: "pagespeed-key",
-            AI_API_KEY: "ai-key",
+            INTERNAL_WORKER_SECRET: "internal-worker-secret",
+            CURSOR_AUTOMATION_WEBHOOK_URL: "https://cursor.example.com/webhook",
+            CURSOR_AUTOMATION_AUTH_TOKEN: "cursor-webhook-token",
+            CURSOR_ANALYSIS_CALLBACK_SECRET: "callback-secret",
+            AUDIT_PACKAGE_SIGNING_SECRET: "package-signing-secret",
         });
+        delete process.env.AI_API_KEY;
+        delete process.env.AUDIT_SYNC_EXECUTION;
 
         const { getAuditOperationFlags } = await import("@/src/config/app-env");
         assert.equal(getAuditOperationFlags().syncExecution, false);
@@ -53,6 +60,7 @@ describe("audit sync execution defaults", () => {
             NODE_ENV: "production",
             DEPLOYMENT_ENV: "production",
             APP_URL: "https://audit.example.com",
+            APP_PUBLIC_URL: "https://audit.example.com",
             MONGODB_URI: "mongodb+srv://user:pass@cluster.mongodb.net",
             MONGODB_DB_NAME: "niceguy_audit_production",
             AUTH_SECRET: "production-auth-secret",
@@ -61,9 +69,14 @@ describe("audit sync execution defaults", () => {
             CLOUDINARY_API_KEY: "key",
             CLOUDINARY_API_SECRET: "secret",
             GOOGLE_PAGESPEED_API_KEY: "pagespeed-key",
-            AI_API_KEY: "ai-key",
+            INTERNAL_WORKER_SECRET: "internal-worker-secret",
+            CURSOR_AUTOMATION_WEBHOOK_URL: "https://cursor.example.com/webhook",
+            CURSOR_AUTOMATION_AUTH_TOKEN: "cursor-webhook-token",
+            CURSOR_ANALYSIS_CALLBACK_SECRET: "callback-secret",
+            AUDIT_PACKAGE_SIGNING_SECRET: "package-signing-secret",
             AUDIT_SYNC_EXECUTION: "true",
         });
+        delete process.env.AI_API_KEY;
 
         const { getAuditOperationFlags } = await import("@/src/config/app-env");
         assert.equal(getAuditOperationFlags().syncExecution, true);

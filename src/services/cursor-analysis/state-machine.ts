@@ -2,7 +2,8 @@ import type { CursorAnalysisStatus } from "@/src/services/cursor-analysis/consta
 
 const ALLOWED_TRANSITIONS: Record<CursorAnalysisStatus, CursorAnalysisStatus[]> = {
     not_started: ["queued"],
-    queued: ["triggered", "failed", "retry_pending"],
+    // Fast-callback race: Cursor may POST before local "triggered" is persisted.
+    queued: ["triggered", "validating", "failed", "retry_pending"],
     triggered: ["analyzing", "validating", "failed", "retry_pending"],
     analyzing: ["validating", "failed", "retry_pending"],
     validating: ["completed", "failed", "retry_pending"],

@@ -34,6 +34,10 @@ export const AUDIT_RESULT_FIELD_LIMITS = {
     limitationsMaxLength: 1000,
     limitationsMaxItems: 10,
     sourcesMaxItems: 5,
+    sourceMaxLength: 200,
+    auditIdMaxLength: 100,
+    analysisRequestIdMaxLength: 100,
+    categoryMaxLength: 100,
 } as const;
 
 export type AuditResultContract = {

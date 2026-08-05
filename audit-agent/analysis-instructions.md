@@ -96,6 +96,11 @@ credentials, or signed URLs in the callback JSON or final agent output.
 - Do not modify the application repository.
 - Do not place secrets in output, logs, summaries, or repository files.
 - Use only `callbackAuthToken` from the webhook when authenticating the callback request.
+- Never reproduce `packageUrl`, `callbackUrl`, or `callbackAuthToken` in analysis output, logs, summaries, or callback JSON.
+- Never remove or alter opaque URL query parameters on `packageUrl` or `callbackUrl`.
+- Never invent unavailable evidence.
+- Never replace the official Nice Guy Metrics `overallScore` with any AI-generated score.
+- Visual analysis is interpretation only. Deterministic evidence is authoritative for facts it directly measures.
 
 ---
 
@@ -121,3 +126,4 @@ The application signs a short-lived `callbackAuthToken` for each analysis reques
 | Header value | `callbackAuthToken` from webhook |
 
 The permanent `CURSOR_ANALYSIS_CALLBACK_SECRET` stays in Vercel only and is never sent to Cursor.
+Work is complete only after a successful authenticated POST to `callbackUrl`.

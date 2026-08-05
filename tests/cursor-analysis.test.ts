@@ -361,6 +361,7 @@ describe("cursor analysis state machine", () => {
     it("allows expected transitions", () => {
         assert.equal(canTransitionAnalysisStatus("not_started", "queued"), true);
         assert.equal(canTransitionAnalysisStatus("queued", "triggered"), true);
+        assert.equal(canTransitionAnalysisStatus("queued", "validating"), true);
         assert.equal(canTransitionAnalysisStatus("triggered", "analyzing"), true);
         assert.equal(canTransitionAnalysisStatus("analyzing", "validating"), true);
         assert.equal(canTransitionAnalysisStatus("validating", "completed"), true);

@@ -14,7 +14,7 @@ export type RunPageSpeedActionState = {
     resetAt?: string;
 };
 
-// TODO: Require admin authentication before allowing PageSpeed triggers in production.
+// Auth enforced via requireAdministratorSession below.
 export async function runPageSpeedAnalysisAction(
     websiteId: string,
 ): Promise<RunPageSpeedActionState> {

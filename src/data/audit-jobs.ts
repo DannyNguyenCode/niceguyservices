@@ -462,11 +462,81 @@ export async function setAuditJobReportDraftId(
     );
 }
 
+export async function getAuditJobByAuditRunId(
+    auditRunId: string,
+): Promise<SerializableAuditJob | null> {
+    await connectToDatabase();
+    const doc = await AuditJob.findOne({
+        auditRunId: assertObjectId(auditRunId, "AUDIT_JOB_INVALID_AUDIT_RUN_ID"),
+    })
+        .sort({ queuedAt: -1 })
+        .lean();
+    return doc ? serializeAuditJob(doc) : null;
+}
+
+/**
+ * Park an AuditJob while waiting for an asynchronous external system (Cursor).
+ * Heartbeats stop — waiting is owned by the Cursor analysis lifecycle.
+ */
+export async function parkAuditJobWaitingForExternal(
+    jobId: string,
+): Promise<SerializableAuditJob | null> {
+    await connectToDatabase();
+    const job = await getAuditJobById(jobId);
+    if (!job) return null;
+    if (job.status === "waiting_for_external") {
+        return job;
+    }
+    assertJobTransition(job.status, "waiting_for_external");
+
+    const doc = await AuditJob.findByIdAndUpdate(
+        assertObjectId(jobId),
+        {
+            $set: {
+                status: "waiting_for_external",
+                // Clear heartbeat so stale recovery does not treat Cursor wait as abandoned execution.
+                heartbeatAt: null,
+            },
+        },
+        { new: true },
+    ).lean();
+    return doc ? serializeAuditJob(doc) : null;
+}
+
+export async function resumeWaitingAuditJob(
+    jobId: string,
+): Promise<SerializableAuditJob | null> {
+    await connectToDatabase();
+    const job = await getAuditJobById(jobId);
+    if (!job) return null;
+    if (job.status === "processing") {
+        return job;
+    }
+    if (job.status !== "waiting_for_external") {
+        return job;
+    }
+    assertJobTransition(job.status, "processing");
+
+    const doc = await AuditJob.findByIdAndUpdate(
+        assertObjectId(jobId),
+        {
+            $set: {
+                status: "processing",
+                heartbeatAt: new Date(),
+                startedAt: job.startedAt ? new Date(job.startedAt) : new Date(),
+            },
+        },
+        { new: true },
+    ).lean();
+    return doc ? serializeAuditJob(doc) : null;
+}
+
 export async function recoverStaleAuditPipelineJobs(): Promise<number> {
     await connectToDatabase();
     const minutes = Number.parseInt(process.env.AUDIT_JOB_STALE_MINUTES ?? "30", 10);
     const cutoff = new Date(Date.now() - Math.max(5, minutes) * 60_000);
 
+    // Only recover genuinely stale *processing* jobs. Jobs waiting for Cursor must not be requeued.
     const result = await AuditJob.updateMany(
         {
             status: "processing",
@@ -486,9 +556,12 @@ export async function recoverStaleAuditPipelineJobs(): Promise<number> {
 
     const exceeded = await AuditJob.updateMany(
         {
-            status: { $in: [...ACTIVE_AUDIT_JOB_STATUSES] },
+            status: "processing",
             attempt: { $gte: Number.parseInt(process.env.AUDIT_JOB_MAX_ATTEMPTS ?? "3", 10) },
-            heartbeatAt: { $lte: cutoff },
+            $or: [
+                { heartbeatAt: { $lte: cutoff } },
+                { heartbeatAt: null, startedAt: { $lte: cutoff } },
+            ],
         },
         {
             $set: {

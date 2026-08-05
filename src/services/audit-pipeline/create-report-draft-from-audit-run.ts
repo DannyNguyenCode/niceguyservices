@@ -17,7 +17,7 @@ export async function createReportDraftFromAuditRun(input: {
         return { success: true, reportId: existing.id };
     }
 
-    const resources = await loadAuditRunResources({
+    let resources = await loadAuditRunResources({
         websiteId: input.websiteId,
         auditRunId: input.auditRunId,
     });
@@ -32,11 +32,28 @@ export async function createReportDraftFromAuditRun(input: {
     }
 
     if (!resources.aiSummary) {
+        const cursorResult = resources.auditRun.analysis?.result;
+        if (cursorResult && resources.auditRun.analysis?.status === "completed") {
+            const { materializeAiSummaryFromCursorResult } = await import(
+                "@/src/services/cursor-analysis/materialize-ai-summary-from-cursor"
+            );
+            await materializeAiSummaryFromCursorResult({
+                auditRunId: input.auditRunId,
+                result: cursorResult,
+            });
+            resources = await loadAuditRunResources({
+                websiteId: input.websiteId,
+                auditRunId: input.auditRunId,
+            });
+        }
+    }
+
+    if (!resources?.aiSummary) {
         return {
             success: false,
             error: {
                 code: "AI_SUMMARY_MISSING",
-                message: "Report draft requires AI analysis results.",
+                message: "Report draft requires completed Cursor analysis results.",
             },
         };
     }
@@ -44,8 +61,8 @@ export async function createReportDraftFromAuditRun(input: {
     const result = await createPublicReport({
         websiteId: input.websiteId,
         auditRunId: input.auditRunId,
-        crawlId: resources.crawl.id,
-        niceGuyMetricId: resources.niceGuy.id,
+        crawlId: resources.crawl!.id,
+        niceGuyMetricId: resources.niceGuy!.id,
         aiSummaryId: resources.aiSummary.id,
         heroSuggestionIds: resources.heroSuggestions.map((hero) => hero.id),
         screenshotIds: resources.screenshots.map((shot) => shot.id),

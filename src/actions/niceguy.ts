@@ -14,7 +14,7 @@ export type RunNiceGuyActionState = {
     resetAt?: string;
 };
 
-// TODO: Require admin authentication before allowing Nice Guy scoring in production.
+// Auth enforced via requireAdministratorSession below.
 export async function runNiceGuyAnalysisAction(
     websiteId: string,
 ): Promise<RunNiceGuyActionState> {

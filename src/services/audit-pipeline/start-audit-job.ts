@@ -13,6 +13,7 @@ import { AuditHistoryError } from "@/src/services/audit-history/create-audit-run
 import { recoverAbandonedQueuedCrawlForWebsite } from "@/src/services/audit-jobs/recover-abandoned-queued-crawl";
 import { runAuditPreflight, AuditPreflightError } from "@/src/services/audit-pipeline/preflight";
 import { maybeRunAuditPipelineSynchronously } from "@/src/services/audit-pipeline/run-audit-pipeline-sync";
+import { scheduleAuditWorkerKick } from "@/src/services/audit-pipeline/schedule-audit-worker";
 import type { AuditConfigurationSnapshot, SerializableAuditJob } from "@/src/services/audit-pipeline/types";
 import { updateAuditRunStatus } from "@/src/data/audit-runs";
 
@@ -40,6 +41,9 @@ async function buildStartAuditJobResult(input: {
     reused: boolean;
 }): Promise<StartAuditJobResult> {
     const job = await maybeRunAuditPipelineSynchronously(input.job);
+    if (job.status === "queued") {
+        scheduleAuditWorkerKick(input.reused ? "audit-job-reused" : "audit-job-created");
+    }
     return {
         job,
         auditRunId: job.auditRunId,

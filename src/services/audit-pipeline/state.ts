@@ -3,7 +3,8 @@ import type { AuditJobStatus, AuditStageStatus } from "@/src/services/audit-pipe
 const STAGE_TRANSITIONS: Record<AuditStageStatus, AuditStageStatus[]> = {
     pending: ["queued", "skipped"],
     queued: ["processing"],
-    processing: ["completed", "completed_with_warnings", "failed"],
+    processing: ["completed", "completed_with_warnings", "failed", "waiting_for_external"],
+    waiting_for_external: ["completed", "completed_with_warnings", "failed"],
     completed: [],
     completed_with_warnings: [],
     failed: ["queued"],
@@ -12,7 +13,14 @@ const STAGE_TRANSITIONS: Record<AuditStageStatus, AuditStageStatus[]> = {
 
 const JOB_TRANSITIONS: Record<AuditJobStatus, AuditJobStatus[]> = {
     queued: ["processing", "cancelled"],
-    processing: ["completed", "completed_with_warnings", "failed", "cancelled"],
+    processing: [
+        "completed",
+        "completed_with_warnings",
+        "failed",
+        "cancelled",
+        "waiting_for_external",
+    ],
+    waiting_for_external: ["processing", "failed", "cancelled"],
     completed: [],
     completed_with_warnings: [],
     failed: ["queued"],
@@ -50,14 +58,27 @@ export function isTerminalStageStatus(status: AuditStageStatus): boolean {
     return ["completed", "completed_with_warnings", "failed", "skipped"].includes(status);
 }
 
+export function isWaitingStageStatus(status: AuditStageStatus): boolean {
+    return status === "waiting_for_external";
+}
+
 export function isTerminalJobStatus(status: AuditJobStatus): boolean {
     return ["completed", "completed_with_warnings", "failed", "cancelled"].includes(status);
+}
+
+export function isWaitingJobStatus(status: AuditJobStatus): boolean {
+    return status === "waiting_for_external";
 }
 
 export function deriveJobStatusFromStages(
     stages: Array<{ required: boolean; status: AuditStageStatus }>,
 ): AuditJobStatus {
     const relevant = stages.filter((stage) => stage.status !== "skipped");
+    const hasWaiting = relevant.some((stage) => isWaitingStageStatus(stage.status));
+    if (hasWaiting) {
+        return "waiting_for_external";
+    }
+
     const hasProcessing = relevant.some((stage) =>
         ["queued", "processing"].includes(stage.status),
     );

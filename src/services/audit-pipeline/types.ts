@@ -75,7 +75,10 @@ export type AuditExecutionContext = {
 };
 
 export type AuditStageResult = {
-    status: Extract<AuditStageStatus, "completed" | "completed_with_warnings" | "failed" | "skipped">;
+    status: Extract<
+        AuditStageStatus,
+        "completed" | "completed_with_warnings" | "failed" | "skipped" | "waiting_for_external"
+    >;
     errorCode?: string | null;
     errorMessage?: string | null;
     retryable?: boolean;

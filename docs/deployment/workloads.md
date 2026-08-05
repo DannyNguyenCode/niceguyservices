@@ -11,7 +11,7 @@ This document classifies Website Audit platform workloads for Vercel (Node.js) d
 | MongoDB CRUD | Node.js | Short | Low | MongoDB Atlas | Yes | Cached Mongoose connection |
 | PageSpeed API requests | Node.js | Medium (up to 300s) | Medium | Google PageSpeed | Yes with limits | `maxDuration=300` on route |
 | AI API requests | Node.js | Medium (up to 300s) | Medium | OpenAI / Anthropic | Yes with limits | Rate limited, schema validated |
-| PDF generation | Node.js | Medium (up to 120s) | High | Playwright render + Cloudinary | Borderline | Requires `memory: 1024` on Vercel |
+| PDF generation | Node.js | Medium (up to 120s) | High | Playwright render + Cloudinary | Borderline | Use `maxDuration=120`; memory is managed by Active CPU billing |
 | Playwright crawling | Node.js | Long (up to 300s) | High | Playwright Chromium | Borderline | May require dedicated worker if browser binaries exceed platform limits |
 | Screenshot capture | Node.js | Long (during crawl) | High | Playwright + Cloudinary | Borderline | Part of crawl workflow |
 | Cloudinary upload | Node.js | Short | Medium | Cloudinary | Yes | Environment-specific folders |
@@ -20,7 +20,7 @@ This document classifies Website Audit platform workloads for Vercel (Node.js) d
 
 ## Playwright production strategy
 
-1. **Primary:** Vercel Node.js function with `maxDuration=300`, `memory=1024`, Playwright-managed Chromium.
+1. **Primary:** Vercel Node.js function with `maxDuration=300`, Playwright-managed Chromium (memory is managed by Active CPU billing).
 2. **Fallback:** Dedicated worker/container if browser launch fails on serverless (document and deploy separately).
 3. **Do not** move crawl routes to Edge runtime.
 

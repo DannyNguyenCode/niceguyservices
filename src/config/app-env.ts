@@ -237,11 +237,45 @@ function validateProductionRequirements(env: AppEnv): void {
     if (!env.pagespeedApiKey) {
         throw new Error("Production requires GOOGLE_PAGESPEED_API_KEY.");
     }
-    if (!env.aiApiKey) {
-        throw new Error("Production requires an AI API key.");
+    if (!env.internalWorkerSecret) {
+        throw new Error("Production requires INTERNAL_WORKER_SECRET for background audit execution.");
+    }
+
+    // Cursor Automation is the production AI analysis provider.
+    // Legacy AI_API_KEY / OPENAI_API_KEY / ANTHROPIC_API_KEY are not required.
+    if (env.auditAiEnabled) {
+        validateProductionCursorAnalysisRequirements();
     }
 
     assertProductionApplicationUrl();
+}
+
+function validateProductionCursorAnalysisRequirements(): void {
+    const missing: string[] = [];
+    if (!readSecret(process.env.CURSOR_AUTOMATION_WEBHOOK_URL)) {
+        missing.push("CURSOR_AUTOMATION_WEBHOOK_URL");
+    }
+    if (!readSecret(process.env.CURSOR_AUTOMATION_AUTH_TOKEN)) {
+        missing.push("CURSOR_AUTOMATION_AUTH_TOKEN");
+    }
+    if (!readSecret(process.env.CURSOR_ANALYSIS_CALLBACK_SECRET)) {
+        missing.push("CURSOR_ANALYSIS_CALLBACK_SECRET");
+    }
+    if (!readSecret(process.env.AUDIT_PACKAGE_SIGNING_SECRET)) {
+        missing.push("AUDIT_PACKAGE_SIGNING_SECRET");
+    }
+    const publicUrl =
+        readSecret(process.env.APP_PUBLIC_URL) ||
+        readSecret(process.env.APP_URL) ||
+        readSecret(process.env.NEXT_PUBLIC_SITE_URL);
+    if (!publicUrl) {
+        missing.push("APP_PUBLIC_URL");
+    }
+    if (missing.length > 0) {
+        throw new Error(
+            `Production requires Cursor analysis configuration. Missing: ${missing.join(", ")}.`,
+        );
+    }
 }
 
 function validatePreviewRequirements(env: AppEnv): void {

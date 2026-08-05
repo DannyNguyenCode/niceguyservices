@@ -10,11 +10,15 @@ import {
     formatZodErrors,
     publicAuditRequestSchema,
 } from "@/src/lib/website-validation";
+import { formatRateLimitRetryMessage } from "@/src/services/rate-limit/create-rate-limit-response";
+import { enforcePublicAuditSubmitRateLimit } from "@/src/services/rate-limit/enforce-public-rate-limit";
+import { isRateLimitError } from "@/src/services/rate-limit/rate-limit-error";
 
 export type PublicAuditRequestState = {
     ok: boolean;
     message?: string;
     fieldErrors?: Record<string, string>;
+    rateLimited?: boolean;
 };
 
 function formDataToObject(formData: FormData): Record<string, string> {
@@ -50,6 +54,19 @@ export async function submitPublicAuditRequestAction(
     _prevState: PublicAuditRequestState,
     formData: FormData,
 ): Promise<PublicAuditRequestState> {
+    try {
+        await enforcePublicAuditSubmitRateLimit();
+    } catch (error) {
+        if (isRateLimitError(error)) {
+            return {
+                ok: false,
+                rateLimited: true,
+                message: `Too many requests. ${formatRateLimitRetryMessage(error.retryAfterSeconds)}`,
+            };
+        }
+        throw error;
+    }
+
     const parsed = publicAuditRequestSchema.safeParse(formDataToObject(formData));
 
     if (!parsed.success) {
