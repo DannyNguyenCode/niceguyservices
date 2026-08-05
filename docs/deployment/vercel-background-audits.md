@@ -23,13 +23,13 @@ Legacy `AI_API_KEY` / `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` are **not** require
 ## Vercel dashboard / project steps
 
 1. Deploy this branch so `vercel.json` includes:
-   - Cron: `* * * * *` → `/api/internal/audit-worker`
+   - Cron: `0 3 * * *` → `/api/internal/audit-worker` (once daily; Hobby-compatible recovery/safety net)
    - Function: `app/api/internal/audit-worker/route.ts` with `maxDuration: 300`
 2. In the Vercel project, set `INTERNAL_WORKER_SECRET` (long random value).
 3. Optionally set `CRON_SECRET` (Vercel can auto-inject cron auth when configured).
 4. Confirm plan limits allow 300s functions if crawls are long.
 5. Do **not** set `AUDIT_SYNC_EXECUTION=true` in production unless deliberately debugging.
-6. Ensure Hobby vs Pro cron interval limits match your plan (minute crons require eligible plans).
+6. Audits start immediately via `after()` / `scheduleAuditWorkerKick()` — they do not wait for the daily cron. On a plan that supports minute crons, change the schedule back to `* * * * *` for frequent recovery.
 
 ## Execution flow
 

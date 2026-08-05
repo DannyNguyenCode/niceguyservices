@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/internal/audit-worker",
-      "schedule": "* * * * *"
+      "schedule": "0 3 * * *"
     }
   ],
   "functions": {
