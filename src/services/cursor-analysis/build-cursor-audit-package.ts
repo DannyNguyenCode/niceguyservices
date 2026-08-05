@@ -6,17 +6,37 @@ import type { SerializableGoogleMetric } from "@/src/data/google-metrics";
 import type { SerializableNiceGuyMetric } from "@/src/data/niceguy-metrics";
 import type { SerializableScreenshot } from "@/src/data/screenshots";
 import type { SerializableWebsite } from "@/src/data/websites";
-import { AUDIT_REQUESTED_OUTPUTS } from "@/src/services/cursor-analysis/schemas";
+import { getCursorAnalysisConfig } from "@/src/services/cursor-analysis/config";
 import {
     validateCursorAuditPackage,
     type CursorAuditPackage,
 } from "@/src/services/cursor-analysis/schemas";
-import { getCursorAnalysisConfig } from "@/src/services/cursor-analysis/config";
+import { calculateCursorAnalysisReadiness } from "@/src/services/cursor-analysis/readiness";
 
 function mapScreenshotDevice(type: SerializableScreenshot["type"]): "desktop" | "mobile" | null {
     if (type.startsWith("desktop")) return "desktop";
     if (type.startsWith("mobile")) return "mobile";
     return null;
+}
+
+function toScreenshotRef(shot: SerializableScreenshot) {
+    const device = mapScreenshotDevice(shot.type);
+    if (!device) return null;
+    const url = shot.secureUrl || shot.publicUrl;
+    if (!url) return null;
+    return {
+        id: shot.id,
+        page: shot.pageType,
+        device,
+        url,
+        width: shot.width ?? shot.viewport.width,
+        height: shot.height ?? shot.viewport.height,
+        viewport: {
+            width: shot.viewport.width,
+            height: shot.viewport.height,
+        },
+        capturedAt: shot.generatedAt ?? shot.createdAt,
+    };
 }
 
 function normalizeGoogleMetric(metric: SerializableGoogleMetric | null): Record<string, unknown> {
@@ -40,14 +60,33 @@ function normalizeGoogleMetric(metric: SerializableGoogleMetric | null): Record<
     };
 }
 
-function normalizeNiceGuyMetric(metric: SerializableNiceGuyMetric | null): Record<string, unknown> {
-    if (!metric) return {};
+function normalizeNiceGuyMetric(metric: SerializableNiceGuyMetric): CursorAuditPackage["niceGuyMetrics"] {
+    const completeness = metric.completeness;
+    const methodology = metric.methodology;
+
     return {
         status: metric.status,
         scoringVersion: metric.scoringVersion,
-        overallScore: metric.overallScore,
-        categories: metric.categories,
-        generatedAt: metric.generatedAt,
+        overallScore: metric.overallScore ?? null,
+        categories: Object.values(metric.categories ?? {}),
+        completeness: {
+            status: completeness?.isComplete ? "complete" : "preliminary",
+            evidenceCoverage: completeness?.overallEvidenceCoverage ?? null,
+            applicableChecks: null,
+            evaluatedChecks: completeness
+                ? (completeness.blockers?.length ?? 0) + (metric.summary?.checksPassed ?? 0)
+                : null,
+            unavailableChecks: metric.summary?.checksUnavailable ?? null,
+            notApplicableChecks: null,
+        },
+        methodology: {
+            rubricVersion: methodology?.rubricVersion,
+            applicabilityVersion: methodology?.applicabilityVersion,
+            deterministicCheckCount: methodology?.deterministicCheckCount,
+            aiAssistedCheckCount: methodology?.aiAssistedCheckCount,
+            limitations: methodology?.limitations ?? [],
+        },
+        generatedAt: metric.generatedAt ?? undefined,
     };
 }
 
@@ -87,6 +126,25 @@ function normalizeCrawl(crawl: SerializableCrawl | null): Record<string, unknown
     };
 }
 
+function buildAnalysisInstructions(promptVersion: string) {
+    return {
+        promptVersion,
+        outputSchemaVersion: "1.1",
+        rules: [
+            "Treat deterministic Nice Guy Metrics overallScore as the official audit score; never replace it.",
+            "Treat unavailable checks as missing evidence, not failure.",
+            "Ignore not_applicable checks when identifying failures.",
+            "Distinguish quality score from evidence coverage.",
+            "Label preliminary metrics as preliminary.",
+            "Label visual interpretation as interpretation.",
+            "Never invent evidence or claim guaranteed outcomes.",
+            "Return only the required callback JSON structure.",
+            "Post results to callbackUrl using the specified callback header.",
+            "Do not place secrets in output, logs, or repository files.",
+        ],
+    };
+}
+
 export function buildCursorAuditPackage(input: {
     auditRun: SerializableAuditRun;
     website: SerializableWebsite;
@@ -97,8 +155,39 @@ export function buildCursorAuditPackage(input: {
         desktop: SerializableGoogleMetric | null;
     };
     niceGuy: SerializableNiceGuyMetric | null;
+    analysisRequestId: string;
 }): CursorAuditPackage {
+    const readiness = calculateCursorAnalysisReadiness({
+        auditId: input.auditRun.id,
+        auditedUrl: input.auditRun.source.websiteUrl,
+        website: input.website,
+        crawl: input.crawl,
+        screenshots: input.screenshots,
+        pageSpeed: input.pageSpeed,
+        niceGuy: input.niceGuy,
+    });
+
+    if (!readiness.ready) {
+        const codes = readiness.blockers.map((item) => item.code).join(", ");
+        throw new Error(`AUDIT_PACKAGE_BUILD_BLOCKED: ${codes}`);
+    }
+
+    if (!input.niceGuy) {
+        throw new Error("AUDIT_PACKAGE_BUILD_BLOCKED: NICEGUY_METRICS_MISSING");
+    }
+
     const config = getCursorAnalysisConfig();
+    const completedScreenshots = input.screenshots
+        .filter((shot) => shot.status === "complete")
+        .map(toScreenshotRef)
+        .filter((shot): shot is NonNullable<typeof shot> => Boolean(shot));
+
+    const desktop = completedScreenshots.find((shot) => shot.device === "desktop") ?? null;
+    const mobile = completedScreenshots.find((shot) => shot.device === "mobile") ?? null;
+    const additional = completedScreenshots.filter(
+        (shot) => shot.id !== desktop?.id && shot.id !== mobile?.id,
+    );
+
     const pagesAnalyzed = input.crawl
         ? input.crawl.pageResults
               .filter((page) => !page.errorMessage && (page.statusCode ?? 200) < 400)
@@ -106,42 +195,33 @@ export function buildCursorAuditPackage(input: {
         : [];
 
     const packageValue: CursorAuditPackage = {
-        schemaVersion: "1.0",
-        auditId: input.auditRun.id,
-        website: {
-            url: input.auditRun.source.websiteUrl,
-            businessName: input.website.businessName || input.auditRun.source.businessName,
-            industry: input.website.industry || null,
-            pagesAnalyzed,
+        schemaVersion: "1.1",
+        packageVersion: config.packageVersion,
+        audit: {
+            auditId: input.auditRun.id,
+            analysisRequestId: input.analysisRequestId,
+            auditedUrl: input.auditRun.source.websiteUrl,
+            normalizedUrl: input.crawl?.finalUrl ?? input.auditRun.source.websiteUrl,
+            createdAt: input.auditRun.createdAt,
+            completedAt: input.auditRun.completedAt ?? undefined,
         },
-        screenshots: input.screenshots
-            .filter((shot) => shot.status === "complete")
-            .map((shot) => {
-                const device = mapScreenshotDevice(shot.type);
-                if (!device) return null;
-                const url = shot.secureUrl || shot.publicUrl;
-                if (!url) return null;
-                return {
-                    id: shot.id,
-                    page: shot.pageType,
-                    device,
-                    url,
-                    width: shot.width ?? shot.viewport.width,
-                    height: shot.height ?? shot.viewport.height,
-                    capturedAt: shot.generatedAt ?? shot.createdAt,
-                };
-            })
-            .filter((shot): shot is NonNullable<typeof shot> => Boolean(shot)),
-        googleMetrics: {
+        crawl: normalizeCrawl(input.crawl),
+        screenshots: {
+            desktop,
+            mobile,
+            additional: additional.length > 0 ? additional : undefined,
+        },
+        pageSpeed: {
             mobile: normalizeGoogleMetric(input.pageSpeed.mobile),
             desktop: normalizeGoogleMetric(input.pageSpeed.desktop),
         },
         niceGuyMetrics: normalizeNiceGuyMetric(input.niceGuy),
-        crawl: normalizeCrawl(input.crawl),
-        requestedOutputs: [...AUDIT_REQUESTED_OUTPUTS],
+        analysisInstructions: buildAnalysisInstructions(config.promptVersion),
         metadata: {
             packageCreatedAt: new Date().toISOString(),
-            packageVersion: config.packageVersion as "1.0",
+            websiteBusinessName: input.website.businessName || input.auditRun.source.businessName,
+            websiteIndustry: input.website.industry || null,
+            pagesAnalyzed,
         },
     };
 

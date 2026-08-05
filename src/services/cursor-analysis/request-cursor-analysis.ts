@@ -11,49 +11,65 @@ import {
     markAuditRunAnalysisTriggered,
     markAuditRunAnalysisValidating,
     queueAuditRunAnalysis,
+    recordPackageAccess,
 } from "@/src/data/audit-run-analysis";
 import { getAuditRunById } from "@/src/data/audit-runs";
 import { getWebsiteById, updateWebsiteAiAnalysisStatus } from "@/src/data/websites";
 import { loadAuditRunResources } from "@/src/services/audit-history/load-audit-run-resources";
+import {
+    authenticateAnalysisCallback,
+    createCallbackAuthTokenForRequest,
+    validateCallbackTokenAgainstAnalysis,
+} from "@/src/services/cursor-analysis/callback-auth";
 import { buildCursorAuditPackage } from "@/src/services/cursor-analysis/build-cursor-audit-package";
 import {
-    assertCursorAnalysisConfigured,
     getCursorAnalysisConfig,
     isPublicUrlReachableForCursor,
 } from "@/src/services/cursor-analysis/config";
 import {
     CURSOR_ANALYSIS_PROVIDER,
-    ACTIVE_CURSOR_ANALYSIS_STATUSES,
+    PACKAGE_ACCESS_STATUSES,
 } from "@/src/services/cursor-analysis/constants";
+import { logAnalysisError, logAnalysisEvent } from "@/src/services/cursor-analysis/logging";
 import {
     buildAnalysisCallbackUrl,
     buildSignedPackageUrl,
 } from "@/src/services/cursor-analysis/package-token";
-import { getAuditAnalysisProvider } from "@/src/services/cursor-analysis/providers/get-analysis-provider";
-import { calculateCursorAnalysisReadiness } from "@/src/services/cursor-analysis/readiness";
+import { resolveAuditAnalysisProvider } from "@/src/services/cursor-analysis/providers/get-analysis-provider";
 import {
+    calculateCursorAnalysisReadiness,
+    type AnalysisReadiness,
+} from "@/src/services/cursor-analysis/readiness";
+import {
+    formatCursorResultValidationError,
     safeValidateCursorAuditResult,
     type CursorAuditResult,
 } from "@/src/services/cursor-analysis/schemas";
-import { timingSafeEqual } from "node:crypto";
 
 export type RequestCursorAnalysisResult =
     | { ok: true; auditRunId: string; analysisRequestId: string; status: string }
-    | { ok: false; code: string; message: string; missing?: string[] };
+    | {
+          ok: false;
+          code: string;
+          message: string;
+          blockers?: AnalysisReadiness["blockers"];
+          missing?: string[];
+      };
 
 export async function requestCursorAnalysisForAuditRun(
     auditRunId: string,
 ): Promise<RequestCursorAnalysisResult> {
-    assertCursorAnalysisConfigured();
     const config = getCursorAnalysisConfig();
-    const provider = getAuditAnalysisProvider();
-    if (!provider) {
+    const providerResolution = resolveAuditAnalysisProvider();
+    if (!providerResolution.ok) {
         return {
             ok: false,
-            code: "PROVIDER_NOT_CONFIGURED",
-            message: "Cursor automation provider is not enabled.",
+            code: providerResolution.code,
+            message: providerResolution.message,
+            missing: providerResolution.missing,
         };
     }
+    const provider = providerResolution.provider;
 
     if (!isPublicUrlReachableForCursor(config.publicAppUrl)) {
         return {
@@ -91,6 +107,18 @@ export async function requestCursorAnalysisForAuditRun(
         };
     }
 
+    if (
+        currentAnalysis &&
+        currentAnalysis.status !== "not_started" &&
+        currentAnalysis.status !== "retry_pending"
+    ) {
+        return {
+            ok: false,
+            code: "ANALYSIS_NOT_RETRYABLE",
+            message: "Analysis can only be triggered from not_started or retry_pending status.",
+        };
+    }
+
     const resources = await loadAuditRunResources({
         websiteId: auditRun.websiteId,
         auditRunId,
@@ -101,6 +129,7 @@ export async function requestCursorAnalysisForAuditRun(
 
     const readiness = calculateCursorAnalysisReadiness({
         auditId: auditRunId,
+        auditedUrl: auditRun.source.websiteUrl,
         website,
         crawl: resources.crawl,
         screenshots: resources.screenshots,
@@ -109,11 +138,13 @@ export async function requestCursorAnalysisForAuditRun(
     });
 
     if (!readiness.ready) {
+        logAnalysisEvent("readiness_failed", { auditId: auditRunId }, readiness.blockers[0]?.code);
         return {
             ok: false,
             code: "AUDIT_NOT_READY",
             message: "Audit data is incomplete for Cursor analysis.",
-            missing: readiness.missing,
+            blockers: readiness.blockers,
+            missing: readiness.blockers.map((item) => item.field ?? item.code),
         };
     }
 
@@ -128,6 +159,7 @@ export async function requestCursorAnalysisForAuditRun(
             screenshots: resources.screenshots,
             pageSpeed: resources.pageSpeed,
             niceGuy: resources.niceGuy,
+            analysisRequestId,
         });
     } catch (error) {
         return {
@@ -140,10 +172,20 @@ export async function requestCursorAnalysisForAuditRun(
     await queueAuditRunAnalysis({
         auditRunId,
         analysisRequestId,
-        provider: CURSOR_ANALYSIS_PROVIDER,
+        provider: provider.name,
         attempt,
         promptVersion: config.promptVersion,
         packageVersion: config.packageVersion,
+    });
+
+    logAnalysisEvent("analysis_queued", {
+        auditId: auditRunId,
+        analysisRequestId,
+        provider: provider.name,
+        packageVersion: config.packageVersion,
+        promptVersion: config.promptVersion,
+        attempt,
+        status: "queued",
     });
 
     await updateWebsiteAiAnalysisStatus(auditRun.websiteId, "queued");
@@ -158,7 +200,7 @@ export async function requestCursorAnalysisForAuditRun(
         metadata: {
             analysisRequestId,
             attempt,
-            provider: CURSOR_ANALYSIS_PROVIDER,
+            provider: provider.name,
         },
     });
 
@@ -172,11 +214,20 @@ export async function requestCursorAnalysisForAuditRun(
         publicBaseUrl: config.publicAppUrl!,
     });
 
-    const trigger = await provider.requestAnalysis({
+    const callbackAuthToken = createCallbackAuthTokenForRequest({
+        auditId: auditRunId,
+        analysisRequestId,
+    });
+
+    const trigger = await provider.triggerAnalysis({
         auditId: auditRunId,
         analysisRequestId,
         packageUrl,
         callbackUrl,
+        callbackAuthHeader: config.callbackHeader,
+        callbackAuthToken,
+        promptVersion: config.promptVersion,
+        packageVersion: config.packageVersion,
     });
 
     if (!trigger.accepted) {
@@ -184,9 +235,20 @@ export async function requestCursorAnalysisForAuditRun(
             auditRunId,
             analysisRequestId,
             error: trigger.error ?? "Cursor webhook rejected the request.",
+            errorCode: trigger.errorCode ?? "TRIGGER_FAILED",
             preserveForRetry: attempt < config.maxAttempts,
         });
         await updateWebsiteAiAnalysisStatus(auditRun.websiteId, "failed");
+        logAnalysisError(
+            "trigger_failed",
+            {
+                auditId: auditRunId,
+                analysisRequestId,
+                provider: provider.name,
+                errorCode: trigger.errorCode ?? "TRIGGER_FAILED",
+            },
+            trigger.error,
+        );
         await createActivityEvent({
             websiteId: auditRun.websiteId,
             auditRunId,
@@ -199,7 +261,7 @@ export async function requestCursorAnalysisForAuditRun(
         });
         return {
             ok: false,
-            code: "TRIGGER_FAILED",
+            code: trigger.errorCode ?? "TRIGGER_FAILED",
             message: trigger.error ?? "Cursor webhook rejected the request.",
         };
     }
@@ -210,6 +272,14 @@ export async function requestCursorAnalysisForAuditRun(
         externalJobId: trigger.externalJobId ?? null,
     });
     await updateWebsiteAiAnalysisStatus(auditRun.websiteId, "processing");
+
+    logAnalysisEvent("analysis_triggered", {
+        auditId: auditRunId,
+        analysisRequestId,
+        provider: provider.name,
+        status: "triggered",
+        attempt,
+    });
 
     await createActivityEvent({
         websiteId: auditRun.websiteId,
@@ -233,29 +303,34 @@ export async function requestCursorAnalysisForAuditRun(
     };
 }
 
-function verifyCallbackSecret(provided: string | null): boolean {
-    const expected = getCursorAnalysisConfig().callbackSecret;
-    if (!expected || !provided) return false;
-    const providedBuffer = Buffer.from(provided);
-    const expectedBuffer = Buffer.from(expected);
-    if (providedBuffer.length !== expectedBuffer.length) return false;
-    return timingSafeEqual(providedBuffer, expectedBuffer);
-}
-
 export type HandleAnalysisCallbackResult =
     | { ok: true; status: "completed" | "duplicate" }
     | { ok: false; code: string; message: string; status: number };
 
 export async function handleCursorAnalysisCallback(input: {
     auditRunId: string;
-    providedSecret: string | null;
+    providedToken: string | null;
     body: unknown;
 }): Promise<HandleAnalysisCallbackResult> {
-    if (!verifyCallbackSecret(input.providedSecret)) {
+    const bodyRecord =
+        input.body && typeof input.body === "object"
+            ? (input.body as Record<string, unknown>)
+            : null;
+    const bodyAnalysisRequestId =
+        typeof bodyRecord?.analysisRequestId === "string"
+            ? bodyRecord.analysisRequestId
+            : undefined;
+
+    const auth = authenticateAnalysisCallback({
+        providedToken: input.providedToken,
+        auditId: input.auditRunId,
+        bodyAnalysisRequestId,
+    });
+    if (!auth.ok) {
         return {
             ok: false,
-            code: "UNAUTHORIZED",
-            message: "Invalid callback secret.",
+            code: auth.code,
+            message: auth.message,
             status: 401,
         };
     }
@@ -266,6 +341,32 @@ export async function handleCursorAnalysisCallback(input: {
     }
 
     const analysis = auditRun.analysis ?? (await getAuditRunAnalysis(input.auditRunId));
+    const tokenMatch = validateCallbackTokenAgainstAnalysis({
+        tokenPayload: auth.payload,
+        activeAnalysisRequestId: analysis?.analysisRequestId ?? null,
+        status: analysis?.status ?? "not_started",
+        hasExistingResult: Boolean(analysis?.result),
+    });
+
+    if (!tokenMatch.ok) {
+        const status =
+            tokenMatch.code === "NO_ACTIVE_REQUEST" || tokenMatch.code === "STALE_CALLBACK"
+                ? 409
+                : tokenMatch.code === "CALLBACK_TOKEN_REUSED"
+                  ? 409
+                  : 401;
+        return {
+            ok: false,
+            code: tokenMatch.code,
+            message: tokenMatch.message,
+            status,
+        };
+    }
+
+    if (tokenMatch.kind === "duplicate") {
+        return { ok: true, status: "duplicate" };
+    }
+
     if (!analysis?.analysisRequestId) {
         return {
             ok: false,
@@ -275,15 +376,32 @@ export async function handleCursorAnalysisCallback(input: {
         };
     }
 
+    logAnalysisEvent("callback_received", {
+        auditId: input.auditRunId,
+        analysisRequestId: analysis.analysisRequestId,
+        status: analysis.status,
+    });
+
     const parsed = safeValidateCursorAuditResult(input.body);
     if (!parsed.success) {
+        const validationMessage = formatCursorResultValidationError(parsed.error);
         await markAuditRunAnalysisFailed({
             auditRunId: input.auditRunId,
             analysisRequestId: analysis.analysisRequestId,
-            error: "Result schema validation failed.",
+            error: validationMessage,
+            errorCode: "INVALID_RESULT",
             preserveForRetry: analysis.attempt < getCursorAnalysisConfig().maxAttempts,
         });
         await updateWebsiteAiAnalysisStatus(auditRun.websiteId, "failed");
+        logAnalysisError(
+            "callback_validation_failed",
+            {
+                auditId: input.auditRunId,
+                analysisRequestId: analysis.analysisRequestId,
+                errorCode: "INVALID_RESULT",
+            },
+            validationMessage,
+        );
         await createActivityEvent({
             websiteId: auditRun.websiteId,
             auditRunId: input.auditRunId,
@@ -297,7 +415,7 @@ export async function handleCursorAnalysisCallback(input: {
         return {
             ok: false,
             code: "INVALID_RESULT",
-            message: "Result schema validation failed.",
+            message: validationMessage,
             status: 422,
         };
     }
@@ -319,10 +437,6 @@ export async function handleCursorAnalysisCallback(input: {
             message: "Callback belongs to a previous analysis attempt.",
             status: 409,
         };
-    }
-
-    if (analysis.status === "completed" && analysis.result) {
-        return { ok: true, status: "duplicate" };
     }
 
     const validating = await markAuditRunAnalysisValidating({
@@ -356,6 +470,13 @@ export async function handleCursorAnalysisCallback(input: {
 
     await updateWebsiteAiAnalysisStatus(auditRun.websiteId, "complete", new Date());
 
+    logAnalysisEvent("analysis_completed", {
+        auditId: input.auditRunId,
+        analysisRequestId: analysis.analysisRequestId,
+        status: "completed",
+        provider: analysis.provider ?? undefined,
+    });
+
     await createActivityEvent({
         websiteId: auditRun.websiteId,
         auditRunId: input.auditRunId,
@@ -365,7 +486,7 @@ export async function handleCursorAnalysisCallback(input: {
         actor: { type: "system" },
         metadata: {
             analysisRequestId: analysis.analysisRequestId,
-            overallScore: sanitized.overallScore,
+            assessmentPriority: sanitized.assessment.priority,
         },
     });
 
@@ -376,30 +497,25 @@ function sanitizeCursorAuditResult(result: CursorAuditResult): CursorAuditResult
     return {
         ...result,
         executiveSummary: result.executiveSummary.trim().slice(0, 8000),
+        assessment: {
+            ...result.assessment,
+            summary: result.assessment.summary.trim().slice(0, 2000),
+        },
         strengths: result.strengths.map((item) => ({
             ...item,
             title: item.title.trim().slice(0, 300),
-            evidence: item.evidence.trim().slice(0, 4000),
+            description: item.description.trim().slice(0, 4000),
+            sources: item.sources.map((source) => source.trim().slice(0, 200)).slice(0, 5),
         })),
         issues: result.issues.map((item) => ({
             ...item,
             title: item.title.trim().slice(0, 300),
-            evidence: item.evidence.trim().slice(0, 4000),
+            description: item.description.trim().slice(0, 4000),
             recommendation: item.recommendation.trim().slice(0, 4000),
+            category: item.category.trim().slice(0, 100),
+            sources: item.sources.map((source) => source.trim().slice(0, 200)).slice(0, 5),
         })),
-        heroSuggestions: {
-            headline: result.heroSuggestions.headline.trim().slice(0, 200),
-            supportingCopy: result.heroSuggestions.supportingCopy.trim().slice(0, 2000),
-            primaryCTA: result.heroSuggestions.primaryCTA.trim().slice(0, 120),
-            secondaryCTA: result.heroSuggestions.secondaryCTA
-                ? result.heroSuggestions.secondaryCTA.trim().slice(0, 120)
-                : null,
-            designDirection: result.heroSuggestions.designDirection.trim().slice(0, 2000),
-        },
-        outreachEmail: {
-            subject: result.outreachEmail.subject.trim().slice(0, 200),
-            body: result.outreachEmail.body.trim().slice(0, 8000),
-        },
+        limitations: result.limitations.map((item) => item.trim().slice(0, 1000)).slice(0, 10),
     };
 }
 
@@ -415,7 +531,7 @@ export async function loadCursorAuditPackageForToken(input: {
         return null;
     }
 
-    if (!ACTIVE_CURSOR_ANALYSIS_STATUSES.includes(analysis.status) && analysis.status !== "completed") {
+    if (!PACKAGE_ACCESS_STATUSES.includes(analysis.status)) {
         return null;
     }
 
@@ -428,15 +544,17 @@ export async function loadCursorAuditPackageForToken(input: {
     });
     if (!resources) return null;
 
-    const readiness = calculateCursorAnalysisReadiness({
-        auditId: input.auditRunId,
-        website,
-        crawl: resources.crawl,
-        screenshots: resources.screenshots,
-        pageSpeed: resources.pageSpeed,
-        niceGuy: resources.niceGuy,
+    await recordPackageAccess({
+        auditRunId: input.auditRunId,
+        analysisRequestId: input.analysisRequestId,
     });
-    if (!readiness.ready) return null;
+
+    logAnalysisEvent("package_accessed", {
+        auditId: input.auditRunId,
+        analysisRequestId: input.analysisRequestId,
+        status: analysis.status,
+        packageVersion: analysis.packageVersion,
+    });
 
     return buildCursorAuditPackage({
         auditRun,
@@ -445,5 +563,6 @@ export async function loadCursorAuditPackageForToken(input: {
         screenshots: resources.screenshots,
         pageSpeed: resources.pageSpeed,
         niceGuy: resources.niceGuy,
+        analysisRequestId: input.analysisRequestId,
     });
 }

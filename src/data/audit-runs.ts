@@ -57,6 +57,7 @@ function serializeAuditRunAnalysis(
                   attempt: Number(record.attempt ?? 0),
                   analysisRequestId: String(record.analysisRequestId ?? ""),
                   error: String(record.error ?? ""),
+                  errorCode: record.errorCode ? String(record.errorCode) : undefined,
                   failedAt:
                       failedAt && !Number.isNaN(failedAt.getTime())
                           ? failedAt.toISOString()
@@ -65,22 +66,48 @@ function serializeAuditRunAnalysis(
           })
         : [];
 
+    const statusHistory = Array.isArray(analysis.statusHistory)
+        ? analysis.statusHistory.map((entry) => {
+              const record = entry as Record<string, unknown>;
+              const at = record.at ? new Date(record.at as Date) : null;
+              return {
+                  from: String(record.from) as CursorAnalysisStatus,
+                  to: String(record.to) as CursorAnalysisStatus,
+                  at:
+                      at && !Number.isNaN(at.getTime())
+                          ? at.toISOString()
+                          : new Date(0).toISOString(),
+              };
+          })
+        : [];
+
+    const toIso = (value: unknown) => {
+        if (!value) return null;
+        const date = new Date(value as Date);
+        return Number.isNaN(date.getTime()) ? null : date.toISOString();
+    };
+
     return {
         status: (analysis.status as CursorAnalysisStatus) ?? "not_started",
         provider: analysis.provider ? String(analysis.provider) : null,
         attempt: Number(analysis.attempt ?? 0),
         analysisRequestId: analysis.analysisRequestId ? String(analysis.analysisRequestId) : null,
-        triggeredAt: analysis.triggeredAt
-            ? new Date(analysis.triggeredAt as Date).toISOString()
-            : null,
-        completedAt: analysis.completedAt
-            ? new Date(analysis.completedAt as Date).toISOString()
-            : null,
-        promptVersion: String(analysis.promptVersion ?? "1.0"),
-        packageVersion: String(analysis.packageVersion ?? "1.0"),
+        queuedAt: toIso(analysis.queuedAt),
+        triggeredAt: toIso(analysis.triggeredAt),
+        analyzingAt: toIso(analysis.analyzingAt),
+        validatingAt: toIso(analysis.validatingAt),
+        completedAt: toIso(analysis.completedAt),
+        failedAt: toIso(analysis.failedAt),
+        promptVersion: String(analysis.promptVersion ?? "1.1"),
+        packageVersion: String(analysis.packageVersion ?? "1.1"),
         externalJobId: analysis.externalJobId ? String(analysis.externalJobId) : null,
         lastError: analysis.lastError ? String(analysis.lastError) : null,
+        lastErrorCode: analysis.lastErrorCode ? String(analysis.lastErrorCode) : null,
         failureHistory,
+        statusHistory,
+        packageFirstAccessedAt: toIso(analysis.packageFirstAccessedAt),
+        packageLastAccessedAt: toIso(analysis.packageLastAccessedAt),
+        packageAccessCount: Number(analysis.packageAccessCount ?? 0),
         result: (analysis.result as SerializableAuditRunAnalysis["result"]) ?? null,
     };
 }

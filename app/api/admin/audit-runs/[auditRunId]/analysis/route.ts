@@ -6,7 +6,7 @@ import {
     guardAdministratorWriteRoute,
     resolveRouteAdministratorIdentity,
 } from "@/src/services/rate-limit/admin-route-guards";
-import { isCursorAutomationProvider } from "@/src/services/cursor-analysis/config";
+import { isAnalysisProviderEnabled } from "@/src/services/cursor-analysis/config";
 import { requestCursorAnalysisForAuditRun } from "@/src/services/cursor-analysis/request-cursor-analysis";
 import { enforceAdministratorActionRateLimit } from "@/src/services/rate-limit/enforce-action-rate-limit";
 import { handleRouteRateLimitError } from "@/src/services/rate-limit/handle-route-rate-limit-error";
@@ -43,7 +43,7 @@ export async function POST(request: Request, context: RouteContext) {
     const writeGuard = await guardAdministratorWriteRoute(request);
     if (writeGuard) return writeGuard;
 
-    if (!isCursorAutomationProvider()) {
+    if (!isAnalysisProviderEnabled()) {
         return NextResponse.json(
             {
                 success: false,
@@ -84,7 +84,8 @@ export async function POST(request: Request, context: RouteContext) {
                           result.code === "STALE_CALLBACK"
                         ? 409
                         : result.code === "PUBLIC_URL_UNREACHABLE" ||
-                            result.code === "PROVIDER_NOT_CONFIGURED"
+                            result.code === "PROVIDER_NOT_CONFIGURED" ||
+                            result.code === "CURSOR_ANALYSIS_NOT_CONFIGURED"
                           ? 400
                           : result.code === "RETRY_LIMIT_REACHED"
                             ? 429
@@ -97,6 +98,7 @@ export async function POST(request: Request, context: RouteContext) {
                         code: result.code,
                         message: result.message,
                         missing: result.missing,
+                        blockers: result.blockers,
                     },
                 },
                 { status },

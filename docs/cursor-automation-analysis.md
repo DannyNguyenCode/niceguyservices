@@ -1,5 +1,7 @@
 # Cursor Automation Website Audit Analysis
 
+> **Contract version 1.1** — Package and callback schemas updated. AI assessment is separate from the official Nice Guy Metrics score. See [Environment variables](#environment-variables) and [Stale analysis recovery](#stale-analysis-recovery).
+
 This document describes the **implemented** Cursor Automation proof-of-concept for AI website audit analysis on the `audittool` branch. It is based on the current code in this repository, not on planned behavior.
 
 **Related files:**
@@ -382,12 +384,12 @@ A parallel admin REST endpoint also exists for status and programmatic trigger:
   "analysisRequestId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
   "packageUrl": "https://your-app.example/api/audits/674a1b2c3d4e5f6789012345/analysis-package?token=...",
   "callbackUrl": "https://your-app.example/api/audits/674a1b2c3d4e5f6789012345/analysis-callback",
-  "callbackAuthorization": {
-    "type": "configured-secret-header",
-    "headerName": "x-cursor-callback-secret"
-  }
+  "callbackAuthHeader": "x-cursor-callback-secret",
+  "callbackAuthToken": "<short-lived-signed-token>"
 }
 ```
+
+The permanent `CURSOR_ANALYSIS_CALLBACK_SECRET` stays on the application server. Each trigger generates a signed `callbackAuthToken` bound to `auditId` and `analysisRequestId`. Cursor sends that token in the header named by `callbackAuthHeader`.
 
 Constants: `CURSOR_ANALYSIS_EVENT`, `CURSOR_ANALYSIS_SCHEMA_VERSION` in [`constants.ts`](../src/services/cursor-analysis/constants.ts).
 
@@ -443,12 +445,7 @@ Follow these steps in the Cursor Automation UI. Exact Cursor screen labels may v
 4. **(manual)** Choose a **webhook** trigger.
 5. **(manual)** Name the Automation (e.g. `Nice Guy Website Audit Analysis`).
 6. Copy agent instructions from [`audit-agent/analysis-instructions.md`](../audit-agent/analysis-instructions.md) — paste the block under **“Copy into Cursor Automation prompt field”** (from “You are the Nice Guy Website Audit Analysis Agent.” through the outreach email rules, before the `---` divider).
-7. **(manual)** Configure `CURSOR_ANALYSIS_CALLBACK_SECRET` as a Cursor Automation secret (not in Git). The agent must send this value in the header named by `CURSOR_ANALYSIS_CALLBACK_HEADER` (default `x-cursor-callback-secret`).
-8. **(manual)** Save the Automation.
-9. Copy the webhook URL → `CURSOR_AUTOMATION_WEBHOOK_URL`. Copy auth details → `CURSOR_AUTOMATION_AUTH_TOKEN`, `CURSOR_AUTOMATION_AUTH_HEADER`, `CURSOR_AUTOMATION_AUTH_SCHEME`.
-10. Add all Cursor and application env vars to your deployment (see [§14](#14-environment-variables)).
-11. Deploy with public HTTPS `APP_PUBLIC_URL`.
-12. Complete a test audit in the dashboard and click **Generate analysis**.
+7. **(manual)** Save the Automation. Cursor does **not** need `CURSOR_ANALYSIS_CALLBACK_SECRET` — each webhook includes a short-lived `callbackAuthToken`.
 
 ---
 
@@ -464,7 +461,7 @@ Rules are defined in [`audit-agent/analysis-instructions.md`](../audit-agent/ana
 | Confidence 0–1 | Zod on `issues[].confidence` |
 | Structured JSON output | `cursorAuditResultSchema` |
 | Keep `auditId` and `analysisRequestId` | Callback checks both match stored request |
-| POST to callback with secret header | Documented in instructions; verified in `verifyCallbackSecret()` |
+| POST to callback with request token header | Documented in instructions; verified via `authenticateAnalysisCallback()` |
 | No audit data in Git | Agent instructions |
 
 ### Evidence types
@@ -491,14 +488,14 @@ Rules are defined in [`audit-agent/analysis-instructions.md`](../audit-agent/ana
 
 ### Authentication
 
-Header name: `CURSOR_ANALYSIS_CALLBACK_HEADER` (default `x-cursor-callback-secret`).  
-Value compared with `CURSOR_ANALYSIS_CALLBACK_SECRET` using `timingSafeEqual`.
+Header name: `callbackAuthHeader` from the webhook (default `x-cursor-callback-secret`).  
+Header value: `callbackAuthToken` from the webhook — HMAC-signed with `CURSOR_ANALYSIS_CALLBACK_SECRET`, bound to `auditId` + `analysisRequestId`, with configurable TTL (`CURSOR_ANALYSIS_CALLBACK_TOKEN_TTL_SECONDS`, default 3600).
 
 ### Request validation
 
 1. Body size ≤ **512 KB** (`CURSOR_ANALYSIS_CALLBACK_MAX_BYTES`) — else 413 `PAYLOAD_TOO_LARGE`.
 2. Valid JSON — else 400 `INVALID_JSON`.
-3. Callback secret — else 401 `UNAUTHORIZED`.
+3. Callback token — else 401 `UNAUTHORIZED` / `CALLBACK_TOKEN_INVALID` / `CALLBACK_TOKEN_EXPIRED`.
 4. Audit exists — else 404.
 5. Active `analysisRequestId` on audit — else 409 `NO_ACTIVE_REQUEST`.
 6. Zod result schema — else 422 `INVALID_RESULT`, status set to `failed` or `retry_pending`.
@@ -731,8 +728,9 @@ When `useCursorAutomation` is true, the legacy OpenAI `AiSummary` / hero suggest
 | `CURSOR_AUTOMATION_AUTH_TOKEN` | Required for Cursor | Server | Webhook auth token | `your-cursor-webhook-auth-token` |
 | `CURSOR_AUTOMATION_AUTH_HEADER` | Optional | Server | HTTP header name for webhook auth | `Authorization` |
 | `CURSOR_AUTOMATION_AUTH_SCHEME` | Optional | Server | Auth scheme prepended to token | `Bearer` |
-| `CURSOR_ANALYSIS_CALLBACK_SECRET` | Required for Cursor | Server | Shared secret for callback header | `your-callback-secret` |
+| `CURSOR_ANALYSIS_CALLBACK_SECRET` | Required for Cursor | Server | Signs per-request callback tokens (never sent to Cursor) | `your-callback-secret` |
 | `CURSOR_ANALYSIS_CALLBACK_HEADER` | Optional | Server | Callback header name | `x-cursor-callback-secret` |
+| `CURSOR_ANALYSIS_CALLBACK_TOKEN_TTL_SECONDS` | Optional | Server | Callback token lifetime | `3600` |
 | `AUDIT_PACKAGE_SIGNING_SECRET` | Required for Cursor | Server | HMAC secret for package tokens | `your-package-signing-secret` |
 | `APP_PUBLIC_URL` | Required for Cursor | Server | Public HTTPS base URL for package and callback URLs | `https://your-app.example` |
 | `APP_URL` | Fallback | Server | Used if `APP_PUBLIC_URL` unset | `https://your-app.example` |
@@ -800,7 +798,7 @@ Steps 4–6 require a live Cursor Automation and have **not** been automated in 
 | Package endpoint 403 | Token `auditId` mismatch | Token payload vs route | Use URL from latest trigger |
 | Expired package URL | Token older than 60 minutes | `AUDIT_PACKAGE_TOKEN_EXPIRED` | Retry analysis for fresh token |
 | Cursor cannot access screenshot | Private URL or Cloudinary misconfiguration | Screenshot `secureUrl` in package | Ensure public HTTPS Cloudinary URLs |
-| Callback auth failure | Wrong secret or header name | Callback 401; env vs Cursor secret | Sync `CURSOR_ANALYSIS_CALLBACK_SECRET` |
+| Callback auth failure | Missing/expired/invalid `callbackAuthToken` | Callback 401 | Use token from latest webhook payload |
 | Result schema failure | Malformed agent JSON | `lastError`; activity `ai-analysis-failed` | Fix agent output; retry |
 | Audit ID mismatch | Agent changed `auditId` in result | Callback 409 | Fix agent instructions |
 | Stale callback | Old `analysisRequestId` after retry | Callback 409 `STALE_CALLBACK` | Expected for old runs; ignore |
@@ -1001,7 +999,6 @@ The existing OpenAI synchronous path (`runAiAnalysis`) already works today when 
 [ ] Webhook trigger enabled
 [ ] Agent instructions pasted from audit-agent/analysis-instructions.md
       (section: "Copy into Cursor Automation prompt field")
-[ ] Cursor-side callback secret configured (matches CURSOR_ANALYSIS_CALLBACK_SECRET)
 [ ] CURSOR_AUTOMATION_WEBHOOK_URL set in deployment
 [ ] CURSOR_AUTOMATION_AUTH_TOKEN set in deployment
 [ ] CURSOR_AUTOMATION_AUTH_HEADER / SCHEME match Cursor webhook auth

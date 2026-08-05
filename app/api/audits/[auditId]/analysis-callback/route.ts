@@ -15,7 +15,7 @@ export async function POST(request: Request, context: RouteContext) {
     const { auditId } = await context.params;
     const config = getCursorAnalysisConfig();
     const headerName = config.callbackHeader ?? "x-cursor-callback-secret";
-    const providedSecret = request.headers.get(headerName);
+    const providedToken = request.headers.get(headerName);
 
     const contentLength = Number(request.headers.get("content-length") ?? "0");
     if (contentLength > CURSOR_ANALYSIS_CALLBACK_MAX_BYTES) {
@@ -37,7 +37,7 @@ export async function POST(request: Request, context: RouteContext) {
 
     const result = await handleCursorAnalysisCallback({
         auditRunId: auditId,
-        providedSecret,
+        providedToken,
         body,
     });
 

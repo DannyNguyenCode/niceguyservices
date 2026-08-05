@@ -10,7 +10,7 @@ import { createActivityLog } from "@/src/data/activity-logs";
 import { runAiAnalysis } from "@/src/services/run-ai-analysis";
 import { requireAdministratorSession } from "@/src/services/auth/administrator-session";
 import { mapRateLimitErrorToActionState } from "@/src/services/rate-limit/map-rate-limit-action-state";
-import { isCursorAutomationProvider } from "@/src/services/cursor-analysis/config";
+import { isAnalysisProviderEnabled } from "@/src/services/cursor-analysis/config";
 import { requestCursorAnalysisForAuditRun } from "@/src/services/cursor-analysis/request-cursor-analysis";
 
 export type RunAiAnalysisActionState = {
@@ -31,7 +31,7 @@ export async function runAiAnalysisAction(
     await requireAdministratorSession(`/dashboard/websites/${websiteId}`);
 
     try {
-        if (isCursorAutomationProvider()) {
+        if (isAnalysisProviderEnabled()) {
             if (!auditRunId) {
                 return {
                     ok: false,

@@ -2,7 +2,7 @@ import "server-only";
 
 import { createHmac, timingSafeEqual } from "node:crypto";
 import {
-    AUDIT_PACKAGE_TOKEN_TTL_MS,
+    getAuditPackageTokenTtlMs,
     getCursorAnalysisConfig,
 } from "@/src/services/cursor-analysis/config";
 
@@ -34,7 +34,7 @@ export function buildAuditPackageToken(input: {
     const payload: AuditPackageTokenPayload = {
         auditId: input.auditId,
         analysisRequestId: input.analysisRequestId,
-        expiresAt: Date.now() + (input.ttlMs ?? AUDIT_PACKAGE_TOKEN_TTL_MS),
+        expiresAt: Date.now() + (input.ttlMs ?? getAuditPackageTokenTtlMs()),
     };
 
     const encodedPayload = Buffer.from(JSON.stringify(payload)).toString("base64url");
@@ -45,6 +45,7 @@ export function buildAuditPackageToken(input: {
 export function verifyAuditPackageToken(
     token: string,
     expectedAuditId: string,
+    expectedAnalysisRequestId?: string,
 ): AuditPackageTokenPayload {
     const [encodedPayload, signature] = token.split(".");
     if (!encodedPayload || !signature) {
@@ -58,15 +59,23 @@ export function verifyAuditPackageToken(
         throw new Error("AUDIT_PACKAGE_TOKEN_INVALID");
     }
 
-    const payload = JSON.parse(
-        Buffer.from(encodedPayload, "base64url").toString("utf8"),
-    ) as AuditPackageTokenPayload;
+    let payload: AuditPackageTokenPayload;
+    try {
+        payload = JSON.parse(
+            Buffer.from(encodedPayload, "base64url").toString("utf8"),
+        ) as AuditPackageTokenPayload;
+    } catch {
+        throw new Error("AUDIT_PACKAGE_TOKEN_INVALID");
+    }
 
     if (payload.auditId !== expectedAuditId) {
         throw new Error("AUDIT_PACKAGE_TOKEN_AUDIT_MISMATCH");
     }
     if (!payload.analysisRequestId) {
         throw new Error("AUDIT_PACKAGE_TOKEN_INVALID");
+    }
+    if (expectedAnalysisRequestId && payload.analysisRequestId !== expectedAnalysisRequestId) {
+        throw new Error("AUDIT_PACKAGE_TOKEN_REQUEST_MISMATCH");
     }
     if (Date.now() > payload.expiresAt) {
         throw new Error("AUDIT_PACKAGE_TOKEN_EXPIRED");

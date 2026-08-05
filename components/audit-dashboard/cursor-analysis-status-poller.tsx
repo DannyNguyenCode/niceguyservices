@@ -2,7 +2,10 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ACTIVE_CURSOR_ANALYSIS_STATUSES } from "@/src/services/cursor-analysis/constants";
+import {
+    ACTIVE_CURSOR_ANALYSIS_STATUSES,
+    TERMINAL_CURSOR_ANALYSIS_STATUSES,
+} from "@/src/services/cursor-analysis/constants";
 import type { CursorAnalysisStatus } from "@/src/services/cursor-analysis/constants";
 
 type CursorAnalysisStatusPollerProps = {
@@ -32,11 +35,10 @@ export default function CursorAnalysisStatusPoller({
                     analysis?: { status?: CursorAnalysisStatus };
                 };
                 const nextStatus = data.analysis?.status;
-                if (
-                    nextStatus === "completed" ||
-                    nextStatus === "failed" ||
-                    nextStatus === "retry_pending"
-                ) {
+                if (nextStatus && TERMINAL_CURSOR_ANALYSIS_STATUSES.includes(nextStatus)) {
+                    router.refresh();
+                }
+                if (nextStatus === "retry_pending") {
                     router.refresh();
                 }
             } catch {

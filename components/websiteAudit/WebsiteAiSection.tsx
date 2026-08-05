@@ -27,7 +27,7 @@ import type { SerializableAiSummary } from "@/src/data/ai-summaries";
 import type { SerializableHeroSuggestion } from "@/src/data/hero-suggestions";
 import type { SerializableNiceGuyMetric } from "@/src/data/niceguy-metrics";
 import type { AiAnalysisStatus } from "@/src/schemas/enums";
-import type { CursorAnalysisReadiness } from "@/src/services/cursor-analysis/readiness";
+import type { AnalysisReadiness } from "@/src/services/cursor-analysis/readiness";
 import type { SerializableAuditRunAnalysis } from "@/src/services/cursor-analysis/types";
 
 type WebsiteAiSectionProps = {
@@ -41,7 +41,7 @@ type WebsiteAiSectionProps = {
     niceGuyMetric: SerializableNiceGuyMetric | null;
     useCursorAutomation?: boolean;
     cursorAnalysis?: SerializableAuditRunAnalysis | null;
-    cursorReadiness?: CursorAnalysisReadiness;
+    cursorReadiness?: AnalysisReadiness;
 };
 
 function FindingListItem({
@@ -295,7 +295,10 @@ export default function WebsiteAiSection({
                 ) : null}
 
                 {useCursorAutomation && cursorAnalysis ? (
-                    <CursorAnalysisResultsPanel analysis={cursorAnalysis} />
+                    <CursorAnalysisResultsPanel
+                        analysis={cursorAnalysis}
+                        officialNiceGuyScore={niceGuyMetric?.overallScore ?? null}
+                    />
                 ) : null}
 
                 {!useCursorAutomation && latestSummary?.status === "complete" ? (

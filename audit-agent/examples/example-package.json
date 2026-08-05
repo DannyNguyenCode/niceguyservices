@@ -1,33 +1,37 @@
 {
-  "schemaVersion": "1.0",
-  "auditId": "audit_example_123",
-  "website": {
-    "url": "https://example.com",
-    "businessName": "Example Business",
-    "industry": "Home services",
-    "pagesAnalyzed": ["https://example.com/"]
+  "schemaVersion": "1.1",
+  "packageVersion": "1.1",
+  "audit": {
+    "auditId": "audit_example_123",
+    "analysisRequestId": "req_example_456",
+    "auditedUrl": "https://example.com",
+    "normalizedUrl": "https://example.com/",
+    "createdAt": "2026-08-01T11:00:00.000Z",
+    "completedAt": "2026-08-01T12:00:00.000Z"
   },
-  "screenshots": [
-    {
+  "screenshots": {
+    "desktop": {
       "id": "shot_desktop_home",
       "page": "home",
       "device": "desktop",
       "url": "https://res.cloudinary.com/demo/image/upload/v1/example-desktop.png",
       "width": 1440,
       "height": 1000,
+      "viewport": { "width": 1440, "height": 900 },
       "capturedAt": "2026-08-01T12:00:00.000Z"
     },
-    {
+    "mobile": {
       "id": "shot_mobile_home",
       "page": "home",
       "device": "mobile",
       "url": "https://res.cloudinary.com/demo/image/upload/v1/example-mobile.png",
       "width": 390,
       "height": 844,
+      "viewport": { "width": 390, "height": 844 },
       "capturedAt": "2026-08-01T12:00:00.000Z"
     }
-  ],
-  "googleMetrics": {
+  },
+  "pageSpeed": {
     "mobile": {
       "strategy": "mobile",
       "status": "complete",
@@ -41,8 +45,25 @@
   },
   "niceGuyMetrics": {
     "status": "complete",
+    "scoringVersion": "niceguy-v2",
     "overallScore": 71,
-    "categories": {}
+    "categories": [],
+    "completeness": {
+      "status": "complete",
+      "evidenceCoverage": 0.92,
+      "applicableChecks": 40,
+      "evaluatedChecks": 38,
+      "unavailableChecks": 2,
+      "notApplicableChecks": 0
+    },
+    "methodology": {
+      "rubricVersion": "v2",
+      "applicabilityVersion": "v2",
+      "deterministicCheckCount": 35,
+      "aiAssistedCheckCount": 5,
+      "limitations": []
+    },
+    "generatedAt": "2026-08-01T12:00:00.000Z"
   },
   "crawl": {
     "status": "complete",
@@ -52,20 +73,23 @@
       {
         "url": "https://example.com/",
         "pageType": "home",
+        "statusCode": 200,
         "title": "Example Business",
-        "visibleText": "Professional services for local customers."
+        "visibleText": "Welcome to Example Business."
       }
     ]
   },
-  "requestedOutputs": [
-    "executive_summary",
-    "strengths",
-    "prioritized_issues",
-    "hero_recommendations",
-    "outreach_email"
-  ],
+  "analysisInstructions": {
+    "promptVersion": "1.1",
+    "outputSchemaVersion": "1.1",
+    "rules": [
+      "Treat deterministic Nice Guy Metrics overallScore as the official audit score."
+    ]
+  },
   "metadata": {
     "packageCreatedAt": "2026-08-01T12:00:00.000Z",
-    "packageVersion": "1.0"
+    "websiteBusinessName": "Example Business",
+    "websiteIndustry": "Home services",
+    "pagesAnalyzed": ["https://example.com/"]
   }
 }

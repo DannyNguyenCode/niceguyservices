@@ -1,123 +1,74 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://niceguyservices.dev/schemas/audit-result/1.0",
-  "title": "CursorAuditResult",
+  "$id": "https://niceguywebdesign.com/schemas/audit-result-1.1.json",
+  "title": "Nice Guy Audit Analysis Result",
   "type": "object",
   "required": [
     "schemaVersion",
     "auditId",
     "analysisRequestId",
-    "status",
-    "overallScore",
+    "assessment",
     "executiveSummary",
     "strengths",
     "issues",
-    "heroSuggestions",
-    "outreachEmail",
-    "metadata"
+    "limitations",
+    "analyzedAt"
   ],
-  "additionalProperties": false,
   "properties": {
-    "schemaVersion": { "const": "1.0" },
-    "auditId": { "type": "string", "minLength": 1 },
-    "analysisRequestId": { "type": "string", "minLength": 1 },
-    "status": { "const": "completed" },
-    "overallScore": { "type": "number", "minimum": 0, "maximum": 100 },
-    "executiveSummary": { "type": "string", "minLength": 1 },
+    "schemaVersion": { "const": "1.1" },
+    "auditId": { "type": "string" },
+    "analysisRequestId": { "type": "string" },
+    "assessment": {
+      "type": "object",
+      "required": ["priority", "confidence", "summary"],
+      "properties": {
+        "priority": { "enum": ["critical", "high", "moderate", "low"] },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "summary": { "type": "string", "maxLength": 2000 }
+      }
+    },
+    "executiveSummary": { "type": "string", "maxLength": 8000 },
     "strengths": {
       "type": "array",
+      "maxItems": 10,
       "items": {
         "type": "object",
-        "required": ["title", "evidence", "sources"],
-        "additionalProperties": false,
+        "required": ["title", "description", "sources"],
         "properties": {
-          "title": { "type": "string" },
-          "evidence": { "type": "string" },
-          "sources": {
-            "type": "array",
-            "items": {
-              "enum": ["screenshot", "pagespeed", "niceguy_metric", "crawl", "content"]
-            },
-            "minItems": 1
-          }
+          "title": { "type": "string", "maxLength": 300 },
+          "description": { "type": "string", "maxLength": 4000 },
+          "category": { "type": "string" },
+          "sources": { "type": "array", "maxItems": 5, "items": { "type": "string" } }
         }
       }
     },
     "issues": {
       "type": "array",
+      "maxItems": 20,
       "items": {
         "type": "object",
-        "required": [
-          "id",
-          "category",
-          "severity",
-          "title",
-          "evidence",
-          "recommendation",
-          "sources",
-          "confidence"
-        ],
-        "additionalProperties": false,
+        "required": ["title", "description", "severity", "category", "recommendation", "sources"],
         "properties": {
-          "id": { "type": "string" },
-          "category": {
-            "enum": [
-              "performance",
-              "accessibility",
-              "seo",
-              "responsive_design",
-              "ux",
-              "conversion",
-              "content",
-              "trust",
-              "technical"
-            ]
-          },
+          "title": { "type": "string", "maxLength": 300 },
+          "description": { "type": "string", "maxLength": 4000 },
           "severity": { "enum": ["critical", "high", "medium", "low"] },
-          "title": { "type": "string" },
-          "evidence": { "type": "string" },
-          "recommendation": { "type": "string" },
-          "sources": {
-            "type": "array",
-            "items": {
-              "enum": ["screenshot", "pagespeed", "niceguy_metric", "crawl", "content"]
-            },
-            "minItems": 1
-          },
-          "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+          "category": { "type": "string", "maxLength": 100 },
+          "recommendation": { "type": "string", "maxLength": 4000 },
+          "sources": { "type": "array", "maxItems": 5, "items": { "type": "string" } }
         }
       }
     },
-    "heroSuggestions": {
-      "type": "object",
-      "required": ["headline", "supportingCopy", "primaryCTA", "secondaryCTA", "designDirection"],
-      "additionalProperties": false,
-      "properties": {
-        "headline": { "type": "string" },
-        "supportingCopy": { "type": "string" },
-        "primaryCTA": { "type": "string" },
-        "secondaryCTA": { "type": ["string", "null"] },
-        "designDirection": { "type": "string" }
-      }
+    "limitations": {
+      "type": "array",
+      "maxItems": 10,
+      "items": { "type": "string", "maxLength": 1000 }
     },
-    "outreachEmail": {
-      "type": "object",
-      "required": ["subject", "body"],
-      "additionalProperties": false,
-      "properties": {
-        "subject": { "type": "string" },
-        "body": { "type": "string" }
-      }
-    },
-    "metadata": {
-      "type": "object",
-      "required": ["analysisMethod", "promptVersion", "completedAt"],
-      "additionalProperties": false,
-      "properties": {
-        "analysisMethod": { "const": "cursor-automation-poc" },
-        "promptVersion": { "type": "string" },
-        "completedAt": { "type": "string", "format": "date-time" }
-      }
+    "analyzedAt": { "type": "string", "format": "date-time" },
+    "deprecatedAiOverallScore": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Deprecated. Do not use as the official audit score."
     }
   }
 }

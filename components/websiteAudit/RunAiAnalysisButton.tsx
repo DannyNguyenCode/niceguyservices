@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { runAiAnalysisAction } from "@/src/actions/ai";
 import { ACTIVE_CURSOR_ANALYSIS_STATUSES } from "@/src/services/cursor-analysis/constants";
-import type { CursorAnalysisReadiness } from "@/src/services/cursor-analysis/readiness";
+import type { AnalysisReadiness } from "@/src/services/cursor-analysis/readiness";
 import type { SerializableAuditRunAnalysis } from "@/src/services/cursor-analysis/types";
 
 type RunAiAnalysisButtonProps = {
@@ -15,7 +15,7 @@ type RunAiAnalysisButtonProps = {
     canRun?: boolean;
     useCursorAutomation?: boolean;
     cursorAnalysis?: SerializableAuditRunAnalysis | null;
-    cursorReadiness?: CursorAnalysisReadiness;
+    cursorReadiness?: AnalysisReadiness;
 };
 
 export default function RunAiAnalysisButton({
@@ -103,8 +103,8 @@ export default function RunAiAnalysisButton({
                 <div className="text-sm text-base-content/70">
                     <p>Missing inputs for Cursor analysis:</p>
                     <ul className="mt-2 list-disc pl-5">
-                        {cursorReadiness.missing.map((item) => (
-                            <li key={item}>{item}</li>
+                        {cursorReadiness.blockers.map((item) => (
+                            <li key={item.code}>{item.message}</li>
                         ))}
                     </ul>
                 </div>

@@ -1,6 +1,10 @@
 import "server-only";
 
-import type { AuditAnalysisProvider, AuditAnalysisTriggerResult } from "@/src/services/cursor-analysis/providers/types";
+import type {
+    AuditAnalysisProvider,
+    TriggerAnalysisInput,
+    TriggerAnalysisResult,
+} from "@/src/services/cursor-analysis/providers/types";
 import {
     assertCursorAnalysisConfigured,
     getCursorAnalysisConfig,
@@ -9,16 +13,21 @@ import {
     CURSOR_ANALYSIS_EVENT,
     CURSOR_ANALYSIS_SCHEMA_VERSION,
 } from "@/src/services/cursor-analysis/constants";
+import { logAnalysisError, logAnalysisEvent } from "@/src/services/cursor-analysis/logging";
+
+const ACCEPTED_WEBHOOK_STATUSES = new Set([200, 201, 202, 204]);
+
+function sanitizeProviderError(status: number, bodyText: string): string {
+    const snippet = bodyText.trim().slice(0, 200);
+    return snippet
+        ? `Cursor webhook rejected the request (${status}): ${snippet}`
+        : `Cursor webhook rejected the request (${status}).`;
+}
 
 export class CursorAutomationAnalysisProvider implements AuditAnalysisProvider {
     readonly name = "cursor-automation";
 
-    async requestAnalysis(input: {
-        auditId: string;
-        analysisRequestId: string;
-        packageUrl: string;
-        callbackUrl: string;
-    }): Promise<AuditAnalysisTriggerResult> {
+    async triggerAnalysis(input: TriggerAnalysisInput): Promise<TriggerAnalysisResult> {
         assertCursorAnalysisConfigured();
         const config = getCursorAnalysisConfig();
 
@@ -35,14 +44,14 @@ export class CursorAutomationAnalysisProvider implements AuditAnalysisProvider {
             analysisRequestId: input.analysisRequestId,
             packageUrl: input.packageUrl,
             callbackUrl: input.callbackUrl,
-            callbackAuthorization: {
-                type: "configured-secret-header",
-                headerName: config.callbackHeader,
-            },
+            callbackAuthHeader: input.callbackAuthHeader,
+            callbackAuthToken: input.callbackAuthToken,
+            promptVersion: input.promptVersion,
+            packageVersion: input.packageVersion,
         };
 
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 30_000);
+        const timeout = setTimeout(() => controller.abort(), config.webhookTimeoutMs);
 
         try {
             const response = await fetch(config.webhookUrl!, {
@@ -65,10 +74,22 @@ export class CursorAutomationAnalysisProvider implements AuditAnalysisProvider {
                 }
             }
 
-            if (!response.ok) {
+            if (!ACCEPTED_WEBHOOK_STATUSES.has(response.status)) {
+                const error = sanitizeProviderError(response.status, bodyText);
+                logAnalysisError(
+                    "webhook_rejected",
+                    {
+                        auditId: input.auditId,
+                        analysisRequestId: input.analysisRequestId,
+                        provider: this.name,
+                        errorCode: "TRIGGER_FAILED",
+                    },
+                    error,
+                );
                 return {
                     accepted: false,
-                    error: `Cursor webhook rejected the request (${response.status}).`,
+                    error,
+                    errorCode: "TRIGGER_FAILED",
                 };
             }
 
@@ -79,20 +100,37 @@ export class CursorAutomationAnalysisProvider implements AuditAnalysisProvider {
                       ? body.id
                       : undefined;
 
+            logAnalysisEvent("webhook_accepted", {
+                auditId: input.auditId,
+                analysisRequestId: input.analysisRequestId,
+                provider: this.name,
+                packageVersion: input.packageVersion,
+                promptVersion: input.promptVersion,
+            });
+
             return {
                 accepted: true,
                 externalJobId,
             };
         } catch (error) {
-            if (error instanceof Error && error.name === "AbortError") {
-                return {
-                    accepted: false,
-                    error: "Cursor webhook request timed out.",
-                };
-            }
+            const message =
+                error instanceof Error && error.name === "AbortError"
+                    ? "Cursor webhook request timed out."
+                    : "Cursor webhook could not be reached.";
+            logAnalysisError(
+                "webhook_error",
+                {
+                    auditId: input.auditId,
+                    analysisRequestId: input.analysisRequestId,
+                    provider: this.name,
+                    errorCode: "TRIGGER_FAILED",
+                },
+                message,
+            );
             return {
                 accepted: false,
-                error: "Cursor webhook could not be reached.",
+                error: message,
+                errorCode: "TRIGGER_FAILED",
             };
         } finally {
             clearTimeout(timeout);

@@ -1,116 +1,135 @@
 import { z } from "zod";
 
-export const AUDIT_EVIDENCE_SOURCES = [
-    "screenshot",
-    "pagespeed",
-    "niceguy_metric",
-    "crawl",
-    "content",
-] as const;
+const boundedString = (max: number) => z.string().trim().min(1).max(max);
 
-export const AUDIT_ISSUE_CATEGORIES = [
-    "performance",
-    "accessibility",
-    "seo",
-    "responsive_design",
-    "ux",
-    "conversion",
-    "content",
-    "trust",
-    "technical",
+export const AUDIT_ASSESSMENT_PRIORITIES = [
+    "critical",
+    "high",
+    "moderate",
+    "low",
 ] as const;
 
 export const AUDIT_ISSUE_SEVERITIES = ["critical", "high", "medium", "low"] as const;
 
-export const AUDIT_REQUESTED_OUTPUTS = [
-    "executive_summary",
-    "strengths",
-    "prioritized_issues",
-    "hero_recommendations",
-    "outreach_email",
-] as const;
-
-const screenshotDeviceSchema = z.enum(["desktop", "mobile"]);
-
-export const cursorAuditPackageSchema = z.object({
-    schemaVersion: z.literal("1.0"),
-    auditId: z.string().min(1),
-    website: z.object({
-        url: z.string().url(),
-        businessName: z.string().nullable(),
-        industry: z.string().nullable(),
-        pagesAnalyzed: z.array(z.string().min(1)),
-    }),
-    screenshots: z.array(
-        z.object({
-            id: z.string().min(1),
-            page: z.string().min(1),
-            device: screenshotDeviceSchema,
-            url: z.string().url(),
+const screenshotRefSchema = z.object({
+    id: z.string().min(1).max(100),
+    page: z.string().min(1).max(100),
+    device: z.enum(["desktop", "mobile"]),
+    url: z.string().url().max(2000),
+    width: z.number().positive(),
+    height: z.number().positive(),
+    viewport: z
+        .object({
             width: z.number().positive(),
             height: z.number().positive(),
-            capturedAt: z.string().datetime(),
-        }),
-    ),
-    googleMetrics: z.object({
+        })
+        .optional(),
+    capturedAt: z.string().datetime(),
+});
+
+const niceGuyCompletenessSchema = z.object({
+    status: z.string().min(1).max(50),
+    evidenceCoverage: z.number().min(0).max(1).nullable(),
+    applicableChecks: z.number().int().min(0).nullable(),
+    evaluatedChecks: z.number().int().min(0).nullable(),
+    unavailableChecks: z.number().int().min(0).nullable(),
+    notApplicableChecks: z.number().int().min(0).nullable(),
+});
+
+const niceGuyMethodologySchema = z.object({
+    rubricVersion: z.string().max(50).optional(),
+    applicabilityVersion: z.string().max(50).optional(),
+    deterministicCheckCount: z.number().int().min(0).optional(),
+    aiAssistedCheckCount: z.number().int().min(0).optional(),
+    limitations: z.array(z.string().max(500)).max(20).optional(),
+});
+
+const niceGuyMetricsPackageSchema = z.object({
+    status: z.string().min(1).max(50),
+    scoringVersion: z.string().min(1).max(50),
+    overallScore: z.number().min(0).max(100).nullable(),
+    categories: z.array(z.unknown()),
+    completeness: niceGuyCompletenessSchema,
+    methodology: niceGuyMethodologySchema,
+    generatedAt: z.string().datetime().optional(),
+});
+
+const analysisInstructionsSchema = z.object({
+    promptVersion: z.string().min(1).max(20),
+    rules: z.array(z.string().max(500)).max(30),
+    outputSchemaVersion: z.string().min(1).max(20),
+});
+
+export const cursorAuditPackageSchema = z.object({
+    schemaVersion: z.literal("1.1"),
+    packageVersion: z.string().min(1).max(20),
+    audit: z.object({
+        auditId: z.string().min(1).max(100),
+        analysisRequestId: z.string().min(1).max(100),
+        auditedUrl: z.string().url().max(2000),
+        normalizedUrl: z.string().url().max(2000).optional(),
+        createdAt: z.string().datetime(),
+        completedAt: z.string().datetime().optional(),
+    }),
+    crawl: z.record(z.string(), z.unknown()),
+    screenshots: z.object({
+        desktop: screenshotRefSchema.nullable(),
+        mobile: screenshotRefSchema.nullable(),
+        additional: z.array(screenshotRefSchema).max(10).optional(),
+    }),
+    pageSpeed: z.object({
         mobile: z.record(z.string(), z.unknown()),
         desktop: z.record(z.string(), z.unknown()),
     }),
-    niceGuyMetrics: z.record(z.string(), z.unknown()),
-    crawl: z.record(z.string(), z.unknown()),
-    requestedOutputs: z.array(z.enum(AUDIT_REQUESTED_OUTPUTS)).min(1),
+    niceGuyMetrics: niceGuyMetricsPackageSchema,
+    analysisInstructions: analysisInstructionsSchema,
     metadata: z.object({
         packageCreatedAt: z.string().datetime(),
-        packageVersion: z.literal("1.0"),
+        websiteBusinessName: z.string().max(300).nullable(),
+        websiteIndustry: z.string().max(200).nullable(),
+        pagesAnalyzed: z.array(z.string().max(2000)).max(100),
     }),
 });
 
+const assessmentSchema = z.object({
+    priority: z.enum(AUDIT_ASSESSMENT_PRIORITIES),
+    confidence: z.number().min(0).max(1),
+    summary: boundedString(2000),
+});
+
+const strengthSchema = z.object({
+    title: boundedString(300),
+    description: boundedString(4000),
+    category: z.string().max(100).optional(),
+    sources: z.array(boundedString(200)).min(1).max(5),
+});
+
+const issueSchema = z.object({
+    title: boundedString(300),
+    description: boundedString(4000),
+    severity: z.enum(AUDIT_ISSUE_SEVERITIES),
+    category: boundedString(100),
+    recommendation: boundedString(4000),
+    sources: z.array(boundedString(200)).min(1).max(5),
+});
+
 export const cursorAuditResultSchema = z.object({
-    schemaVersion: z.literal("1.0"),
-    auditId: z.string().min(1),
-    analysisRequestId: z.string().min(1),
-    status: z.literal("completed"),
-    overallScore: z.number().min(0).max(100),
-    executiveSummary: z.string().min(1),
-    strengths: z.array(
-        z.object({
-            title: z.string().min(1),
-            evidence: z.string().min(1),
-            sources: z.array(z.enum(AUDIT_EVIDENCE_SOURCES)).min(1),
-        }),
-    ),
-    issues: z.array(
-        z.object({
-            id: z.string().min(1),
-            category: z.enum(AUDIT_ISSUE_CATEGORIES),
-            severity: z.enum(AUDIT_ISSUE_SEVERITIES),
-            title: z.string().min(1),
-            evidence: z.string().min(1),
-            recommendation: z.string().min(1),
-            sources: z.array(z.enum(AUDIT_EVIDENCE_SOURCES)).min(1),
-            confidence: z.number().min(0).max(1),
-        }),
-    ),
-    heroSuggestions: z.object({
-        headline: z.string().min(1),
-        supportingCopy: z.string().min(1),
-        primaryCTA: z.string().min(1),
-        secondaryCTA: z.string().nullable(),
-        designDirection: z.string().min(1),
-    }),
-    outreachEmail: z.object({
-        subject: z.string().min(1),
-        body: z.string().min(1),
-    }),
-    metadata: z.object({
-        analysisMethod: z.literal("cursor-automation-poc"),
-        promptVersion: z.string().min(1),
-        completedAt: z.string().datetime(),
-    }),
+    schemaVersion: z.literal("1.1"),
+    analysisRequestId: z.string().min(1).max(100),
+    auditId: z.string().min(1).max(100),
+    assessment: assessmentSchema,
+    executiveSummary: boundedString(8000),
+    strengths: z.array(strengthSchema).max(10),
+    issues: z.array(issueSchema).max(20),
+    limitations: z.array(boundedString(1000)).max(10),
+    analyzedAt: z.string().datetime(),
+    /** @deprecated AI-generated score; use Nice Guy Metrics overallScore as the official audit score. */
+    deprecatedAiOverallScore: z.number().min(0).max(100).optional(),
 });
 
 export type CursorAuditPackage = z.infer<typeof cursorAuditPackageSchema>;
 export type CursorAuditResult = z.infer<typeof cursorAuditResultSchema>;
+export type CursorAuditAssessment = z.infer<typeof assessmentSchema>;
 
 export function validateCursorAuditPackage(value: unknown): CursorAuditPackage {
     return cursorAuditPackageSchema.parse(value);
@@ -126,4 +145,11 @@ export function safeValidateCursorAuditPackage(value: unknown) {
 
 export function safeValidateCursorAuditResult(value: unknown) {
     return cursorAuditResultSchema.safeParse(value);
+}
+
+export function formatCursorResultValidationError(error: z.ZodError): string {
+    const first = error.issues[0];
+    if (!first) return "Result schema validation failed.";
+    const path = first.path.length > 0 ? first.path.join(".") : "root";
+    return `Result schema validation failed at ${path}: ${first.message}`;
 }
