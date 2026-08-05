@@ -60,6 +60,17 @@ function normalizeGoogleMetric(metric: SerializableGoogleMetric | null): Record<
     };
 }
 
+function normalizeEvidenceCoverageForPackage(
+    value: number | null | undefined,
+): number | null {
+    if (value == null || !Number.isFinite(value)) {
+        return null;
+    }
+
+    const normalized = value > 1 ? value / 100 : value;
+    return Math.min(Math.max(normalized, 0), 1);
+}
+
 function normalizeNiceGuyMetric(metric: SerializableNiceGuyMetric): CursorAuditPackage["niceGuyMetrics"] {
     const completeness = metric.completeness;
     const methodology = metric.methodology;
@@ -71,7 +82,9 @@ function normalizeNiceGuyMetric(metric: SerializableNiceGuyMetric): CursorAuditP
         categories: Object.values(metric.categories ?? {}),
         completeness: {
             status: completeness?.isComplete ? "complete" : "preliminary",
-            evidenceCoverage: completeness?.overallEvidenceCoverage ?? null,
+            evidenceCoverage: normalizeEvidenceCoverageForPackage(
+                completeness?.overallEvidenceCoverage,
+            ),
             applicableChecks: null,
             evaluatedChecks: completeness
                 ? (completeness.blockers?.length ?? 0) + (metric.summary?.checksPassed ?? 0)

@@ -175,7 +175,7 @@ function buildCompleteFixtures() {
             label: "Complete",
             provisionalScore: 71,
             blockers: [],
-            overallEvidenceCoverage: 0.9,
+            overallEvidenceCoverage: 92,
         },
         methodology: {
             scoringVersion: "niceguy-v2",
@@ -250,6 +250,7 @@ describe("cursor analysis package builder", () => {
         assert.equal(pkg.schemaVersion, "1.1");
         assert.equal(pkg.packageVersion, "1.1");
         assert.ok(pkg.niceGuyMetrics.completeness);
+        assert.equal(pkg.niceGuyMetrics.completeness.evidenceCoverage, 0.92);
         assert.ok(pkg.niceGuyMetrics.methodology);
         assert.ok(pkg.screenshots.desktop);
         assert.ok(pkg.screenshots.mobile);
