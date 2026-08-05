@@ -5,6 +5,7 @@ import {
     resetCursorAnalysisConfigForTests,
     getCursorAnalysisConfig,
     getCursorConfigurationStatus,
+    isAnalysisProviderEnabled,
 } from "@/src/services/cursor-analysis/config";
 import { canTransitionAnalysisStatus } from "@/src/services/cursor-analysis/state-machine";
 import {
@@ -544,9 +545,15 @@ describe("cursor analysis callback token matching", () => {
 });
 
 describe("cursor analysis config", () => {
-    it("defaults provider to openai when unset", () => {
+    it("defaults provider to openai when unset and Cursor is not configured", () => {
         delete process.env.AI_ANALYSIS_PROVIDER;
         delete process.env.AI_PROVIDER;
+        delete process.env.CURSOR_AUTOMATION_WEBHOOK_URL;
+        delete process.env.CURSOR_AUTOMATION_AUTH_TOKEN;
+        delete process.env.CURSOR_ANALYSIS_CALLBACK_SECRET;
+        delete process.env.AUDIT_PACKAGE_SIGNING_SECRET;
+        delete process.env.APP_PUBLIC_URL;
+        delete process.env.VERCEL_URL;
         resetCursorAnalysisConfigForTests();
         assert.equal(getCursorAnalysisConfig().provider, "openai");
     });
@@ -563,6 +570,47 @@ describe("cursor analysis config", () => {
     it("defaults package and prompt versions to 1.1", () => {
         assert.equal(getCursorAnalysisConfig().packageVersion, "1.1");
         assert.equal(getCursorAnalysisConfig().promptVersion, "1.1");
+    });
+
+    it("auto-selects cursor-automation when Cursor infrastructure is fully configured", () => {
+        delete process.env.AI_ANALYSIS_PROVIDER;
+        delete process.env.AI_PROVIDER;
+        process.env.CURSOR_AUTOMATION_WEBHOOK_URL = "https://api2.cursor.sh/automations/webhook/test";
+        process.env.CURSOR_AUTOMATION_AUTH_TOKEN = "crsr_test_token";
+        process.env.CURSOR_ANALYSIS_CALLBACK_SECRET = "callback-secret";
+        process.env.AUDIT_PACKAGE_SIGNING_SECRET = "package-secret";
+        process.env.APP_PUBLIC_URL = "https://preview.example.com";
+        resetCursorAnalysisConfigForTests();
+        assert.equal(getCursorAnalysisConfig().provider, "cursor-automation");
+        assert.equal(isAnalysisProviderEnabled(), true);
+    });
+
+    it("uses VERCEL_URL when APP_PUBLIC_URL is unset", () => {
+        delete process.env.APP_PUBLIC_URL;
+        delete process.env.APP_URL;
+        delete process.env.NEXT_PUBLIC_SITE_URL;
+        process.env.VERCEL_URL = "niceguyservices-git-audittool-user.vercel.app";
+        resetCursorAnalysisConfigForTests();
+        assert.equal(getCursorAnalysisConfig().publicAppUrl, "https://niceguyservices-git-audittool-user.vercel.app");
+    });
+
+    it("strips Authorization Bearer prefix from webhook auth token", () => {
+        process.env.CURSOR_AUTOMATION_AUTH_TOKEN =
+            "Authorization: Bearer crsr_test_token";
+        resetCursorAnalysisConfigForTests();
+        assert.equal(getCursorAnalysisConfig().webhookAuthToken, "crsr_test_token");
+    });
+
+    it("honors explicit AI_ANALYSIS_PROVIDER=openai over Cursor infrastructure", () => {
+        process.env.AI_ANALYSIS_PROVIDER = "openai";
+        process.env.CURSOR_AUTOMATION_WEBHOOK_URL = "https://api2.cursor.sh/automations/webhook/test";
+        process.env.CURSOR_AUTOMATION_AUTH_TOKEN = "crsr_test_token";
+        process.env.CURSOR_ANALYSIS_CALLBACK_SECRET = "callback-secret";
+        process.env.AUDIT_PACKAGE_SIGNING_SECRET = "package-secret";
+        process.env.APP_PUBLIC_URL = "https://preview.example.com";
+        resetCursorAnalysisConfigForTests();
+        assert.equal(getCursorAnalysisConfig().provider, "openai");
+        assert.equal(isAnalysisProviderEnabled(), false);
     });
 });
 

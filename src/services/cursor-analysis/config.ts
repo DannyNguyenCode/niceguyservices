@@ -93,12 +93,79 @@ function readSecret(value: string | undefined): string | undefined {
     return trimmed;
 }
 
+function readWebhookAuthToken(value: string | undefined): string | undefined {
+    const trimmed = readSecret(value);
+    if (!trimmed) return undefined;
+    const bearerMatch = trimmed.match(/^(?:authorization:\s*)?bearer\s+(.+)$/i);
+    return bearerMatch ? bearerMatch[1].trim() : trimmed;
+}
+
+function resolvePublicAppUrl(): string | undefined {
+    const candidates = [
+        readSecret(process.env.APP_PUBLIC_URL),
+        readSecret(process.env.APP_URL),
+        readSecret(process.env.NEXT_PUBLIC_SITE_URL),
+    ];
+
+    for (const candidate of candidates) {
+        if (!candidate) continue;
+        try {
+            return new URL(candidate).toString().replace(/\/$/, "");
+        } catch {
+            continue;
+        }
+    }
+
+    const vercelUrl = process.env.VERCEL_URL?.trim();
+    if (vercelUrl) {
+        return `https://${vercelUrl.replace(/\/$/, "")}`;
+    }
+
+    return undefined;
+}
+
+type CursorInfrastructureConfig = Pick<
+    CursorAnalysisConfig,
+    | "webhookUrl"
+    | "webhookAuthToken"
+    | "callbackSecret"
+    | "packageSigningSecret"
+    | "publicAppUrl"
+>;
+
+function getCursorInfrastructureStatus(
+    config: CursorInfrastructureConfig,
+): CursorConfigurationStatus {
+    const missing: string[] = [];
+    if (!config.webhookUrl) missing.push("CURSOR_AUTOMATION_WEBHOOK_URL");
+    if (!config.webhookAuthToken) missing.push("CURSOR_AUTOMATION_AUTH_TOKEN");
+    if (!config.callbackSecret) missing.push("CURSOR_ANALYSIS_CALLBACK_SECRET");
+    if (!config.packageSigningSecret) missing.push("AUDIT_PACKAGE_SIGNING_SECRET");
+    if (!config.publicAppUrl) missing.push("APP_PUBLIC_URL");
+    return { configured: missing.length === 0, missing };
+}
+
+function resolveAnalysisProvider(
+    parsed: z.infer<typeof cursorAnalysisEnvSchema>,
+): string {
+    const explicitAnalysis = process.env.AI_ANALYSIS_PROVIDER?.trim().toLowerCase();
+    if (explicitAnalysis) {
+        return explicitAnalysis;
+    }
+
+    if (getCursorInfrastructureStatus(parsed).configured) {
+        return "cursor-automation";
+    }
+
+    return parsed.provider;
+}
+
 export function getCursorAnalysisConfig(): CursorAnalysisConfig {
     if (!cachedConfig) {
-        cachedConfig = cursorAnalysisEnvSchema.parse({
-            provider: process.env.AI_ANALYSIS_PROVIDER ?? process.env.AI_PROVIDER,
+        const parsed = cursorAnalysisEnvSchema.parse({
+            provider: process.env.AI_PROVIDER,
             webhookUrl: process.env.CURSOR_AUTOMATION_WEBHOOK_URL,
-            webhookAuthToken: readSecret(process.env.CURSOR_AUTOMATION_AUTH_TOKEN),
+            webhookAuthToken: readWebhookAuthToken(process.env.CURSOR_AUTOMATION_AUTH_TOKEN),
             webhookAuthHeader: process.env.CURSOR_AUTOMATION_AUTH_HEADER,
             webhookAuthScheme: process.env.CURSOR_AUTOMATION_AUTH_SCHEME,
             webhookTimeoutMs: process.env.CURSOR_AUTOMATION_WEBHOOK_TIMEOUT_MS,
@@ -107,10 +174,7 @@ export function getCursorAnalysisConfig(): CursorAnalysisConfig {
             callbackTokenTtlSeconds: process.env.CURSOR_ANALYSIS_CALLBACK_TOKEN_TTL_SECONDS,
             packageSigningSecret: readSecret(process.env.AUDIT_PACKAGE_SIGNING_SECRET),
             packageUrlTtlSeconds: process.env.AUDIT_PACKAGE_URL_TTL_SECONDS,
-            publicAppUrl:
-                process.env.APP_PUBLIC_URL ||
-                process.env.APP_URL ||
-                process.env.NEXT_PUBLIC_SITE_URL,
+            publicAppUrl: resolvePublicAppUrl(),
             allowLocalhostTrigger: process.env.CURSOR_ANALYSIS_ALLOW_LOCALHOST,
             promptVersion: process.env.CURSOR_ANALYSIS_PROMPT_VERSION,
             packageVersion: process.env.CURSOR_ANALYSIS_PACKAGE_VERSION,
@@ -118,6 +182,11 @@ export function getCursorAnalysisConfig(): CursorAnalysisConfig {
             queuedTimeoutMinutes: process.env.CURSOR_ANALYSIS_QUEUED_TIMEOUT_MINUTES,
             activeTimeoutMinutes: process.env.CURSOR_ANALYSIS_ACTIVE_TIMEOUT_MINUTES,
         });
+
+        cachedConfig = {
+            ...parsed,
+            provider: resolveAnalysisProvider(parsed),
+        };
     }
     return cachedConfig;
 }
@@ -153,14 +222,7 @@ export type CursorConfigurationStatus = {
 };
 
 export function getCursorConfigurationStatus(): CursorConfigurationStatus {
-    const config = getCursorAnalysisConfig();
-    const missing: string[] = [];
-    if (!config.webhookUrl) missing.push("CURSOR_AUTOMATION_WEBHOOK_URL");
-    if (!config.webhookAuthToken) missing.push("CURSOR_AUTOMATION_AUTH_TOKEN");
-    if (!config.callbackSecret) missing.push("CURSOR_ANALYSIS_CALLBACK_SECRET");
-    if (!config.packageSigningSecret) missing.push("AUDIT_PACKAGE_SIGNING_SECRET");
-    if (!config.publicAppUrl) missing.push("APP_PUBLIC_URL");
-    return { configured: missing.length === 0, missing };
+    return getCursorInfrastructureStatus(getCursorAnalysisConfig());
 }
 
 export function isCursorAnalysisConfigured(): boolean {

@@ -10,7 +10,10 @@ import { createActivityLog } from "@/src/data/activity-logs";
 import { runAiAnalysis } from "@/src/services/run-ai-analysis";
 import { requireAdministratorSession } from "@/src/services/auth/administrator-session";
 import { mapRateLimitErrorToActionState } from "@/src/services/rate-limit/map-rate-limit-action-state";
-import { isAnalysisProviderEnabled } from "@/src/services/cursor-analysis/config";
+import {
+    getCursorConfigurationStatus,
+    isAnalysisProviderEnabled,
+} from "@/src/services/cursor-analysis/config";
 import { requestCursorAnalysisForAuditRun } from "@/src/services/cursor-analysis/request-cursor-analysis";
 
 export type RunAiAnalysisActionState = {
@@ -57,6 +60,15 @@ export async function runAiAnalysisAction(
                 status: "triggered",
                 analysisRequestId: result.analysisRequestId,
                 message: "Cursor analysis triggered. Results will appear when the callback completes.",
+            };
+        }
+
+        const cursorStatus = getCursorConfigurationStatus();
+        if (cursorStatus.missing.length > 0 && cursorStatus.missing.length < 5) {
+            return {
+                ok: false,
+                message: `Cursor analysis is partially configured. Missing: ${cursorStatus.missing.join(", ")}. Add these in Vercel (Preview + Production) or set AI_ANALYSIS_PROVIDER=openai with AI_API_KEY for the legacy OpenAI path.`,
+                missing: cursorStatus.missing,
             };
         }
 
