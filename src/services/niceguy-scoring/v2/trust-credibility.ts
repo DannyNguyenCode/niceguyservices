@@ -265,7 +265,7 @@ export function scoreTrustCredibilityV2(
             description: "Contradictory operational details across pages reduce confidence.",
             status: consistencyStatus,
             weight: 5,
-            pointsAwarded: consistencyStatus === "passed" ? 5 : 3,
+            pointsAwarded: consistencyStatus === "partial" ? 3 : 0,
             evidence: copyrightYear
                 ? [{ type: "derived", label: "Copyright year detected", value: copyrightYear[1] }]
                 : [],

@@ -168,7 +168,7 @@ export function scoreBusinessClarityV2(
                 value: hit,
             })),
             recommendation:
-                audienceStatus === "not_detected" && audienceStatus !== "not_applicable"
+                audienceStatus === "not_detected"
                     ? "Clarify who the offer is for using plain language on the homepage."
                     : null,
         }),
@@ -277,8 +277,7 @@ export function scoreBusinessClarityV2(
             description: "Useful next-step expectations should be stated when relevant.",
             status: expectationStatus,
             weight: 8,
-            pointsAwarded:
-                expectationStatus === "passed" ? 8 : expectationStatus === "partial" ? 4 : 0,
+            pointsAwarded: expectationStatus === "passed" ? 8 : 0,
             evidence: expectationHit
                 ? [{ type: "content", label: "Expectation phrase", value: expectationHit }]
                 : [],

@@ -17,7 +17,7 @@ function resolveCtaDestination(
     input: NiceGuyScoringInput,
     href: string | undefined,
 ): { aligned: boolean; destination: string | null } {
-    if (!href || href === "#") return { aligned: false, destination: href };
+    if (!href || href === "#") return { aligned: false, destination: href ?? null };
     const normalizedHref = href.toLowerCase();
     const pages = input.crawl.pageResults.map((page) => page.path.toLowerCase());
     const isInternal =
@@ -159,8 +159,7 @@ export function scoreConversionReadinessV2(
             description: "CTA destinations should align with label intent.",
             status: continuityStatus,
             weight: 12,
-            pointsAwarded:
-                continuityStatus === "passed" ? 12 : continuityStatus === "partial" ? 6 : 0,
+            pointsAwarded: continuityStatus === "passed" ? 12 : 0,
             evidence: [
                 {
                     type: "link",
@@ -226,7 +225,7 @@ export function scoreConversionReadinessV2(
             description: "Visitors should understand what happens after they act.",
             status: outcomeStatus,
             weight: 10,
-            pointsAwarded: outcomeStatus === "passed" ? 10 : outcomeStatus === "partial" ? 5 : 0,
+            pointsAwarded: outcomeStatus === "passed" ? 10 : 0,
             evidence: outcomeHit
                 ? [{ type: "content", label: "Outcome phrase", value: outcomeHit }]
                 : [],
@@ -264,7 +263,7 @@ export function scoreConversionReadinessV2(
             description: "Primary action should remain reachable at mobile viewport.",
             status: mobileStatus,
             weight: 6,
-            pointsAwarded: mobileStatus === "passed" ? 6 : mobileStatus === "partial" ? 3 : 0,
+            pointsAwarded: mobileStatus === "partial" ? 3 : 0,
             missing: ["Mobile viewport geometry was not captured; label-based screening only."],
             recommendation:
                 "Verify primary CTA and required fields on a 390px-wide viewport during manual review.",
@@ -275,8 +274,7 @@ export function scoreConversionReadinessV2(
             description: "Forms should expose validation or instruction structures.",
             status: feedbackStatus,
             weight: 3,
-            pointsAwarded:
-                feedbackStatus === "passed" ? 3 : feedbackStatus === "partial" ? 2 : 0,
+            pointsAwarded: feedbackStatus === "partial" ? 2 : 0,
             evidence: [{ type: "form", label: "Forms inspected", value: forms.length }],
         }),
     ];

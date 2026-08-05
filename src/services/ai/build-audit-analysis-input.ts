@@ -10,7 +10,11 @@ import type { SerializableWebsite } from "@/src/data/websites";
 import { AI_INPUT_LIMITS } from "@/src/services/ai/constants";
 import { truncateExcerpt } from "@/src/services/ai/sanitize-input";
 import type { AuditAnalysisInput } from "@/src/services/ai/types";
-import type { CategoryScore, MetricCheck } from "@/src/services/niceguy-scoring/types";
+import type {
+    CategoryScore,
+    CheckStatus,
+    MetricCheck,
+} from "@/src/services/niceguy-scoring/types";
 
 const CATEGORY_KEYS: NiceGuyCategoryKey[] = [
     "businessClarity",
@@ -23,10 +27,17 @@ const CATEGORY_KEYS: NiceGuyCategoryKey[] = [
 ];
 
 function checkPriorityScore(check: MetricCheck): number {
-    const statusOrder = { failed: 0, partial: 1, unavailable: 2, passed: 3 };
+    const statusOrder: Record<CheckStatus, number> = {
+        failed: 0,
+        partial: 1,
+        not_detected: 2,
+        unavailable: 3,
+        passed: 4,
+        not_applicable: 5,
+    };
     const priorityOrder = { high: 0, medium: 1, low: 2 };
     return (
-        (statusOrder[check.status] ?? 3) * 10 +
+        statusOrder[check.status] * 10 +
         (priorityOrder[check.priority ?? "low"] ?? 2)
     );
 }
