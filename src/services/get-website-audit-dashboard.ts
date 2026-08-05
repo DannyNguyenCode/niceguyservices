@@ -31,6 +31,7 @@ import { formatAuditStageStatus } from "@/src/lib/audit-dashboard-labels";
 import { calculateAuditReadiness } from "@/src/services/audit-readiness";
 import { calculateCursorAnalysisReadiness } from "@/src/services/cursor-analysis/readiness";
 import { isAnalysisProviderEnabled } from "@/src/services/cursor-analysis/config";
+import { mapCursorAnalysisStatusToAiStatus } from "@/src/services/cursor-analysis/display-status";
 import type {
     AuditHistoryItem,
     AuditRelationWarning,
@@ -459,7 +460,7 @@ export async function getWebsiteAuditDashboard(
         },
         cursorAnalysis: auditRunResources?.auditRun.analysis ?? null,
         cursorAnalysisReadiness,
-        useCursorAutomation: isAnalysisProviderEnabled(),
+        cursorAnalysisConfigured: isAnalysisProviderEnabled(),
         ...(includeActivity ? { activity } : {}),
     };
 }

@@ -24,7 +24,7 @@ const cursorAnalysisEnvSchema = z.object({
     provider: z
         .string()
         .optional()
-        .transform((value) => value?.trim().toLowerCase() || "openai"),
+        .transform((value) => value?.trim().toLowerCase() || "unconfigured"),
     webhookUrl: z
         .string()
         .optional()
@@ -149,7 +149,7 @@ function resolveAnalysisProvider(
     parsed: z.infer<typeof cursorAnalysisEnvSchema>,
 ): string {
     const explicitAnalysis = process.env.AI_ANALYSIS_PROVIDER?.trim().toLowerCase();
-    if (explicitAnalysis) {
+    if (explicitAnalysis === "mock" || explicitAnalysis === "cursor-automation") {
         return explicitAnalysis;
     }
 
@@ -157,13 +157,12 @@ function resolveAnalysisProvider(
         return "cursor-automation";
     }
 
-    return parsed.provider;
+    return "unconfigured";
 }
 
 export function getCursorAnalysisConfig(): CursorAnalysisConfig {
     if (!cachedConfig) {
         const parsed = cursorAnalysisEnvSchema.parse({
-            provider: process.env.AI_PROVIDER,
             webhookUrl: process.env.CURSOR_AUTOMATION_WEBHOOK_URL,
             webhookAuthToken: readWebhookAuthToken(process.env.CURSOR_AUTOMATION_AUTH_TOKEN),
             webhookAuthHeader: process.env.CURSOR_AUTOMATION_AUTH_HEADER,

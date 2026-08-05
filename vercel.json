@@ -7,9 +7,6 @@
     "app/api/admin/websites/[id]/pagespeed/route.ts": {
       "maxDuration": 300
     },
-    "app/api/admin/websites/[id]/ai-analysis/route.ts": {
-      "maxDuration": 300
-    },
     "app/api/admin/websites/[id]/niceguy-analysis/route.ts": {
       "maxDuration": 120
     },

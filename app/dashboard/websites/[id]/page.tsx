@@ -21,6 +21,7 @@ import WebsitePageSpeedSection from "@/components/websiteAudit/WebsitePageSpeedS
 import WebsiteScreenshotsSection from "@/components/websiteAudit/WebsiteScreenshotsSection";
 import { AUDIT_SECTIONS } from "@/src/lib/audit-sections";
 import { getAuditRunById } from "@/src/data/audit-runs";
+import { mapCursorAnalysisStatusToAiStatus } from "@/src/services/cursor-analysis/display-status";
 import { getWebsiteAuditDashboard } from "@/src/services/get-website-audit-dashboard";
 
 export default async function DashboardWebsiteDetailPage({
@@ -60,7 +61,7 @@ export default async function DashboardWebsiteDetailPage({
         cursorAnalysis,
         cursorAnalysisReadiness,
     } = dashboard;
-    const useCursorAutomation = dashboard.useCursorAutomation;
+    const cursorAnalysisConfigured = dashboard.cursorAnalysisConfigured;
     const selectedAuditRun = selectedAuditRunId
         ? await getAuditRunById(selectedAuditRunId)
         : null;
@@ -73,8 +74,6 @@ export default async function DashboardWebsiteDetailPage({
     const displayPageSpeedMobile = latest.pageSpeed.mobile;
     const displayPageSpeedDesktop = latest.pageSpeed.desktop;
     const displayNiceGuy = latest.niceGuy;
-    const displayAiSummary = latest.aiSummary;
-    const displayHeroSuggestions = latest.heroSuggestions;
     const businessLabel = website.businessName?.trim() || website.normalizedDomain;
 
     const pageSpeedReady = Boolean(
@@ -84,15 +83,14 @@ export default async function DashboardWebsiteDetailPage({
     const niceGuyPrerequisitesMet = Boolean(
         displayCrawl?.status === "complete" && pageSpeedReady,
     );
-    const aiPrerequisitesMet = Boolean(
-        niceGuyPrerequisitesMet &&
-            displayNiceGuy?.status === "complete" &&
-            displayNiceGuy.crawlId === displayCrawl?.id,
-    );
 
     const pollWhileActive = Boolean(
         activeJob && ["queued", "processing"].includes(activeJob.status),
     );
+
+    const effectiveAiAnalysisStatus = cursorAnalysis
+        ? mapCursorAnalysisStatusToAiStatus(cursorAnalysis.status)
+        : website.aiAnalysisStatus;
 
     return (
         <div className="grid grid-cols-1 gap-4 sm:gap-6">
@@ -165,15 +163,12 @@ export default async function DashboardWebsiteDetailPage({
                     <WebsiteAiSection
                         websiteId={website.id}
                         auditRunId={selectedAuditRunId}
-                        aiAnalysisStatus={displayAiSummary?.status ?? website.aiAnalysisStatus}
+                        aiAnalysisStatus={effectiveAiAnalysisStatus}
                         latestAiAnalysisRunAt={
-                            displayAiSummary?.generatedAt ?? website.latestAiAnalysisRunAt
+                            cursorAnalysis?.completedAt ?? website.latestAiAnalysisRunAt
                         }
-                        prerequisitesMet={aiPrerequisitesMet}
-                        latestSummary={displayAiSummary}
-                        heroSuggestions={displayHeroSuggestions}
                         niceGuyMetric={displayNiceGuy}
-                        useCursorAutomation={useCursorAutomation}
+                        cursorAnalysisConfigured={cursorAnalysisConfigured}
                         cursorAnalysis={cursorAnalysis}
                         cursorReadiness={cursorAnalysisReadiness}
                     />

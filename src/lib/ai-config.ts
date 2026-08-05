@@ -14,10 +14,6 @@ export const AI_CONFIG = {
     model: process.env.AI_MODEL?.trim() || "gpt-4o-mini",
     timeoutMs: parsePositiveInt(process.env.AI_REQUEST_TIMEOUT_MS, 120_000),
     maxRetries: parsePositiveInt(process.env.AI_MAX_RETRIES, 2),
-    analysisPromptVersion:
-        process.env.AI_ANALYSIS_PROMPT_VERSION?.trim() || AI_ANALYSIS_VERSION,
-    heroPromptVersion:
-        process.env.AI_HERO_PROMPT_VERSION?.trim() || AI_HERO_SUGGESTION_VERSION,
     retryDelaysMs: [1_000, 3_000],
 } as const;
 

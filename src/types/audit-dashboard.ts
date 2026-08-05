@@ -139,6 +139,6 @@ export type WebsiteAuditDashboardData = {
     };
     cursorAnalysis: SerializableAuditRunAnalysis | null;
     cursorAnalysisReadiness: AnalysisReadiness;
-    useCursorAutomation: boolean;
+    cursorAnalysisConfigured: boolean;
     activity?: SerializableActivityItem[];
 };

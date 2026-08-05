@@ -92,10 +92,8 @@ export default function AuditStageActions({
                         <RunAiAnalysisButton
                             websiteId={websiteId}
                             auditRunId={data.selectedAuditRunId}
-                            aiAnalysisStatus={website.aiAnalysisStatus}
-                            prerequisitesMet={niceGuyReady}
                             canRun={readiness.canRunAiAnalysis}
-                            useCursorAutomation={data.useCursorAutomation}
+                            cursorAnalysisConfigured={data.cursorAnalysisConfigured}
                             cursorAnalysis={data.cursorAnalysis}
                             cursorReadiness={data.cursorAnalysisReadiness}
                         />

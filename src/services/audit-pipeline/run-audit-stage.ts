@@ -20,10 +20,8 @@ import type {
     AuditPipelineStageName,
     AuditStageResult,
 } from "@/src/services/audit-pipeline/types";
-import { isAiConfigured } from "@/src/lib/ai-config";
-import { getDeploymentEnvironment } from "@/src/config/app-env";
-import { runDevelopmentMockAiAnalysis } from "@/src/services/run-development-mock-ai-analysis";
-import { runAiAnalysis } from "@/src/services/run-ai-analysis";
+import { isAnalysisProviderEnabled } from "@/src/services/cursor-analysis/config";
+import { requestCursorAnalysisForAuditRun } from "@/src/services/cursor-analysis/request-cursor-analysis";
 import { runNiceGuyAnalysis } from "@/src/services/run-niceguy-analysis";
 import {
     completeGoogleMetricRecord,
@@ -362,44 +360,30 @@ export async function runAuditStage(
                 };
             }
 
-            const result = isAiConfigured()
-                ? await runAiAnalysis(context.websiteId, {
-                      internalWorker: true,
-                      crawlId: crawl.id,
-                      auditRunId: context.auditRunId,
-                      managedByPipeline: true,
-                      requirePageSpeed: context.configuration.includePageSpeed,
-                  })
-                : getDeploymentEnvironment() === "development"
-                  ? await runDevelopmentMockAiAnalysis(context.websiteId, {
-                        internalWorker: true,
-                        crawlId: crawl.id,
-                        auditRunId: context.auditRunId,
-                    })
-                  : {
-                        success: false as const,
-                        error: {
-                            code: "AI_CONFIGURATION_ERROR",
-                            message: "AI provider is not configured.",
-                        },
-                    };
-
-            if (!result.success) {
+            if (!isAnalysisProviderEnabled()) {
                 return {
                     status: "completed_with_warnings",
-                    errorCode: result.error.code,
-                    errorMessage: result.error.message,
+                    errorCode: "CURSOR_ANALYSIS_NOT_CONFIGURED",
+                    errorMessage:
+                        "Cursor analysis is not configured. Add Cursor environment variables and redeploy.",
                     retryable: true,
                 };
             }
+
+            const result = await requestCursorAnalysisForAuditRun(context.auditRunId);
+            if (!result.ok) {
+                return {
+                    status: "completed_with_warnings",
+                    errorCode: result.code,
+                    errorMessage: result.message,
+                    retryable: result.code !== "ANALYSIS_ALREADY_ACTIVE",
+                };
+            }
+
             return {
-                status:
-                    result.status === "partial" || !isAiConfigured()
-                        ? "completed_with_warnings"
-                        : "completed",
-                errorMessage: !isAiConfigured()
-                    ? "Development mock AI analysis was used because no AI provider is configured."
-                    : undefined,
+                status: "completed_with_warnings",
+                errorMessage:
+                    "Cursor analysis triggered. Results will complete asynchronously via callback.",
             };
         }
         case "finalize": {

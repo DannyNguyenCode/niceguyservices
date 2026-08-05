@@ -25,7 +25,7 @@
     "test:playwright:ui": "playwright test --ui",
     "test:pagespeed": "npx tsx --test tests/pagespeed-parser.test.ts",
     "test:niceguy": "npx tsx --test tests/niceguy-scoring.test.ts",
-    "test:ai": "npx tsx --test tests/ai-analysis.test.ts",
+    "test:cursor-analysis": "npx tsx --import ./scripts/preload-cli.ts --test tests/cursor-analysis.test.ts",
     "test:dashboard": "npx tsx --test tests/audit-dashboard.test.ts tests/audit-sections.test.ts tests/audit-dashboard-ui.test.ts",
     "test:reports": "npx tsx --test tests/public-reports.test.ts",
     "test:pdf": "npx tsx --test tests/pdf-reports.test.ts",

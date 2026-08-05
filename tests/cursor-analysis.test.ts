@@ -545,9 +545,8 @@ describe("cursor analysis callback token matching", () => {
 });
 
 describe("cursor analysis config", () => {
-    it("defaults provider to openai when unset and Cursor is not configured", () => {
+    it("defaults provider to unconfigured when Cursor is not configured", () => {
         delete process.env.AI_ANALYSIS_PROVIDER;
-        delete process.env.AI_PROVIDER;
         delete process.env.CURSOR_AUTOMATION_WEBHOOK_URL;
         delete process.env.CURSOR_AUTOMATION_AUTH_TOKEN;
         delete process.env.CURSOR_ANALYSIS_CALLBACK_SECRET;
@@ -555,7 +554,8 @@ describe("cursor analysis config", () => {
         delete process.env.APP_PUBLIC_URL;
         delete process.env.VERCEL_URL;
         resetCursorAnalysisConfigForTests();
-        assert.equal(getCursorAnalysisConfig().provider, "openai");
+        assert.equal(getCursorAnalysisConfig().provider, "unconfigured");
+        assert.equal(isAnalysisProviderEnabled(), false);
     });
 
     it("reports missing cursor configuration", () => {
@@ -601,7 +601,7 @@ describe("cursor analysis config", () => {
         assert.equal(getCursorAnalysisConfig().webhookAuthToken, "crsr_test_token");
     });
 
-    it("honors explicit AI_ANALYSIS_PROVIDER=openai over Cursor infrastructure", () => {
+    it("ignores unsupported AI_ANALYSIS_PROVIDER values", () => {
         process.env.AI_ANALYSIS_PROVIDER = "openai";
         process.env.CURSOR_AUTOMATION_WEBHOOK_URL = "https://api2.cursor.sh/automations/webhook/test";
         process.env.CURSOR_AUTOMATION_AUTH_TOKEN = "crsr_test_token";
@@ -609,7 +609,20 @@ describe("cursor analysis config", () => {
         process.env.AUDIT_PACKAGE_SIGNING_SECRET = "package-secret";
         process.env.APP_PUBLIC_URL = "https://preview.example.com";
         resetCursorAnalysisConfigForTests();
-        assert.equal(getCursorAnalysisConfig().provider, "openai");
+        assert.equal(getCursorAnalysisConfig().provider, "cursor-automation");
+        assert.equal(isAnalysisProviderEnabled(), true);
+    });
+
+    it("does not enable provider when only webhook URL is partially configured", () => {
+        delete process.env.AI_ANALYSIS_PROVIDER;
+        delete process.env.CURSOR_AUTOMATION_AUTH_TOKEN;
+        delete process.env.CURSOR_ANALYSIS_CALLBACK_SECRET;
+        delete process.env.AUDIT_PACKAGE_SIGNING_SECRET;
+        delete process.env.APP_PUBLIC_URL;
+        delete process.env.VERCEL_URL;
+        process.env.CURSOR_AUTOMATION_WEBHOOK_URL = "https://api2.cursor.sh/automations/webhook/test";
+        resetCursorAnalysisConfigForTests();
+        assert.equal(getCursorAnalysisConfig().provider, "unconfigured");
         assert.equal(isAnalysisProviderEnabled(), false);
     });
 });
