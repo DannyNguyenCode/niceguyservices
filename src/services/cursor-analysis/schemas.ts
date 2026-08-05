@@ -60,6 +60,19 @@ const analysisInstructionsSchema = z.object({
     outputSchemaVersion: z.string().min(1).max(20),
 });
 
+const auditResultContractSchema = z.object({
+    schemaVersion: z.literal("1.1"),
+    contractVersion: z.literal("1.1"),
+    jsonSchema: z.record(z.string(), z.unknown()),
+    requiredFields: z.array(z.string().min(1)).min(1),
+    fieldLimits: z.record(z.string(), z.number().int().positive()),
+    enums: z.object({
+        assessmentPriority: z.array(z.string().min(1)),
+        issueSeverity: z.array(z.string().min(1)),
+    }),
+    example: z.record(z.string(), z.unknown()),
+});
+
 export const cursorAuditPackageSchema = z.object({
     schemaVersion: z.literal("1.1"),
     packageVersion: z.string().min(1).max(20),
@@ -83,6 +96,7 @@ export const cursorAuditPackageSchema = z.object({
     }),
     niceGuyMetrics: niceGuyMetricsPackageSchema,
     analysisInstructions: analysisInstructionsSchema,
+    resultContract: auditResultContractSchema,
     metadata: z.object({
         packageCreatedAt: z.string().datetime(),
         websiteBusinessName: z.string().max(300).nullable(),
@@ -130,6 +144,7 @@ export const cursorAuditResultSchema = z.object({
 export type CursorAuditPackage = z.infer<typeof cursorAuditPackageSchema>;
 export type CursorAuditResult = z.infer<typeof cursorAuditResultSchema>;
 export type CursorAuditAssessment = z.infer<typeof assessmentSchema>;
+export type CursorAuditResultContract = z.infer<typeof auditResultContractSchema>;
 
 export function validateCursorAuditPackage(value: unknown): CursorAuditPackage {
     return cursorAuditPackageSchema.parse(value);

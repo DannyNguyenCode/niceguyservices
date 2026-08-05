@@ -24,6 +24,7 @@ This folder defines the contract between the Nice Guy Website Audit application 
 | Trigger orchestration | `src/services/cursor-analysis/request-cursor-analysis.ts` |
 | Stale recovery | `src/services/cursor-analysis/recover-stale-analyses.ts` |
 | State machine | `src/services/cursor-analysis/state-machine.ts` |
+| Result contract | `src/services/cursor-analysis/result-contract.ts` |
 | Runtime schemas | `src/services/cursor-analysis/schemas.ts` |
 
 Runtime validation lives in `src/services/cursor-analysis/schemas.ts`.

@@ -252,6 +252,12 @@ describe("cursor analysis package builder", () => {
         assert.ok(pkg.niceGuyMetrics.completeness);
         assert.equal(pkg.niceGuyMetrics.completeness.evidenceCoverage, 0.92);
         assert.ok(pkg.niceGuyMetrics.methodology);
+        assert.ok(pkg.resultContract);
+        assert.equal(pkg.resultContract.schemaVersion, "1.1");
+        assert.equal(pkg.resultContract.example.auditId, pkg.audit.auditId);
+        assert.equal(pkg.resultContract.example.analysisRequestId, "req_1");
+        assert.ok(pkg.resultContract.jsonSchema);
+        assert.doesNotThrow(() => validateCursorAuditResult(pkg.resultContract.example));
         assert.ok(pkg.screenshots.desktop);
         assert.ok(pkg.screenshots.mobile);
         assert.equal(pkg.audit.analysisRequestId, "req_1");

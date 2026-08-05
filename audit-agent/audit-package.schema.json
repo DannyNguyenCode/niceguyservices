@@ -12,6 +12,7 @@
     "pageSpeed",
     "niceGuyMetrics",
     "analysisInstructions",
+    "resultContract",
     "metadata"
   ],
   "properties": {
@@ -48,6 +49,7 @@
     "niceGuyMetrics": { "type": "object" },
     "crawl": { "type": "object" },
     "analysisInstructions": { "type": "object" },
+    "resultContract": { "type": "object" },
     "metadata": { "type": "object" }
   },
   "$defs": {

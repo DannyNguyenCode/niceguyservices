@@ -17,7 +17,8 @@ This is an analysis-only task. Do not modify source code, dependencies, configur
 3. Treat `packageUrl` and `callbackUrl` as opaque URLs supplied for this environment. Fetch `packageUrl` exactly as provided. POST to `callbackUrl` exactly as provided. Do not remove, alter, or reproduce either URL (including query parameters) in analysis output or logs.
 4. Fetch the audit package from `packageUrl`.
 5. Validate `schemaVersion` and `packageVersion` are `1.1`.
-6. Fetch and visually inspect both the desktop and mobile screenshots provided
+6. Read `resultContract` from the package. It contains the required callback JSON Schema (`jsonSchema`), field limits, enums, required fields, and an `example` payload bound to this audit run.
+7. Fetch and visually inspect both the desktop and mobile screenshots provided
    by the audit package.
 
    - Do not infer visual characteristics from screenshot metadata or URLs.
@@ -25,9 +26,9 @@ This is an analysis-only task. Do not modify source code, dependencies, configur
    - Base visual findings only on elements actually visible in the screenshots.
    - If a screenshot cannot be fetched or visually inspected, record that as a
      limitation and do not invent visual findings for that viewport.
-7. Analyze PageSpeed, crawl evidence, and Nice Guy Metrics v2.
-8. Return only the required callback JSON structure.
-9. POST the result to `callbackUrl` using:
+8. Analyze PageSpeed, crawl evidence, and Nice Guy Metrics v2.
+9. Construct callback JSON that matches `resultContract` exactly.
+10. POST the result to `callbackUrl` using:
    - **Header name:** the value of `callbackAuthHeader` from the webhook payload
    - **Header value:** the value of `callbackAuthToken` from the webhook payload
 
@@ -79,8 +80,8 @@ POSTed to `callbackUrl`.
 
 Do not merely print or return the JSON as the agent response.
 
-1. Construct the required audit-result v1.1 JSON.
-2. Validate it against the required result contract.
+1. Construct the required audit-result v1.1 JSON using `resultContract` from the fetched package.
+2. Validate it against `resultContract.jsonSchema`, `resultContract.requiredFields`, and `resultContract.fieldLimits`.
 3. POST that JSON to `callbackUrl`.
 4. Use `callbackAuthHeader` as the HTTP header name.
 5. Use `callbackAuthToken` as that header's value.

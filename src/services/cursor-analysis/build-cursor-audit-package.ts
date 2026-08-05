@@ -12,6 +12,7 @@ import {
     type CursorAuditPackage,
 } from "@/src/services/cursor-analysis/schemas";
 import { calculateCursorAnalysisReadiness } from "@/src/services/cursor-analysis/readiness";
+import { buildAuditResultContract } from "@/src/services/cursor-analysis/result-contract";
 
 function mapScreenshotDevice(type: SerializableScreenshot["type"]): "desktop" | "mobile" | null {
     if (type.startsWith("desktop")) return "desktop";
@@ -151,7 +152,8 @@ function buildAnalysisInstructions(promptVersion: string) {
             "Label preliminary metrics as preliminary.",
             "Label visual interpretation as interpretation.",
             "Never invent evidence or claim guaranteed outcomes.",
-            "Return only the required callback JSON structure.",
+            "Return only the required callback JSON structure defined in resultContract.",
+            "Validate the callback body against resultContract before POSTing.",
             "Post results to callbackUrl using the specified callback header.",
             "Do not place secrets in output, logs, or repository files.",
         ],
@@ -230,6 +232,10 @@ export function buildCursorAuditPackage(input: {
         },
         niceGuyMetrics: normalizeNiceGuyMetric(input.niceGuy),
         analysisInstructions: buildAnalysisInstructions(config.promptVersion),
+        resultContract: buildAuditResultContract({
+            auditId: input.auditRun.id,
+            analysisRequestId: input.analysisRequestId,
+        }),
         metadata: {
             packageCreatedAt: new Date().toISOString(),
             websiteBusinessName: input.website.businessName || input.auditRun.source.businessName,
