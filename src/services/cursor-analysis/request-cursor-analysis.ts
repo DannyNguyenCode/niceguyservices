@@ -35,6 +35,7 @@ import {
     buildAnalysisCallbackUrl,
     buildSignedPackageUrl,
 } from "@/src/services/cursor-analysis/package-token";
+import { shouldUseVercelProtectionBypass } from "@/src/services/cursor-analysis/vercel-automation-bypass";
 import { resolveAuditAnalysisProvider } from "@/src/services/cursor-analysis/providers/get-analysis-provider";
 import {
     calculateCursorAnalysisReadiness,
@@ -279,6 +280,7 @@ export async function requestCursorAnalysisForAuditRun(
         provider: provider.name,
         status: "triggered",
         attempt,
+        vercelProtectionBypass: shouldUseVercelProtectionBypass(),
     });
 
     await createActivityEvent({

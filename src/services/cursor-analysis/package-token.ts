@@ -5,6 +5,7 @@ import {
     getAuditPackageTokenTtlMs,
     getCursorAnalysisConfig,
 } from "@/src/services/cursor-analysis/config";
+import { applyVercelAutomationBypass } from "@/src/services/cursor-analysis/vercel-automation-bypass";
 
 export type AuditPackageTokenPayload = {
     auditId: string;
@@ -94,7 +95,8 @@ export function buildSignedPackageUrl(input: {
         analysisRequestId: input.analysisRequestId,
     });
     const base = input.publicBaseUrl.replace(/\/$/, "");
-    return `${base}/api/audits/${encodeURIComponent(input.auditId)}/analysis-package?token=${encodeURIComponent(token)}`;
+    const url = `${base}/api/audits/${encodeURIComponent(input.auditId)}/analysis-package?token=${encodeURIComponent(token)}`;
+    return applyVercelAutomationBypass(url);
 }
 
 export function buildAnalysisCallbackUrl(input: {
@@ -102,5 +104,6 @@ export function buildAnalysisCallbackUrl(input: {
     publicBaseUrl: string;
 }): string {
     const base = input.publicBaseUrl.replace(/\/$/, "");
-    return `${base}/api/audits/${encodeURIComponent(input.auditId)}/analysis-callback`;
+    const url = `${base}/api/audits/${encodeURIComponent(input.auditId)}/analysis-callback`;
+    return applyVercelAutomationBypass(url);
 }

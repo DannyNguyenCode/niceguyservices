@@ -14,16 +14,24 @@ This is an analysis-only task. Do not modify source code, dependencies, configur
 
 1. Read the incoming webhook payload.
 2. Extract `auditId`, `analysisRequestId`, `packageUrl`, `callbackUrl`, `callbackAuthHeader`, and `callbackAuthToken`.
-3. Fetch the audit package from `packageUrl` using the signed token in the URL.
-4. Validate `schemaVersion` and `packageVersion` are `1.1`.
-5. Inspect desktop and mobile screenshots (HTTPS URLs in the package).
-6. Analyze PageSpeed, crawl evidence, and Nice Guy Metrics v2.
-7. Return only the required callback JSON structure.
-8. POST the result to `callbackUrl` using:
+3. Treat `packageUrl` and `callbackUrl` as opaque URLs supplied for this environment. Fetch `packageUrl` exactly as provided. POST to `callbackUrl` exactly as provided. Do not remove, alter, or reproduce either URL (including query parameters) in analysis output or logs.
+4. Fetch the audit package from `packageUrl`.
+5. Validate `schemaVersion` and `packageVersion` are `1.1`.
+6. Fetch and visually inspect both the desktop and mobile screenshots provided
+   by the audit package.
+
+   - Do not infer visual characteristics from screenshot metadata or URLs.
+   - Compare desktop and mobile independently.
+   - Base visual findings only on elements actually visible in the screenshots.
+   - If a screenshot cannot be fetched or visually inspected, record that as a
+     limitation and do not invent visual findings for that viewport.
+7. Analyze PageSpeed, crawl evidence, and Nice Guy Metrics v2.
+8. Return only the required callback JSON structure.
+9. POST the result to `callbackUrl` using:
    - **Header name:** the value of `callbackAuthHeader` from the webhook payload
    - **Header value:** the value of `callbackAuthToken` from the webhook payload
 
-Do **not** read or use `CURSOR_ANALYSIS_CALLBACK_SECRET`. That permanent secret exists only on the application server. Each webhook delivers a short-lived `callbackAuthToken` bound to the specific `auditId` and `analysisRequestId`.
+Do **not** read or use `CURSOR_ANALYSIS_CALLBACK_SECRET` or `VERCEL_AUTOMATION_BYPASS_SECRET`. Those secrets exist only on the application server. Each webhook delivers ready-to-use `packageUrl` and `callbackUrl` values plus a short-lived `callbackAuthToken` bound to the specific `auditId` and `analysisRequestId`.
 
 ## Evidence rules
 
@@ -37,20 +45,49 @@ Do **not** read or use `CURSOR_ANALYSIS_CALLBACK_SECRET`. That permanent secret 
 8. Never invent evidence.
 9. Never claim guaranteed conversion, ranking, revenue, accessibility compliance, legal compliance, or business trustworthiness.
 
-## Output structure
+## Finding prioritization
 
-Return JSON matching `audit-result.schema.json` version `1.1`:
+Prioritize findings by:
 
-- `schemaVersion`: `"1.1"`
-- `auditId` and `analysisRequestId` from the webhook (unchanged)
-- `assessment`: `{ priority, confidence (0-1), summary }` — AI interpretation, not the official score
-- `executiveSummary`
-- `strengths` (max 10)
-- `issues` (max 20)
-- `limitations` (max 10)
-- `analyzedAt` (ISO datetime)
+1. Severity of the deterministic problem.
+2. Likely impact on usability or completion of the page's primary user goal.
+3. Confidence and strength of supporting evidence.
+4. Breadth of impact across desktop/mobile.
+5. Actionability.
 
-Do **not** include secrets, authorization tokens, or signed URLs in output.
+Do not inflate minor observations merely to fill the maximum number of issues.
+
+When deterministic and visual evidence support the same issue, combine them
+into one stronger finding rather than creating duplicate issues.
+
+## Evidence reconciliation
+
+When evidence sources disagree:
+
+- Do not silently choose one.
+- Deterministic measurements remain authoritative for the fact they measure.
+- Visual inspection may provide context but must not override deterministic
+  measurement.
+- Explain meaningful conflicts in the relevant finding or limitation.
+- Do not report the same underlying problem multiple times solely because it
+  appears in multiple evidence sources.
+
+## Result delivery
+
+The analysis is not complete until the validated result has been successfully
+POSTed to `callbackUrl`.
+
+Do not merely print or return the JSON as the agent response.
+
+1. Construct the required audit-result v1.1 JSON.
+2. Validate it against the required result contract.
+3. POST that JSON to `callbackUrl`.
+4. Use `callbackAuthHeader` as the HTTP header name.
+5. Use `callbackAuthToken` as that header's value.
+6. Confirm that the callback request succeeded.
+
+Never include packageUrl, callbackUrl, callbackAuthToken, authorization
+credentials, or signed URLs in the callback JSON or final agent output.
 
 ## Security
 
