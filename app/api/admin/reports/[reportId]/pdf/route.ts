@@ -46,11 +46,24 @@ export async function POST(request: Request, context: RouteContext) {
                     ? 404
                     : result.error.code === "PDF_ALREADY_RUNNING" ||
                         result.error.code === "PDF_SOURCE_REPORT_INVALID" ||
-                        result.error.code === "PDF_SNAPSHOT_INCOMPLETE"
+                        result.error.code === "PDF_SNAPSHOT_INCOMPLETE" ||
+                        result.error.code === "PDF_CONFIGURATION_MISSING" ||
+                        result.error.code === "PDF_STORAGE_NOT_CONFIGURED"
                       ? 409
                       : 500;
 
-            return NextResponse.json(result, { status });
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: {
+                        code: result.error.code,
+                        message: result.error.message,
+                        stage: result.error.stage,
+                    },
+                    attemptId: result.attemptId,
+                },
+                { status },
+            );
         }
 
         return NextResponse.json({
@@ -61,6 +74,7 @@ export async function POST(request: Request, context: RouteContext) {
             filename: result.pdfReport.file?.filename ?? null,
             secureUrl: result.pdfReport.file?.secureUrl,
             downloadUrl: result.downloadUrl,
+            attemptId: result.attemptId,
         });
     } catch (error) {
         const rateLimitResponse = await handleRouteRateLimitError(error, {
@@ -70,11 +84,18 @@ export async function POST(request: Request, context: RouteContext) {
             return rateLimitResponse;
         }
 
-        console.error("Generate PDF report API failed:", error);
+        console.error("Generate PDF report API failed:", {
+            errorName: error instanceof Error ? error.name : "Error",
+            // Never log full error objects that may contain URLs with tokens.
+        });
         return NextResponse.json(
             {
                 success: false,
-                error: { code: "PDF_RENDER_FAILED", message: "Unable to generate PDF." },
+                error: {
+                    code: "PDF_RENDER_FAILED",
+                    message: "Unable to generate PDF.",
+                    stage: "PDF_RENDER",
+                },
             },
             { status: 500 },
         );

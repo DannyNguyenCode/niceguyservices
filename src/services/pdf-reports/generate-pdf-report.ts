@@ -16,6 +16,19 @@ import { deletePdfAsset } from "@/src/services/pdf-reports/delete-pdf-asset";
 import { getPdfFilename } from "@/src/services/pdf-reports/get-pdf-filename";
 import { getPdfReadiness } from "@/src/services/pdf-reports/get-pdf-readiness";
 import { registerAuditReference } from "@/src/services/audit-history/register-audit-reference";
+import {
+    createPdfAttemptId,
+    describePdfEnvironment,
+    logPdfError,
+    logPdfEvent,
+    logPdfStage,
+} from "@/src/services/pdf-reports/pdf-diagnostics";
+import {
+    PdfStageError,
+    classifyPdfFailure,
+    getPdfAdminErrorMessage,
+    type PdfStage,
+} from "@/src/services/pdf-reports/pdf-stage-error";
 import { renderReportPdf } from "@/src/services/pdf-reports/render-report-pdf";
 import { uploadReportPdf } from "@/src/services/pdf-reports/upload-report-pdf";
 import { enforceAdministratorActionRateLimit } from "@/src/services/rate-limit/enforce-action-rate-limit";
@@ -28,29 +41,52 @@ export type GeneratePdfReportResult =
           reusedExisting: boolean;
           pdfReport: SerializablePdfReport;
           downloadUrl: string;
+          attemptId?: string;
       }
     | {
           success: false;
-          error: { code: string; message: string };
+          error: { code: string; message: string; stage: PdfStage };
+          attemptId?: string;
       };
 
-function safeErrorMessage(code: string): string {
-    const messages: Record<string, string> = {
-        PDF_INVALID_REPORT_ID: "Invalid report ID.",
-        PDF_REPORT_NOT_FOUND: "Public report not found.",
-        PDF_WEBSITE_NOT_FOUND: "Website not found.",
-        PDF_SOURCE_REPORT_INVALID: "Public report cannot be used for PDF generation.",
-        PDF_SNAPSHOT_INCOMPLETE: "Public report snapshot is incomplete.",
-        PDF_ALREADY_RUNNING: "PDF generation is already running for this report.",
-        PDF_RENDER_FAILED: "PDF rendering failed.",
-        PDF_RENDER_TIMEOUT: "PDF rendering timed out.",
-        PDF_BROWSER_LAUNCH_FAILED: "PDF browser could not be launched.",
-        PDF_INVALID_BUFFER: "Generated PDF was invalid.",
-        PDF_FILE_TOO_LARGE: "Generated PDF exceeded the maximum file size.",
-        PDF_UPLOAD_FAILED: "PDF upload failed.",
-        PDF_SAVE_FAILED: "Unable to save PDF metadata.",
+function mapReadinessBlocker(code: string | undefined): {
+    code: string;
+    stage: PdfStage;
+    message: string;
+} {
+    if (code === "ALREADY_RUNNING") {
+        return {
+            code: "PDF_ALREADY_RUNNING",
+            stage: "INITIALIZATION",
+            message: getPdfAdminErrorMessage("PDF_ALREADY_RUNNING"),
+        };
+    }
+    if (code === "SNAPSHOT_INCOMPLETE") {
+        return {
+            code: "PDF_SNAPSHOT_INCOMPLETE",
+            stage: "INITIALIZATION",
+            message: getPdfAdminErrorMessage("PDF_SNAPSHOT_INCOMPLETE"),
+        };
+    }
+    if (code === "RENDERER_NOT_CONFIGURED") {
+        return {
+            code: "PDF_CONFIGURATION_MISSING",
+            stage: "PDF_CONFIGURATION",
+            message: getPdfAdminErrorMessage("PDF_CONFIGURATION_MISSING"),
+        };
+    }
+    if (code === "STORAGE_NOT_CONFIGURED") {
+        return {
+            code: "PDF_STORAGE_NOT_CONFIGURED",
+            stage: "PDF_CONFIGURATION",
+            message: getPdfAdminErrorMessage("PDF_STORAGE_NOT_CONFIGURED"),
+        };
+    }
+    return {
+        code: "PDF_SOURCE_REPORT_INVALID",
+        stage: "INITIALIZATION",
+        message: getPdfAdminErrorMessage("PDF_SOURCE_REPORT_INVALID"),
     };
-    return messages[code] ?? "Unable to generate PDF.";
 }
 
 export async function generatePdfReport(
@@ -60,18 +96,35 @@ export async function generatePdfReport(
         allowArchived?: boolean;
     } & RateLimitedServiceOptions,
 ): Promise<GeneratePdfReportResult> {
+    const attemptId = createPdfAttemptId();
+    logPdfEvent(attemptId, "request_received", {
+        ...describePdfEnvironment(),
+        forceRegenerate: Boolean(input.forceRegenerate),
+    });
+
     if (!input.publicReportId?.trim()) {
         return {
             success: false,
-            error: { code: "PDF_INVALID_REPORT_ID", message: safeErrorMessage("PDF_INVALID_REPORT_ID") },
+            attemptId,
+            error: {
+                code: "PDF_INVALID_REPORT_ID",
+                message: getPdfAdminErrorMessage("PDF_INVALID_REPORT_ID"),
+                stage: "INITIALIZATION",
+            },
         };
     }
 
+    logPdfStage(attemptId, "DATABASE", { phase: "load_report" });
     const report = await getPublicReportById(input.publicReportId);
     if (!report) {
         return {
             success: false,
-            error: { code: "PDF_REPORT_NOT_FOUND", message: safeErrorMessage("PDF_REPORT_NOT_FOUND") },
+            attemptId,
+            error: {
+                code: "PDF_REPORT_NOT_FOUND",
+                message: getPdfAdminErrorMessage("PDF_REPORT_NOT_FOUND"),
+                stage: "DATABASE",
+            },
         };
     }
 
@@ -79,7 +132,12 @@ export async function generatePdfReport(
     if (!website || website.deletedAt) {
         return {
             success: false,
-            error: { code: "PDF_WEBSITE_NOT_FOUND", message: safeErrorMessage("PDF_WEBSITE_NOT_FOUND") },
+            attemptId,
+            error: {
+                code: "PDF_WEBSITE_NOT_FOUND",
+                message: getPdfAdminErrorMessage("PDF_WEBSITE_NOT_FOUND"),
+                stage: "DATABASE",
+            },
         };
     }
 
@@ -90,6 +148,7 @@ export async function generatePdfReport(
         snapshotChecksum,
     });
 
+    logPdfStage(attemptId, "PDF_CONFIGURATION", { phase: "readiness" });
     const readiness = getPdfReadiness({
         report,
         websiteActive: !website.deletedAt,
@@ -100,26 +159,33 @@ export async function generatePdfReport(
 
     if (!readiness.canGenerate) {
         const blocker = readiness.blockers[0];
-        const code =
-            blocker?.code === "ALREADY_RUNNING"
-                ? "PDF_ALREADY_RUNNING"
-                : blocker?.code === "SNAPSHOT_INCOMPLETE"
-                  ? "PDF_SNAPSHOT_INCOMPLETE"
-                  : blocker?.code === "REPORT_ARCHIVED" || blocker?.code === "REPORT_STATUS_INVALID"
-                    ? "PDF_SOURCE_REPORT_INVALID"
-                    : "PDF_SOURCE_REPORT_INVALID";
+        const mapped = mapReadinessBlocker(blocker?.code);
+        logPdfError(attemptId, "readiness_blocked", {
+            blockerCode: blocker?.code ?? null,
+            code: mapped.code,
+            stage: mapped.stage,
+        });
         return {
             success: false,
-            error: { code, message: blocker?.message ?? safeErrorMessage(code) },
+            attemptId,
+            error: {
+                code: mapped.code,
+                message: blocker?.message ?? mapped.message,
+                stage: mapped.stage,
+            },
         };
     }
 
     if (matching && !input.forceRegenerate) {
+        logPdfEvent(attemptId, "reused_existing_pdf", {
+            pdfReportIdPrefix: matching.id.slice(0, 8),
+        });
         return {
             success: true,
             reusedExisting: true,
             pdfReport: matching,
             downloadUrl: `/api/admin/pdf-reports/${matching.id}/download`,
+            attemptId,
         };
     }
 
@@ -136,6 +202,7 @@ export async function generatePdfReport(
         revisionNumber: report.revisionNumber,
     });
 
+    logPdfStage(attemptId, "DATABASE", { phase: "create_pdf_record" });
     const pdfRecord = await createPdfReportRecord({
         websiteId: report.websiteId,
         publicReportId: report.id,
@@ -159,6 +226,7 @@ export async function generatePdfReport(
             publicReportRevision: report.revisionNumber,
             pdfVersion: pdfRecord.pdfVersion,
             snapshotChecksumPrefix: snapshotChecksum.slice(0, 8),
+            pdfAttemptId: attemptId,
         },
     });
 
@@ -177,6 +245,7 @@ export async function generatePdfReport(
                 publicReportId: report.id,
                 publicReportRevision: report.revisionNumber,
                 pdfVersion: pdfRecord.pdfVersion,
+                pdfAttemptId: attemptId,
             },
         });
 
@@ -184,8 +253,10 @@ export async function generatePdfReport(
             publicReportId: report.id,
             pdfReportId: pdfRecord.id,
             snapshotChecksum,
+            attemptId,
         });
 
+        logPdfStage(attemptId, "STORAGE", { bytes: rendered.bytes });
         const uploaded = await uploadReportPdf({
             buffer: rendered.buffer,
             websiteId: report.websiteId,
@@ -194,7 +265,12 @@ export async function generatePdfReport(
             filename,
         });
         uploadedPublicId = uploaded.publicId;
+        logPdfEvent(attemptId, "storage_uploaded", {
+            bytes: uploaded.bytes,
+            provider: uploaded.provider,
+        });
 
+        logPdfStage(attemptId, "DATABASE_FINALIZATION");
         const completed = await completePdfReportRecord(pdfRecord.id, {
             file: {
                 provider: uploaded.provider,
@@ -213,7 +289,7 @@ export async function generatePdfReport(
         });
 
         if (!completed) {
-            throw new Error("PDF_SAVE_FAILED");
+            throw new PdfStageError("PDF_SAVE_FAILED", "DATABASE_FINALIZATION");
         }
 
         await updateWebsitePdfSummary(report.websiteId, "complete", new Date());
@@ -241,7 +317,13 @@ export async function generatePdfReport(
                 pageCount: completed.file?.pageCount,
                 durationMs: completed.durationMs,
                 snapshotChecksumPrefix: snapshotChecksum.slice(0, 8),
+                pdfAttemptId: attemptId,
             },
+        });
+
+        logPdfEvent(attemptId, "completed", {
+            durationMs: Date.now() - renderStartedAt,
+            bytes: completed.file?.bytes ?? null,
         });
 
         return {
@@ -249,20 +331,25 @@ export async function generatePdfReport(
             reusedExisting: false,
             pdfReport: completed,
             downloadUrl: `/api/admin/pdf-reports/${completed.id}/download`,
+            attemptId,
         };
     } catch (error) {
-        const code =
-            error instanceof Error && error.message.startsWith("PDF_")
-                ? error.message
-                : "PDF_RENDER_FAILED";
+        const classified = classifyPdfFailure(error);
+
+        logPdfError(attemptId, "generation_failed", {
+            code: classified.code,
+            stage: classified.stage,
+            causeName: classified.causeName,
+            message: classified.message,
+        });
 
         if (uploadedPublicId) {
             await deletePdfAsset(uploadedPublicId).catch(() => undefined);
         }
 
         await failPdfReportRecord(pdfRecord.id, {
-            errorCode: code,
-            errorMessage: safeErrorMessage(code),
+            errorCode: classified.code,
+            errorMessage: classified.message,
             durationMs: Date.now() - renderStartedAt,
         });
         await updateWebsitePdfSummary(report.websiteId, "failed");
@@ -275,13 +362,20 @@ export async function generatePdfReport(
                 publicReportId: report.id,
                 publicReportRevision: report.revisionNumber,
                 pdfVersion: pdfRecord.pdfVersion,
-                errorCode: code,
+                errorCode: classified.code,
+                failedStage: classified.stage,
+                pdfAttemptId: attemptId,
             },
         });
 
         return {
             success: false,
-            error: { code, message: safeErrorMessage(code) },
+            attemptId,
+            error: {
+                code: classified.code,
+                message: classified.message,
+                stage: classified.stage,
+            },
         };
     }
 }
