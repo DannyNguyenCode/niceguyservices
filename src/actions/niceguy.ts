@@ -28,6 +28,15 @@ export async function runNiceGuyAnalysisAction(
             revalidatePath("/dashboard/websites");
             revalidatePath(`/dashboard/websites/${websiteId}`);
 
+            try {
+                const { maybeAdvanceOrchestrationAfterEvidenceChange } = await import(
+                    "@/src/services/audit-pipeline/maybe-advance-after-evidence"
+                );
+                await maybeAdvanceOrchestrationAfterEvidenceChange({ websiteId });
+            } catch {
+                // Orchestration advance is best-effort after manual Nice Guy scoring.
+            }
+
             return {
                 ok: true,
                 overallScore: result.overallScore,

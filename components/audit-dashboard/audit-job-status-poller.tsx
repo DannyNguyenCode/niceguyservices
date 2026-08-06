@@ -9,7 +9,7 @@ type AuditJobStatusPollerProps = {
 };
 
 const POLL_INTERVAL_MS = 4000;
-const ACTIVE_STATUSES = new Set(["queued", "processing"]);
+const ACTIVE_STATUSES = new Set(["queued", "processing", "waiting_for_external"]);
 
 export default function AuditJobStatusPoller({
     jobId,

@@ -28,6 +28,15 @@ export async function runPageSpeedAnalysisAction(
             revalidatePath("/dashboard/websites");
             revalidatePath(`/dashboard/websites/${websiteId}`);
 
+            try {
+                const { maybeAdvanceOrchestrationAfterEvidenceChange } = await import(
+                    "@/src/services/audit-pipeline/maybe-advance-after-evidence"
+                );
+                await maybeAdvanceOrchestrationAfterEvidenceChange({ websiteId });
+            } catch {
+                // Orchestration advance is best-effort after manual PageSpeed.
+            }
+
             return {
                 ok: true,
                 status: result.status,

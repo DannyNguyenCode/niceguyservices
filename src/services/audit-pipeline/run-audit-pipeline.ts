@@ -18,16 +18,21 @@ import {
 import { updateAuditRunStatus } from "@/src/data/audit-runs";
 import { createActivityEvent } from "@/src/services/activity/create-activity-event";
 import { runAuditStage } from "@/src/services/audit-pipeline/run-audit-stage";
-import { withAuditJobHeartbeat } from "@/src/services/audit-pipeline/job-heartbeat";
+import { AuditJobHeartbeatSession } from "@/src/services/audit-pipeline/job-heartbeat";
 import {
     computePipelineProgress,
-    getNextPipelineStage,
+    getReadyPipelineStages,
+    hasBlockingRequiredFailure,
     hasWaitingPipelineStage,
     isStageRequired,
     markSkippedStages,
     resolveEnabledPipelineStages,
 } from "@/src/services/audit-pipeline/stage-plan";
-import type { AuditPipelineStageName, SerializableAuditJob } from "@/src/services/audit-pipeline/types";
+import type {
+    AuditPipelineStageName,
+    AuditStageResult,
+    SerializableAuditJob,
+} from "@/src/services/audit-pipeline/types";
 import { getPublicReportDraftForAuditRun } from "@/src/data/public-reports";
 import { syncWebsiteAuditSummary } from "@/src/services/audit-pipeline/sync-website-summary";
 
@@ -43,13 +48,46 @@ async function initializeSkippedStages(job: SerializableAuditJob): Promise<void>
     }
 }
 
+async function markStageProcessing(
+    jobId: string,
+    stage: AuditPipelineStageName,
+    currentStatus: string,
+): Promise<void> {
+    if (currentStatus === "pending" || currentStatus === "failed") {
+        await updateAuditJobStage({
+            jobId,
+            stage,
+            status: "queued",
+        });
+    }
+    if (currentStatus !== "processing") {
+        await updateAuditJobStage({
+            jobId,
+            stage,
+            status: "processing",
+            incrementAttempt: true,
+        });
+    }
+}
+
+type InFlightEntry = {
+    stage: AuditPipelineStageName;
+    promise: Promise<{ stage: AuditPipelineStageName; result: AuditStageResult }>;
+};
+
+/**
+ * Durable audit orchestration with overlapping independent stages.
+ *
+ * Uses a continuous scheduler: whenever any in-flight stage finishes, newly
+ * unblocked stages start immediately. Example: NiceGuy can start as soon as
+ * crawl completes while PageSpeed is still running.
+ */
 export async function runAuditPipeline(jobId: string): Promise<SerializableAuditJob | null> {
     let job = await getAuditJobById(jobId);
     if (!job || job.status === "cancelled" || isTerminalJobStatus(job.status)) {
         return job;
     }
 
-    // Waiting jobs are resumed explicitly after Cursor callback — do not re-enter here.
     if (isWaitingJobStatus(job.status)) {
         return job;
     }
@@ -62,104 +100,159 @@ export async function runAuditPipeline(jobId: string): Promise<SerializableAudit
 
     if (job.status === "queued") {
         await updateAuditRunStatus(job.auditRunId, "crawling");
+        await createActivityEvent({
+            websiteId: job.websiteId,
+            auditRunId: job.auditRunId,
+            eventType: "audit-run-started",
+            title: "Audit orchestration started",
+            description: "Asynchronous audit pipeline began processing.",
+            actor: { type: "system" },
+            metadata: { jobId },
+        });
     }
 
-    while (true) {
-        job = (await getAuditJobById(jobId)) ?? job;
-        if (!job || job.status === "cancelled") {
-            return job;
-        }
+    const heartbeat = new AuditJobHeartbeatSession(jobId);
+    heartbeat.start();
 
-        if (hasWaitingPipelineStage(job.stages)) {
-            break;
-        }
+    const inFlight = new Map<AuditPipelineStageName, InFlightEntry>();
 
-        const nextStage = getNextPipelineStage({
-            configuration: job.configuration,
-            stages: job.stages,
-        });
-        if (!nextStage) {
-            break;
-        }
+    try {
+        while (true) {
+            job = (await getAuditJobById(jobId)) ?? job;
+            if (!job || job.status === "cancelled") {
+                return job;
+            }
 
-        await touchAuditJobHeartbeat(jobId);
-        const currentStageState = job.stages[nextStage];
-        if (currentStageState.status === "pending" || currentStageState.status === "failed") {
-            await updateAuditJobStage({
+            if (hasWaitingPipelineStage(job.stages) && inFlight.size === 0) {
+                break;
+            }
+
+            const blockingFailure = hasBlockingRequiredFailure({
+                configuration: job.configuration,
+                stages: job.stages,
+            });
+            if (blockingFailure && inFlight.size === 0) {
+                const failedJob = await completeAuditJob({
+                    jobId,
+                    status: "failed",
+                    error: {
+                        code: job.stages[blockingFailure].errorCode ?? "AUDIT_STAGE_FAILED",
+                        message:
+                            job.stages[blockingFailure].errorMessage ??
+                            `Required stage ${blockingFailure} failed.`,
+                        retryable: true,
+                    },
+                });
+                await updateAuditRunStatus(job.auditRunId, "failed");
+                await syncWebsiteAuditSummary(job.websiteId);
+                await createActivityEvent({
+                    websiteId: job.websiteId,
+                    auditRunId: job.auditRunId,
+                    eventType: "audit-run-failed",
+                    title: "Audit failed",
+                    description:
+                        job.stages[blockingFailure].errorMessage ?? "Audit pipeline failed.",
+                    actor: { type: "system" },
+                    metadata: { jobId, stage: blockingFailure },
+                });
+                return failedJob;
+            }
+
+            const readyStages = getReadyPipelineStages({
+                configuration: job.configuration,
+                stages: job.stages,
+            }).filter((stage) => !inFlight.has(stage));
+
+            for (const stage of readyStages) {
+                await markStageProcessing(jobId, stage, job.stages[stage].status);
+                const promise = runAuditStage(stage, context).then(async (result) => {
+                    await updateAuditJobStage({
+                        jobId,
+                        stage,
+                        status: result.status,
+                        errorCode: result.errorCode ?? null,
+                        errorMessage: result.errorMessage ?? null,
+                    });
+                    return { stage, result };
+                });
+                inFlight.set(stage, { stage, promise });
+            }
+
+            if (inFlight.size === 0) {
+                break;
+            }
+
+            await touchAuditJobHeartbeat(jobId);
+            const settled = await Promise.race(
+                [...inFlight.values()].map((entry) => entry.promise),
+            );
+            inFlight.delete(settled.stage);
+
+            job = (await getAuditJobById(jobId)) ?? job;
+            const progress = computePipelineProgress(job.configuration, job.stages);
+            await updateAuditJobProgress({
                 jobId,
-                stage: nextStage,
-                status: "queued",
+                progressPercent: progress,
+                currentStage: settled.stage,
             });
-        }
-        if (currentStageState.status !== "processing") {
-            await updateAuditJobStage({
-                jobId,
-                stage: nextStage,
-                status: "processing",
-                incrementAttempt: true,
-            });
-        }
 
-        const result = await withAuditJobHeartbeat(jobId, () =>
-            runAuditStage(nextStage, context),
-        );
-        await updateAuditJobStage({
-            jobId,
-            stage: nextStage,
-            status: result.status,
-            errorCode: result.errorCode ?? null,
-            errorMessage: result.errorMessage ?? null,
-        });
+            if (settled.result.status === "waiting_for_external") {
+                // Let sibling in-flight stages finish updating, then park.
+                if (inFlight.size > 0) {
+                    await Promise.allSettled([...inFlight.values()].map((e) => e.promise));
+                    inFlight.clear();
+                }
+                const parked = await parkAuditJobWaitingForExternal(jobId);
+                await updateAuditRunStatus(job.auditRunId, "generating-ai-analysis");
+                await syncWebsiteAuditSummary(job.websiteId);
+                await createActivityEvent({
+                    websiteId: job.websiteId,
+                    auditRunId: job.auditRunId,
+                    eventType: "ai-analysis-started",
+                    title: "Waiting for Cursor analysis",
+                    description:
+                        "Evidence barrier satisfied. Audit is waiting for authenticated Cursor callback before finalization.",
+                    actor: { type: "system" },
+                    metadata: { jobId, stage: settled.stage },
+                });
+                return parked;
+            }
 
-        job = (await getAuditJobById(jobId)) ?? job;
-        const progress = computePipelineProgress(job.configuration, job.stages);
-        await updateAuditJobProgress({
-            jobId,
-            progressPercent: progress,
-            currentStage: nextStage,
-        });
-
-        if (result.status === "waiting_for_external") {
-            const parked = await parkAuditJobWaitingForExternal(jobId);
-            await updateAuditRunStatus(job.auditRunId, "generating-ai-analysis");
-            await syncWebsiteAuditSummary(job.websiteId);
-            await createActivityEvent({
-                websiteId: job.websiteId,
-                auditRunId: job.auditRunId,
-                eventType: "ai-analysis-started",
-                title: "Waiting for Cursor analysis",
-                description:
-                    "Deterministic audit stages finished. Audit is waiting for authenticated Cursor callback before finalization.",
-                actor: { type: "system" },
-                metadata: { jobId, stage: nextStage },
-            });
-            return parked;
+            const required = isStageRequired(settled.stage, job.configuration);
+            if (required && settled.result.status === "failed") {
+                if (inFlight.size > 0) {
+                    await Promise.allSettled([...inFlight.values()].map((e) => e.promise));
+                    inFlight.clear();
+                }
+                const failedJob = await completeAuditJob({
+                    jobId,
+                    status: "failed",
+                    error: {
+                        code: settled.result.errorCode ?? "AUDIT_STAGE_FAILED",
+                        message: settled.result.errorMessage ?? "Audit stage failed.",
+                        retryable: settled.result.retryable ?? true,
+                    },
+                });
+                await updateAuditRunStatus(job.auditRunId, "failed");
+                await syncWebsiteAuditSummary(job.websiteId);
+                await createActivityEvent({
+                    websiteId: job.websiteId,
+                    auditRunId: job.auditRunId,
+                    eventType: "audit-run-failed",
+                    title: "Audit failed",
+                    description: settled.result.errorMessage ?? "Audit pipeline failed.",
+                    actor: { type: "system" },
+                    metadata: {
+                        jobId,
+                        stage: settled.stage,
+                        errorCode: settled.result.errorCode,
+                    },
+                });
+                return failedJob;
+            }
         }
-
-        const required = isStageRequired(nextStage, job.configuration);
-        if (required && result.status === "failed") {
-            const failedJob = await completeAuditJob({
-                jobId,
-                status: "failed",
-                error: {
-                    code: result.errorCode ?? "AUDIT_STAGE_FAILED",
-                    message: result.errorMessage ?? "Audit stage failed.",
-                    retryable: result.retryable ?? true,
-                },
-            });
-            await updateAuditRunStatus(job.auditRunId, "failed");
-            await syncWebsiteAuditSummary(job.websiteId);
-            await createActivityEvent({
-                websiteId: job.websiteId,
-                auditRunId: job.auditRunId,
-                eventType: "audit-run-failed",
-                title: "Audit failed",
-                description: result.errorMessage ?? "Audit pipeline failed.",
-                actor: { type: "system" },
-                metadata: { jobId, stage: nextStage, errorCode: result.errorCode },
-            });
-            return failedJob;
-        }
+    } finally {
+        heartbeat.stop();
     }
 
     job = (await getAuditJobById(jobId)) ?? job;

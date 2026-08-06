@@ -39,11 +39,17 @@ async function buildStartAuditJobResult(input: {
     job: SerializableAuditJob;
     websiteId: string;
     reused: boolean;
+    forceAsync?: boolean;
 }): Promise<StartAuditJobResult> {
-    const job = await maybeRunAuditPipelineSynchronously(input.job);
+    const job =
+        input.forceAsync
+            ? input.job
+            : await maybeRunAuditPipelineSynchronously(input.job);
+
     if (job.status === "queued") {
         scheduleAuditWorkerKick(input.reused ? "audit-job-reused" : "audit-job-created");
     }
+
     return {
         job,
         auditRunId: job.auditRunId,
@@ -62,6 +68,11 @@ export async function startAuditJob(input: {
         actorName?: string | null;
     };
     skipPreflight?: boolean;
+    /**
+     * When true, never run the pipeline inside this request.
+     * Required for public customer submissions so the HTTP response returns promptly.
+     */
+    forceAsync?: boolean;
 }): Promise<StartAuditJobResult> {
     const website = await getWebsiteById(input.websiteId);
     if (!website || website.deletedAt) {
@@ -82,6 +93,7 @@ export async function startAuditJob(input: {
             job: existingJob,
             websiteId: input.websiteId,
             reused: true,
+            forceAsync: input.forceAsync,
         });
     }
 
@@ -91,6 +103,7 @@ export async function startAuditJob(input: {
             job: activeJob,
             websiteId: input.websiteId,
             reused: true,
+            forceAsync: input.forceAsync,
         });
     }
 
@@ -136,5 +149,13 @@ export async function startAuditJob(input: {
         job,
         websiteId: input.websiteId,
         reused: !created,
+        forceAsync: input.forceAsync,
     });
 }
+
+/**
+ * Canonical durable orchestration entry point.
+ * Admin "Save & Start Audit" and customer "Submit audit request" both call this.
+ * Same implementation as `startAuditJob` — one audit processing system.
+ */
+export const startAuditOrchestration = startAuditJob;

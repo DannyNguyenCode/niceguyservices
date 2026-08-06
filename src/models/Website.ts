@@ -198,6 +198,8 @@ WebsiteSchema.index(
     },
 );
 
+WebsiteSchema.index({ businessEmail: 1, deletedAt: 1 });
+
 WebsiteSchema.index({ updatedAt: -1 });
 
 export type WebsiteDocument = InferSchemaType<typeof WebsiteSchema> & {

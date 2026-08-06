@@ -236,6 +236,13 @@ AuditRunSchema.index(
     { unique: true, partialFilterExpression: { isCurrent: true } },
 );
 AuditRunSchema.index({ websiteId: 1, isArchived: 1, completedAt: -1 });
+/** Supports public-customer 7-day domain cooldown lookups. */
+AuditRunSchema.index({
+    websiteId: 1,
+    status: 1,
+    "trigger.actorName": 1,
+    completedAt: -1,
+});
 
 export type AuditRunDocument = InferSchemaType<typeof AuditRunSchema> & {
     _id: mongoose.Types.ObjectId;

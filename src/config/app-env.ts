@@ -146,7 +146,8 @@ function defaultAuditFlagsForEnvironment(
             auditAiEnabled: false,
             auditCloudinaryEnabled: true,
             auditEmailEnabled: false,
-            auditSyncExecution: true,
+            // Match production: durable Mongo job + worker kick (not request-owned).
+            auditSyncExecution: false,
         };
     }
 

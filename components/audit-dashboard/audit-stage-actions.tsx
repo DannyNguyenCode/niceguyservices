@@ -31,10 +31,6 @@ export default function AuditStageActions({
         latest.pageSpeed.mobile?.status === "complete" ||
             latest.pageSpeed.desktop?.status === "complete",
     );
-    const niceGuyReady = Boolean(
-        latest.niceGuy?.status === "complete" &&
-            latest.niceGuy.crawlId === latest.crawl?.id,
-    );
 
     const content = (
         <>
@@ -42,8 +38,10 @@ export default function AuditStageActions({
                 <>
                     <h2 className="text-lg font-semibold text-base-content">Run audit stages</h2>
                     <p className="mt-2 text-sm text-base-content/70">
-                        Screenshots are captured automatically when a crawl completes. Stages must run
-                        in order; disabled actions indicate missing prerequisites or an active run.
+                        Use these controls to run or retry individual stages. Automated audits run
+                        crawl and PageSpeed concurrently, then Nice Guy after crawl, then Cursor
+                        once the evidence barrier is satisfied. Buttons disable while a stage is
+                        already active.
                     </p>
                 </>
             ) : null}

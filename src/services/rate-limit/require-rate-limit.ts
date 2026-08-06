@@ -13,6 +13,12 @@ const POLICY_ERROR_CODES: Partial<Record<RateLimitPolicyId, string>> = {
     "public-report-view": RATE_LIMIT_ERROR_CODES.PUBLIC_RESOURCE_EXCEEDED,
     "public-demo-view": RATE_LIMIT_ERROR_CODES.PUBLIC_RESOURCE_EXCEEDED,
     "public-pdf-download": RATE_LIMIT_ERROR_CODES.PUBLIC_RESOURCE_EXCEEDED,
+    "public-audit-submit": RATE_LIMIT_ERROR_CODES.PUBLIC_RESOURCE_EXCEEDED,
+    "public-audit-submit-ip-day": RATE_LIMIT_ERROR_CODES.PUBLIC_RESOURCE_EXCEEDED,
+    "public-audit-submit-email": RATE_LIMIT_ERROR_CODES.PUBLIC_RESOURCE_EXCEEDED,
+    "public-report-lookup-request-ip": RATE_LIMIT_ERROR_CODES.PUBLIC_RESOURCE_EXCEEDED,
+    "public-report-lookup-request-email": RATE_LIMIT_ERROR_CODES.PUBLIC_RESOURCE_EXCEEDED,
+    "public-report-lookup-verify-ip": RATE_LIMIT_ERROR_CODES.PUBLIC_RESOURCE_EXCEEDED,
     "pagespeed-global-daily": RATE_LIMIT_ERROR_CODES.BUDGET_EXCEEDED,
     "ai-analysis-global-daily": RATE_LIMIT_ERROR_CODES.BUDGET_EXCEEDED,
 };

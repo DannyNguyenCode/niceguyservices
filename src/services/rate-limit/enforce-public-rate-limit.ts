@@ -3,6 +3,7 @@ import "server-only";
 import {
     getClientIp,
     getClientIpFromHeaders,
+    getHashedEmailRateLimitKey,
     getHashedIpRateLimitKey,
     getPublicTokenIdentityFromRawToken,
 } from "@/src/services/rate-limit/rate-limit-identity";
@@ -62,13 +63,50 @@ export async function enforcePublicPdfDownloadRateLimit(input: {
 }
 
 /**
- * Rate-limits public audit intake before MongoDB writes.
- * Defaults: 5 submissions / IP / hour (PUBLIC_AUDIT_SUBMIT_LIMIT / WINDOW_SECONDS).
+ * Rate-limits public audit intake before MongoDB writes / orchestration.
+ * Prefer passing businessEmail so IP hourly + IP daily + email daily limits all apply.
  */
-export async function enforcePublicAuditSubmitRateLimit(): Promise<void> {
+export async function enforcePublicAuditSubmitRateLimit(input?: {
+    businessEmail?: string;
+}): Promise<void> {
+    if (input?.businessEmail) {
+        const { enforcePublicAuditSubmitRateLimits } = await import(
+            "@/src/services/public-audit-protection/enforce-public-audit-limits"
+        );
+        await enforcePublicAuditSubmitRateLimits({
+            businessEmail: input.businessEmail,
+        });
+        return;
+    }
+
     const ip = await getClientIpFromHeaders();
     await requireRateLimit({
         policyId: "public-audit-submit",
+        identifiers: [ip ? getHashedIpRateLimitKey(ip) : "ip:unknown"],
+    });
+}
+
+export async function enforcePublicReportLookupRequestRateLimit(input: {
+    request: Request;
+    normalizedEmail: string;
+}): Promise<void> {
+    const ip = getClientIp(input.request);
+    await requireRateLimit({
+        policyId: "public-report-lookup-request-ip",
+        identifiers: [ip ? getHashedIpRateLimitKey(ip) : "ip:unknown"],
+    });
+    await requireRateLimit({
+        policyId: "public-report-lookup-request-email",
+        identifiers: [getHashedEmailRateLimitKey(input.normalizedEmail)],
+    });
+}
+
+export async function enforcePublicReportLookupVerifyRateLimit(input: {
+    request: Request;
+}): Promise<void> {
+    const ip = getClientIp(input.request);
+    await requireRateLimit({
+        policyId: "public-report-lookup-verify-ip",
         identifiers: [ip ? getHashedIpRateLimitKey(ip) : "ip:unknown"],
     });
 }

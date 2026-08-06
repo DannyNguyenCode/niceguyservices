@@ -1,119 +1,283 @@
 import Link from "next/link";
-import PageHero from "@/components/ui/PageHero";
-import AuditSectionCard from "@/components/websiteAudit/AuditSectionCard";
-import MethodologySection from "@/components/websiteAudit/MethodologySection";
+import {
+    ArrowRightIcon,
+    MagnifyingGlassIcon,
+    ShieldCheckIcon,
+} from "@heroicons/react/24/outline";
+import AuditScanBrowserVisual from "@/components/websiteAudit/AuditScanBrowserVisual";
+import AuditSectionLabel from "@/components/websiteAudit/AuditSectionLabel";
+import {
+    AUDIT_LANDING_MEASURES,
+    AUDIT_LANDING_METHOD_ROWS,
+    AUDIT_LANDING_METHOD_STRIP,
+    AUDIT_LANDING_STEPS,
+} from "@/components/websiteAudit/audit-landing-content";
+import ReportLookupForm from "@/components/websiteAudit/ReportLookupForm";
 import WebsiteAuditForm from "@/components/websiteAudit/WebsiteAuditForm";
 import { sitePageContentClass } from "@/components/pricing/pricingLayoutConstants";
 
-const measures = [
-    {
-        title: "Performance",
-        description:
-            "Page speed, loading behaviour, and technical issues that may make the site feel slower than it should.",
-    },
-    {
-        title: "Accessibility",
-        description:
-            "Basic usability signals such as labels, contrast, semantics, and mobile readability.",
-    },
-    {
-        title: "Messaging and trust",
-        description:
-            "How clearly the site explains the offer, supports credibility, and reduces hesitation for new visitors.",
-    },
-    {
-        title: "Mobile and conversion clarity",
-        description:
-            "How well the website guides people on smaller screens toward contacting, booking, or requesting a quote.",
-    },
-];
-
-const methodologyItems = [
-    "Automated technical checks provide a baseline view of visible page issues and opportunities.",
-    "Google PageSpeed data helps surface real-world performance patterns and loading constraints.",
-    "Visual review looks at trust signals, messaging clarity, mobile UX, and conversion friction.",
-    "Nice Guy Web Design criteria prioritize practical improvements for small-business websites.",
-];
-
+/** Public `/work/website-audit` landing page. */
 export default function WebsiteAuditLandingPage() {
     return (
         <div className="bg-(--pm-surface) pb-20 text-(--pm-on-surface)">
-            <PageHero
-                eyebrow="Work"
-                title="Find opportunities to improve your website"
-                description="Enter your website address to receive a practical review of its performance, accessibility, messaging, trust signals, mobile experience, and conversion clarity."
-                primaryHref="#website-audit-form"
-                primaryLabel="Start the audit"
-                secondaryHref="/contact"
-                secondaryLabel="Talk about your website"
-            />
-
-            <div className={`${sitePageContentClass} grid grid-cols-1 gap-8`}>
-                <div id="website-audit-form">
-                    <WebsiteAuditForm />
-                </div>
-
-                <AuditSectionCard
-                    title="What the audit measures"
-                    description="The audit is designed to highlight issues that affect visibility, trust, usability, and lead generation for small-business websites."
+            {/* Hero — two-column copy + visual */}
+            <section className="relative overflow-hidden border-b border-base-300">
+                <div className="pointer-events-none absolute inset-0 ng-grid-bg opacity-30" aria-hidden />
+                <div
+                    className={`relative grid items-center gap-14 py-16 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-16 lg:py-24 ${sitePageContentClass}`}
                 >
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        {measures.map((item) => (
-                            <article key={item.title} className="rounded-2xl bg-base-200 p-5 shadow-sm">
-                                <h3 className="text-base font-semibold text-base-content">{item.title}</h3>
-                                <p className="mt-2 text-sm leading-relaxed text-base-content/75">
-                                    {item.description}
+                    <div className="min-w-0">
+                        <AuditSectionLabel index="※">Website audit</AuditSectionLabel>
+                        <h1 className="mt-6 text-3xl font-semibold leading-[1.15] text-base-content sm:text-4xl lg:text-[3.35rem]">
+                            Find opportunities to improve your website
+                        </h1>
+                        <p className="mt-6 max-w-xl text-base leading-relaxed text-base-content/75 sm:text-lg">
+                            Enter your website address to receive a practical review of its
+                            performance, accessibility, messaging, trust signals, mobile
+                            experience and conversion clarity.
+                        </p>
+                        <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+                            <a href="#website-audit-form" className="btn btn-primary gap-2">
+                                Start the audit
+                                <ArrowRightIcon className="size-4" aria-hidden />
+                            </a>
+                            <Link href="/contact" className="btn btn-outline">
+                                Talk about your website
+                            </Link>
+                        </div>
+                    </div>
+
+                    <div className="min-w-0">
+                        <AuditScanBrowserVisual />
+                    </div>
+                </div>
+            </section>
+
+            {/* Submission — form + what happens next */}
+            <section className="border-b border-base-300 bg-base-100">
+                <div className={`py-16 lg:py-24 ${sitePageContentClass}`}>
+                    <div className="grid gap-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-16">
+                        <div id="website-audit-form" className="min-w-0 scroll-mt-24">
+                            <AuditSectionLabel index="01">Start your audit</AuditSectionLabel>
+                            <h2 className="mt-5 text-2xl font-semibold text-base-content sm:text-3xl">
+                                Request a website audit
+                            </h2>
+                            <p className="mt-4 max-w-lg text-base-content/70">
+                                Enter your website URL and business email to start your website
+                                audit.
+                            </p>
+
+                            <div className="mt-9">
+                                <WebsiteAuditForm embedded showPrivacyNote={false} />
+                            </div>
+
+                            <div className="mt-12 border-t border-base-300 pt-6">
+                                <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                                    {AUDIT_LANDING_METHOD_STRIP.map((item, index) => (
+                                        <span key={item} className="flex items-center gap-3">
+                                            {index > 0 ? (
+                                                <span className="text-primary" aria-hidden>
+                                                    +
+                                                </span>
+                                            ) : null}
+                                            <span className="text-xs font-medium uppercase tracking-[0.12em] text-base-content/80">
+                                                {item}
+                                            </span>
+                                        </span>
+                                    ))}
+                                </div>
+                                <p className="mt-4 flex max-w-xl gap-3 text-sm text-base-content/65">
+                                    <ShieldCheckIcon
+                                        className="mt-0.5 size-4 shrink-0 text-primary"
+                                        aria-hidden
+                                    />
+                                    Your audit uses publicly available website data and does not
+                                    access private analytics, sales data or customer information.
                                 </p>
-                            </article>
+                            </div>
+                        </div>
+
+                        <div className="min-w-0 lg:border-l lg:border-base-300 lg:pl-12">
+                            <h3 className="text-xs font-medium uppercase tracking-[0.14em] text-base-content/55">
+                                What happens next?
+                            </h3>
+                            <ol className="mt-7 space-y-8">
+                                {AUDIT_LANDING_STEPS.map((step, index) => (
+                                    <li key={step.n} className="relative flex gap-5">
+                                        <div className="flex shrink-0 flex-col items-center">
+                                            <span className="grid size-9 place-items-center border border-primary/40 text-xs font-semibold text-primary">
+                                                {step.n}
+                                            </span>
+                                            {index < AUDIT_LANDING_STEPS.length - 1 ? (
+                                                <span
+                                                    aria-hidden
+                                                    className="mt-2 flex flex-col items-center gap-1"
+                                                >
+                                                    <span className="h-5 w-px bg-base-300" />
+                                                    <span className="size-1.5 bg-primary/70" />
+                                                    <span className="h-5 w-px bg-base-300" />
+                                                </span>
+                                            ) : null}
+                                        </div>
+                                        <div className="min-w-0 pb-1">
+                                            <p className="font-semibold text-base-content">
+                                                {step.title}
+                                            </p>
+                                            <p className="mt-1.5 text-sm text-base-content/65">
+                                                {step.body}
+                                            </p>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* What we measure */}
+            <section className="border-b border-base-300 bg-base-200/40">
+                <div className={`py-16 lg:py-24 ${sitePageContentClass}`}>
+                    <AuditSectionLabel index="02">What we measure</AuditSectionLabel>
+                    <div className="mt-6 max-w-3xl">
+                        <h2 className="text-2xl font-semibold text-base-content sm:text-3xl">
+                            What your audit looks for
+                        </h2>
+                        <p className="mt-4 text-base-content/70">
+                            We look beyond page speed to find issues that can affect usability,
+                            trust and conversions.
+                        </p>
+                    </div>
+
+                    <div className="mt-14 grid gap-px bg-base-300 sm:grid-cols-2 lg:grid-cols-4">
+                        {AUDIT_LANDING_MEASURES.map(({ n, icon: Icon, title, body }) => (
+                            <div
+                                key={n}
+                                className="group relative bg-base-100 px-6 py-8 transition-colors hover:bg-base-200/80"
+                            >
+                                <span
+                                    aria-hidden
+                                    className="absolute left-0 top-0 h-px w-8 bg-primary opacity-40 transition-opacity group-hover:opacity-100"
+                                />
+                                <div className="flex items-center justify-between">
+                                    <Icon className="size-5 text-primary" aria-hidden />
+                                    <span className="text-xs font-semibold text-base-content/40">
+                                        {n}
+                                    </span>
+                                </div>
+                                <h3 className="mt-6 text-sm font-semibold text-base-content">
+                                    {title}
+                                </h3>
+                                <p className="mt-3 text-sm leading-relaxed text-base-content/65">
+                                    {body}
+                                </p>
+                            </div>
                         ))}
                     </div>
-                </AuditSectionCard>
+                </div>
+            </section>
 
-                <MethodologySection items={methodologyItems} />
+            {/* Methodology */}
+            <section className="border-b border-base-300 bg-base-100">
+                <div className={`py-16 lg:py-24 ${sitePageContentClass}`}>
+                    <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
+                        <div className="min-w-0">
+                            <AuditSectionLabel index="03">How it works</AuditSectionLabel>
+                            <h2 className="mt-6 text-2xl font-semibold text-base-content sm:text-3xl">
+                                A practical review, backed by real signals.
+                            </h2>
+                            <p className="mt-6 max-w-lg text-base-content/70">
+                                Every audit blends automated measurement with a human pass over
+                                the pages your customers actually see. The goal isn&apos;t a longer
+                                report — it&apos;s a short list of changes worth making, in the
+                                order they&apos;re worth making them.
+                            </p>
+                            <div
+                                aria-hidden
+                                className="mt-8 flex flex-col items-start gap-1.5 py-2 pl-1"
+                            >
+                                <span className="size-1.5 bg-primary" />
+                                <span className="ml-[2px] h-10 w-px bg-base-300" />
+                                <span className="size-1 bg-primary/60" />
+                                <span className="ml-[2px] h-10 w-px bg-base-300" />
+                                <span className="size-1.5 bg-primary/40" />
+                            </div>
+                        </div>
 
-                <AuditSectionCard
-                    title="Already requested an audit?"
-                    description="If you submitted a request recently, our team is reviewing it in the audit dashboard."
-                >
-                    <form className="grid grid-cols-1 gap-5 md:grid-cols-2" noValidate>
-                        <div>
-                            <label className="mb-2 block text-sm font-medium text-base-content" htmlFor="lookup-reference">
-                                Report token or business email
-                            </label>
-                            <input
-                                id="lookup-reference"
-                                type="text"
-                                placeholder="Enter your token or email"
-                                className="input input-bordered w-full bg-base-100"
-                            />
+                        <div className="min-w-0">
+                            {AUDIT_LANDING_METHOD_ROWS.map((row, index) => (
+                                <div
+                                    key={row.n}
+                                    className={`flex gap-6 py-6 ${
+                                        index === 0 ? "" : "border-t border-base-300"
+                                    }`}
+                                >
+                                    <span className="shrink-0 text-xs font-semibold text-primary">
+                                        {row.n}
+                                    </span>
+                                    <div className="min-w-0 flex-1">
+                                        <p className="font-semibold text-base-content">
+                                            {row.title}
+                                        </p>
+                                        <p className="mt-1.5 text-sm text-base-content/65">
+                                            {row.body}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                        <div className="flex items-end">
-                            <button type="button" className="btn btn-outline w-full md:w-auto" disabled>
-                                Lookup report
-                            </button>
-                        </div>
-                        <div className="md:col-span-2">
-                            <p className="rounded-xl bg-base-200 p-4 text-sm leading-relaxed text-base-content/80">
-                                Report lookup is not wired up yet. This placeholder will be connected to report retrieval in a later implementation step.
+                    </div>
+                </div>
+            </section>
+
+            {/* Report lookup */}
+            <section className="border-b border-base-300 bg-base-200/50">
+                <div className={`py-12 lg:py-16 ${sitePageContentClass}`}>
+                    <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
+                        <div className="min-w-0">
+                            <div className="flex items-center gap-3">
+                                <MagnifyingGlassIcon
+                                    className="size-4 text-base-content/55"
+                                    aria-hidden
+                                />
+                                <h2 className="text-lg font-semibold text-base-content">
+                                    Already requested an audit?
+                                </h2>
+                            </div>
+                            <p className="mt-3 text-sm text-base-content/65">
+                                If your report has been published, enter the business email you
+                                used when you requested the audit to retrieve it.
                             </p>
                         </div>
-                    </form>
-                </AuditSectionCard>
+                        <div className="min-w-0">
+                            <ReportLookupForm />
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-                <AuditSectionCard
-                    title="Need a hands-on review?"
-                    description="If you want help prioritizing the next improvements for your website, get in touch directly."
-                    actions={
-                        <Link href="/contact" className="btn btn-primary">
-                            Contact Nice Guy Web Design
+            {/* Final CTA */}
+            <section id="talk" className="scroll-mt-24">
+                <div className={`py-20 lg:py-28 ${sitePageContentClass}`}>
+                    <div className="relative mx-auto max-w-3xl border-l-4 border-primary bg-base-100 px-6 py-12 shadow-sm sm:px-12">
+                        <span className="text-xs font-medium uppercase tracking-[0.14em] text-primary">
+                            Need a human eye?
+                        </span>
+                        <h2 className="mt-5 text-2xl font-semibold text-base-content sm:text-3xl">
+                            Want help deciding what to fix first?
+                        </h2>
+                        <p className="mt-5 max-w-xl text-base-content/70">
+                            Turn your audit findings into a practical plan for improving your
+                            website — built and prioritized with a real person who does this
+                            every day.
+                        </p>
+                        <Link href="/contact" className="btn btn-primary mt-9 gap-2">
+                            Talk to Nice Guy Web Design
+                            <ArrowRightIcon className="size-4" aria-hidden />
                         </Link>
-                    }
-                >
-                    <p className="max-w-3xl text-sm leading-relaxed text-base-content/75">
-                        Public audit requests are saved to the administrator dashboard. Sign in to review new submissions and start the audit pipeline from there.
-                    </p>
-                </AuditSectionCard>
-            </div>
+                    </div>
+                </div>
+            </section>
         </div>
     );
 }

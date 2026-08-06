@@ -54,14 +54,32 @@ async function runPageSpeedStrategy(input: {
         return { status: "skipped" };
     }
 
-    const crawl = await getCrawlForContext(input.context);
-    if (!crawl || crawl.status !== "complete") {
+    const website = await getWebsiteById(input.context.websiteId);
+    if (!website) {
         return {
             status: "failed",
-            errorCode: "CRAWL_REQUIRED",
-            errorMessage: "A completed crawl is required before PageSpeed.",
-            retryable: true,
+            errorCode: "WEBSITE_NOT_FOUND",
+            errorMessage: "Website not found.",
+            retryable: false,
         };
+    }
+
+    let crawl = await getCrawlForContext(input.context);
+    if (!crawl) {
+        // Allow PageSpeed to start concurrently with crawl by ensuring a crawl
+        // record exists for evidence association (crawl work may still be pending).
+        const created = await createCrawlRecord({
+            websiteId: input.context.websiteId,
+            requestedUrl: website.originalUrl,
+            status: "queued",
+            auditRunId: input.context.auditRunId,
+        });
+        crawl = created.crawl;
+        await registerAuditReference({
+            auditRunId: input.context.auditRunId,
+            resourceType: "crawl-data",
+            resourceId: crawl.id,
+        });
     }
 
     const existing = (await getGoogleMetricsForCrawl(crawl.id)).find(
@@ -88,7 +106,10 @@ async function runPageSpeedStrategy(input: {
         };
     }
 
-    const homepageUrl = crawl.finalUrl || crawl.requestedUrl;
+    const homepageUrl =
+        crawl.status === "complete"
+            ? crawl.finalUrl || crawl.requestedUrl || website.originalUrl
+            : crawl.requestedUrl || website.originalUrl;
     try {
         await validatePublicCrawlUrl(homepageUrl);
     } catch (error) {
@@ -253,7 +274,17 @@ export async function runAuditStage(
                 status: "queued",
                 auditRunId: context.auditRunId,
             });
-            if (!created) {
+
+            // Concurrent PageSpeed may have created the crawl record first — reuse it.
+            if (!created && crawl.status !== "queued" && crawl.status !== "processing") {
+                if (crawl.status === "complete") {
+                    await registerAuditReference({
+                        auditRunId: context.auditRunId,
+                        resourceType: "crawl-data",
+                        resourceId: crawl.id,
+                    });
+                    return { status: "completed" };
+                }
                 return {
                     status: "failed",
                     errorCode: "CRAWL_DUPLICATE",
@@ -276,7 +307,15 @@ export async function runAuditStage(
                     crawlMaxDepth: context.configuration.crawlMaxDepth ?? undefined,
                     managedByPipeline: true,
                 });
-                return { status: "completed" };
+                const refreshed = await getCrawlById(crawl.id);
+                return refreshed?.status === "complete"
+                    ? { status: "completed" }
+                    : {
+                          status: "failed",
+                          errorCode: "CRAWL_FAILED",
+                          errorMessage: refreshed?.errorMessage ?? "Crawl failed.",
+                          retryable: true,
+                      };
             } catch {
                 return {
                     status: "failed",
@@ -321,20 +360,21 @@ export async function runAuditStage(
             return runPageSpeedStrategy({ context, strategy: "desktop" });
         case "niceguy": {
             const crawl = await getCrawlForContext(context);
-            if (!crawl) {
+            if (!crawl || crawl.status !== "complete") {
                 return {
                     status: "failed",
                     errorCode: "CRAWL_REQUIRED",
-                    errorMessage: "Crawl is required for Nice Guy scoring.",
+                    errorMessage: "A completed crawl is required for Nice Guy scoring.",
                     retryable: true,
                 };
             }
+            // Do not wait for PageSpeed — Cursor evidence barrier still requires it.
             const result = await runNiceGuyAnalysis(context.websiteId, {
                 internalWorker: true,
                 crawlId: crawl.id,
                 auditRunId: context.auditRunId,
                 managedByPipeline: true,
-                requirePageSpeed: context.configuration.includePageSpeed,
+                requirePageSpeed: false,
             });
             if (!result.success) {
                 return {
@@ -350,15 +390,6 @@ export async function runAuditStage(
             if (!context.configuration.includeAiAnalysis) {
                 return { status: "skipped" };
             }
-            const crawl = await getCrawlForContext(context);
-            if (!crawl) {
-                return {
-                    status: "completed_with_warnings",
-                    errorCode: "CRAWL_REQUIRED",
-                    errorMessage: "Crawl is required for AI analysis.",
-                    retryable: true,
-                };
-            }
 
             if (!isAnalysisProviderEnabled()) {
                 return {
@@ -370,6 +401,36 @@ export async function runAuditStage(
                 };
             }
 
+            const {
+                evaluateAuditEvidenceBarrier,
+                summarizeEvidenceBlockers,
+            } = await import("@/src/services/audit-pipeline/evidence-barrier");
+            const barrier = await evaluateAuditEvidenceBarrier(context.auditRunId);
+            if (!barrier.ready) {
+                await createActivityLog({
+                    websiteId: context.websiteId,
+                    auditRunId: context.auditRunId,
+                    type: "ai-analysis-failed",
+                    description: `Evidence barrier blocked Cursor: ${summarizeEvidenceBlockers(barrier.blockers)}`,
+                    actor: "system",
+                });
+                return {
+                    status: "completed_with_warnings",
+                    errorCode: "EVIDENCE_BARRIER_BLOCKED",
+                    errorMessage:
+                        "Required audit evidence is incomplete. Cursor was not triggered.",
+                    retryable: true,
+                };
+            }
+
+            await createActivityLog({
+                websiteId: context.websiteId,
+                auditRunId: context.auditRunId,
+                type: "ai-analysis-queued",
+                description: "Evidence barrier satisfied. Claiming Cursor trigger.",
+                actor: "system",
+            });
+
             await updateAuditRunStage(
                 context.auditRunId,
                 "ai",
@@ -379,12 +440,21 @@ export async function runAuditStage(
 
             const result = await requestCursorAnalysisForAuditRun(context.auditRunId);
             if (!result.ok) {
+                if (result.code === "ANALYSIS_ALREADY_ACTIVE") {
+                    // Another concurrent claim already triggered Cursor — treat as waiting.
+                    return {
+                        status: "waiting_for_external",
+                        errorCode: null,
+                        errorMessage:
+                            "Cursor analysis already in progress. Waiting for authenticated callback.",
+                    };
+                }
                 await updateAuditRunStage(context.auditRunId, "ai", "failed");
                 return {
                     status: "completed_with_warnings",
                     errorCode: result.code,
                     errorMessage: result.message,
-                    retryable: result.code !== "ANALYSIS_ALREADY_ACTIVE",
+                    retryable: true,
                 };
             }
 

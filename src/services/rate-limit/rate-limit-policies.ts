@@ -1,5 +1,6 @@
 import type { RateLimitPolicyId } from "@/src/validation/rate-limit";
 import { getRateLimitEnv } from "@/src/config/env";
+import { PUBLIC_AUDIT_LIMITS } from "@/src/services/public-audit-protection/constants";
 
 export type RateLimitPolicy = {
     id: RateLimitPolicyId;
@@ -188,14 +189,57 @@ const BASE_POLICIES: Record<RateLimitPolicyId, RateLimitPolicy> = {
     "public-audit-submit": {
         id: "public-audit-submit",
         algorithm: "sliding-window",
-        limit: Number.parseInt(process.env.PUBLIC_AUDIT_SUBMIT_LIMIT ?? "5", 10) || 5,
-        windowSeconds:
-            Number.parseInt(process.env.PUBLIC_AUDIT_SUBMIT_WINDOW_SECONDS ?? "3600", 10) ||
-            3600,
+        limit: PUBLIC_AUDIT_LIMITS.ipPerHour,
+        windowSeconds: 60 * 60,
         scope: "ip",
         failureMode: "closed",
+        description: `Public audit submissions per IP (${PUBLIC_AUDIT_LIMITS.ipPerHour} per hour).`,
+    },
+    "public-audit-submit-ip-day": {
+        id: "public-audit-submit-ip-day",
+        algorithm: "sliding-window",
+        limit: PUBLIC_AUDIT_LIMITS.ipPer24Hours,
+        windowSeconds: 24 * 60 * 60,
+        scope: "ip",
+        failureMode: "closed",
+        description: `Public audit submissions per IP (${PUBLIC_AUDIT_LIMITS.ipPer24Hours} per 24 hours).`,
+    },
+    "public-audit-submit-email": {
+        id: "public-audit-submit-email",
+        algorithm: "sliding-window",
+        limit: PUBLIC_AUDIT_LIMITS.emailPer24Hours,
+        windowSeconds: 24 * 60 * 60,
+        scope: "composite",
+        failureMode: "closed",
+        description: `Public audit submissions per normalized email (${PUBLIC_AUDIT_LIMITS.emailPer24Hours} per 24 hours).`,
+    },
+    "public-report-lookup-request-ip": {
+        id: "public-report-lookup-request-ip",
+        algorithm: "sliding-window",
+        limit: 10,
+        windowSeconds: 60 * 60,
+        scope: "ip",
+        failureMode: "closed",
+        description: "Report lookup verification code requests per IP.",
+    },
+    "public-report-lookup-request-email": {
+        id: "public-report-lookup-request-email",
+        algorithm: "sliding-window",
+        limit: 1,
+        windowSeconds: 60,
+        scope: "composite",
+        failureMode: "closed",
         description:
-            "Public audit form submissions per IP (defaults: 5 per hour). Override with PUBLIC_AUDIT_SUBMIT_LIMIT / PUBLIC_AUDIT_SUBMIT_WINDOW_SECONDS.",
+            "Report lookup verification code resend cooldown per normalized email (60 seconds).",
+    },
+    "public-report-lookup-verify-ip": {
+        id: "public-report-lookup-verify-ip",
+        algorithm: "sliding-window",
+        limit: 30,
+        windowSeconds: 15 * 60,
+        scope: "ip",
+        failureMode: "closed",
+        description: "Report lookup code verification attempts per IP.",
     },
     "administrator-note-create": {
         id: "administrator-note-create",

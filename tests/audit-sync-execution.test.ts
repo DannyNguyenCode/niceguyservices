@@ -15,7 +15,7 @@ afterEach(() => {
 });
 
 describe("audit sync execution defaults", () => {
-    it("runs crawls synchronously on preview by default", async () => {
+    it("queues preview audits asynchronously by default (durable worker)", async () => {
         Object.assign(process.env, {
             NODE_ENV: "production",
             DEPLOYMENT_ENV: "preview",
@@ -23,9 +23,10 @@ describe("audit sync execution defaults", () => {
             MONGODB_DB_NAME: "niceguy_audit_preview",
             AUTH_SECRET: "preview-auth-secret",
         });
+        delete process.env.AUDIT_SYNC_EXECUTION;
 
         const { getAuditOperationFlags } = await import("@/src/config/app-env");
-        assert.equal(getAuditOperationFlags().syncExecution, true);
+        assert.equal(getAuditOperationFlags().syncExecution, false);
     });
 
     it("keeps production audits queued unless AUDIT_SYNC_EXECUTION is set", async () => {

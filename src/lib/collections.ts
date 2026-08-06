@@ -44,4 +44,12 @@ export const MONGODB_COLLECTIONS = {
     demoAssets: collectionName("MONGODB_COLLECTION_DEMO_ASSETS", "demo_assets"),
     auditRuns: collectionName("MONGODB_COLLECTION_AUDIT_RUNS", "audit_runs"),
     auditJobs: collectionName("MONGODB_COLLECTION_AUDIT_JOBS", "audit_jobs"),
+    reportLookupVerifications: collectionName(
+        "MONGODB_COLLECTION_REPORT_LOOKUP_VERIFICATIONS",
+        "report_lookup_verifications",
+    ),
+    reportLookupSessions: collectionName(
+        "MONGODB_COLLECTION_REPORT_LOOKUP_SESSIONS",
+        "report_lookup_sessions",
+    ),
 } as const;

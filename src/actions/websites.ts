@@ -14,7 +14,7 @@ import {
     formatZodErrors,
     updateWebsiteSchema,
 } from "@/src/lib/website-validation";
-import { StartAuditJobError, startAuditJob } from "@/src/services/audit-pipeline/start-audit-job";
+import { StartAuditJobError, startAuditOrchestration } from "@/src/services/audit-pipeline/start-audit-job";
 import { requireAdministratorSession } from "@/src/services/auth/administrator-session";
 
 export type WebsiteActionState = {
@@ -86,7 +86,7 @@ export async function createWebsiteAction(
 
         if (intent === "save-and-start") {
             try {
-                const started = await startAuditJob({
+                const started = await startAuditOrchestration({
                     websiteId: website.id,
                     trigger: { type: "administrator", actorId: null, actorName: null },
                 });

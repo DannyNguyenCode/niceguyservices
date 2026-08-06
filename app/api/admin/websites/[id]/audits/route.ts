@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getWebsiteById } from "@/src/data/websites";
 import {
     StartAuditJobError,
-    startAuditJob,
+    startAuditOrchestration,
 } from "@/src/services/audit-pipeline/start-audit-job";
 import {
     guardAdministratorReadRoute,
@@ -146,7 +146,7 @@ export async function POST(request: Request, context: RouteContext) {
     const identity = await resolveRouteAdministratorIdentity(request);
 
     try {
-        const started = await startAuditJob({
+        const started = await startAuditOrchestration({
             websiteId,
             configuration: parsed.data.configuration,
             trigger: {

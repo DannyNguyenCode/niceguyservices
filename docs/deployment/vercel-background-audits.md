@@ -1,8 +1,11 @@
 # Production background audit execution (Vercel)
 
-This application runs on Vercel. Production audits are **not** executed inline from
-`Save and Start Audit`. They are queued as `AuditJob` records and executed by a
-protected worker endpoint.
+This application runs on Vercel. Production and Preview audits are **not** executed
+inline from `Save and Start Audit` by default. They are queued as `AuditJob` records
+and executed by a protected worker endpoint.
+
+Local development still defaults to synchronous execution for faster iteration
+(`AUDIT_SYNC_EXECUTION` defaults to true outside production/preview).
 
 ## Required environment variables (production)
 
@@ -35,8 +38,12 @@ Legacy `AI_API_KEY` / `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` are **not** require
 
 1. Admin/public start creates Website + AuditRun + queued AuditJob.
 2. Request returns after scheduling work (`after()` kick + cron).
-3. Worker claims one queued job atomically and runs:
-   preflight → crawl → screenshots → PageSpeed → Nice Guy Metrics → Cursor trigger.
+3. Worker claims one queued job atomically and runs a dependency-aware
+   concurrent pipeline:
+   - preflight
+   - crawl (+ screenshots capture) **in parallel with** PageSpeed mobile/desktop
+   - Nice Guy Metrics after crawl completes (may overlap remaining PageSpeed)
+   - evidence barrier → Cursor trigger (exactly once)
 4. After Cursor webhook acceptance, the job parks as `waiting_for_external` and the function ends.
 5. Cursor callback authenticates, validates, persists result, marks AI complete, resumes finalize + report draft.
 
