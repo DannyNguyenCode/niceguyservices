@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
     ArrowRightIcon,
     MagnifyingGlassIcon,
@@ -14,12 +13,20 @@ import {
 } from "@/components/websiteAudit/audit-landing-content";
 import ReportLookupForm from "@/components/websiteAudit/ReportLookupForm";
 import WebsiteAuditForm from "@/components/websiteAudit/WebsiteAuditForm";
-import { sitePageContentClass } from "@/components/pricing/pricingLayoutConstants";
+import {
+    pixelPageHeading,
+    pricingLayoutHeroHeadline as heroHeadline,
+    responsivePageHeroTitleClass,
+    sitePageContentClass,
+} from "@/components/pricing/pricingLayoutConstants";
+import ServicesModernCTA from "@/components/services/ServicesModernCTA";
+import PixelCtaLink from "@/components/ui/PixelCtaLink";
+import PixelKeyword from "@/components/ui/PixelKeyword";
 
 /** Public `/work/website-audit` landing page. */
 export default function WebsiteAuditLandingPage() {
     return (
-        <div className="bg-(--pm-surface) pb-20 text-(--pm-on-surface)">
+        <div className="bg-(--pm-surface) text-(--pm-on-surface)">
             {/* Hero — two-column copy + visual */}
             <section className="relative overflow-hidden border-b border-base-300">
                 <div className="pointer-events-none absolute inset-0 ng-grid-bg opacity-30" aria-hidden />
@@ -28,22 +35,40 @@ export default function WebsiteAuditLandingPage() {
                 >
                     <div className="min-w-0">
                         <AuditSectionLabel index="※">Website audit</AuditSectionLabel>
-                        <h1 className="mt-6 text-3xl font-semibold leading-[1.15] text-base-content sm:text-4xl lg:text-[3.35rem]">
-                            Find opportunities to improve your website
+                        <h1
+                            className={`mt-6 w-full min-w-0 text-balance font-extrabold ${heroHeadline} ${responsivePageHeroTitleClass} ${pixelPageHeading}`}
+                        >
+                            Find <PixelKeyword>Opportunities</PixelKeyword> To Improve Your{" "}
+                            <PixelKeyword>Website</PixelKeyword>
                         </h1>
                         <p className="mt-6 max-w-xl text-base leading-relaxed text-base-content/75 sm:text-lg">
                             Enter your website address to receive a practical review of its
                             performance, accessibility, messaging, trust signals, mobile
                             experience and conversion clarity.
                         </p>
-                        <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                            <a href="#website-audit-form" className="btn btn-primary gap-2">
+                        <div className="mt-9 flex flex-wrap items-center gap-4 sm:gap-5">
+                            <PixelCtaLink
+                                href="#website-audit-form"
+                                color="var(--ng-btn-coral)"
+                                className="group"
+                            >
                                 Start the audit
-                                <ArrowRightIcon className="size-4" aria-hidden />
-                            </a>
-                            <Link href="/contact" className="btn btn-outline">
+                                <ArrowRightIcon
+                                    className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
+                                    aria-hidden
+                                />
+                            </PixelCtaLink>
+                            <PixelCtaLink
+                                href="/contact"
+                                color="var(--ng-btn-sky)"
+                                className="group"
+                            >
                                 Talk about your website
-                            </Link>
+                                <ArrowRightIcon
+                                    className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
+                                    aria-hidden
+                                />
+                            </PixelCtaLink>
                         </div>
                     </div>
 
@@ -192,16 +217,6 @@ export default function WebsiteAuditLandingPage() {
                                 report — it&apos;s a short list of changes worth making, in the
                                 order they&apos;re worth making them.
                             </p>
-                            <div
-                                aria-hidden
-                                className="mt-8 flex flex-col items-start gap-1.5 py-2 pl-1"
-                            >
-                                <span className="size-1.5 bg-primary" />
-                                <span className="ml-[2px] h-10 w-px bg-base-300" />
-                                <span className="size-1 bg-primary/60" />
-                                <span className="ml-[2px] h-10 w-px bg-base-300" />
-                                <span className="size-1.5 bg-primary/40" />
-                            </div>
                         </div>
 
                         <div className="min-w-0">
@@ -256,28 +271,7 @@ export default function WebsiteAuditLandingPage() {
                 </div>
             </section>
 
-            {/* Final CTA */}
-            <section id="talk" className="scroll-mt-24">
-                <div className={`py-20 lg:py-28 ${sitePageContentClass}`}>
-                    <div className="relative mx-auto max-w-3xl border-l-4 border-primary bg-base-100 px-6 py-12 shadow-sm sm:px-12">
-                        <span className="text-xs font-medium uppercase tracking-[0.14em] text-primary">
-                            Need a human eye?
-                        </span>
-                        <h2 className="mt-5 text-2xl font-semibold text-base-content sm:text-3xl">
-                            Want help deciding what to fix first?
-                        </h2>
-                        <p className="mt-5 max-w-xl text-base-content/70">
-                            Turn your audit findings into a practical plan for improving your
-                            website — built and prioritized with a real person who does this
-                            every day.
-                        </p>
-                        <Link href="/contact" className="btn btn-primary mt-9 gap-2">
-                            Talk to Nice Guy Web Design
-                            <ArrowRightIcon className="size-4" aria-hidden />
-                        </Link>
-                    </div>
-                </div>
-            </section>
+            <ServicesModernCTA className="scroll-mt-24" />
         </div>
     );
 }
