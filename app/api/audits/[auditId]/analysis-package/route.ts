@@ -12,22 +12,35 @@ import { VERCEL_PROTECTION_BYPASS_QUERY_PARAM } from "@/src/services/cursor-anal
 
 export const dynamic = "force-dynamic";
 
+export const AUDIT_PACKAGE_INTERNAL_ERROR_CODE = "AUDIT_PACKAGE_INTERNAL_ERROR";
+
 type RouteContext = {
     params: Promise<{ auditId: string }>;
 };
 
-export async function GET(request: Request, context: RouteContext) {
-    const { auditId } = await context.params;
-    const requestUrl = new URL(request.url);
+type PackageLoader = typeof loadCursorAuditPackageForToken;
+
+/**
+ * Analysis-package GET handler.
+ * Auth failures → 401/403. Post-auth package/DB failures → 500.
+ * `loadPackage` is injectable for focused route tests only.
+ */
+export async function handleAnalysisPackageRequest(input: {
+    auditId: string;
+    requestUrl: string;
+    loadPackage?: PackageLoader;
+}): Promise<NextResponse> {
+    const requestUrl = new URL(input.requestUrl);
     const token = requestUrl.searchParams.get("token");
     const deployment = getDeploymentIdentityDiagnostics();
     const secretDiagnostics = getPackageSigningSecretDiagnostics();
-    const urlDiagnostics = inspectPackageUrlDiagnostics(request.url);
+    const urlDiagnostics = inspectPackageUrlDiagnostics(input.requestUrl);
+    const loadPackage = input.loadPackage ?? loadCursorAuditPackageForToken;
 
     console.info(
         "[AUDIT_PACKAGE_REQUEST_RECEIVED]",
         JSON.stringify({
-            requestedAuditId: auditId,
+            requestedAuditId: input.auditId,
             requestedAnalysisRequestId: null,
             hostname: requestUrl.hostname,
             pathname: requestUrl.pathname,
@@ -46,9 +59,10 @@ export async function GET(request: Request, context: RouteContext) {
 
     if (!token) {
         console.error(
-            "[AUDIT_PACKAGE_TOKEN_MISSING]",
+            "[AUDIT_PACKAGE_AUTH_REJECTED]",
             JSON.stringify({
-                requestedAuditId: auditId,
+                requestedAuditId: input.auditId,
+                code: AUDIT_PACKAGE_TOKEN_ERROR_CODES.MISSING,
                 receivedTokenLength: 0,
                 ...secretDiagnostics,
                 ...deployment,
@@ -66,33 +80,15 @@ export async function GET(request: Request, context: RouteContext) {
         );
     }
 
+    let payload;
     try {
-        const payload = verifyAuditPackageToken(token, auditId);
-        const auditPackage = await loadCursorAuditPackageForToken({
-            auditRunId: auditId,
-            analysisRequestId: payload.analysisRequestId,
-        });
-
-        if (!auditPackage) {
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: {
-                        code: "NOT_FOUND",
-                        message: "Audit package is unavailable or incomplete.",
-                    },
-                },
-                { status: 404 },
-            );
-        }
-
-        return NextResponse.json({ success: true, package: auditPackage });
+        payload = verifyAuditPackageToken(token, input.auditId);
     } catch (error) {
         if (error instanceof AuditPackageTokenError) {
             console.error(
-                "[AUDIT_PACKAGE_REQUEST_REJECTED]",
+                "[AUDIT_PACKAGE_AUTH_REJECTED]",
                 JSON.stringify({
-                    requestedAuditId: auditId,
+                    requestedAuditId: input.auditId,
                     code: error.code,
                     receivedTokenLength: token.length,
                     status: error.status,
@@ -112,19 +108,17 @@ export async function GET(request: Request, context: RouteContext) {
             );
         }
 
-        const legacyCode =
-            error instanceof Error ? error.message : AUDIT_PACKAGE_TOKEN_ERROR_CODES.INTERNAL_ERROR;
         console.error(
-            "[AUDIT_PACKAGE_REQUEST_REJECTED]",
+            "[AUDIT_PACKAGE_AUTH_REJECTED]",
             JSON.stringify({
-                requestedAuditId: auditId,
-                code: legacyCode,
+                requestedAuditId: input.auditId,
+                code: AUDIT_PACKAGE_TOKEN_ERROR_CODES.INTERNAL_ERROR,
                 receivedTokenLength: token.length,
+                errorName: error instanceof Error ? error.name : "unknown",
                 ...secretDiagnostics,
                 ...deployment,
             }),
         );
-
         return NextResponse.json(
             {
                 success: false,
@@ -136,4 +130,61 @@ export async function GET(request: Request, context: RouteContext) {
             { status: 401 },
         );
     }
+
+    try {
+        const auditPackage = await loadPackage({
+            auditRunId: input.auditId,
+            analysisRequestId: payload.analysisRequestId,
+        });
+
+        if (!auditPackage) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: {
+                        code: "NOT_FOUND",
+                        message: "Audit package is unavailable or incomplete.",
+                    },
+                },
+                { status: 404 },
+            );
+        }
+
+        return NextResponse.json({ success: true, package: auditPackage });
+    } catch (error) {
+        const errorName = error instanceof Error ? error.name : "unknown";
+        const errorMessage = error instanceof Error ? error.message : "unknown";
+        console.error(
+            "[AUDIT_PACKAGE_PROCESSING_FAILED]",
+            JSON.stringify({
+                requestedAuditId: input.auditId,
+                analysisRequestId: payload.analysisRequestId,
+                code: AUDIT_PACKAGE_INTERNAL_ERROR_CODE,
+                errorName,
+                // Safe, truncated message only — never stacks, URIs, tokens, or query bodies.
+                errorMessage: errorMessage.slice(0, 300),
+                ...secretDiagnostics,
+                ...deployment,
+            }),
+        );
+
+        return NextResponse.json(
+            {
+                success: false,
+                error: {
+                    code: AUDIT_PACKAGE_INTERNAL_ERROR_CODE,
+                    message: "Failed to retrieve analysis package.",
+                },
+            },
+            { status: 500 },
+        );
+    }
+}
+
+export async function GET(request: Request, context: RouteContext) {
+    const { auditId } = await context.params;
+    return handleAnalysisPackageRequest({
+        auditId,
+        requestUrl: request.url,
+    });
 }

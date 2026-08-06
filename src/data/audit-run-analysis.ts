@@ -372,6 +372,32 @@ export async function completeAuditRunAnalysis(input: {
     return updated ? serializeAnalysis(updated.analysis as Record<string, unknown>) : null;
 }
 
+/**
+ * Atomic package-access bookkeeping.
+ *
+ * Uses a MongoDB aggregation update pipeline so we can:
+ * - increment access count from null/undefined safely
+ * - set first-accessed only when previously unset
+ * - always refresh last-accessed
+ *
+ * Mongoose 9 requires `updatePipeline: true` for array updates (does not cast pipelines).
+ */
+export function buildPackageAccessUpdatePipeline(now: Date = new Date()) {
+    return [
+        {
+            $set: {
+                "analysis.packageAccessCount": {
+                    $add: [{ $ifNull: ["$analysis.packageAccessCount", 0] }, 1],
+                },
+                "analysis.packageFirstAccessedAt": {
+                    $ifNull: ["$analysis.packageFirstAccessedAt", now],
+                },
+                "analysis.packageLastAccessedAt": now,
+            },
+        },
+    ];
+}
+
 export async function recordPackageAccess(input: {
     auditRunId: string;
     analysisRequestId: string;
@@ -385,19 +411,8 @@ export async function recordPackageAccess(input: {
             "analysis.analysisRequestId": input.analysisRequestId,
             "analysis.status": { $in: ACTIVE_CURSOR_ANALYSIS_STATUSES },
         },
-        [
-            {
-                $set: {
-                    "analysis.packageAccessCount": {
-                        $add: [{ $ifNull: ["$analysis.packageAccessCount", 0] }, 1],
-                    },
-                    "analysis.packageFirstAccessedAt": {
-                        $ifNull: ["$analysis.packageFirstAccessedAt", now],
-                    },
-                    "analysis.packageLastAccessedAt": now,
-                },
-            },
-        ],
+        buildPackageAccessUpdatePipeline(now),
+        { updatePipeline: true },
     );
 }
 

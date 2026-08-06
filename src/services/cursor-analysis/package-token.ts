@@ -405,7 +405,6 @@ export function verifyAuditPackageToken(
             throw new AuditPackageTokenError(
                 AUDIT_PACKAGE_TOKEN_ERROR_CODES.AUDIT_MISMATCH,
                 "Package token does not match audit.",
-                403,
             );
         }
 
@@ -449,7 +448,6 @@ export function verifyAuditPackageToken(
             throw new AuditPackageTokenError(
                 AUDIT_PACKAGE_TOKEN_ERROR_CODES.REQUEST_MISMATCH,
                 "Package token does not match analysis request.",
-                403,
             );
         }
 
