@@ -2,6 +2,7 @@ import "server-only";
 
 import type { Browser } from "playwright-core";
 import { launchChromium } from "@/src/lib/playwright-config";
+import { applyVercelAutomationBypass } from "@/src/services/cursor-analysis/vercel-automation-bypass";
 import { buildPdfRenderToken } from "@/src/services/pdf-reports/build-pdf-render-token";
 import {
     getPdfMaxRetries,
@@ -44,7 +45,11 @@ export async function renderReportPdf(input: {
     const startedAt = Date.now();
     const timeout = getPdfRenderTimeoutMs();
     const renderToken = buildPdfRenderToken(input);
-    const printUrl = `${getPdfRenderBaseUrl()}/internal/reports/${input.publicReportId}/print?renderToken=${encodeURIComponent(renderToken)}`;
+    // Preview deployments with Vercel Authentication block headless Chromium unless
+    // the official protection-bypass query param is present (same pattern as Cursor).
+    const printUrl = applyVercelAutomationBypass(
+        `${getPdfRenderBaseUrl()}/internal/reports/${input.publicReportId}/print?renderToken=${encodeURIComponent(renderToken)}`,
+    );
 
     const maxAttempts = getPdfMaxRetries() + 1;
     let lastError: unknown = null;

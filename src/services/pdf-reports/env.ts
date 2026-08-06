@@ -3,7 +3,24 @@ import "server-only";
 import { getApplicationUrl } from "@/src/lib/application-url";
 import { readPdfRenderSecret } from "@/src/services/pdf-reports/read-pdf-render-secret";
 
+/**
+ * Base URL Playwright opens for the internal print route.
+ * On Vercel Preview, prefer the current deployment host so the render token
+ * is validated against the same environment that signed it.
+ */
 export function getPdfRenderBaseUrl(): string {
+    const explicit = process.env.PDF_RENDER_BASE_URL?.trim();
+    if (explicit) {
+        return explicit.replace(/\/$/, "");
+    }
+
+    if (process.env.VERCEL_ENV === "preview") {
+        const vercelHost = process.env.VERCEL_URL?.trim();
+        if (vercelHost) {
+            return `https://${vercelHost.replace(/^https?:\/\//i, "").replace(/\/$/, "")}`;
+        }
+    }
+
     return getApplicationUrl();
 }
 

@@ -9,6 +9,8 @@ import { isTrustedInternalWorker } from "@/src/services/rate-limit/administrator
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
+/** Chromium PDF render + Cloudinary upload can exceed the default serverless limit. */
+export const maxDuration = 300;
 
 type RouteContext = { params: Promise<{ reportId: string }> };
 
