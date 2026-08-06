@@ -14,6 +14,7 @@ import {
     CURSOR_ANALYSIS_SCHEMA_VERSION,
 } from "@/src/services/cursor-analysis/constants";
 import { logAnalysisError, logAnalysisEvent } from "@/src/services/cursor-analysis/logging";
+import { logCursorWebhookPackageReady } from "@/src/services/cursor-analysis/package-token";
 
 const ACCEPTED_WEBHOOK_STATUSES = new Set([200, 201, 202, 204]);
 
@@ -49,6 +50,13 @@ export class CursorAutomationAnalysisProvider implements AuditAnalysisProvider {
             promptVersion: input.promptVersion,
             packageVersion: input.packageVersion,
         };
+
+        logCursorWebhookPackageReady({
+            auditId: input.auditId,
+            analysisRequestId: input.analysisRequestId,
+            packageUrl: input.packageUrl,
+            callbackUrl: input.callbackUrl,
+        });
 
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), config.webhookTimeoutMs);

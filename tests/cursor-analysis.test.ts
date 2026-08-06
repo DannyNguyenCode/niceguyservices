@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { afterEach, beforeEach, describe, it } from "node:test";
 import {
+    getAuditPackageTokenTtlMs,
     resetCursorAnalysisConfigForTests,
     getCursorAnalysisConfig,
     getCursorConfigurationStatus,
@@ -17,7 +18,12 @@ import {
     verifyCallbackAuthToken,
 } from "@/src/services/cursor-analysis/callback-token";
 import {
+    AUDIT_PACKAGE_TOKEN_ERROR_CODES,
+    AuditPackageTokenError,
     buildAuditPackageToken,
+    buildSignedPackageUrl,
+    fingerprintSigningSecret,
+    inspectPackageUrlDiagnostics,
     verifyAuditPackageToken,
 } from "@/src/services/cursor-analysis/package-token";
 import { buildCursorAuditPackage } from "@/src/services/cursor-analysis/build-cursor-audit-package";
@@ -29,6 +35,10 @@ import {
     validateCursorAuditResult,
 } from "@/src/services/cursor-analysis/schemas";
 import { getMockAnalysisProvider } from "@/src/services/cursor-analysis/providers/mock-analysis-provider";
+import {
+    applyVercelAutomationBypass,
+    VERCEL_PROTECTION_BYPASS_QUERY_PARAM,
+} from "@/src/services/cursor-analysis/vercel-automation-bypass";
 
 const ORIGINAL_ENV = { ...process.env };
 
@@ -289,53 +299,229 @@ describe("cursor analysis package builder", () => {
 });
 
 describe("cursor analysis package token", () => {
-    it("round-trips a valid token", () => {
+    function assertTokenError(
+        fn: () => unknown,
+        code: string,
+    ): AuditPackageTokenError {
+        try {
+            fn();
+        } catch (error) {
+            if (error instanceof AuditPackageTokenError) {
+                assert.equal(error.code, code);
+                return error;
+            }
+            throw error;
+        }
+        assert.fail(`Expected AuditPackageTokenError ${code}`);
+    }
+
+    it("1 — freshly generated token validates successfully", () => {
         const token = buildAuditPackageToken({
             auditId: "audit_123",
             analysisRequestId: "req_456",
             ttlMs: 60_000,
         });
 
-        const payload = verifyAuditPackageToken(token, "audit_123");
+        const payload = verifyAuditPackageToken(token, "audit_123", "req_456");
+        assert.equal(payload.auditId, "audit_123");
         assert.equal(payload.analysisRequestId, "req_456");
+        assert.ok(payload.expiresAt > Date.now());
     });
 
-    it("rejects tampered tokens", () => {
+    it("2 — wrong signing secret fails with SIGNATURE_INVALID", () => {
         const token = buildAuditPackageToken({
             auditId: "audit_123",
             analysisRequestId: "req_456",
             ttlMs: 60_000,
         });
-        assert.throws(() => verifyAuditPackageToken(`${token}x`, "audit_123"));
+
+        process.env.AUDIT_PACKAGE_SIGNING_SECRET = "different-package-secret";
+        resetCursorAnalysisConfigForTests();
+
+        assertTokenError(
+            () => verifyAuditPackageToken(token, "audit_123"),
+            AUDIT_PACKAGE_TOKEN_ERROR_CODES.SIGNATURE_INVALID,
+        );
     });
 
-    it("rejects expired tokens", () => {
+    it("3 — expired token returns EXPIRED", () => {
         const token = buildAuditPackageToken({
             auditId: "audit_123",
             analysisRequestId: "req_456",
             ttlMs: -1_000,
         });
-        assert.throws(() => verifyAuditPackageToken(token, "audit_123"));
-    });
-
-    it("rejects audit ID mismatches", () => {
-        const token = buildAuditPackageToken({
-            auditId: "audit_123",
-            analysisRequestId: "req_456",
-            ttlMs: 60_000,
-        });
-        assert.throws(() => verifyAuditPackageToken(token, "audit_other"));
-    });
-
-    it("rejects analysis request ID mismatches when expected", () => {
-        const token = buildAuditPackageToken({
-            auditId: "audit_123",
-            analysisRequestId: "req_456",
-            ttlMs: 60_000,
-        });
-        assert.throws(() =>
-            verifyAuditPackageToken(token, "audit_123", "req_other"),
+        assertTokenError(
+            () => verifyAuditPackageToken(token, "audit_123"),
+            AUDIT_PACKAGE_TOKEN_ERROR_CODES.EXPIRED,
         );
+    });
+
+    it("4 — wrong auditId returns AUDIT_MISMATCH", () => {
+        const token = buildAuditPackageToken({
+            auditId: "audit_123",
+            analysisRequestId: "req_456",
+            ttlMs: 60_000,
+        });
+        assertTokenError(
+            () => verifyAuditPackageToken(token, "audit_other"),
+            AUDIT_PACKAGE_TOKEN_ERROR_CODES.AUDIT_MISMATCH,
+        );
+    });
+
+    it("5 — wrong analysisRequestId returns REQUEST_MISMATCH", () => {
+        const token = buildAuditPackageToken({
+            auditId: "audit_123",
+            analysisRequestId: "req_456",
+            ttlMs: 60_000,
+        });
+        assertTokenError(
+            () => verifyAuditPackageToken(token, "audit_123", "req_other"),
+            AUDIT_PACKAGE_TOKEN_ERROR_CODES.REQUEST_MISMATCH,
+        );
+    });
+
+    it("6 — malformed token returns MALFORMED", () => {
+        assertTokenError(
+            () => verifyAuditPackageToken("not-a-valid-token", "audit_123"),
+            AUDIT_PACKAGE_TOKEN_ERROR_CODES.MALFORMED,
+        );
+    });
+
+    it("7 — missing token returns MISSING", () => {
+        assertTokenError(
+            () => verifyAuditPackageToken("", "audit_123"),
+            AUDIT_PACKAGE_TOKEN_ERROR_CODES.MISSING,
+        );
+    });
+
+    it("8 — adding Vercel protection bypass does not change package token", () => {
+        process.env.VERCEL_ENV = "preview";
+        process.env.VERCEL_AUTOMATION_BYPASS_SECRET = "test-bypass";
+        resetCursorAnalysisConfigForTests();
+
+        const token = buildAuditPackageToken({
+            auditId: "audit_123",
+            analysisRequestId: "req_456",
+            ttlMs: 60_000,
+        });
+        const before = `https://preview.example.com/api/audits/audit_123/analysis-package?token=${encodeURIComponent(token)}`;
+        const after = applyVercelAutomationBypass(before);
+        const beforeToken = new URL(before).searchParams.get("token");
+        const afterToken = new URL(after).searchParams.get("token");
+
+        assert.equal(beforeToken, token);
+        assert.equal(afterToken, token);
+        assert.equal(afterToken, beforeToken);
+        assert.ok(new URL(after).searchParams.has(VERCEL_PROTECTION_BYPASS_QUERY_PARAM));
+    });
+
+    it("9 — URLSearchParams round-trip preserves package token", () => {
+        const token = buildAuditPackageToken({
+            auditId: "audit_123",
+            analysisRequestId: "req_456",
+            ttlMs: 60_000,
+        });
+        const url = new URL("https://preview.example.com/api/audits/audit_123/analysis-package");
+        url.searchParams.set("token", token);
+        url.searchParams.set(VERCEL_PROTECTION_BYPASS_QUERY_PARAM, "bypass-secret");
+
+        const extracted = new URL(url.toString()).searchParams.get("token");
+        assert.equal(extracted, token);
+        const payload = verifyAuditPackageToken(extracted!, "audit_123", "req_456");
+        assert.equal(payload.analysisRequestId, "req_456");
+    });
+
+    it("10 — packageUrl contains exactly one token parameter", () => {
+        process.env.VERCEL_ENV = "preview";
+        process.env.VERCEL_AUTOMATION_BYPASS_SECRET = "test-bypass";
+        resetCursorAnalysisConfigForTests();
+
+        const packageUrl = buildSignedPackageUrl({
+            auditId: "audit_123",
+            analysisRequestId: "req_456",
+            publicBaseUrl: "https://preview.example.com",
+        });
+        const parsed = new URL(packageUrl);
+        const tokenValues = parsed.searchParams.getAll("token");
+        assert.equal(tokenValues.length, 1);
+        assert.ok(tokenValues[0]);
+        assert.equal(
+            parsed.searchParams.getAll(VERCEL_PROTECTION_BYPASS_QUERY_PARAM).length,
+            1,
+        );
+    });
+
+    it("11 — generation and verification use compatible millisecond timestamps", () => {
+        const before = Date.now();
+        const token = buildAuditPackageToken({
+            auditId: "audit_123",
+            analysisRequestId: "req_456",
+            ttlMs: 60_000,
+        });
+        const after = Date.now();
+        const payload = verifyAuditPackageToken(token, "audit_123");
+
+        assert.ok(payload.expiresAt >= before + 60_000);
+        assert.ok(payload.expiresAt <= after + 60_000);
+        // expiresAt must be ms-scale (13 digits around now), not seconds-scale (10 digits).
+        assert.ok(payload.expiresAt > 1_000_000_000_000);
+        assert.ok(Date.now() < payload.expiresAt);
+    });
+
+    it("12 — default TTL is 3600 seconds", () => {
+        delete process.env.AUDIT_PACKAGE_URL_TTL_SECONDS;
+        resetCursorAnalysisConfigForTests();
+        assert.equal(getCursorAnalysisConfig().packageUrlTtlSeconds, 3600);
+        assert.equal(getAuditPackageTokenTtlMs(), 3600 * 1000);
+
+        const before = Date.now();
+        const token = buildAuditPackageToken({
+            auditId: "audit_123",
+            analysisRequestId: "req_456",
+        });
+        const payload = verifyAuditPackageToken(token, "audit_123");
+        const delta = payload.expiresAt - before;
+        assert.ok(delta >= 3600 * 1000 - 2_000);
+        assert.ok(delta <= 3600 * 1000 + 2_000);
+    });
+
+    it("13 — full packageUrl path (token → URL → bypass → extract → verify)", () => {
+        process.env.VERCEL_ENV = "preview";
+        process.env.VERCEL_AUTOMATION_BYPASS_SECRET = "test-bypass";
+        resetCursorAnalysisConfigForTests();
+
+        const packageUrl = buildSignedPackageUrl({
+            auditId: "audit_123",
+            analysisRequestId: "req_456",
+            publicBaseUrl: "https://niceguyservices-git-audittool.vercel.app",
+        });
+        const diagnostics = inspectPackageUrlDiagnostics(packageUrl);
+        assert.equal(diagnostics.hasPackageToken, true);
+        assert.equal(diagnostics.hasVercelProtectionBypass, true);
+        assert.ok(diagnostics.queryParameterNames.includes("token"));
+        assert.ok(
+            diagnostics.queryParameterNames.includes(VERCEL_PROTECTION_BYPASS_QUERY_PARAM),
+        );
+
+        const extracted = new URL(packageUrl).searchParams.get("token");
+        assert.ok(extracted);
+        assert.equal(extracted!.length, diagnostics.packageTokenLength);
+
+        const payload = verifyAuditPackageToken(
+            extracted!,
+            "audit_123",
+            "req_456",
+        );
+        assert.equal(payload.auditId, "audit_123");
+        assert.equal(payload.analysisRequestId, "req_456");
+    });
+
+    it("signing secret fingerprint is stable and non-reversible length", () => {
+        const fp = fingerprintSigningSecret("test-package-secret");
+        assert.equal(fp.length, 8);
+        assert.equal(fp, fingerprintSigningSecret("test-package-secret"));
+        assert.notEqual(fp, fingerprintSigningSecret("other-secret"));
+        assert.equal(fp.includes("test-package-secret"), false);
     });
 });
 
