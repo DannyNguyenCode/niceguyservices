@@ -57,6 +57,7 @@ export async function GET(request: Request, context: RouteContext) {
             message: progress.message,
             reportAvailable: progress.reportAvailable,
             useReportLookup: progress.useReportLookup,
+            pdfReady: progress.pdfReady,
         });
     } catch (error) {
         if (error instanceof PublicAuditStatusError) {

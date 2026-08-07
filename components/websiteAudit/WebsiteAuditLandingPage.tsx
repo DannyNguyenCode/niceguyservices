@@ -83,18 +83,11 @@ export default function WebsiteAuditLandingPage() {
                 <div className={`py-16 lg:py-24 ${sitePageContentClass}`}>
                     <div className="grid gap-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-16">
                         <div id="website-audit-form" className="min-w-0 scroll-mt-24">
-                            <AuditSectionLabel index="01">Start your audit</AuditSectionLabel>
-                            <h2 className="mt-5 text-2xl font-semibold text-base-content sm:text-3xl">
-                                Request a website audit
-                            </h2>
-                            <p className="mt-4 max-w-lg text-base-content/70">
-                                Enter your website URL and business email to start your website
-                                audit.
-                            </p>
-
-                            <div className="mt-9">
-                                <WebsiteAuditForm embedded showPrivacyNote={false} />
-                            </div>
+                            <WebsiteAuditForm
+                                embedded
+                                showPrivacyNote={false}
+                                showSectionHeader
+                            />
 
                             <div className="mt-12 border-t border-base-300 pt-6">
                                 <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
@@ -245,8 +238,11 @@ export default function WebsiteAuditLandingPage() {
                 </div>
             </section>
 
-            {/* Report lookup */}
-            <section className="border-b border-base-300 bg-base-200/50">
+            {/* Report lookup — completed audit retrieval via email OTP */}
+            <section
+                id="retrieve-audit"
+                className="scroll-mt-24 border-b border-base-300 bg-base-200/50"
+            >
                 <div className={`py-12 lg:py-16 ${sitePageContentClass}`}>
                     <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
                         <div className="min-w-0">
@@ -260,8 +256,10 @@ export default function WebsiteAuditLandingPage() {
                                 </h2>
                             </div>
                             <p className="mt-3 text-sm text-base-content/65">
-                                If your report has been published, enter the business email you
-                                used when you requested the audit to retrieve it.
+                                Come back anytime. Enter the business email you used when you
+                                requested the audit. If we have a published report for that email,
+                                we&apos;ll send a 6-digit verification code so you can open it
+                                securely.
                             </p>
                         </div>
                         <div className="min-w-0">

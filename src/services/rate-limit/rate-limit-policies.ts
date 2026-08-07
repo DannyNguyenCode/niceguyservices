@@ -250,6 +250,15 @@ const BASE_POLICIES: Record<RateLimitPolicyId, RateLimitPolicy> = {
         failureMode: "closed",
         description: "Public audit progress status polling per IP and status token.",
     },
+    "public-audit-report-email": {
+        id: "public-audit-report-email",
+        algorithm: "sliding-window",
+        limit: 3,
+        windowSeconds: 60 * 60,
+        scope: "composite",
+        failureMode: "closed",
+        description: "Public audit report email sends per IP and status token (3 per hour).",
+    },
     "administrator-note-create": {
         id: "administrator-note-create",
         algorithm: "sliding-window",

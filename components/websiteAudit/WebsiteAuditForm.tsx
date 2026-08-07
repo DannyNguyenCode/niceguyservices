@@ -2,17 +2,20 @@
 
 import { useActionState, useCallback, useEffect, useId, useRef, useState } from "react";
 import { siteFieldFocusClass } from "@/components/pricing/pricingLayoutConstants";
-import PublicAuditSubmitStatusModal from "@/components/websiteAudit/PublicAuditSubmitStatusModal";
+import AuditCompleteActions from "@/components/websiteAudit/AuditCompleteActions";
+import AuditFailureState from "@/components/websiteAudit/AuditFailureState";
+import AuditInlineProgress from "@/components/websiteAudit/AuditInlineProgress";
+import AuditSectionLabel from "@/components/websiteAudit/AuditSectionLabel";
 import {
     PUBLIC_AUDIT_SUBMIT_UI,
     PUBLIC_AUDIT_STATUS_POLL_INTERVAL_MS,
     clearPersistedPublicAuditStatusSession,
-    derivePublicAuditSubmitStatusView,
+    deriveWebsiteAuditInlinePhase,
     nextPublicAuditPollIntervalMs,
     persistPublicAuditStatusSession,
     readPersistedPublicAuditStatusSession,
-    shouldOpenPublicAuditSubmitModal,
     shouldStopPublicAuditStatusPolling,
+    websiteAuditSectionCopy,
     type PublicAuditProgressStageView,
 } from "@/components/websiteAudit/public-audit-submit-status";
 import {
@@ -25,11 +28,13 @@ type WebsiteAuditFormProps = {
     title?: string;
     description?: string;
     /**
-     * When true, omit the outer card and header copy so the parent page
-     * can provide section headings.
+     * When true, omit the outer card shell. Section headings are rendered
+     * dynamically from the active audit phase for the landing page layout.
      */
     embedded?: boolean;
     showPrivacyNote?: boolean;
+    /** When true (landing page), render Start your audit / phase headings above content. */
+    showSectionHeader?: boolean;
 };
 
 type FormValues = {
@@ -42,6 +47,7 @@ type ProgressState = {
     message: string;
     domain: string;
     stages: PublicAuditProgressStageView[];
+    pdfReady: boolean;
 };
 
 const initialValues: FormValues = {
@@ -51,11 +57,17 @@ const initialValues: FormValues = {
 
 const initialState: PublicAuditRequestState = { ok: true };
 
+function scrollToRetrieveAudit() {
+    const target = document.getElementById("retrieve-audit");
+    target?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 export default function WebsiteAuditForm({
     title = "Request a website audit",
     description = "Enter your website URL and business email to request your website audit.",
     embedded = false,
     showPrivacyNote = true,
+    showSectionHeader = false,
 }: WebsiteAuditFormProps) {
     const formId = useId();
     const submitButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -64,15 +76,15 @@ export default function WebsiteAuditForm({
         submitPublicAuditRequestAction,
         initialState,
     );
-    const [dismissedResultKey, setDismissedResultKey] = useState<string | null>(null);
     const [clearedResultKey, setClearedResultKey] = useState<string | null>(null);
     const [statusToken, setStatusToken] = useState<string | null>(null);
     const [progress, setProgress] = useState<ProgressState | null>(null);
     const [pollTransientError, setPollTransientError] = useState(false);
     const pollIntervalRef = useRef(PUBLIC_AUDIT_STATUS_POLL_INTERVAL_MS);
     const inFlightPollRef = useRef(false);
+    const restoredTokenRef = useRef<string | null>(null);
 
-    // Restore in-flight progress after refresh.
+    // Same-browser refresh recovery via opaque status token (progress only).
     useEffect(() => {
         const saved = readPersistedPublicAuditStatusSession();
         if (!saved) return;
@@ -82,10 +94,13 @@ export default function WebsiteAuditForm({
             message: "Your audit has started.",
             domain: saved.domain,
             stages: [],
+            pdfReady: false,
         });
+        restoredTokenRef.current = saved.statusToken;
     }, []);
 
-    // Persist token when submission succeeds.
+    // Persist token when submission succeeds — same section becomes live progress.
+    // Backend orchestration already started automatically (forceAsync); UI only displays state.
     useEffect(() => {
         if (pending) return;
         if (state.outcome === "started" && state.statusToken) {
@@ -100,12 +115,14 @@ export default function WebsiteAuditForm({
                 message: "Your audit has started.",
                 domain,
                 stages: [],
+                pdfReady: false,
             });
             pollIntervalRef.current = PUBLIC_AUDIT_STATUS_POLL_INTERVAL_MS;
+            restoredTokenRef.current = state.statusToken;
         }
     }, [pending, state.outcome, state.statusToken, state.domain]);
 
-    // Poll public status endpoint while a status token is active.
+    // Single polling source — displays persisted backend status only; does not keep the audit alive.
     useEffect(() => {
         if (!statusToken) return;
 
@@ -135,6 +152,7 @@ export default function WebsiteAuditForm({
                     stopped = true;
                     clearPersistedPublicAuditStatusSession();
                     setStatusToken(null);
+                    setProgress(null);
                     setPollTransientError(false);
                     return;
                 }
@@ -152,6 +170,7 @@ export default function WebsiteAuditForm({
                     message: string;
                     domain: string;
                     stageDetails?: PublicAuditProgressStageView[];
+                    pdfReady?: boolean;
                 };
 
                 setPollTransientError(false);
@@ -160,11 +179,18 @@ export default function WebsiteAuditForm({
                     message: data.message,
                     domain: data.domain,
                     stages: data.stageDetails ?? [],
+                    pdfReady: Boolean(data.pdfReady),
                 });
+
+                if (data.status === "complete" || data.status === "failed") {
+                    persistPublicAuditStatusSession({
+                        statusToken,
+                        domain: data.domain,
+                    });
+                }
 
                 if (shouldStopPublicAuditStatusPolling(data.status)) {
                     stopped = true;
-                    clearPersistedPublicAuditStatusSession();
                     return;
                 }
 
@@ -207,71 +233,48 @@ export default function WebsiteAuditForm({
         setValues(initialValues);
     }
 
-    const statusView = derivePublicAuditSubmitStatusView({
+    const inlinePhase = deriveWebsiteAuditInlinePhase({
         pending,
-        outcome: pending ? null : state.outcome,
-        message: pending ? null : state.message,
-        domain: progress?.domain ?? state.domain,
-        progress:
-            !pending && progress && progress.stages.length > 0
-                ? progress
-                : !pending && progress && statusToken
-                  ? progress
-                  : null,
+        statusToken,
+        progressStatus: progress?.status,
     });
+    const sectionCopy = websiteAuditSectionCopy(inlinePhase);
 
-    const modalOpen =
-        Boolean(statusView) &&
-        (pending ||
-            Boolean(statusToken) ||
-            (Boolean(completedResultKey) &&
-                completedResultKey !== dismissedResultKey &&
-                shouldOpenPublicAuditSubmitModal({
-                    pending: false,
-                    outcome: state.outcome,
-                    hasProgressSession: Boolean(statusToken),
-                })));
-
-    const closeModal = useCallback(() => {
-        if (pending) return;
-        if (completedResultKey) {
-            setDismissedResultKey(completedResultKey);
-        }
-        // Closing does not cancel the audit; stop showing the modal only.
-        if (shouldStopPublicAuditStatusPolling(progress?.status)) {
-            setStatusToken(null);
-            clearPersistedPublicAuditStatusSession();
-        }
-        if (state.outcome === "error" || state.outcome === "received") {
-            queueMicrotask(() => submitButtonRef.current?.focus());
-        }
-    }, [pending, completedResultKey, progress?.status, state.outcome]);
+    const startAnotherAudit = useCallback(() => {
+        setStatusToken(null);
+        setProgress(null);
+        setPollTransientError(false);
+        clearPersistedPublicAuditStatusSession();
+        restoredTokenRef.current = null;
+        setValues(initialValues);
+        queueMicrotask(() => submitButtonRef.current?.focus());
+    }, []);
 
     function updateField(field: keyof FormValues, value: string) {
         setValues((prev) => ({ ...prev, [field]: value }));
     }
 
-    const showInlineMessage = Boolean(state.message) && !modalOpen;
+    const showForm = inlinePhase === "form" || inlinePhase === "submitting";
+    const showInlineMessage =
+        showForm &&
+        Boolean(state.message) &&
+        state.outcome !== "started" &&
+        Boolean(state.outcome);
 
-    const formBody = (
+    const sectionHeader = showSectionHeader ? (
         <>
-            {!embedded ? (
-                <div className="mb-6">
-                    <h2 className="text-xl font-semibold text-base-content">{title}</h2>
-                    <p className="mt-2 text-sm leading-relaxed text-base-content/75">
-                        {description}
-                    </p>
-                    {showPrivacyNote ? (
-                        <p className="mt-4 rounded-xl bg-base-200 p-4 text-sm leading-relaxed text-base-content/80">
-                            This review combines automated technical checks, Google PageSpeed
-                            data, visual analysis, and criteria developed by Nice Guy Web
-                            Design. It does not have access to private analytics, sales data,
-                            or customer behaviour.
-                        </p>
-                    ) : null}
-                </div>
-            ) : null}
+            <AuditSectionLabel index={inlinePhase === "form" ? "01" : "※"}>
+                {sectionCopy.label}
+            </AuditSectionLabel>
+            <h2 className="mt-5 text-2xl font-semibold text-base-content sm:text-3xl">
+                {sectionCopy.title}
+            </h2>
+            <p className="mt-4 max-w-lg text-base-content/70">{sectionCopy.description}</p>
+        </>
+    ) : null;
 
+    const formFields = (
+        <>
             <form
                 className="grid grid-cols-1 gap-5 md:grid-cols-2"
                 action={formAction}
@@ -301,10 +304,7 @@ export default function WebsiteAuditForm({
                         className={`input input-bordered w-full bg-base-100 ${siteFieldFocusClass}`}
                     />
                     {state.fieldErrors?.websiteUrl ? (
-                        <p
-                            id={`${formId}-website-error`}
-                            className="mt-2 text-sm text-error"
-                        >
+                        <p id={`${formId}-website-error`} className="mt-2 text-sm text-error">
                             {state.fieldErrors.websiteUrl}
                         </p>
                     ) : null}
@@ -376,18 +376,76 @@ export default function WebsiteAuditForm({
                     >
                         {showInlineMessage
                             ? state.message
-                            : pollTransientError
-                              ? "We're still checking your audit progress. A temporary connection issue occurred — retrying."
-                              : "Enter your website URL and business email. After you submit, processing starts automatically."}
+                            : "Enter your website URL and business email. After you submit, processing starts automatically."}
                     </p>
                 </div>
             </form>
 
-            <PublicAuditSubmitStatusModal
-                open={modalOpen}
-                view={statusView}
-                onClose={closeModal}
-            />
+            {showForm && !pending ? (
+                <div className="mt-5 border-t border-base-300 pt-5">
+                    <p className="text-sm text-base-content/70">Already requested an audit?</p>
+                    <button
+                        type="button"
+                        className="btn btn-link btn-sm mt-1 px-0"
+                        onClick={scrollToRetrieveAudit}
+                    >
+                        Retrieve my audit
+                    </button>
+                </div>
+            ) : null}
+        </>
+    );
+
+    const formBody = (
+        <>
+            {sectionHeader}
+
+            {!embedded && !showSectionHeader ? (
+                <div className="mb-6">
+                    <h2 className="text-xl font-semibold text-base-content">{title}</h2>
+                    <p className="mt-2 text-sm leading-relaxed text-base-content/75">
+                        {description}
+                    </p>
+                    {showPrivacyNote ? (
+                        <p className="mt-4 rounded-xl bg-base-200 p-4 text-sm leading-relaxed text-base-content/80">
+                            This review combines automated technical checks, Google PageSpeed
+                            data, visual analysis, and criteria developed by Nice Guy Web
+                            Design. It does not have access to private analytics, sales data,
+                            or customer behaviour.
+                        </p>
+                    ) : null}
+                </div>
+            ) : null}
+
+            <div className={showSectionHeader ? "mt-9" : undefined}>
+                {showForm ? formFields : null}
+
+                {inlinePhase === "progress" && progress && statusToken ? (
+                    <AuditInlineProgress
+                        domain={progress.domain}
+                        message={progress.message}
+                        stages={progress.stages}
+                        pollTransientError={pollTransientError}
+                        onRetrieveAudit={scrollToRetrieveAudit}
+                    />
+                ) : null}
+
+                {inlinePhase === "complete" && progress && statusToken ? (
+                    <AuditCompleteActions
+                        domain={progress.domain}
+                        statusToken={statusToken}
+                        pdfReady={progress.pdfReady}
+                        onStartAnother={startAnotherAudit}
+                    />
+                ) : null}
+
+                {inlinePhase === "failed" ? (
+                    <AuditFailureState
+                        domain={progress?.domain ?? null}
+                        onTryAgain={startAnotherAudit}
+                    />
+                ) : null}
+            </div>
         </>
     );
 

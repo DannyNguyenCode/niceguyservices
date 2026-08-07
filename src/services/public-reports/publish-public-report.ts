@@ -7,7 +7,7 @@ import {
     unpublishOtherPublishedReports,
 } from "@/src/data/public-reports";
 import { getWebsiteById, syncWebsitePublicReportSummary } from "@/src/data/websites";
-import { buildPublicReportUrl } from "@/src/lib/application-url";
+import { buildApplicationPath, buildPublicReportUrl } from "@/src/lib/application-url";
 import { generateReportToken } from "@/src/services/public-reports/hash-report-token";
 import { isReportExpired } from "@/src/services/public-reports/validate-public-report-sources";
 
@@ -25,12 +25,27 @@ export type PublishPublicReportResult =
           error: { code: string; message: string };
       };
 
-export async function publishPublicReport(reportId: string): Promise<PublishPublicReportResult> {
+export async function publishPublicReport(
+    reportId: string,
+    options?: { actor?: "admin" | "system" },
+): Promise<PublishPublicReportResult> {
+    const actor = options?.actor ?? "admin";
     const report = await getPublicReportById(reportId);
     if (!report) {
         return {
             success: false,
             error: { code: "NOT_FOUND", message: "Report not found." },
+        };
+    }
+
+    if (report.status === "published") {
+        return {
+            success: true,
+            reportId: report.id,
+            publicUrl: report.publicPath ? buildApplicationPath(report.publicPath) : "",
+            tokenPrefix: report.tokenPrefix ?? "",
+            revisionNumber: report.revisionNumber,
+            message: "Public report already published.",
         };
     }
 
@@ -76,13 +91,17 @@ export async function publishPublicReport(reportId: string): Promise<PublishPubl
     await createActivityLog({
         websiteId: report.websiteId,
         type: "public-report-published",
-        description: `Public report revision ${published.revisionNumber} published.`,
-        actor: "admin",
+        description:
+            actor === "system"
+                ? `Public report revision ${published.revisionNumber} published automatically after AI analysis.`
+                : `Public report revision ${published.revisionNumber} published.`,
+        actor,
         metadata: {
             publicReportId: published.id,
             revisionNumber: published.revisionNumber,
             status: published.status,
             tokenPrefix: published.tokenPrefix,
+            trigger: actor === "system" ? "auto_post_ai" : "manual",
         },
     });
 

@@ -188,19 +188,56 @@ describe("mapAuditJobToPublicProgress", () => {
         assert.match(view.message, /report/i);
     });
 
-    it("maps completed audits", () => {
+    it("maps completed audits only when the report is published", () => {
         const completedStages = Object.fromEntries(
             AUDIT_PIPELINE_STAGES.map((stage) => [stage, "completed" as const]),
         ) as Partial<Record<AuditPipelineStageName, AuditStageStatus>>;
+        const preparing = mapAuditJobToPublicProgress({
+            job: jobStub({ status: "completed", stages: completedStages }),
+            normalizedDomain: "example.com",
+            deliverables: { reportPublished: false, pdfReady: false },
+        });
+        assert.equal(preparing.status, "processing");
+        assert.equal(preparing.stages.find((s) => s.id === "report")?.state, "processing");
+        assert.match(preparing.message, /preparing your report/i);
+
         const view = mapAuditJobToPublicProgress({
             job: jobStub({ status: "completed", stages: completedStages }),
             normalizedDomain: "example.com",
+            deliverables: { reportPublished: true, pdfReady: true },
         });
         assert.equal(view.status, "complete");
         assert.equal(view.useReportLookup, true);
         assert.equal(view.reportAvailable, false);
+        assert.equal(view.pdfReady, true);
         assert.ok(view.stages.every((stage) => stage.state === "complete"));
         assert.match(view.message, /complete|Retrieve your report/i);
+    });
+
+    it("keeps preparing report after AI when publish has not finished", () => {
+        const view = mapAuditJobToPublicProgress({
+            job: jobStub({
+                status: "completed_with_warnings",
+                stages: {
+                    preflight: "completed",
+                    crawl: "completed",
+                    screenshots: "completed",
+                    pagespeed_mobile: "completed",
+                    pagespeed_desktop: "completed",
+                    niceguy: "completed",
+                    ai_analysis: "completed",
+                    finalize: "completed",
+                    report_draft: "completed_with_warnings",
+                },
+            }),
+            normalizedDomain: "example.com",
+            deliverables: { reportPublished: true, pdfReady: false },
+        });
+        assert.equal(view.status, "complete");
+        assert.equal(view.stages.find((s) => s.id === "report")?.state, "complete");
+        assert.equal(view.reportAvailable, false);
+        assert.equal(view.pdfReady, false);
+        assert.equal(view.useReportLookup, true);
     });
 
     it("maps failed audits to a safe customer error", () => {

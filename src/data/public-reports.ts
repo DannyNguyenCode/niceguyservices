@@ -129,6 +129,24 @@ export async function getPublicReportDraftForAuditRun(
     return doc ? toSerializable(doc as Record<string, unknown>) : null;
 }
 
+/**
+ * Latest non-archived public report for an audit run (draft, published, or unpublished).
+ * Used for idempotent draft creation and post-AI deliverable completion.
+ */
+export async function getLatestPublicReportForAuditRun(
+    auditRunId: string,
+): Promise<SerializablePublicReport | null> {
+    await connectToDatabase();
+    const auditRunObjectId = assertObjectId(auditRunId);
+    const doc = await PublicReport.findOne({
+        status: { $ne: "archived" },
+        $or: [{ sourceAuditRunId: auditRunObjectId }, { auditRunId: auditRunObjectId }],
+    })
+        .sort({ createdAt: -1 })
+        .lean();
+    return doc ? toSerializable(doc as Record<string, unknown>) : null;
+}
+
 export async function getPublicReportById(id: string): Promise<SerializablePublicReport | null> {
     await connectToDatabase();
     try {

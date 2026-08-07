@@ -1,6 +1,6 @@
 import "server-only";
 
-import { getPublicReportDraftForAuditRun } from "@/src/data/public-reports";
+import { getLatestPublicReportForAuditRun } from "@/src/data/public-reports";
 import { loadAuditRunResources } from "@/src/services/audit-history/load-audit-run-resources";
 import { createPublicReport } from "@/src/services/public-reports/create-public-report";
 
@@ -12,7 +12,7 @@ export async function createReportDraftFromAuditRun(input: {
     websiteId: string;
     auditRunId: string;
 }): Promise<CreateReportDraftResult> {
-    const existing = await getPublicReportDraftForAuditRun(input.auditRunId);
+    const existing = await getLatestPublicReportForAuditRun(input.auditRunId);
     if (existing) {
         return { success: true, reportId: existing.id };
     }

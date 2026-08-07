@@ -46,10 +46,22 @@ export type PublicAuditProgressView = {
     domain: string;
     stages: PublicAuditCustomerStageView[];
     message: string;
-    /** Always false today — published report access requires email verification. */
+    /**
+     * Direct report URL is never returned from the status poll.
+     * Completion actions use separate status-token-scoped endpoints.
+     */
     reportAvailable: boolean;
-    /** When true, UI should point customers at report lookup (not a public URL). */
+    /** When true, customer may use report lookup and/or completion actions. */
     useReportLookup: boolean;
+    /** Whether a completed PDF exists for the published report. */
+    pdfReady: boolean;
+};
+
+export type PublicAuditDeliverableEvidence = {
+    /** Secure web report is published and available via email verification. */
+    reportPublished: boolean;
+    /** PDF generated successfully (informational; not required for customer complete). */
+    pdfReady: boolean;
 };
 
 const STAGE_META: Record<
@@ -121,6 +133,7 @@ function relevantStatuses(
 function aggregateCustomerStageState(
     job: SerializableAuditJob,
     stageId: PublicAuditCustomerStageId,
+    deliverables?: PublicAuditDeliverableEvidence,
 ): PublicAuditCustomerStageState {
     if (stageId === "request") {
         return "complete";
@@ -139,6 +152,10 @@ function aggregateCustomerStageState(
     }
 
     if (statuses.every(isSuccessStatus)) {
+        // Report group stays "processing" until the web report is published.
+        if (stageId === "report" && deliverables && !deliverables.reportPublished) {
+            return "processing";
+        }
         return "complete";
     }
 
@@ -148,6 +165,18 @@ function aggregateCustomerStageState(
 
     // Job queued / claimed but this group not started yet.
     if (job.status === "queued" && stageId === "crawl") {
+        return "processing";
+    }
+
+    // Pipeline finished stages but publish/PDF deliverables still pending.
+    if (
+        stageId === "report" &&
+        deliverables &&
+        !deliverables.reportPublished &&
+        isTerminalJobStatus(job.status) &&
+        job.status !== "failed" &&
+        job.status !== "cancelled"
+    ) {
         return "processing";
     }
 
@@ -173,15 +202,24 @@ function normalizeToSingleProcessing(
 function overallStatusFromJob(
     jobStatus: AuditJobStatus,
     stageStates: PublicAuditCustomerStageState[],
+    deliverables?: PublicAuditDeliverableEvidence,
 ): PublicAuditOverallStatus {
     if (jobStatus === "failed" || jobStatus === "cancelled") {
         return "failed";
     }
-    if (jobStatus === "completed" || jobStatus === "completed_with_warnings") {
-        return "complete";
-    }
     if (stageStates.some((state) => state === "failed")) {
         return "failed";
+    }
+    // Customer-complete only when the published web report exists.
+    if (
+        (jobStatus === "completed" || jobStatus === "completed_with_warnings") &&
+        deliverables?.reportPublished
+    ) {
+        return "complete";
+    }
+    if (jobStatus === "completed" || jobStatus === "completed_with_warnings") {
+        // Job terminal but publish not done yet — still preparing report.
+        return "processing";
     }
     if (jobStatus === "queued") {
         return "accepted";
@@ -197,7 +235,7 @@ function messageFor(input: {
         return "We couldn't complete the audit this time.";
     }
     if (input.status === "complete") {
-        return "Your audit is complete. Use Retrieve your report on this page with the email you submitted once your report is published.";
+        return "Your audit is complete. Use Retrieve your report on this page with the email you submitted.";
     }
     if (input.status === "accepted") {
         return "Your audit has started.";
@@ -226,9 +264,15 @@ function messageFor(input: {
 export function mapAuditJobToPublicProgress(input: {
     job: SerializableAuditJob;
     normalizedDomain: string;
+    deliverables?: PublicAuditDeliverableEvidence;
 }): PublicAuditProgressView {
+    const deliverables = input.deliverables ?? {
+        reportPublished: false,
+        pdfReady: false,
+    };
+
     const rawStates = PUBLIC_AUDIT_CUSTOMER_STAGES.map((id) =>
-        aggregateCustomerStageState(input.job, id),
+        aggregateCustomerStageState(input.job, id, deliverables),
     );
 
     let stageStates = rawStates;
@@ -243,7 +287,10 @@ export function mapAuditJobToPublicProgress(input: {
             }
             return "pending";
         });
-    } else if (!isTerminalJobStatus(input.job.status)) {
+    } else if (
+        !isTerminalJobStatus(input.job.status) ||
+        (isTerminalJobStatus(input.job.status) && !deliverables.reportPublished)
+    ) {
         stageStates = normalizeToSingleProcessing(rawStates);
     }
 
@@ -270,7 +317,7 @@ export function mapAuditJobToPublicProgress(input: {
         stages.find((stage) => stage.state === "processing" || stage.state === "failed")?.id ??
         null;
 
-    const status = overallStatusFromJob(input.job.status, stageStates);
+    const status = overallStatusFromJob(input.job.status, stageStates, deliverables);
 
     return {
         status: status === "accepted" && currentStage ? "processing" : status,
@@ -288,5 +335,6 @@ export function mapAuditJobToPublicProgress(input: {
         }),
         reportAvailable: false,
         useReportLookup: status === "complete",
+        pdfReady: deliverables.pdfReady && status === "complete",
     };
 }

@@ -21,7 +21,7 @@ export type PublicAuditRequestState = {
     message?: string;
     fieldErrors?: Record<string, string>;
     rateLimited?: boolean;
-    /** Safe machine-readable outcome for the public status modal. Never includes IDs. */
+    /** Safe machine-readable outcome for the public submit UI. Never includes IDs. */
     outcome?: PublicAuditSubmitOutcome;
     /** Opaque progress token for customer polling. Never an internal Mongo ID. */
     statusToken?: string | null;

@@ -4,7 +4,7 @@ import { getAuditRunById } from "@/src/data/audit-runs";
 import { createCrawlRecord } from "@/src/data/crawls";
 import { getCrawlById } from "@/src/data/crawls";
 import { getGoogleMetricsForCrawl } from "@/src/data/google-metrics";
-import { getPublicReportDraftForAuditRun } from "@/src/data/public-reports";
+import { getLatestPublicReportForAuditRun } from "@/src/data/public-reports";
 import { setAuditJobReportDraftId } from "@/src/data/audit-jobs";
 import { getScreenshotsForCrawl } from "@/src/data/screenshots";
 import { getWebsiteById } from "@/src/data/websites";
@@ -36,6 +36,7 @@ import { validatePublicCrawlUrl, toSafePublicErrorMessage } from "@/src/lib/vali
 import type { PageSpeedStrategy } from "@/src/schemas/enums";
 import { createActivityLog } from "@/src/data/activity-logs";
 import { updateWebsitePageSpeedStatus } from "@/src/data/websites";
+import { completePublicAuditDeliverables } from "@/src/services/public-reports/complete-public-audit-deliverables";
 
 async function getCrawlForContext(context: AuditExecutionContext) {
     const auditRun = await getAuditRunById(context.auditRunId);
@@ -482,31 +483,73 @@ export async function runAuditStage(
             if (!context.configuration.generateReportDraft) {
                 return { status: "skipped" };
             }
-            const existing = await getPublicReportDraftForAuditRun(context.auditRunId);
+
+            let reportId: string | null = null;
+            const existing = await getLatestPublicReportForAuditRun(context.auditRunId);
             if (existing) {
-                return { status: "completed" };
-            }
-            const result = await createReportDraftFromAuditRun({
-                auditRunId: context.auditRunId,
-                websiteId: context.websiteId,
-            });
-            if (!result.success) {
-                if (result.error.code === "AI_SUMMARY_MISSING") {
+                reportId = existing.id;
+                await setAuditJobReportDraftId(context.jobId, existing.id);
+            } else {
+                const result = await createReportDraftFromAuditRun({
+                    auditRunId: context.auditRunId,
+                    websiteId: context.websiteId,
+                });
+                if (!result.success) {
+                    if (result.error.code === "AI_SUMMARY_MISSING") {
+                        return {
+                            status: "completed_with_warnings",
+                            errorCode: result.error.code,
+                            errorMessage: result.error.message,
+                            retryable: true,
+                        };
+                    }
                     return {
-                        status: "completed_with_warnings",
+                        status: "failed",
                         errorCode: result.error.code,
                         errorMessage: result.error.message,
                         retryable: true,
                     };
                 }
+                reportId = result.reportId;
+                await setAuditJobReportDraftId(context.jobId, result.reportId);
+            }
+
+            const deliverables = await completePublicAuditDeliverables({
+                reportId,
+                websiteId: context.websiteId,
+                auditRunId: context.auditRunId,
+            });
+
+            if (!deliverables.ok && deliverables.error?.code === "AUDIT_CANCELLED") {
                 return {
                     status: "failed",
-                    errorCode: result.error.code,
-                    errorMessage: result.error.message,
+                    errorCode: deliverables.error.code,
+                    errorMessage: deliverables.error.message,
+                    retryable: false,
+                };
+            }
+
+            if (!deliverables.published) {
+                return {
+                    status: "failed",
+                    errorCode: deliverables.error?.code ?? "REPORT_AUTO_PUBLISH_FAILED",
+                    errorMessage:
+                        deliverables.error?.message ?? "Unable to publish audit report.",
                     retryable: true,
                 };
             }
-            await setAuditJobReportDraftId(context.jobId, result.reportId);
+
+            if (deliverables.pdfFailed) {
+                return {
+                    status: "completed_with_warnings",
+                    errorCode: deliverables.error?.code ?? "PDF_GENERATION_FAILED",
+                    errorMessage:
+                        deliverables.error?.message ??
+                        "Report published; PDF generation failed and may be retried.",
+                    retryable: true,
+                };
+            }
+
             return { status: "completed" };
         }
         default:

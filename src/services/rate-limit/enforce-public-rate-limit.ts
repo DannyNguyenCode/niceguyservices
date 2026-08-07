@@ -121,3 +121,14 @@ export async function enforcePublicAuditStatusRateLimit(input: {
         tokenIdentity: getPublicTokenIdentityFromRawToken(input.rawToken),
     });
 }
+
+export async function enforcePublicAuditReportEmailRateLimit(input: {
+    request: Request;
+    rawToken: string;
+}): Promise<void> {
+    await enforcePublicCompositeLimit({
+        policyId: "public-audit-report-email",
+        request: input.request,
+        tokenIdentity: getPublicTokenIdentityFromRawToken(input.rawToken),
+    });
+}

@@ -26,7 +26,7 @@ export const PUBLIC_AUDIT_SUBMIT_UI = {
         title: "Your audit has started",
         description: "We're analyzing your website and preparing your report.",
         backgroundNote:
-            "You don't need to keep this page open. When your report is published, retrieve it on this page with the email you submitted.",
+            "Your audit will continue automatically even if you leave this page. Come back anytime and enter your email to securely retrieve your audit when it is ready.",
         cta: "Close",
     },
     successAlreadyHandled: {
@@ -38,7 +38,7 @@ export const PUBLIC_AUDIT_SUBMIT_UI = {
     successComplete: {
         title: "Your audit is complete",
         description:
-            "Your website audit finished successfully. Use Retrieve your report on this page with the email you submitted once your report is published.",
+            "Your website audit finished successfully. Use Retrieve your report on this page with the email you submitted.",
         backgroundNote: null,
         cta: "Close",
     },
@@ -99,6 +99,69 @@ export type PersistedPublicAuditStatusSession = {
     domain: string;
     savedAt: string;
 };
+
+export type WebsiteAuditInlinePhase =
+    | "form"
+    | "submitting"
+    | "progress"
+    | "complete"
+    | "failed";
+
+export function deriveWebsiteAuditInlinePhase(input: {
+    pending: boolean;
+    statusToken: string | null;
+    progressStatus: PublicAuditOverallStatus | null | undefined;
+}): WebsiteAuditInlinePhase {
+    if (input.pending && !input.statusToken) return "submitting";
+    if (!input.statusToken) return "form";
+    if (input.progressStatus === "complete") return "complete";
+    if (input.progressStatus === "failed") return "failed";
+    return "progress";
+}
+
+export function websiteAuditSectionCopy(phase: WebsiteAuditInlinePhase): {
+    label: string;
+    title: string;
+    description: string;
+} {
+    switch (phase) {
+        case "progress":
+            return {
+                label: "Audit in progress",
+                title: "We're auditing your website",
+                description:
+                    "Your audit is running automatically. You can leave this page and come back later.",
+            };
+        case "submitting":
+            // Keep request framing until the backend accepts — no intermediate screen.
+            return {
+                label: "Start your audit",
+                title: "Request a website audit",
+                description:
+                    "Enter your website URL and business email to start your website audit.",
+            };
+        case "complete":
+            return {
+                label: "Audit complete",
+                title: "Your website audit is ready",
+                description: "Choose how you want to open your results.",
+            };
+        case "failed":
+            return {
+                label: "Audit interrupted",
+                title: "We couldn't complete your audit",
+                description:
+                    "Something interrupted the audit while we were analyzing your website.",
+            };
+        default:
+            return {
+                label: "Start your audit",
+                title: "Request a website audit",
+                description:
+                    "Enter your website URL and business email to start your website audit.",
+            };
+    }
+}
 
 export function derivePublicAuditSubmitStatusView(input: {
     pending: boolean;
@@ -254,15 +317,31 @@ export function derivePublicAuditSubmitStatusView(input: {
     };
 }
 
+/**
+ * Whether a submit outcome warrants an inline status message (errors / acknowledgements).
+ * Progress itself is shown in the audit section — there is no customer progress modal.
+ */
+export function shouldShowPublicAuditSubmitFeedback(input: {
+    pending: boolean;
+    outcome?: PublicAuditSubmitOutcome | null;
+}): boolean {
+    if (input.pending) return false;
+    if (!input.outcome || input.outcome === "validation" || input.outcome === "started") {
+        return false;
+    }
+    return true;
+}
+
+/** @deprecated Use shouldShowPublicAuditSubmitFeedback — progress modal was removed. */
 export function shouldOpenPublicAuditSubmitModal(input: {
     pending: boolean;
     outcome?: PublicAuditSubmitOutcome | null;
     hasProgressSession?: boolean;
 }): boolean {
-    if (input.pending) return true;
-    if (input.hasProgressSession) return true;
-    if (!input.outcome || input.outcome === "validation") return false;
-    return true;
+    return shouldShowPublicAuditSubmitFeedback({
+        pending: input.pending,
+        outcome: input.outcome,
+    });
 }
 
 export function shouldStopPublicAuditStatusPolling(

@@ -1,6 +1,8 @@
 import "server-only";
 
 import { getAuditJobById } from "@/src/data/audit-jobs";
+import { getCompletedPdfReportsForPublicReport } from "@/src/data/pdf-reports";
+import { getLatestPublicReportForAuditRun } from "@/src/data/public-reports";
 import {
     createPublicAuditStatusTokenRecord,
     getValidPublicAuditStatusTokenByRawToken,
@@ -66,8 +68,20 @@ export async function getPublicAuditStatusByToken(
         throw new PublicAuditStatusError("JOB_MISSING", "Audit status not found.");
     }
 
+    const report = await getLatestPublicReportForAuditRun(job.auditRunId);
+    const reportPublished = report?.status === "published";
+    let pdfReady = false;
+    if (reportPublished && report) {
+        const pdfs = await getCompletedPdfReportsForPublicReport(report.id);
+        pdfReady = pdfs.length > 0;
+    }
+
     return mapAuditJobToPublicProgress({
         job,
         normalizedDomain: record.normalizedDomain,
+        deliverables: {
+            reportPublished,
+            pdfReady,
+        },
     });
 }

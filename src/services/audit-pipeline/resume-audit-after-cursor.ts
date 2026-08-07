@@ -5,7 +5,7 @@ import {
     resumeWaitingAuditJob,
     updateAuditJobStage,
 } from "@/src/data/audit-jobs";
-import { getPublicReportDraftForAuditRun } from "@/src/data/public-reports";
+import { getLatestPublicReportForAuditRun } from "@/src/data/public-reports";
 import { updateAuditRunStage } from "@/src/services/audit-history/finalize-audit-run";
 import { createReportDraftFromAuditRun } from "@/src/services/audit-pipeline/create-report-draft-from-audit-run";
 import { runAuditPipeline } from "@/src/services/audit-pipeline/run-audit-pipeline";
@@ -14,6 +14,7 @@ import type { SerializableAuditJob } from "@/src/services/audit-pipeline/types";
 import { materializeAiSummaryFromCursorResult } from "@/src/services/cursor-analysis/materialize-ai-summary-from-cursor";
 import type { CursorAuditResult } from "@/src/services/cursor-analysis/schemas";
 import { logAnalysisError, logAnalysisEvent } from "@/src/services/cursor-analysis/logging";
+import { completePublicAuditDeliverables } from "@/src/services/public-reports/complete-public-audit-deliverables";
 
 export type ResumeAfterCursorResult = {
     ok: boolean;
@@ -27,7 +28,7 @@ export type ResumeAfterCursorResult = {
  * 1. Mark AuditRun AI completion complete
  * 2. Materialize compatibility AiSummary from the canonical Cursor result
  * 3. Mark ai_analysis stage complete
- * 4. Resume finalize + report_draft
+ * 4. Resume finalize + report_draft (which auto-publishes + generates PDF)
  *
  * Idempotent for duplicate callbacks.
  */
@@ -41,6 +42,11 @@ export async function resumeAuditAfterCursorCallback(input: {
         await materializeAiSummaryFromCursorResult({
             auditRunId: input.auditRunId,
             result: input.result,
+        });
+        logAnalysisEvent("ai_analysis_stored", {
+            auditId: input.auditRunId,
+            analysisRequestId: input.result.analysisRequestId,
+            status: "completed",
         });
     } catch (error) {
         logAnalysisError(
@@ -82,23 +88,34 @@ export async function resumeAuditAfterCursorCallback(input: {
         return { ok: true, job: resumed, resumed: true };
     }
 
+    // Recovery path: job already terminal but deliverables may still be missing.
     if (isTerminalJobStatus(job.status) && job.configuration.generateReportDraft) {
-        const existingReport = await getPublicReportDraftForAuditRun(input.auditRunId);
-        if (!existingReport) {
-            const report = await createReportDraftFromAuditRun({
+        let report = await getLatestPublicReportForAuditRun(input.auditRunId);
+        if (!report) {
+            const created = await createReportDraftFromAuditRun({
                 auditRunId: input.auditRunId,
                 websiteId: job.websiteId,
             });
-            if (!report.success) {
+            if (!created.success) {
                 logAnalysisError(
                     "report_draft_retry_failed",
                     {
                         auditId: input.auditRunId,
-                        errorCode: report.error.code,
+                        errorCode: created.error.code,
                     },
-                    report.error.message,
+                    created.error.message,
                 );
+                return { ok: true, job, resumed: false, reason: "ALREADY_ADVANCED" };
             }
+            report = await getLatestPublicReportForAuditRun(input.auditRunId);
+        }
+
+        if (report) {
+            await completePublicAuditDeliverables({
+                reportId: report.id,
+                websiteId: job.websiteId,
+                auditRunId: input.auditRunId,
+            });
         }
     }
 

@@ -249,7 +249,7 @@ export default function ReportLookupForm() {
                             className="btn btn-outline w-full md:w-auto"
                             disabled={pending || !email.trim()}
                         >
-                            {pending ? "Sending…" : "Find My Report"}
+                            {pending ? "Sending…" : "Find my audit"}
                         </button>
                     </div>
                 </form>
@@ -338,8 +338,10 @@ export default function ReportLookupForm() {
                 <div className="grid grid-cols-1 gap-4">
                     {reports.length === 0 ? (
                         <p className="rounded-xl bg-base-200 p-4 text-sm leading-relaxed text-base-content/80">
-                            No published reports are currently available for this email.
-                            If you expected a report, it may not be published yet.
+                            No published reports are currently available for this email. If you
+                            recently requested an audit, it may still be running — check back
+                            soon after it finishes. Published reports appear here once they are
+                            ready.
                         </p>
                     ) : (
                         reports.map((report) => (
