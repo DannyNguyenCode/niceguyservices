@@ -26,7 +26,7 @@ export const PUBLIC_AUDIT_SUBMIT_UI = {
         title: "Your audit has started",
         description: "We're analyzing your website and preparing your report.",
         backgroundNote:
-            "Your audit will continue automatically even if you leave this page. Come back anytime and enter your email to securely retrieve your audit when it is ready.",
+            "Your audit will continue automatically even if you leave this page. We'll email you a PDF download link when your audit is ready.",
         cta: "Close",
     },
     successAlreadyHandled: {

@@ -6,8 +6,10 @@ import {
     getLatestPublicReportForAuditRun,
     getPublicReportById,
 } from "@/src/data/public-reports";
+import { getWebsiteById } from "@/src/data/websites";
 import { generatePdfReport } from "@/src/services/pdf-reports/generate-pdf-report";
 import { publishPublicReport } from "@/src/services/public-reports/publish-public-report";
+import { sendPublicAuditPdfReadyEmail } from "@/src/services/public-audit-status/send-public-audit-report-email";
 import type { SerializableAuditJob } from "@/src/services/audit-pipeline/types";
 import type { SerializablePdfReport } from "@/src/services/pdf-reports/types";
 import type { SerializablePublicReport } from "@/src/types/public-report";
@@ -20,6 +22,7 @@ export type CompletePublicAuditDeliverablesResult = {
     pdfGenerated: boolean;
     pdfReused: boolean;
     pdfFailed: boolean;
+    emailSent: boolean;
     error?: { code: string; message: string };
 };
 
@@ -36,6 +39,8 @@ export type CompletePublicAuditDeliverablesDeps = {
     ) => Promise<SerializablePdfReport[]>;
     publishPublicReport?: typeof publishPublicReport;
     generatePdfReport?: typeof generatePdfReport;
+    sendPublicAuditPdfReadyEmail?: typeof sendPublicAuditPdfReadyEmail;
+    getWebsiteById?: typeof getWebsiteById;
     log?: (event: string, payload: Record<string, unknown>) => void;
 };
 
@@ -43,12 +48,59 @@ function defaultLog(event: string, payload: Record<string, unknown>): void {
     console.info("[public-audit-deliverables]", JSON.stringify({ event, ...payload }));
 }
 
+async function sendReadyEmailIfPossible(input: {
+    websiteId: string;
+    auditRunId: string;
+    publicReportId: string;
+    pdfReportId: string;
+    sendEmail: typeof sendPublicAuditPdfReadyEmail;
+    getWebsite: typeof getWebsiteById;
+    log: (event: string, payload: Record<string, unknown>) => void;
+}): Promise<boolean> {
+    const website = await input.getWebsite(input.websiteId);
+    const domain =
+        website?.normalizedDomain?.trim() ||
+        website?.originalUrl?.replace(/^https?:\/\//i, "").replace(/\/$/, "") ||
+        "your website";
+
+    const emailResult = await input.sendEmail({
+        websiteId: input.websiteId,
+        auditRunId: input.auditRunId,
+        publicReportId: input.publicReportId,
+        pdfReportId: input.pdfReportId,
+        normalizedDomain: domain.toLowerCase(),
+    });
+
+    if (emailResult.sent) {
+        input.log("REPORT_READY_NOTIFICATION_SENT", {
+            websiteId: input.websiteId,
+            auditRunId: input.auditRunId,
+            publicReportId: input.publicReportId,
+        });
+        return true;
+    }
+
+    if (emailResult.reason === "ALREADY_SENT") {
+        input.log("REPORT_READY_NOTIFICATION_IDEMPOTENT", {
+            websiteId: input.websiteId,
+            publicReportId: input.publicReportId,
+        });
+        return true;
+    }
+
+    input.log("REPORT_NOTIFICATION_FAILED", {
+        websiteId: input.websiteId,
+        reason: emailResult.reason,
+    });
+    return false;
+}
+
 /**
  * After a validated AI analysis produces a report draft:
- * publish the public report (system actor) and generate its PDF.
+ * publish the public report (system actor), generate its PDF, and email a PDF download link.
  *
  * Idempotent: safe under duplicate Cursor callbacks / worker retries.
- * PDF failure does not unpublish the web report.
+ * PDF failure does not unpublish the web report and does not send the email.
  */
 export async function completePublicAuditDeliverables(
     input: {
@@ -66,6 +118,8 @@ export async function completePublicAuditDeliverables(
         deps.getCompletedPdfReportsForPublicReport ?? getCompletedPdfReportsForPublicReport;
     const publish = deps.publishPublicReport ?? publishPublicReport;
     const generatePdf = deps.generatePdfReport ?? generatePdfReport;
+    const sendEmail = deps.sendPublicAuditPdfReadyEmail ?? sendPublicAuditPdfReadyEmail;
+    const getWebsite = deps.getWebsiteById ?? getWebsiteById;
     const log = deps.log ?? defaultLog;
 
     const baseLog = {
@@ -88,6 +142,7 @@ export async function completePublicAuditDeliverables(
             pdfGenerated: false,
             pdfReused: false,
             pdfFailed: false,
+            emailSent: false,
             error: {
                 code: "AUDIT_CANCELLED",
                 message: "Audit was cancelled; report will not be published.",
@@ -112,6 +167,7 @@ export async function completePublicAuditDeliverables(
             pdfGenerated: false,
             pdfReused: false,
             pdfFailed: false,
+            emailSent: false,
             error: { code: "REPORT_NOT_FOUND", message: "Report not found." },
         };
     }
@@ -134,6 +190,7 @@ export async function completePublicAuditDeliverables(
                 pdfGenerated: false,
                 pdfReused: false,
                 pdfFailed: false,
+                emailSent: false,
                 error: publishResult.error,
             };
         }
@@ -150,71 +207,79 @@ export async function completePublicAuditDeliverables(
         });
     }
 
+    let pdfReportId: string | null = null;
+    let pdfGenerated = false;
+    let pdfReused = false;
+
     const existingPdfs = await getPdfs(report.id);
-    if (existingPdfs.length > 0) {
+    if (existingPdfs.length > 0 && existingPdfs[0]) {
+        pdfReportId = existingPdfs[0].id;
+        pdfGenerated = true;
+        pdfReused = true;
         log("PDF_REUSED", {
             ...baseLog,
-            pdfReportId: existingPdfs[0]?.id,
+            pdfReportId,
         });
-        log("AUDIT_DELIVERABLES_COMPLETE", {
+    } else {
+        log("PDF_GENERATION_STARTED", baseLog);
+        const pdfResult = await generatePdf({
+            publicReportId: report.id,
+            internalWorker: true,
+            auditRunId: input.auditRunId,
+        });
+
+        if (!pdfResult.success) {
+            log("PDF_GENERATION_FAILED", {
+                ...baseLog,
+                errorCode: pdfResult.error.code,
+                stage: pdfResult.error.stage,
+            });
+            return {
+                ok: true,
+                reportId: report.id,
+                published: true,
+                alreadyPublished,
+                pdfGenerated: false,
+                pdfReused: false,
+                pdfFailed: true,
+                emailSent: false,
+                error: {
+                    code: pdfResult.error.code,
+                    message: pdfResult.error.message,
+                },
+            };
+        }
+
+        pdfReportId = pdfResult.pdfReport.id;
+        pdfGenerated = true;
+        pdfReused = pdfResult.reusedExisting;
+        log(pdfResult.reusedExisting ? "PDF_REUSED" : "PDF_GENERATED", {
             ...baseLog,
-            published: true,
-            pdfGenerated: true,
-            pdfReused: true,
+            pdfReportId,
         });
-        return {
-            ok: true,
-            reportId: report.id,
-            published: true,
-            alreadyPublished,
-            pdfGenerated: true,
-            pdfReused: true,
-            pdfFailed: false,
-        };
+        log("PDF_STORED", {
+            ...baseLog,
+            pdfReportId,
+            status: pdfResult.pdfReport.status,
+        });
     }
 
-    log("PDF_GENERATION_STARTED", baseLog);
-    const pdfResult = await generatePdf({
-        publicReportId: report.id,
-        internalWorker: true,
+    const emailSent = await sendReadyEmailIfPossible({
+        websiteId: input.websiteId,
         auditRunId: input.auditRunId,
+        publicReportId: report.id,
+        pdfReportId: pdfReportId!,
+        sendEmail,
+        getWebsite,
+        log,
     });
 
-    if (!pdfResult.success) {
-        log("PDF_GENERATION_FAILED", {
-            ...baseLog,
-            errorCode: pdfResult.error.code,
-            stage: pdfResult.error.stage,
-        });
-        return {
-            ok: true,
-            reportId: report.id,
-            published: true,
-            alreadyPublished,
-            pdfGenerated: false,
-            pdfReused: false,
-            pdfFailed: true,
-            error: {
-                code: pdfResult.error.code,
-                message: pdfResult.error.message,
-            },
-        };
-    }
-
-    log(pdfResult.reusedExisting ? "PDF_REUSED" : "PDF_GENERATED", {
-        ...baseLog,
-        pdfReportId: pdfResult.pdfReport.id,
-    });
-    log("PDF_STORED", {
-        ...baseLog,
-        pdfReportId: pdfResult.pdfReport.id,
-        status: pdfResult.pdfReport.status,
-    });
     log("AUDIT_DELIVERABLES_COMPLETE", {
         ...baseLog,
         published: true,
-        pdfGenerated: true,
-        pdfReused: pdfResult.reusedExisting,
+        pdfGenerated,
+        pdfReused,
+        emailSent,
     });
 
     return {
@@ -222,8 +287,9 @@ export async function completePublicAuditDeliverables(
         reportId: report.id,
         published: true,
         alreadyPublished,
-        pdfGenerated: true,
-        pdfReused: pdfResult.reusedExisting,
+        pdfGenerated,
+        pdfReused,
         pdfFailed: false,
+        emailSent,
     };
 }

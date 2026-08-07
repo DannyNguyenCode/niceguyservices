@@ -51,11 +51,23 @@ function pdf(id = "pdf1"): SerializablePdfReport {
     return { id, status: "complete" } as SerializablePdfReport;
 }
 
+const emailDeps = {
+    getWebsiteById: async () =>
+        ({
+            id: "507f1f77bcf86cd799439011",
+            normalizedDomain: "example.com",
+            businessEmail: "owner@example.com",
+        }) as never,
+    sendPublicAuditPdfReadyEmail: async () =>
+        ({ sent: true, maskedEmail: "o***@example.com", reused: false }) as const,
+};
+
 describe("completePublicAuditDeliverables", () => {
-    it("publishes a draft and generates a PDF as system automation", async () => {
+    it("publishes a draft, generates a PDF, and emails a PDF download link", async () => {
         const events: string[] = [];
         let publishCalls = 0;
         let pdfCalls = 0;
+        let emailCalls = 0;
         let publishActor: string | undefined;
 
         const result = await completePublicAuditDeliverables(
@@ -65,6 +77,7 @@ describe("completePublicAuditDeliverables", () => {
                 auditRunId: "507f1f77bcf86cd799439015",
             },
             {
+                ...emailDeps,
                 getAuditJobByAuditRunId: async () => job("processing"),
                 getPublicReportById: async () => draftReport(),
                 getCompletedPdfReportsForPublicReport: async () => [],
@@ -91,6 +104,10 @@ describe("completePublicAuditDeliverables", () => {
                         downloadUrl: "/api/admin/pdf-reports/pdf1/download",
                     };
                 },
+                sendPublicAuditPdfReadyEmail: async () => {
+                    emailCalls += 1;
+                    return { sent: true, maskedEmail: "o***@example.com", reused: false };
+                },
                 log: (event) => {
                     events.push(event);
                 },
@@ -101,19 +118,23 @@ describe("completePublicAuditDeliverables", () => {
         assert.equal(result.published, true);
         assert.equal(result.pdfGenerated, true);
         assert.equal(result.pdfFailed, false);
+        assert.equal(result.emailSent, true);
         assert.equal(publishCalls, 1);
         assert.equal(pdfCalls, 1);
+        assert.equal(emailCalls, 1);
         assert.equal(publishActor, "system");
         assert.ok(events.includes("REPORT_AUTO_PUBLISH_STARTED"));
         assert.ok(events.includes("REPORT_AUTO_PUBLISHED"));
         assert.ok(events.includes("PDF_GENERATION_STARTED"));
         assert.ok(events.includes("PDF_GENERATED"));
+        assert.ok(events.includes("REPORT_READY_NOTIFICATION_SENT"));
         assert.ok(events.includes("AUDIT_DELIVERABLES_COMPLETE"));
     });
 
     it("is idempotent for duplicate callbacks when already published with PDF", async () => {
         let publishCalls = 0;
         let pdfCalls = 0;
+        let emailCalls = 0;
 
         const result = await completePublicAuditDeliverables(
             {
@@ -122,6 +143,7 @@ describe("completePublicAuditDeliverables", () => {
                 auditRunId: "507f1f77bcf86cd799439015",
             },
             {
+                ...emailDeps,
                 getAuditJobByAuditRunId: async () => job("completed"),
                 getPublicReportById: async () =>
                     draftReport({ status: "published", publicPath: "/report/tok" }),
@@ -146,6 +168,10 @@ describe("completePublicAuditDeliverables", () => {
                         downloadUrl: "/x",
                     };
                 },
+                sendPublicAuditPdfReadyEmail: async () => {
+                    emailCalls += 1;
+                    return { sent: false, skipped: true, reason: "ALREADY_SENT" };
+                },
                 log: () => undefined,
             },
         );
@@ -153,8 +179,10 @@ describe("completePublicAuditDeliverables", () => {
         assert.equal(result.ok, true);
         assert.equal(result.alreadyPublished, true);
         assert.equal(result.pdfReused, true);
+        assert.equal(result.emailSent, true);
         assert.equal(publishCalls, 0);
         assert.equal(pdfCalls, 0);
+        assert.equal(emailCalls, 1);
     });
 
     it("resumes PDF generation for an already-published report without republishing", async () => {
@@ -168,6 +196,7 @@ describe("completePublicAuditDeliverables", () => {
                 auditRunId: "507f1f77bcf86cd799439015",
             },
             {
+                ...emailDeps,
                 getAuditJobByAuditRunId: async () => job("completed"),
                 getPublicReportById: async () =>
                     draftReport({ status: "published", publicPath: "/report/tok" }),
@@ -196,11 +225,13 @@ describe("completePublicAuditDeliverables", () => {
         assert.equal(result.alreadyPublished, true);
         assert.equal(result.published, true);
         assert.equal(result.pdfGenerated, true);
+        assert.equal(result.emailSent, true);
         assert.equal(publishCalls, 0);
         assert.equal(pdfCalls, 1);
     });
 
-    it("keeps the published web report when PDF generation fails", async () => {
+    it("keeps the published web report when PDF generation fails and does not email", async () => {
+        let emailCalls = 0;
         const result = await completePublicAuditDeliverables(
             {
                 reportId: "507f1f77bcf86cd799439020",
@@ -208,6 +239,7 @@ describe("completePublicAuditDeliverables", () => {
                 auditRunId: "507f1f77bcf86cd799439015",
             },
             {
+                ...emailDeps,
                 getAuditJobByAuditRunId: async () => job("processing"),
                 getPublicReportById: async () => draftReport(),
                 getCompletedPdfReportsForPublicReport: async () => [],
@@ -227,6 +259,10 @@ describe("completePublicAuditDeliverables", () => {
                         stage: "PDF_CONFIGURATION",
                     },
                 }),
+                sendPublicAuditPdfReadyEmail: async () => {
+                    emailCalls += 1;
+                    return { sent: true, maskedEmail: "o***@example.com", reused: false };
+                },
                 log: () => undefined,
             },
         );
@@ -235,6 +271,8 @@ describe("completePublicAuditDeliverables", () => {
         assert.equal(result.published, true);
         assert.equal(result.pdfFailed, true);
         assert.equal(result.pdfGenerated, false);
+        assert.equal(result.emailSent, false);
+        assert.equal(emailCalls, 0);
         assert.equal(result.error?.code, "PDF_STORAGE_NOT_CONFIGURED");
     });
 
@@ -335,6 +373,13 @@ describe("post-AI auto deliverable wiring", () => {
             ),
             "utf8",
         );
+        const deliverableSource = await readFile(
+            path.join(
+                process.cwd(),
+                "src/services/public-reports/complete-public-audit-deliverables.ts",
+            ),
+            "utf8",
+        );
 
         assert.match(stageSource, /completePublicAuditDeliverables/);
         assert.match(resumeSource, /completePublicAuditDeliverables/);
@@ -342,6 +387,7 @@ describe("post-AI auto deliverable wiring", () => {
         assert.match(publishSource, /actor:\s*"admin"|options\?\.actor \?\? "admin"/);
         assert.match(callbackSource, /authenticateAnalysisCallback/);
         assert.match(callbackSource, /resumeAuditAfterCursorCallback/);
+        assert.match(deliverableSource, /sendPublicAuditPdfReadyEmail|sendReadyEmailIfPossible/);
         assert.equal(/generatePdfReport\(/.test(callbackSource), false);
         assert.equal(/uploadReportPdf\(/.test(callbackSource), false);
     });

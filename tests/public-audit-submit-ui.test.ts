@@ -67,8 +67,8 @@ describe("public audit submit status helpers", () => {
         });
         assert.ok(view);
         assert.match(view.backgroundNote ?? "", /continue automatically/i);
-        assert.match(view.backgroundNote ?? "", /enter your email/i);
-        assert.equal(/We'll email you when/i.test(view.backgroundNote ?? ""), false);
+        assert.match(view.backgroundNote ?? "", /email you a PDF download link/i);
+        assert.equal(/View in browser/i.test(view.backgroundNote ?? ""), false);
     });
 
     it("stops polling on complete or failed only", () => {

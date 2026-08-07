@@ -256,10 +256,9 @@ export default function WebsiteAuditLandingPage() {
                                 </h2>
                             </div>
                             <p className="mt-3 text-sm text-base-content/65">
-                                Come back anytime. Enter the business email you used when you
-                                requested the audit. If we have a published report for that email,
-                                we&apos;ll send a 6-digit verification code so you can open it
-                                securely.
+                                When your audit is ready, we email a PDF download link to the
+                                business address you submitted. You can also retrieve a published
+                                report here with email verification.
                             </p>
                         </div>
                         <div className="min-w-0">

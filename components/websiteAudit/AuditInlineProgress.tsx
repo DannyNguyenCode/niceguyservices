@@ -5,7 +5,7 @@ import type { PublicAuditProgressStageView } from "@/components/websiteAudit/pub
 
 export const AUDIT_INLINE_LEAVE_GUIDANCE = {
     title: "You don't need to wait here",
-    body: "Your audit will continue automatically even if you leave this page. Come back anytime and enter your email to securely retrieve your audit when it is ready.",
+    body: "Your audit will continue automatically even if you leave this page. We'll email you a PDF download link when your audit is ready.",
 } as const;
 
 type AuditInlineProgressProps = {

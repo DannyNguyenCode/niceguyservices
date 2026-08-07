@@ -5,11 +5,7 @@ import {
     PublicAuditDeliverableError,
     resolvePublicAuditDeliverables,
 } from "@/src/services/public-audit-status/resolve-public-audit-deliverables";
-import { sendPublicAuditReportEmail } from "@/src/services/public-audit-status/send-public-audit-report-email";
-import {
-    TransactionalEmailNotConfiguredError,
-    TransactionalEmailSendError,
-} from "@/src/services/email/send-transactional-email";
+import { sendPublicAuditPdfReadyEmail } from "@/src/services/public-audit-status/send-public-audit-report-email";
 
 export const dynamic = "force-dynamic";
 
@@ -20,8 +16,8 @@ type RouteContext = {
 /**
  * POST /api/public/audits/[statusToken]/email-report
  *
- * Sends the published report link to the website business email on file.
- * Destination is never client-supplied. Rate-limited to prevent spam.
+ * Resend path for the automatic PDF-ready email (rate-limited).
+ * Destination is never client-supplied.
  */
 export async function POST(request: Request, context: RouteContext) {
     const { statusToken: rawToken } = await context.params;
@@ -49,33 +45,55 @@ export async function POST(request: Request, context: RouteContext) {
 
     try {
         const deliverables = await resolvePublicAuditDeliverables(rawToken);
-        const result = await sendPublicAuditReportEmail(deliverables);
-        return NextResponse.json({
-            success: true,
-            maskedEmail: result.maskedEmail,
-            message: `Sent to ${result.maskedEmail}`,
+        if (!deliverables.pdfReport) {
+            throw new PublicAuditDeliverableError(
+                "PDF_NOT_READY",
+                "Your PDF is not ready yet.",
+            );
+        }
+
+        const result = await sendPublicAuditPdfReadyEmail({
+            websiteId: deliverables.tokenRecord.websiteId,
+            auditRunId: deliverables.tokenRecord.auditRunId,
+            publicReportId: deliverables.report.id,
+            pdfReportId: deliverables.pdfReport.id,
+            normalizedDomain: deliverables.tokenRecord.normalizedDomain,
         });
+
+        if (result.sent) {
+            return NextResponse.json({
+                success: true,
+                maskedEmail: result.maskedEmail,
+                message: `Sent to ${result.maskedEmail}`,
+            });
+        }
+
+        if (result.reason === "ALREADY_SENT") {
+            return NextResponse.json({
+                success: true,
+                maskedEmail: deliverables.maskedEmail,
+                message: `Already sent to ${deliverables.maskedEmail}`,
+            });
+        }
+
+        return NextResponse.json(
+            {
+                error: "Unable to send email right now. Please try again later.",
+                code: "EMAIL_SEND_FAILED",
+            },
+            { status: 503 },
+        );
     } catch (error) {
         if (error instanceof PublicAuditDeliverableError) {
             const status =
                 error.code === "INVALID_TOKEN" || error.code === "NOT_FOUND"
                     ? 404
-                    : error.code === "NOT_READY" || error.code === "REPORT_MISSING"
+                    : error.code === "NOT_READY" ||
+                        error.code === "REPORT_MISSING" ||
+                        error.code === "PDF_NOT_READY"
                       ? 409
                       : 400;
             return NextResponse.json({ error: error.message, code: error.code }, { status });
-        }
-        if (
-            error instanceof TransactionalEmailNotConfiguredError ||
-            error instanceof TransactionalEmailSendError
-        ) {
-            return NextResponse.json(
-                {
-                    error: "Unable to send email right now. Please try again later.",
-                    code: "EMAIL_SEND_FAILED",
-                },
-                { status: 503 },
-            );
         }
         console.error("[public-audit-deliverables] email-report failed");
         return NextResponse.json(

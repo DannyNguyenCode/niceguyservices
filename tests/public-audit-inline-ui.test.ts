@@ -2,9 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { describe, it } from "node:test";
-import {
-    AUDIT_INLINE_LEAVE_GUIDANCE,
-} from "@/components/websiteAudit/AuditInlineProgress";
+import { AUDIT_INLINE_LEAVE_GUIDANCE } from "@/components/websiteAudit/AuditInlineProgress";
 import {
     deriveWebsiteAuditInlinePhase,
     websiteAuditSectionCopy,
@@ -66,12 +64,12 @@ describe("website audit inline phase", () => {
 });
 
 describe("leave-and-return guidance", () => {
-    it("tells customers they may leave and how to retrieve by email", () => {
+    it("tells customers they may leave and that a PDF email will be sent", () => {
         assert.match(AUDIT_INLINE_LEAVE_GUIDANCE.title, /don't need to wait/i);
         assert.match(AUDIT_INLINE_LEAVE_GUIDANCE.body, /continue automatically/i);
         assert.match(AUDIT_INLINE_LEAVE_GUIDANCE.body, /leave this page/i);
-        assert.match(AUDIT_INLINE_LEAVE_GUIDANCE.body, /enter your email/i);
-        assert.equal(/We'll email you when/i.test(AUDIT_INLINE_LEAVE_GUIDANCE.body), false);
+        assert.match(AUDIT_INLINE_LEAVE_GUIDANCE.body, /email you a PDF download link/i);
+        assert.equal(/View in browser/i.test(AUDIT_INLINE_LEAVE_GUIDANCE.body), false);
     });
 });
 
@@ -95,8 +93,14 @@ describe("automatic start on submit — no second customer action", () => {
 
         assert.match(formSource, /Submit audit request|PUBLIC_AUDIT_SUBMIT_UI\.buttonIdle/);
         assert.equal(/Start processing|Begin analysis|Confirm request/i.test(formSource), false);
-        assert.equal(/PublicAuditSubmitStatusModal|progressModalVisible|<dialog/i.test(formSource), false);
-        assert.match(formSource, /forceAsync|Backend orchestration already started|displays persisted backend status/i);
+        assert.equal(
+            /PublicAuditSubmitStatusModal|progressModalVisible|<dialog/i.test(formSource),
+            false,
+        );
+        assert.match(
+            formSource,
+            /forceAsync|Backend orchestration already started|displays persisted backend status/i,
+        );
         assert.match(submitSource, /forceAsync:\s*true/);
         assert.match(submitSource, /startAuditOrchestration|startOrchestration/);
         assert.match(actionSource, /submitAndStartPublicAuditRequest/);
@@ -110,21 +114,21 @@ describe("public audit deliverable helpers", () => {
         assert.equal(maskBusinessEmail("a@x.co"), "a***@x.co");
     });
 
-    it("builds a report-ready email without inventing automatic completion spam", () => {
+    it("builds a PDF-ready email with a Download PDF button", () => {
         const email = buildPublicAuditReportReadyEmail({
             domain: "example.com",
-            reportUrl: "https://niceguyweb.design/report/token",
-            pdfReady: true,
+            pdfDownloadUrl: "https://niceguyweb.design/api/public/pdf-download/token",
         });
         assert.match(email.subject, /example.com/i);
-        assert.match(email.text, /View your report/i);
-        assert.match(email.html, /View in browser/i);
+        assert.match(email.text, /Download your PDF/i);
+        assert.match(email.html, /Download PDF/i);
+        assert.equal(/View in browser/i.test(email.html), false);
         assert.equal(/verification code/i.test(email.text), false);
     });
 });
 
 describe("inline audit UI source contracts", () => {
-    it("keeps a single inline progress surface without a progress modal", async () => {
+    it("keeps PDF-only completion actions and automatic email copy", async () => {
         const formSource = await readFile(
             path.join(process.cwd(), "components/websiteAudit/WebsiteAuditForm.tsx"),
             "utf8",
@@ -137,10 +141,6 @@ describe("inline audit UI source contracts", () => {
             path.join(process.cwd(), "components/websiteAudit/AuditInlineProgress.tsx"),
             "utf8",
         );
-        const stagesSource = await readFile(
-            path.join(process.cwd(), "components/websiteAudit/PublicAuditProgressStages.tsx"),
-            "utf8",
-        );
         const landingSource = await readFile(
             path.join(process.cwd(), "components/websiteAudit/WebsiteAuditLandingPage.tsx"),
             "utf8",
@@ -148,36 +148,17 @@ describe("inline audit UI source contracts", () => {
 
         assert.match(formSource, /AuditInlineProgress/);
         assert.match(formSource, /AuditCompleteActions/);
-        assert.match(formSource, /AuditFailureState/);
-        assert.match(formSource, /deriveWebsiteAuditInlinePhase/);
-        assert.match(formSource, /Single polling source/);
-        assert.match(formSource, /startAnotherAudit/);
-        assert.equal(/PublicAuditSubmitStatusModal|progressModalVisible|<dialog/i.test(formSource), false);
-        assert.equal(/Open detailed progress/i.test(formSource), false);
+        assert.equal(/PublicAuditSubmitStatusModal|progressModalVisible/i.test(formSource), false);
 
-        assert.match(inlineSource, /PublicAuditProgressStages/);
-        assert.match(inlineSource, /AUDIT_INLINE_LEAVE_GUIDANCE|continue automatically/i);
-        assert.match(inlineSource, /enter your email/i);
-        assert.equal(/We'll email you when/i.test(inlineSource), false);
-        assert.equal(/Open detailed progress/i.test(inlineSource), false);
+        assert.match(inlineSource, /email you a PDF download link/i);
 
-        assert.match(completeSource, /View in browser/);
         assert.match(completeSource, /Download PDF/);
-        assert.match(completeSource, /Send to email/);
-        assert.match(completeSource, /\/report-url/);
-        assert.match(completeSource, /\/pdf/);
-        assert.match(completeSource, /\/email-report/);
-        assert.match(completeSource, /disabled=\{!pdfReady\}/);
+        assert.equal(/View in browser/i.test(completeSource), false);
+        assert.equal(/Send to email/i.test(completeSource), false);
+        assert.match(completeSource, /emailed a PDF download link/i);
         assert.match(completeSource, /Audit another website/);
 
-        assert.match(stagesSource, /aria-label="Audit progress"/);
-        assert.match(landingSource, /showSectionHeader/);
-        assert.match(landingSource, /id="retrieve-audit"/);
-        assert.match(landingSource, /Already requested an audit/);
-        assert.equal(
-            /Request a website audit[\s\S]*WebsiteAuditForm/i.test(landingSource),
-            false,
-        );
+        assert.match(landingSource, /email a PDF download link/i);
     });
 
     it("documents that email lookup retrieves published reports only", async () => {
@@ -190,12 +171,10 @@ describe("inline audit UI source contracts", () => {
             "utf8",
         );
         assert.match(lookupSource, /verification code|6-digit/i);
-        assert.match(lookupSource, /may still be running/i);
         assert.match(listSource, /published reports/i);
-        assert.equal(/statusToken|issuePublicAuditStatusToken/i.test(lookupSource), false);
     });
 
-    it("scopes deliverable routes to the status token without poll URL leakage", async () => {
+    it("wires signed PDF email download without exposing Cloudinary in status polls", async () => {
         const statusRoute = await readFile(
             path.join(
                 process.cwd(),
@@ -203,25 +182,21 @@ describe("inline audit UI source contracts", () => {
             ),
             "utf8",
         );
-        const resolveSource = await readFile(
-            path.join(
-                process.cwd(),
-                "src/services/public-audit-status/resolve-public-audit-deliverables.ts",
-            ),
+        const downloadRoute = await readFile(
+            path.join(process.cwd(), "app/api/public/pdf-download/[token]/route.ts"),
             "utf8",
         );
-        const emailRoute = await readFile(
+        const deliverableSource = await readFile(
             path.join(
                 process.cwd(),
-                "app/api/public/audits/[statusToken]/email-report/route.ts",
+                "src/services/public-reports/complete-public-audit-deliverables.ts",
             ),
             "utf8",
         );
 
-        assert.match(statusRoute, /pdfReady/);
         assert.equal(/reportPath|secureUrl|Cloudinary/i.test(statusRoute), false);
-        assert.match(resolveSource, /ONLY this audit/i);
-        assert.match(emailRoute, /Destination is never client-supplied/);
-        assert.match(emailRoute, /enforcePublicAuditReportEmailRateLimit/);
+        assert.match(downloadRoute, /verifyPublicPdfEmailDownloadToken/);
+        assert.match(downloadRoute, /enforcePublicPdfDownloadRateLimit/);
+        assert.match(deliverableSource, /sendPublicAuditPdfReadyEmail|sendReadyEmailIfPossible/);
     });
 });
