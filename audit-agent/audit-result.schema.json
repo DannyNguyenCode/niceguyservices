@@ -137,6 +137,72 @@
       "format": "date-time",
       "minLength": 1
     },
+    "homepageChanges": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary", "priorityChanges"],
+      "description": "Customer-facing homepage improvement recommendations grounded only in supplied audit evidence.",
+      "properties": {
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "priorityChanges": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "title",
+              "priority",
+              "category",
+              "problem",
+              "recommendation",
+              "expectedImpact"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300
+              },
+              "priority": { "enum": ["high", "medium", "low"] },
+              "category": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "problem": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              },
+              "recommendation": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              },
+              "expectedImpact": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              },
+              "evidence": {
+                "type": "array",
+                "maxItems": 5,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "deprecatedAiOverallScore": {
       "type": "number",
       "minimum": 0,

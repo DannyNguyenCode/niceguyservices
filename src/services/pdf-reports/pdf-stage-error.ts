@@ -3,14 +3,17 @@ export const PDF_STAGES = [
     "INITIALIZATION",
     "DATABASE",
     "PDF_CONFIGURATION",
+    "DATA_LOAD",
+    "REACT_PDF_RENDER",
+    "PDF_RENDER",
+    "STORAGE",
+    "DATABASE_FINALIZATION",
+    // Legacy browser-PDF stages retained for historical failed records / log compatibility.
     "CHROMIUM_LAUNCH",
     "BROWSER_CONTEXT",
     "PRINT_NAVIGATION",
     "PRINT_ROUTE_HTTP",
     "REPORT_READY",
-    "PDF_RENDER",
-    "STORAGE",
-    "DATABASE_FINALIZATION",
 ] as const;
 
 export type PdfStage = (typeof PDF_STAGES)[number];
@@ -24,6 +27,20 @@ export type PdfErrorCode =
     | "PDF_ALREADY_RUNNING"
     | "PDF_CONFIGURATION_MISSING"
     | "PDF_STORAGE_NOT_CONFIGURED"
+    | "PDF_DATA_LOAD_FAILED"
+    | "PDF_DATA_INVALID"
+    | "PDF_IMAGE_LOAD_FAILED"
+    | "PDF_REACT_RENDER_FAILED"
+    | "PDF_BUFFER_RENDER_FAILED"
+    | "PDF_INVALID_BUFFER"
+    | "PDF_FILE_TOO_LARGE"
+    | "PDF_STORAGE_FAILED"
+    | "PDF_UPLOAD_FAILED"
+    | "PDF_SAVE_FAILED"
+    | "PDF_DATABASE_FINALIZATION_FAILED"
+    | "PDF_RENDER_TIMEOUT"
+    | "PDF_RENDER_FAILED"
+    // Legacy browser-PDF codes retained for historical records / classify compatibility.
     | "PDF_CHROMIUM_LAUNCH_FAILED"
     | "PDF_BROWSER_CONTEXT_FAILED"
     | "PDF_PRINT_NAVIGATION_FAILED"
@@ -32,20 +49,25 @@ export type PdfErrorCode =
     | "PDF_PRINT_ROUTE_NOT_FOUND"
     | "PDF_PRINT_ROUTE_SERVER_ERROR"
     | "PDF_REPORT_READY_TIMEOUT"
-    | "PDF_BUFFER_RENDER_FAILED"
-    | "PDF_INVALID_BUFFER"
-    | "PDF_FILE_TOO_LARGE"
-    | "PDF_STORAGE_FAILED"
-    | "PDF_UPLOAD_FAILED"
-    | "PDF_SAVE_FAILED"
-    | "PDF_RENDER_TIMEOUT"
     | "PDF_BROWSER_LAUNCH_FAILED"
-    | "PDF_RENDER_ROUTE_FAILED"
-    | "PDF_RENDER_FAILED";
+    | "PDF_RENDER_ROUTE_FAILED";
 
 const STAGE_BY_CODE: Partial<Record<PdfErrorCode, PdfStage>> = {
     PDF_CONFIGURATION_MISSING: "PDF_CONFIGURATION",
     PDF_STORAGE_NOT_CONFIGURED: "PDF_CONFIGURATION",
+    PDF_DATA_LOAD_FAILED: "DATA_LOAD",
+    PDF_DATA_INVALID: "DATA_LOAD",
+    PDF_IMAGE_LOAD_FAILED: "REACT_PDF_RENDER",
+    PDF_REACT_RENDER_FAILED: "REACT_PDF_RENDER",
+    PDF_BUFFER_RENDER_FAILED: "REACT_PDF_RENDER",
+    PDF_INVALID_BUFFER: "REACT_PDF_RENDER",
+    PDF_RENDER_TIMEOUT: "REACT_PDF_RENDER",
+    PDF_FILE_TOO_LARGE: "STORAGE",
+    PDF_STORAGE_FAILED: "STORAGE",
+    PDF_UPLOAD_FAILED: "STORAGE",
+    PDF_SAVE_FAILED: "DATABASE_FINALIZATION",
+    PDF_DATABASE_FINALIZATION_FAILED: "DATABASE_FINALIZATION",
+    PDF_RENDER_FAILED: "PDF_RENDER",
     PDF_CHROMIUM_LAUNCH_FAILED: "CHROMIUM_LAUNCH",
     PDF_BROWSER_LAUNCH_FAILED: "CHROMIUM_LAUNCH",
     PDF_BROWSER_CONTEXT_FAILED: "BROWSER_CONTEXT",
@@ -56,14 +78,6 @@ const STAGE_BY_CODE: Partial<Record<PdfErrorCode, PdfStage>> = {
     PDF_PRINT_ROUTE_SERVER_ERROR: "PRINT_ROUTE_HTTP",
     PDF_RENDER_ROUTE_FAILED: "PRINT_ROUTE_HTTP",
     PDF_REPORT_READY_TIMEOUT: "REPORT_READY",
-    PDF_BUFFER_RENDER_FAILED: "PDF_RENDER",
-    PDF_INVALID_BUFFER: "PDF_RENDER",
-    PDF_RENDER_TIMEOUT: "PDF_RENDER",
-    PDF_FILE_TOO_LARGE: "STORAGE",
-    PDF_STORAGE_FAILED: "STORAGE",
-    PDF_UPLOAD_FAILED: "STORAGE",
-    PDF_SAVE_FAILED: "DATABASE_FINALIZATION",
-    PDF_RENDER_FAILED: "PDF_RENDER",
 };
 
 const ADMIN_MESSAGES: Record<PdfErrorCode, string> = {
@@ -75,6 +89,19 @@ const ADMIN_MESSAGES: Record<PdfErrorCode, string> = {
     PDF_ALREADY_RUNNING: "PDF generation is already running for this report.",
     PDF_CONFIGURATION_MISSING: "PDF renderer configuration is missing.",
     PDF_STORAGE_NOT_CONFIGURED: "PDF storage configuration is missing.",
+    PDF_DATA_LOAD_FAILED: "Unable to load report data for PDF generation.",
+    PDF_DATA_INVALID: "Report data is invalid for PDF generation.",
+    PDF_IMAGE_LOAD_FAILED: "One or more report images could not be loaded.",
+    PDF_REACT_RENDER_FAILED: "React PDF document rendering failed.",
+    PDF_BUFFER_RENDER_FAILED: "PDF buffer rendering failed.",
+    PDF_INVALID_BUFFER: "Generated PDF was invalid.",
+    PDF_FILE_TOO_LARGE: "Generated PDF exceeded the maximum file size.",
+    PDF_STORAGE_FAILED: "PDF storage upload failed.",
+    PDF_UPLOAD_FAILED: "PDF upload failed.",
+    PDF_SAVE_FAILED: "Unable to save PDF metadata.",
+    PDF_DATABASE_FINALIZATION_FAILED: "Unable to finalize PDF database record.",
+    PDF_RENDER_TIMEOUT: "PDF rendering timed out.",
+    PDF_RENDER_FAILED: "PDF rendering failed.",
     PDF_CHROMIUM_LAUNCH_FAILED: "PDF browser could not be launched.",
     PDF_BROWSER_LAUNCH_FAILED: "PDF browser could not be launched.",
     PDF_BROWSER_CONTEXT_FAILED: "PDF browser context could not be created.",
@@ -85,15 +112,7 @@ const ADMIN_MESSAGES: Record<PdfErrorCode, string> = {
     PDF_PRINT_ROUTE_NOT_FOUND: "Internal PDF rendering page was not found.",
     PDF_PRINT_ROUTE_SERVER_ERROR: "Internal PDF rendering page returned a server error.",
     PDF_REPORT_READY_TIMEOUT: "PDF report content did not become ready in time.",
-    PDF_BUFFER_RENDER_FAILED: "PDF buffer rendering failed.",
-    PDF_INVALID_BUFFER: "Generated PDF was invalid.",
-    PDF_FILE_TOO_LARGE: "Generated PDF exceeded the maximum file size.",
-    PDF_STORAGE_FAILED: "PDF storage upload failed.",
-    PDF_UPLOAD_FAILED: "PDF upload failed.",
-    PDF_SAVE_FAILED: "Unable to save PDF metadata.",
-    PDF_RENDER_TIMEOUT: "PDF rendering timed out.",
     PDF_RENDER_ROUTE_FAILED: "Unable to access the internal PDF rendering page.",
-    PDF_RENDER_FAILED: "PDF rendering failed.",
 };
 
 export class PdfStageError extends Error {

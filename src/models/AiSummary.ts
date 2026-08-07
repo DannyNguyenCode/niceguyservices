@@ -83,6 +83,31 @@ const PriorityOrderItemSchema = new Schema(
     { _id: false },
 );
 
+const HomepageChangeItemSchema = new Schema(
+    {
+        title: { type: String, required: true, trim: true },
+        priority: {
+            type: String,
+            enum: ["high", "medium", "low"],
+            required: true,
+        },
+        category: { type: String, required: true, trim: true },
+        problem: { type: String, required: true, trim: true },
+        recommendation: { type: String, required: true, trim: true },
+        expectedImpact: { type: String, required: true, trim: true },
+        evidence: { type: [String], default: [] },
+    },
+    { _id: false },
+);
+
+const HomepageChangesSchema = new Schema(
+    {
+        summary: { type: String, required: true, trim: true },
+        priorityChanges: { type: [HomepageChangeItemSchema], default: [] },
+    },
+    { _id: false },
+);
+
 const SourceSnapshotSchema = new Schema(
     {
         scoringVersion: { type: String, required: true },
@@ -143,6 +168,7 @@ const AiSummarySchema = new Schema(
         quickWins: { type: [QuickWinItemSchema], default: [] },
         longTermRecommendations: { type: [LongTermItemSchema], default: [] },
         priorityOrder: { type: [PriorityOrderItemSchema], default: [] },
+        homepageChanges: { type: HomepageChangesSchema, default: null },
         disclaimers: { type: [String], default: [] },
         generatedAt: { type: Date, default: null },
         durationMs: { type: Number, default: null, min: 0 },

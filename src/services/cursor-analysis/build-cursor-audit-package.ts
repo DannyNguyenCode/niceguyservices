@@ -152,6 +152,8 @@ function buildAnalysisInstructions(promptVersion: string) {
             "Label preliminary metrics as preliminary.",
             "Label visual interpretation as interpretation.",
             "Never invent evidence or claim guaranteed outcomes.",
+            "Include homepageChanges with a concise customer-facing summary and specific homepage priorityChanges grounded only in supplied evidence.",
+            "Target about 5–8 homepage recommendations when evidence supports them; do not pad; return fewer when evidence is limited.",
             "Return only the required callback JSON structure defined in resultContract.",
             "Validate the callback body against resultContract before POSTing.",
             "Post results to callbackUrl using the specified callback header.",

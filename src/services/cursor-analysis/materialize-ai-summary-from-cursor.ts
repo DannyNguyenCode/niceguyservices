@@ -227,6 +227,7 @@ export async function materializeAiSummaryFromCursorResult(input: {
     const mapped = mapCursorResultToAiSummaryOutput(input.result);
     const completed = await completeAiSummaryRecord(record.id, {
         ...mapped,
+        homepageChanges: input.result.homepageChanges ?? null,
         durationMs: 0,
         promptVersion: CURSOR_ANALYSIS_DEFAULT_PROMPT_VERSION,
         analysisVersion: CURSOR_COMPAT_ANALYSIS_VERSION,

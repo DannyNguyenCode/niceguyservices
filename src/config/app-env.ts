@@ -229,9 +229,9 @@ function validateProductionRequirements(env: AppEnv): void {
     if (!env.appUrl && !env.publicAppUrl) {
         throw new Error("Production requires APP_URL or NEXT_PUBLIC_SITE_URL.");
     }
-    if (!env.pdfRenderSecret) {
-        throw new Error("Production requires PDF_RENDER_SECRET.");
-    }
+    // PDF_RENDER_SECRET is obsolete for React PDF generation (previously required
+    // for Chromium print-route tokens). Kept optional for legacy print route /
+    // rate-limit hash fallback. Do not require it for production boot.
     if (!env.cloudinaryCloudName || !env.cloudinaryApiKey || !env.cloudinaryApiSecret) {
         throw new Error("Production requires Cloudinary credentials.");
     }

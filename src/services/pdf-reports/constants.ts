@@ -1,6 +1,6 @@
 export const PDF_REPORT_VERSION = "pdf-report-v1";
 
-export const PDF_RENDER_ENGINE = "playwright-chromium";
+export const PDF_RENDER_ENGINE = "react-pdf";
 
 export const PDF_PAPER_FORMAT = "Letter";
 

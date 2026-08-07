@@ -5,6 +5,7 @@ import auditResultExample from "@/audit-agent/examples/example-result.json";
 import {
     AUDIT_ASSESSMENT_PRIORITIES,
     AUDIT_ISSUE_SEVERITIES,
+    HOMEPAGE_CHANGE_PRIORITIES,
 } from "@/src/services/cursor-analysis/schemas";
 
 export const AUDIT_RESULT_CONTRACT_VERSION = "1.1";
@@ -38,6 +39,13 @@ export const AUDIT_RESULT_FIELD_LIMITS = {
     auditIdMaxLength: 100,
     analysisRequestIdMaxLength: 100,
     categoryMaxLength: 100,
+    homepageChangesSummaryMaxLength: 2000,
+    homepageChangeTitleMaxLength: 300,
+    homepageChangeProblemMaxLength: 4000,
+    homepageChangeRecommendationMaxLength: 4000,
+    homepageChangeExpectedImpactMaxLength: 2000,
+    homepageChangesMaxItems: 8,
+    homepageChangeEvidenceMaxItems: 5,
 } as const;
 
 export type AuditResultContract = {
@@ -49,6 +57,7 @@ export type AuditResultContract = {
     enums: {
         assessmentPriority: string[];
         issueSeverity: string[];
+        homepageChangePriority: string[];
     };
     example: Record<string, unknown>;
 };
@@ -66,6 +75,7 @@ export function buildAuditResultContract(input: {
         enums: {
             assessmentPriority: [...AUDIT_ASSESSMENT_PRIORITIES],
             issueSeverity: [...AUDIT_ISSUE_SEVERITIES],
+            homepageChangePriority: [...HOMEPAGE_CHANGE_PRIORITIES],
         },
         example: {
             ...(auditResultExample as Record<string, unknown>),

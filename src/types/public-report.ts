@@ -50,6 +50,8 @@ export type PublicReportSourceSnapshot = {
             lcp: number | null;
             cls: number | null;
             tbt: number | null;
+            fcp?: number | null;
+            speedIndex?: number | null;
             fetchTime: string | null;
             lighthouseVersion: string | null;
         } | null;
@@ -61,6 +63,8 @@ export type PublicReportSourceSnapshot = {
             lcp: number | null;
             cls: number | null;
             tbt: number | null;
+            fcp?: number | null;
+            speedIndex?: number | null;
             fetchTime: string | null;
             lighthouseVersion: string | null;
         } | null;
@@ -143,6 +147,18 @@ export type PublicReportSourceSnapshot = {
             priority: "high" | "medium" | "low";
             evidenceLabels: string[];
         }>;
+        homepageChanges?: {
+            summary: string;
+            priorityChanges: Array<{
+                title: string;
+                priority: "high" | "medium" | "low";
+                category: string;
+                problem: string;
+                recommendation: string;
+                expectedImpact: string;
+                evidence?: string[];
+            }>;
+        } | null;
         disclaimers: string[];
     };
     screenshots: Array<{

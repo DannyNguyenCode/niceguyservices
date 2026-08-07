@@ -1,8 +1,5 @@
 import type { NextConfig } from "next";
 
-const reactPdfBrowserEntry =
-  "./node_modules/@react-pdf/renderer/lib/react-pdf.browser.js";
-
 const chromiumTraceIncludes = [
   "./node_modules/@sparticuz/chromium/**",
   "./node_modules/playwright-core/**",
@@ -19,12 +16,11 @@ const playwrightServerRoutes = {
   "/dashboard/websites/new": chromiumTraceIncludes,
   "/api/admin/websites/[id]/crawl": chromiumTraceIncludes,
   "/api/admin/websites/[id]/audits": chromiumTraceIncludes,
-  "/api/admin/reports/[reportId]/pdf": chromiumTraceIncludes,
 } as const;
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
-  serverExternalPackages: ["playwright-core", "@sparticuz/chromium"],
+  serverExternalPackages: ["playwright-core", "@sparticuz/chromium", "@react-pdf/renderer"],
   outputFileTracingIncludes: {
     "/*": [
       "./src/services/crawl-browser-extract.js",
@@ -32,11 +28,10 @@ const nextConfig: NextConfig = {
     ],
     ...playwrightServerRoutes,
   },
-  turbopack: {
-    resolveAlias: {
-      "@react-pdf/renderer": reactPdfBrowserEntry,
-    },
-  },
+  // Client workbook PDF uses the browser build; server audit PDF uses the
+  // default Node entry (renderToBuffer). Alias only on the client webpack bundle.
+  // Empty turbopack config acknowledges Next 16 default Turbopack + webpack coexistence.
+  turbopack: {},
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.alias = {

@@ -69,6 +69,7 @@ const auditResultContractSchema = z.object({
     enums: z.object({
         assessmentPriority: z.array(z.string().min(1)),
         issueSeverity: z.array(z.string().min(1)),
+        homepageChangePriority: z.array(z.string().min(1)).optional(),
     }),
     example: z.record(z.string(), z.unknown()),
 });
@@ -127,6 +128,23 @@ const issueSchema = z.object({
     sources: z.array(boundedString(200)).min(1).max(5),
 });
 
+export const HOMEPAGE_CHANGE_PRIORITIES = ["high", "medium", "low"] as const;
+
+const homepageChangeItemSchema = z.object({
+    title: boundedString(300),
+    priority: z.enum(HOMEPAGE_CHANGE_PRIORITIES),
+    category: boundedString(100),
+    problem: boundedString(4000),
+    recommendation: boundedString(4000),
+    expectedImpact: boundedString(2000),
+    evidence: z.array(boundedString(200)).max(5).optional(),
+});
+
+export const homepageChangesSchema = z.object({
+    summary: boundedString(2000),
+    priorityChanges: z.array(homepageChangeItemSchema).max(8),
+});
+
 export const cursorAuditResultSchema = z.object({
     schemaVersion: z.literal("1.1"),
     analysisRequestId: z.string().min(1).max(100),
@@ -137,6 +155,11 @@ export const cursorAuditResultSchema = z.object({
     issues: z.array(issueSchema).max(20),
     limitations: z.array(boundedString(1000)).max(10),
     analyzedAt: z.string().datetime(),
+    /**
+     * Optional for backward compatibility with analyses completed before
+     * homepageChanges existed. New Cloud Agent packages request this section.
+     */
+    homepageChanges: homepageChangesSchema.optional(),
     /** @deprecated AI-generated score; use Nice Guy Metrics overallScore as the official audit score. */
     deprecatedAiOverallScore: z.number().min(0).max(100).optional(),
 });
@@ -145,6 +168,8 @@ export type CursorAuditPackage = z.infer<typeof cursorAuditPackageSchema>;
 export type CursorAuditResult = z.infer<typeof cursorAuditResultSchema>;
 export type CursorAuditAssessment = z.infer<typeof assessmentSchema>;
 export type CursorAuditResultContract = z.infer<typeof auditResultContractSchema>;
+export type HomepageChanges = z.infer<typeof homepageChangesSchema>;
+export type HomepageChangeItem = z.infer<typeof homepageChangeItemSchema>;
 
 export function validateCursorAuditPackage(value: unknown): CursorAuditPackage {
     return cursorAuditPackageSchema.parse(value);

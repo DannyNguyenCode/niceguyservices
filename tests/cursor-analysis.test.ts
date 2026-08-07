@@ -217,11 +217,21 @@ describe("cursor analysis schemas v1.1", () => {
         assert.equal(example.schemaVersion, "1.1");
     });
 
-    it("accepts the example result fixture", () => {
+    it("accepts the example result fixture including homepageChanges", () => {
         const example = JSON.parse(
             readFileSync("audit-agent/examples/example-result.json", "utf8"),
         );
         assert.doesNotThrow(() => validateCursorAuditResult(example));
+        assert.ok(example.homepageChanges);
+        assert.ok(Array.isArray(example.homepageChanges.priorityChanges));
+    });
+
+    it("accepts results without homepageChanges for backward compatibility", () => {
+        const example = JSON.parse(
+            readFileSync("audit-agent/examples/example-result.json", "utf8"),
+        );
+        delete example.homepageChanges;
+        assert.equal(cursorAuditResultSchema.safeParse(example).success, true);
     });
 
     it("rejects invalid assessment confidence", () => {
@@ -266,8 +276,12 @@ describe("cursor analysis package builder", () => {
         assert.equal(pkg.resultContract.schemaVersion, "1.1");
         assert.equal(pkg.resultContract.example.auditId, pkg.audit.auditId);
         assert.equal(pkg.resultContract.example.analysisRequestId, "req_1");
+        assert.ok(pkg.resultContract.enums.homepageChangePriority);
         assert.ok(pkg.resultContract.jsonSchema);
         assert.doesNotThrow(() => validateCursorAuditResult(pkg.resultContract.example));
+        assert.ok(
+            (pkg.resultContract.example as { homepageChanges?: unknown }).homepageChanges,
+        );
         assert.ok(pkg.screenshots.desktop);
         assert.ok(pkg.screenshots.mobile);
         assert.equal(pkg.audit.analysisRequestId, "req_1");

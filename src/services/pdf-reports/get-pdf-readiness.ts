@@ -1,5 +1,4 @@
 import { calculateSnapshotChecksum } from "@/src/services/pdf-reports/calculate-snapshot-checksum";
-import { readPdfRenderSecret } from "@/src/services/pdf-reports/read-pdf-render-secret";
 import type { PdfReadiness } from "@/src/services/pdf-reports/types";
 import type { SerializablePublicReport } from "@/src/types/public-report";
 
@@ -20,15 +19,6 @@ function isCloudinaryEnvConfigured(): boolean {
         !placeholders.has(apiKey) &&
         !placeholders.has(apiSecret)
     );
-}
-
-function isPdfRendererConfigured(): boolean {
-    try {
-        readPdfRenderSecret();
-        return true;
-    } catch {
-        return false;
-    }
 }
 
 export function isPublicReportSnapshotComplete(report: SerializablePublicReport): boolean {
@@ -93,12 +83,8 @@ export function getPdfReadiness(input: {
         });
     }
 
-    if (!isPdfRendererConfigured()) {
-        blockers.push({
-            code: "RENDERER_NOT_CONFIGURED",
-            message: "PDF renderer configuration is missing.",
-        });
-    }
+    // React PDF does not require PDF_RENDER_SECRET / Chromium print navigation.
+    // Storage (Cloudinary) remains the required external dependency.
 
     if (!isCloudinaryEnvConfigured()) {
         blockers.push({

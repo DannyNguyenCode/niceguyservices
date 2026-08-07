@@ -27,8 +27,23 @@ This is an analysis-only task. Do not modify source code, dependencies, configur
    - If a screenshot cannot be fetched or visually inspected, record that as a
      limitation and do not invent visual findings for that viewport.
 8. Analyze PageSpeed, crawl evidence, and Nice Guy Metrics v2.
-9. Construct callback JSON that matches `resultContract` exactly.
-10. POST the result to `callbackUrl` using:
+9. Perform an additional **Homepage Changes** analysis for the customer-facing
+   `homepageChanges` section.
+   - Use available evidence only: desktop/mobile homepage screenshots, crawl DOM
+     and content, headings, navigation, CTAs, Nice Guy UX/CRO metrics, PageSpeed,
+     Core Web Vitals, SEO findings, accessibility findings, mobile usability,
+     visual hierarchy, trust signals, and contact/conversion paths.
+   - Produce approximately 5–8 useful homepage recommendations when evidence
+     supports that many. Do not pad. If evidence only supports fewer, return fewer.
+   - Make recommendations specific and actionable.
+     BAD: "Improve the hero section."
+     GOOD: "Clarify the hero headline so visitors immediately understand what
+     service the company provides and where it operates."
+   - Never invent observations that are not supported by the supplied evidence.
+   - Write `homepageChanges.summary` as a concise customer-facing overview.
+10. Construct callback JSON that matches `resultContract` exactly, including the
+    `homepageChanges` section when evidence supports homepage recommendations.
+11. POST the result to `callbackUrl` using:
    - **Header name:** the value of `callbackAuthHeader` from the webhook payload
    - **Header value:** the value of `callbackAuthToken` from the webhook payload
 

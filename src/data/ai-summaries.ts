@@ -6,6 +6,7 @@ import { AI_ANALYSIS_VERSION } from "@/src/lib/ai-config";
 import { connectToDatabase } from "@/src/lib/mongodb";
 import { AiSummary } from "@/src/models/AiSummary";
 import type { AiSummaryOutput } from "@/src/services/ai/types";
+import type { HomepageChanges } from "@/src/services/cursor-analysis/schemas";
 
 export type SerializableAiSummary = {
     id: string;
@@ -35,6 +36,8 @@ export type SerializableAiSummary = {
     quickWins: AiSummaryOutput["quickWins"];
     longTermRecommendations: AiSummaryOutput["longTermRecommendations"];
     priorityOrder: AiSummaryOutput["priorityOrder"];
+    /** Absent on summaries created before homepageChanges existed. */
+    homepageChanges?: HomepageChanges | null;
     disclaimers: string[];
     generatedAt: string | null;
     durationMs: number | null;
@@ -98,6 +101,7 @@ function toSerializable(doc: Record<string, unknown>): SerializableAiSummary {
             (doc.longTermRecommendations as SerializableAiSummary["longTermRecommendations"]) ??
             [],
         priorityOrder: (doc.priorityOrder as SerializableAiSummary["priorityOrder"]) ?? [],
+        homepageChanges: (doc.homepageChanges as HomepageChanges | null | undefined) ?? null,
         disclaimers: (doc.disclaimers as string[]) ?? [],
         generatedAt: doc.generatedAt ? new Date(doc.generatedAt as Date).toISOString() : null,
         durationMs: doc.durationMs != null ? Number(doc.durationMs) : null,
@@ -240,6 +244,7 @@ export async function completeAiSummaryRecord(
         visuallyAnalyzed?: boolean;
         inputModalities?: string[];
         screenshotIds?: string[];
+        homepageChanges?: HomepageChanges | null;
     },
 ): Promise<SerializableAiSummary> {
     await connectToDatabase();
@@ -263,6 +268,7 @@ export async function completeAiSummaryRecord(
                 quickWins: payload.quickWins,
                 longTermRecommendations: payload.longTermRecommendations,
                 priorityOrder: payload.priorityOrder,
+                homepageChanges: payload.homepageChanges ?? null,
                 disclaimers: payload.disclaimers,
                 generatedAt: new Date(),
                 durationMs: payload.durationMs,

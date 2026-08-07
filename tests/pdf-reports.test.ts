@@ -8,7 +8,7 @@ import { buildPdfRenderToken } from "@/src/services/pdf-reports/build-pdf-render
 import { validatePdfRenderToken } from "@/src/services/pdf-reports/validate-pdf-render-token";
 import { getPdfFilename } from "@/src/services/pdf-reports/get-pdf-filename";
 import { getPdfReadiness } from "@/src/services/pdf-reports/get-pdf-readiness";
-import { PDF_REPORT_VERSION } from "@/src/services/pdf-reports/constants";
+import { PDF_REPORT_VERSION, PDF_RENDER_ENGINE } from "@/src/services/pdf-reports/constants";
 import type { SerializablePublicReport } from "@/src/types/public-report";
 
 function sampleReport(overrides: Partial<SerializablePublicReport> = {}): SerializablePublicReport {
@@ -217,13 +217,14 @@ describe("pdf render token security", () => {
 
 describe("pdf readiness", () => {
     beforeEach(() => {
-        process.env.PDF_RENDER_SECRET = "test-render-secret";
+        // React PDF no longer requires PDF_RENDER_SECRET.
+        delete process.env.PDF_RENDER_SECRET;
         process.env.CLOUDINARY_CLOUD_NAME = "demo";
         process.env.CLOUDINARY_API_KEY = "demo-key";
         process.env.CLOUDINARY_API_SECRET = "demo-secret";
     });
 
-    it("allows draft reports when snapshot is complete", () => {
+    it("allows draft reports when snapshot is complete without PDF_RENDER_SECRET", () => {
         const readiness = getPdfReadiness({
             report: sampleReport({ status: "draft" }),
             websiteActive: true,
@@ -231,6 +232,10 @@ describe("pdf readiness", () => {
             matchingPdfId: null,
         });
         assert.equal(readiness.canGenerate, true);
+        assert.equal(
+            readiness.blockers.some((blocker) => blocker.code === "RENDERER_NOT_CONFIGURED"),
+            false,
+        );
     });
 
     it("blocks archived reports unless explicitly allowed", () => {
@@ -286,7 +291,8 @@ describe("pdf filename helper", () => {
 });
 
 describe("pdf constants", () => {
-    it("uses the expected pdf version", () => {
+    it("uses the expected pdf version and React PDF engine", () => {
         assert.equal(PDF_REPORT_VERSION, "pdf-report-v1");
+        assert.equal(PDF_RENDER_ENGINE, "react-pdf");
     });
 });

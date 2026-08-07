@@ -48,6 +48,8 @@ function mapPageSpeedStrategy(metric: SerializableGoogleMetric | null) {
         lcp: labMetricValue(metric.labMetrics.largestContentfulPaint),
         cls: labMetricValue(metric.labMetrics.cumulativeLayoutShift),
         tbt: labMetricValue(metric.labMetrics.totalBlockingTime),
+        fcp: labMetricValue(metric.labMetrics.firstContentfulPaint),
+        speedIndex: labMetricValue(metric.labMetrics.speedIndex),
         fetchTime: metric.fetchTime,
         lighthouseVersion: metric.lighthouseVersion,
     };
@@ -181,6 +183,20 @@ function buildAiSnapshot(
             priority: item.priority,
             evidenceLabels: mapEvidence(item.evidenceCheckIds ?? []),
         })),
+        homepageChanges: summary.homepageChanges
+            ? {
+                  summary: summary.homepageChanges.summary,
+                  priorityChanges: summary.homepageChanges.priorityChanges.map((item) => ({
+                      title: item.title,
+                      priority: item.priority,
+                      category: item.category,
+                      problem: item.problem,
+                      recommendation: item.recommendation,
+                      expectedImpact: item.expectedImpact,
+                      evidence: item.evidence,
+                  })),
+              }
+            : null,
         disclaimers: summary.disclaimers,
     };
 }
