@@ -25,8 +25,39 @@ afterEach(() => {
 
 describe("application URL helper", () => {
     it("builds canonical paths from APP_URL", () => {
+        delete process.env.AUTH_URL;
+        delete process.env.VERCEL_URL;
+        delete process.env.VERCEL_ENV;
+        delete process.env.APP_PUBLIC_URL;
+        delete process.env.NEXT_PUBLIC_SITE_URL;
         process.env.APP_URL = "https://audit.example.com/";
         assert.equal(buildApplicationPath("/report/token"), "https://audit.example.com/report/token");
+    });
+
+    it("does not let localhost AUTH_URL override the public site URL", () => {
+        delete process.env.VERCEL_URL;
+        delete process.env.VERCEL_ENV;
+        delete process.env.APP_PUBLIC_URL;
+        delete process.env.APP_URL;
+        process.env.AUTH_URL = "http://localhost:3000";
+        process.env.NEXT_PUBLIC_SITE_URL = "https://niceguyweb.design";
+        assert.equal(
+            buildApplicationPath("/api/public/pdf-download/token"),
+            "https://niceguyweb.design/api/public/pdf-download/token",
+        );
+    });
+
+    it("uses the current Vercel preview host for signed public links", () => {
+        delete process.env.APP_PUBLIC_URL;
+        delete process.env.APP_URL;
+        delete process.env.NEXT_PUBLIC_SITE_URL;
+        delete process.env.AUTH_URL;
+        process.env.VERCEL_ENV = "preview";
+        process.env.VERCEL_URL = "niceguyservices-git-audittool.vercel.app";
+        assert.equal(
+            buildApplicationPath("/api/public/pdf-download/token"),
+            "https://niceguyservices-git-audittool.vercel.app/api/public/pdf-download/token",
+        );
     });
 
     it("detects localhost URLs", () => {
@@ -35,6 +66,10 @@ describe("application URL helper", () => {
     });
 
     it("rejects localhost production URLs", () => {
+        delete process.env.VERCEL_URL;
+        delete process.env.VERCEL_ENV;
+        delete process.env.AUTH_URL;
+        delete process.env.NEXT_PUBLIC_SITE_URL;
         Object.assign(process.env, {
             NODE_ENV: "production",
             APP_URL: "http://localhost:3000",

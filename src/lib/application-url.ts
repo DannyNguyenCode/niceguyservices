@@ -12,32 +12,69 @@ function normalizeBaseUrl(value: string): string {
     return value.replace(/\/$/, "");
 }
 
-function readServerAppUrl(): string | null {
-    const candidates = [
-        process.env.APP_URL,
-        process.env.AUTH_URL,
-        process.env.PDF_RENDER_BASE_URL,
-        process.env.DEMO_PREVIEW_BASE_URL,
-        process.env.NEXT_PUBLIC_SITE_URL,
-    ];
+function parseConfiguredUrl(value: string | undefined): string | null {
+    const trimmed = value?.trim();
+    if (!trimmed) return null;
+    const parsed = urlSchema.safeParse(trimmed);
+    return parsed.success ? normalizeBaseUrl(parsed.data) : null;
+}
 
-    for (const candidate of candidates) {
-        const trimmed = candidate?.trim();
-        if (!trimmed) continue;
-        const parsed = urlSchema.safeParse(trimmed);
-        if (parsed.success) {
-            return normalizeBaseUrl(parsed.data);
+function vercelDeploymentBaseUrl(): string | null {
+    const vercelHost = process.env.VERCEL_URL?.trim();
+    if (!vercelHost) return null;
+    const host = vercelHost.replace(/^https?:\/\//i, "").replace(/\/$/, "");
+    return host ? `https://${host}` : null;
+}
+
+/**
+ * Candidate application base URLs, highest preference first.
+ * AUTH_URL is last — NextAuth commonly sets it to localhost, which must not
+ * win over a real public site URL in customer-facing links (emails, reports).
+ */
+function collectConfiguredAppUrls(): string[] {
+    const urls: string[] = [];
+    const push = (value: string | null) => {
+        if (value && !urls.includes(value)) {
+            urls.push(value);
+        }
+    };
+
+    push(parseConfiguredUrl(process.env.APP_PUBLIC_URL));
+    push(parseConfiguredUrl(process.env.APP_URL));
+    push(parseConfiguredUrl(process.env.NEXT_PUBLIC_APP_URL));
+    push(parseConfiguredUrl(process.env.NEXT_PUBLIC_SITE_URL));
+    push(parseConfiguredUrl(process.env.PDF_RENDER_BASE_URL));
+    push(parseConfiguredUrl(process.env.DEMO_PREVIEW_BASE_URL));
+    push(vercelDeploymentBaseUrl());
+    push(parseConfiguredUrl(process.env.AUTH_URL));
+
+    return urls;
+}
+
+function preferNonLocalhost(urls: string[]): string | null {
+    if (urls.length === 0) return null;
+    return urls.find((url) => !isLocalhostUrl(url)) ?? urls[0] ?? null;
+}
+
+function readServerAppUrl(): string | null {
+    // Preview deployments must use the current host so signed email/PDF links
+    // hit the same environment that created them.
+    if (process.env.VERCEL_ENV === "preview") {
+        const previewUrl = vercelDeploymentBaseUrl();
+        if (previewUrl) {
+            return previewUrl;
         }
     }
 
-    return null;
+    return preferNonLocalhost(collectConfiguredAppUrls());
 }
 
 function readClientAppUrl(): string | null {
-    const value = process.env.NEXT_PUBLIC_APP_URL?.trim() || process.env.NEXT_PUBLIC_SITE_URL?.trim();
-    if (!value) return null;
-    const parsed = urlSchema.safeParse(value);
-    return parsed.success ? normalizeBaseUrl(parsed.data) : null;
+    return preferNonLocalhost([
+        parseConfiguredUrl(process.env.NEXT_PUBLIC_APP_URL),
+        parseConfiguredUrl(process.env.NEXT_PUBLIC_SITE_URL),
+        vercelDeploymentBaseUrl(),
+    ].filter((value): value is string => Boolean(value)));
 }
 
 export function getApplicationUrl(): string {

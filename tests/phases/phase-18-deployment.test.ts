@@ -27,10 +27,28 @@ afterEach(() => {
 describe("Phase 18 — Production deployment", () => {
     describe("application URL helpers", () => {
         it("builds canonical paths from APP_URL", () => {
+            delete process.env.AUTH_URL;
+            delete process.env.VERCEL_URL;
+            delete process.env.VERCEL_ENV;
+            delete process.env.APP_PUBLIC_URL;
+            delete process.env.NEXT_PUBLIC_SITE_URL;
             process.env.APP_URL = "https://audit.example.com/";
             assert.equal(
                 buildApplicationPath("/report/token"),
                 "https://audit.example.com/report/token",
+            );
+        });
+
+        it("prefers the public site URL over localhost AUTH_URL", () => {
+            delete process.env.VERCEL_URL;
+            delete process.env.VERCEL_ENV;
+            delete process.env.APP_PUBLIC_URL;
+            delete process.env.APP_URL;
+            process.env.AUTH_URL = "http://localhost:3000";
+            process.env.NEXT_PUBLIC_SITE_URL = "https://niceguyweb.design";
+            assert.equal(
+                buildApplicationPath("/api/public/pdf-download/token"),
+                "https://niceguyweb.design/api/public/pdf-download/token",
             );
         });
 
@@ -40,6 +58,10 @@ describe("Phase 18 — Production deployment", () => {
         });
 
         it("rejects localhost production URLs", () => {
+            delete process.env.VERCEL_URL;
+            delete process.env.VERCEL_ENV;
+            delete process.env.AUTH_URL;
+            delete process.env.NEXT_PUBLIC_SITE_URL;
             Object.assign(process.env, {
                 NODE_ENV: "production",
                 APP_URL: "http://localhost:3000",
