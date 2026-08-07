@@ -241,6 +241,15 @@ const BASE_POLICIES: Record<RateLimitPolicyId, RateLimitPolicy> = {
         failureMode: "closed",
         description: "Report lookup code verification attempts per IP.",
     },
+    "public-audit-status": {
+        id: "public-audit-status",
+        algorithm: "sliding-window",
+        limit: 120,
+        windowSeconds: 10 * 60,
+        scope: "composite",
+        failureMode: "closed",
+        description: "Public audit progress status polling per IP and status token.",
+    },
     "administrator-note-create": {
         id: "administrator-note-create",
         algorithm: "sliding-window",

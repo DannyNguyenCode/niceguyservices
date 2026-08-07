@@ -26,6 +26,11 @@ This is an analysis-only task. Do not modify source code, dependencies, configur
    - Base visual findings only on elements actually visible in the screenshots.
    - If a screenshot cannot be fetched or visually inspected, record that as a
      limitation and do not invent visual findings for that viewport.
+   - If `visualStability` is present and `stabilized` is false / `timedOut` is true,
+     treat the screenshot as possibly mid-motion. Do not confidently judge
+     unfinished entrance motion as the site's definitive settled appearance.
+     Still report genuine visible UX problems (broken overlays, missing content,
+     intrusive banners, layout issues).
 8. Analyze PageSpeed, crawl evidence, and Nice Guy Metrics v2.
 9. Perform an additional **Homepage Changes** analysis for the customer-facing
    `homepageChanges` section.

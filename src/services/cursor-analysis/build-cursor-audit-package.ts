@@ -37,6 +37,15 @@ function toScreenshotRef(shot: SerializableScreenshot) {
             height: shot.viewport.height,
         },
         capturedAt: shot.generatedAt ?? shot.createdAt,
+        visualStability: shot.visualStability
+            ? {
+                  attempted: shot.visualStability.attempted,
+                  stabilized: shot.visualStability.stabilized,
+                  timedOut: shot.visualStability.timedOut,
+                  reason: shot.visualStability.reason,
+                  elapsedMs: shot.visualStability.elapsedMs,
+              }
+            : undefined,
     };
 }
 

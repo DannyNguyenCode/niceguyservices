@@ -20,11 +20,15 @@ import {
 } from "@/src/services/public-audit-protection/evaluate-public-audit-eligibility";
 import { PUBLIC_AUDIT_LIMITS } from "@/src/services/public-audit-protection/constants";
 import { logPublicAuditSecurityEvent } from "@/src/services/public-audit-protection/log-public-audit-security-event";
+import { issuePublicAuditStatusToken } from "@/src/services/public-audit-status/get-public-audit-status";
 
 export type PublicAuditSubmissionResult = {
     websiteId: string | null;
     auditRunId: string | null;
     jobId: string | null;
+    /** Opaque customer progress token — never an internal Mongo ID. */
+    statusToken: string | null;
+    normalizedDomain: string;
     orchestrationStarted: boolean;
     reusedWebsite: boolean;
     reusedJob: boolean;
@@ -38,6 +42,12 @@ export type SubmitAndStartPublicAuditDeps = {
     getWebsiteById?: typeof getWebsiteById;
     startOrchestration?: typeof startAuditOrchestration;
     createActivityEvent?: typeof createActivityEvent;
+    issueStatusToken?: (input: {
+        websiteId: string;
+        auditRunId: string;
+        auditJobId: string;
+        normalizedDomain: string;
+    }) => Promise<string>;
     evaluateEligibility?: (
         input: { normalizedDomain: string; now?: Date },
     ) => Promise<PublicAuditEligibility>;
@@ -55,11 +65,14 @@ function blockedResult(input: {
     websiteId: string | null;
     reason: PublicAuditBlockReason;
     reusedWebsite: boolean;
+    normalizedDomain: string;
 }): PublicAuditSubmissionResult {
     return {
         websiteId: input.websiteId,
         auditRunId: null,
         jobId: null,
+        statusToken: null,
+        normalizedDomain: input.normalizedDomain,
         orchestrationStarted: false,
         reusedWebsite: input.reusedWebsite,
         reusedJob: false,
@@ -90,6 +103,7 @@ export async function submitAndStartPublicAuditRequest(
     const start = deps.startOrchestration ?? startAuditOrchestration;
     const logActivity = deps.createActivityEvent ?? createActivityEvent;
     const evaluate = deps.evaluateEligibility ?? evaluatePublicAuditEligibility;
+    const issueToken = deps.issueStatusToken ?? issuePublicAuditStatusToken;
 
     logPublicAuditSecurityEvent({
         event: "public_audit_request_received",
@@ -134,6 +148,7 @@ export async function submitAndStartPublicAuditRequest(
             websiteId: eligibility.websiteId,
             reason: eligibility.reason,
             reusedWebsite: Boolean(eligibility.websiteId),
+            normalizedDomain,
         });
     }
 
@@ -206,6 +221,7 @@ export async function submitAndStartPublicAuditRequest(
                     websiteId: racedEligibility.websiteId ?? existing.id,
                     reason: racedEligibility.reason,
                     reusedWebsite: true,
+                    normalizedDomain,
                 });
             }
 
@@ -247,10 +263,31 @@ export async function submitAndStartPublicAuditRequest(
             orchestrationStarted,
         });
 
+        let statusToken: string | null = null;
+        if (orchestrationStarted) {
+            try {
+                statusToken = await issueToken({
+                    websiteId: website.id,
+                    auditRunId: started.auditRunId,
+                    auditJobId: started.job.id,
+                    normalizedDomain,
+                });
+            } catch (tokenError) {
+                console.error("[public-audit] status token issuance failed", {
+                    websiteId: website.id,
+                    auditRunId: started.auditRunId,
+                    message:
+                        tokenError instanceof Error ? tokenError.message : "unknown",
+                });
+            }
+        }
+
         return {
             websiteId: website.id,
             auditRunId: started.auditRunId,
             jobId: started.job.id,
+            statusToken,
+            normalizedDomain,
             orchestrationStarted,
             reusedWebsite,
             reusedJob: started.reused,
@@ -286,6 +323,8 @@ export async function submitAndStartPublicAuditRequest(
             websiteId: website.id,
             auditRunId: null,
             jobId: null,
+            statusToken: null,
+            normalizedDomain,
             orchestrationStarted: false,
             reusedWebsite,
             reusedJob: false,

@@ -39,6 +39,19 @@ export const screenshotSchema = z.object({
     fileSizeBytes: z.number().int().optional(),
     status: screenshotStatusSchema.default("pending"),
     errorMessage: z.string().nullable().optional(),
+    visualStability: z
+        .object({
+            attempted: z.boolean().nullable().optional(),
+            stabilized: z.boolean().nullable().optional(),
+            timedOut: z.boolean().nullable().optional(),
+            reason: z.string().max(40).nullable().optional(),
+            elapsedMs: z.number().min(0).nullable().optional(),
+            samples: z.number().min(0).nullable().optional(),
+            unfinishedFiniteAnimations: z.number().min(0).nullable().optional(),
+            infiniteAnimations: z.number().min(0).nullable().optional(),
+        })
+        .nullable()
+        .optional(),
     generatedAt: nullableDateSchema.default(null),
     createdAt: z.date().optional(),
     updatedAt: z.date().optional(),

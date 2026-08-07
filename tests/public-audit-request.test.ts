@@ -150,6 +150,7 @@ describe("public audit auto-start", () => {
                         statusUrl: "/api/admin/audit-jobs/x",
                     };
                 },
+                issueStatusToken: async () => "status-token-test-value-0123456789ab",
             },
         );
 
@@ -158,6 +159,8 @@ describe("public audit auto-start", () => {
         assert.equal(result.auditRunId, "507f1f77bcf86cd799439012");
         assert.equal(result.jobId, "507f1f77bcf86cd799439013");
         assert.equal(result.blockReason, null);
+        assert.equal(result.normalizedDomain, "example.com");
+        assert.equal(result.statusToken, "status-token-test-value-0123456789ab");
         assert.equal(orchestrationCalls.length, 1);
         assert.equal(orchestrationCalls[0]?.forceAsync, true);
         assert.deepEqual(orchestrationCalls[0]?.trigger, {

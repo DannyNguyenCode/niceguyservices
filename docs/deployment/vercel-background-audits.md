@@ -31,8 +31,9 @@ Legacy `AI_API_KEY` / `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` are **not** require
 2. In the Vercel project, set `INTERNAL_WORKER_SECRET` (long random value).
 3. Optionally set `CRON_SECRET` (Vercel can auto-inject cron auth when configured).
 4. Confirm plan limits allow 300s functions if crawls are long.
-5. Do **not** set `AUDIT_SYNC_EXECUTION=true` in production unless deliberately debugging.
+5. Do **not** set `AUDIT_SYNC_EXECUTION=true` in Preview or Production. Leave it unset (defaults to `false`) or explicitly set `AUDIT_SYNC_EXECUTION=false`. Public submissions always use `forceAsync` and schedule a worker kick even if sync mode is accidentally enabled — but production should still run asynchronously.
 6. Audits start immediately via `after()` / `scheduleAuditWorkerKick()` — they do not wait for the daily cron. On a plan that supports minute crons, change the schedule back to `* * * * *` for frequent recovery.
+7. Customer progress polls `GET /api/public/audits/[statusToken]/status` using an opaque hashed status token issued at submit time.
 
 ## Execution flow
 

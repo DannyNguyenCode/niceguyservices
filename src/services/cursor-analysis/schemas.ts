@@ -25,6 +25,19 @@ const screenshotRefSchema = z.object({
         })
         .optional(),
     capturedAt: z.string().datetime(),
+    /**
+     * Optional provenance: whether capture waited for initial presentation settle.
+     * When timedOut/stabilized=false, AI should not treat motion as definitive settled UI.
+     */
+    visualStability: z
+        .object({
+            attempted: z.boolean(),
+            stabilized: z.boolean(),
+            timedOut: z.boolean(),
+            reason: z.string().max(40),
+            elapsedMs: z.number().int().min(0).optional(),
+        })
+        .optional(),
 });
 
 const niceGuyCompletenessSchema = z.object({

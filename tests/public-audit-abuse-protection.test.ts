@@ -139,6 +139,7 @@ describe("public audit abuse protection", () => {
                         statusUrl: "/api/admin/audit-jobs/x",
                     };
                 },
+                issueStatusToken: async () => "status-token-test-value-0123456789ab",
             },
         );
 
@@ -224,6 +225,7 @@ describe("public audit abuse protection", () => {
                             statusUrl: "/api/admin/audit-jobs/x",
                         };
                     },
+                    issueStatusToken: async () => "status-token-test-value-aaaaaaaaaaaa",
                 },
             ),
             submitAndStartPublicAuditRequest(
@@ -247,6 +249,7 @@ describe("public audit abuse protection", () => {
                             statusUrl: "/api/admin/audit-jobs/x",
                         };
                     },
+                    issueStatusToken: async () => "status-token-test-value-bbbbbbbbbbbb",
                 },
             ),
         ]);
@@ -318,6 +321,7 @@ describe("public audit abuse protection", () => {
                         statusUrl: "/api/admin/audit-jobs/x",
                     };
                 },
+                issueStatusToken: async () => "status-token-test-value-cccccccccccc",
             },
         );
 

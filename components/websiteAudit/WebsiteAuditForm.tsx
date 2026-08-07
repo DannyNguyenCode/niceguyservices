@@ -1,17 +1,25 @@
 "use client";
 
-import { useActionState, useCallback, useId, useRef, useState } from "react";
+import { useActionState, useCallback, useEffect, useId, useRef, useState } from "react";
 import { siteFieldFocusClass } from "@/components/pricing/pricingLayoutConstants";
 import PublicAuditSubmitStatusModal from "@/components/websiteAudit/PublicAuditSubmitStatusModal";
 import {
     PUBLIC_AUDIT_SUBMIT_UI,
+    PUBLIC_AUDIT_STATUS_POLL_INTERVAL_MS,
+    clearPersistedPublicAuditStatusSession,
     derivePublicAuditSubmitStatusView,
+    nextPublicAuditPollIntervalMs,
+    persistPublicAuditStatusSession,
+    readPersistedPublicAuditStatusSession,
     shouldOpenPublicAuditSubmitModal,
+    shouldStopPublicAuditStatusPolling,
+    type PublicAuditProgressStageView,
 } from "@/components/websiteAudit/public-audit-submit-status";
 import {
     submitPublicAuditRequestAction,
     type PublicAuditRequestState,
 } from "@/src/actions/public-audit-request";
+import type { PublicAuditOverallStatus } from "@/src/services/public-audit-status/map-public-audit-progress";
 
 type WebsiteAuditFormProps = {
     title?: string;
@@ -27,6 +35,13 @@ type WebsiteAuditFormProps = {
 type FormValues = {
     websiteUrl: string;
     businessEmail: string;
+};
+
+type ProgressState = {
+    status: PublicAuditOverallStatus;
+    message: string;
+    domain: string;
+    stages: PublicAuditProgressStageView[];
 };
 
 const initialValues: FormValues = {
@@ -51,11 +66,136 @@ export default function WebsiteAuditForm({
     );
     const [dismissedResultKey, setDismissedResultKey] = useState<string | null>(null);
     const [clearedResultKey, setClearedResultKey] = useState<string | null>(null);
+    const [statusToken, setStatusToken] = useState<string | null>(null);
+    const [progress, setProgress] = useState<ProgressState | null>(null);
+    const [pollTransientError, setPollTransientError] = useState(false);
+    const pollIntervalRef = useRef(PUBLIC_AUDIT_STATUS_POLL_INTERVAL_MS);
+    const inFlightPollRef = useRef(false);
+
+    // Restore in-flight progress after refresh.
+    useEffect(() => {
+        const saved = readPersistedPublicAuditStatusSession();
+        if (!saved) return;
+        setStatusToken(saved.statusToken);
+        setProgress({
+            status: "processing",
+            message: "Your audit has started.",
+            domain: saved.domain,
+            stages: [],
+        });
+    }, []);
+
+    // Persist token when submission succeeds.
+    useEffect(() => {
+        if (pending) return;
+        if (state.outcome === "started" && state.statusToken) {
+            const domain = state.domain ?? "your website";
+            setStatusToken(state.statusToken);
+            persistPublicAuditStatusSession({
+                statusToken: state.statusToken,
+                domain,
+            });
+            setProgress({
+                status: "accepted",
+                message: "Your audit has started.",
+                domain,
+                stages: [],
+            });
+            pollIntervalRef.current = PUBLIC_AUDIT_STATUS_POLL_INTERVAL_MS;
+        }
+    }, [pending, state.outcome, state.statusToken, state.domain]);
+
+    // Poll public status endpoint while a status token is active.
+    useEffect(() => {
+        if (!statusToken) return;
+
+        let cancelled = false;
+        let stopped = false;
+        let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+        const scheduleNext = (delayMs = pollIntervalRef.current) => {
+            if (cancelled || stopped) return;
+            timeoutId = setTimeout(() => {
+                void poll();
+            }, delayMs);
+        };
+
+        const poll = async () => {
+            if (cancelled || stopped || inFlightPollRef.current) return;
+            inFlightPollRef.current = true;
+            try {
+                const response = await fetch(
+                    `/api/public/audits/${encodeURIComponent(statusToken)}/status`,
+                    { method: "GET", cache: "no-store" },
+                );
+
+                if (cancelled) return;
+
+                if (response.status === 404) {
+                    stopped = true;
+                    clearPersistedPublicAuditStatusSession();
+                    setStatusToken(null);
+                    setPollTransientError(false);
+                    return;
+                }
+
+                if (!response.ok) {
+                    setPollTransientError(true);
+                    pollIntervalRef.current = nextPublicAuditPollIntervalMs(
+                        pollIntervalRef.current,
+                    );
+                    return;
+                }
+
+                const data = (await response.json()) as {
+                    status: PublicAuditOverallStatus;
+                    message: string;
+                    domain: string;
+                    stageDetails?: PublicAuditProgressStageView[];
+                };
+
+                setPollTransientError(false);
+                setProgress({
+                    status: data.status,
+                    message: data.message,
+                    domain: data.domain,
+                    stages: data.stageDetails ?? [],
+                });
+
+                if (shouldStopPublicAuditStatusPolling(data.status)) {
+                    stopped = true;
+                    clearPersistedPublicAuditStatusSession();
+                    return;
+                }
+
+                pollIntervalRef.current = PUBLIC_AUDIT_STATUS_POLL_INTERVAL_MS;
+            } catch {
+                if (!cancelled) {
+                    setPollTransientError(true);
+                    pollIntervalRef.current = nextPublicAuditPollIntervalMs(
+                        pollIntervalRef.current,
+                    );
+                }
+            } finally {
+                inFlightPollRef.current = false;
+                scheduleNext();
+            }
+        };
+
+        pollIntervalRef.current = PUBLIC_AUDIT_STATUS_POLL_INTERVAL_MS;
+        scheduleNext(0);
+        return () => {
+            cancelled = true;
+            if (timeoutId) clearTimeout(timeoutId);
+        };
+    }, [statusToken]);
 
     const completedResultKey =
         !pending && state.outcome
-            ? `${state.outcome}:${state.message ?? ""}`
-            : null;
+            ? `${state.outcome}:${state.message ?? ""}:${state.statusToken ?? ""}`
+            : statusToken
+              ? `session:${statusToken}`
+              : null;
 
     if (
         completedResultKey &&
@@ -71,16 +211,25 @@ export default function WebsiteAuditForm({
         pending,
         outcome: pending ? null : state.outcome,
         message: pending ? null : state.message,
+        domain: progress?.domain ?? state.domain,
+        progress:
+            !pending && progress && progress.stages.length > 0
+                ? progress
+                : !pending && progress && statusToken
+                  ? progress
+                  : null,
     });
 
     const modalOpen =
         Boolean(statusView) &&
         (pending ||
+            Boolean(statusToken) ||
             (Boolean(completedResultKey) &&
                 completedResultKey !== dismissedResultKey &&
                 shouldOpenPublicAuditSubmitModal({
                     pending: false,
                     outcome: state.outcome,
+                    hasProgressSession: Boolean(statusToken),
                 })));
 
     const closeModal = useCallback(() => {
@@ -88,10 +237,15 @@ export default function WebsiteAuditForm({
         if (completedResultKey) {
             setDismissedResultKey(completedResultKey);
         }
+        // Closing does not cancel the audit; stop showing the modal only.
+        if (shouldStopPublicAuditStatusPolling(progress?.status)) {
+            setStatusToken(null);
+            clearPersistedPublicAuditStatusSession();
+        }
         if (state.outcome === "error" || state.outcome === "received") {
             queueMicrotask(() => submitButtonRef.current?.focus());
         }
-    }, [pending, completedResultKey, state.outcome]);
+    }, [pending, completedResultKey, progress?.status, state.outcome]);
 
     function updateField(field: keyof FormValues, value: string) {
         setValues((prev) => ({ ...prev, [field]: value }));
@@ -222,7 +376,9 @@ export default function WebsiteAuditForm({
                     >
                         {showInlineMessage
                             ? state.message
-                            : "Enter your website URL and business email. After you submit, processing starts automatically."}
+                            : pollTransientError
+                              ? "We're still checking your audit progress. A temporary connection issue occurred — retrying."
+                              : "Enter your website URL and business email. After you submit, processing starts automatically."}
                     </p>
                 </div>
             </form>

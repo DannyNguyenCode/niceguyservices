@@ -23,6 +23,10 @@ export type PublicAuditRequestState = {
     rateLimited?: boolean;
     /** Safe machine-readable outcome for the public status modal. Never includes IDs. */
     outcome?: PublicAuditSubmitOutcome;
+    /** Opaque progress token for customer polling. Never an internal Mongo ID. */
+    statusToken?: string | null;
+    /** Customer-safe domain label for progress UI. */
+    domain?: string | null;
 };
 
 function formDataToObject(formData: FormData): Record<string, string> {
@@ -107,6 +111,8 @@ export async function submitPublicAuditRequestAction(
                 ok: true,
                 outcome: "already_in_progress",
                 message: PUBLIC_AUDIT_GENERIC_DEDUPED_MESSAGE,
+                statusToken: null,
+                domain: result.normalizedDomain,
             };
         }
 
@@ -115,6 +121,8 @@ export async function submitPublicAuditRequestAction(
                 ok: false,
                 outcome: "received",
                 message: "We couldn't start your audit right now. Please try again.",
+                statusToken: null,
+                domain: result.normalizedDomain,
             };
         }
 
@@ -122,6 +130,8 @@ export async function submitPublicAuditRequestAction(
             ok: true,
             outcome: "started",
             message: PUBLIC_AUDIT_GENERIC_ACCEPTED_MESSAGE,
+            statusToken: result.statusToken,
+            domain: result.normalizedDomain,
         };
     } catch (error) {
         return toActionError(error);

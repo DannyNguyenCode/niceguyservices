@@ -110,3 +110,14 @@ export async function enforcePublicReportLookupVerifyRateLimit(input: {
         identifiers: [ip ? getHashedIpRateLimitKey(ip) : "ip:unknown"],
     });
 }
+
+export async function enforcePublicAuditStatusRateLimit(input: {
+    request: Request;
+    rawToken: string;
+}): Promise<void> {
+    await enforcePublicCompositeLimit({
+        policyId: "public-audit-status",
+        request: input.request,
+        tokenIdentity: getPublicTokenIdentityFromRawToken(input.rawToken),
+    });
+}

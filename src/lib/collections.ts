@@ -52,4 +52,8 @@ export const MONGODB_COLLECTIONS = {
         "MONGODB_COLLECTION_REPORT_LOOKUP_SESSIONS",
         "report_lookup_sessions",
     ),
+    publicAuditStatusTokens: collectionName(
+        "MONGODB_COLLECTION_PUBLIC_AUDIT_STATUS_TOKENS",
+        "public_audit_status_tokens",
+    ),
 } as const;

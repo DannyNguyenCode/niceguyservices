@@ -6,6 +6,7 @@ import {
     PUBLIC_AUDIT_SUBMIT_UI,
     derivePublicAuditSubmitStatusView,
     shouldOpenPublicAuditSubmitModal,
+    shouldStopPublicAuditStatusPolling,
 } from "@/components/websiteAudit/public-audit-submit-status";
 import { PUBLIC_AUDIT_RATE_LIMITED_MESSAGE } from "@/src/services/public-audit-protection/constants";
 import { publicAuditRequestSchema } from "@/src/lib/website-validation";
@@ -19,7 +20,6 @@ describe("public audit submit status view", () => {
         assert.equal(view.statusLabel, PUBLIC_AUDIT_SUBMIT_UI.loading.status);
         assert.equal(view.dismissible, false);
         assert.match(view.description, /validating your website/i);
-        assert.equal(/crawl|pagespeed|niceguy|cursor|%\d+/i.test(view.description), false);
     });
 
     it("opens the modal while pending and for non-validation outcomes", () => {
@@ -32,30 +32,105 @@ describe("public audit submit status view", () => {
             shouldOpenPublicAuditSubmitModal({ pending: false, outcome: "validation" }),
             false,
         );
+        assert.equal(
+            shouldOpenPublicAuditSubmitModal({
+                pending: false,
+                hasProgressSession: true,
+            }),
+            true,
+        );
     });
 
-    it("transitions loading to success when orchestration is scheduled", () => {
+    it("shows progress stages from real backend status", () => {
         const view = derivePublicAuditSubmitStatusView({
             pending: false,
-            outcome: "started",
+            progress: {
+                status: "processing",
+                message: "We're testing your website's performance.",
+                domain: "example.com",
+                stages: [
+                    {
+                        id: "request",
+                        label: "Request received",
+                        description: "Done",
+                        state: "complete",
+                    },
+                    {
+                        id: "crawl",
+                        label: "Website crawl",
+                        description: "Done",
+                        state: "complete",
+                    },
+                    {
+                        id: "performance",
+                        label: "Performance analysis",
+                        description: "Testing",
+                        state: "processing",
+                    },
+                    {
+                        id: "ux_conversion",
+                        label: "UX & conversion analysis",
+                        description: "Waiting",
+                        state: "pending",
+                    },
+                    {
+                        id: "ai_review",
+                        label: "AI review",
+                        description: "Waiting",
+                        state: "pending",
+                    },
+                    {
+                        id: "report",
+                        label: "Preparing report",
+                        description: "Waiting",
+                        state: "pending",
+                    },
+                ],
+            },
         });
         assert.ok(view);
-        assert.equal(view.phase, "success");
-        assert.equal(view.title, PUBLIC_AUDIT_SUBMIT_UI.successStarted.title);
-        assert.match(view.backgroundNote ?? "", /safely leave this page/i);
-        assert.match(view.backgroundNote ?? "", /continue in the background/i);
-        assert.equal(view.primaryActionLabel, "Done");
-        assert.equal(view.dismissible, true);
+        assert.equal(view.phase, "progress");
+        assert.equal(view.domain, "example.com");
+        assert.equal(view.stages?.length, 6);
+        assert.equal(view.stages?.find((s) => s.id === "performance")?.state, "processing");
+        assert.match(view.backgroundNote ?? "", /don't need to keep this page open/i);
+        assert.match(view.backgroundNote ?? "", /Retrieve your report|email you submitted/i);
+        assert.equal(/We'll email you when/i.test(view.backgroundNote ?? ""), false);
     });
 
-    it("does not wait for full audit completion language in success copy", () => {
-        const view = derivePublicAuditSubmitStatusView({
+    it("maps completion and terminal failure from progress", () => {
+        const complete = derivePublicAuditSubmitStatusView({
             pending: false,
-            outcome: "started",
+            progress: {
+                status: "complete",
+                message: "done",
+                domain: "example.com",
+                stages: [],
+            },
         });
-        assert.ok(view);
-        assert.equal(/100%|complete|finished crawling/i.test(view.description), false);
-        assert.equal(/AuditRun|Mongo|Cursor Cloud/i.test(view.description), false);
+        assert.ok(complete);
+        assert.equal(complete.phase, "success");
+        assert.equal(complete.title, PUBLIC_AUDIT_SUBMIT_UI.successComplete.title);
+
+        const failed = derivePublicAuditSubmitStatusView({
+            pending: false,
+            progress: {
+                status: "failed",
+                message: "failed",
+                domain: "example.com",
+                stages: [],
+            },
+        });
+        assert.ok(failed);
+        assert.equal(failed.phase, "error");
+        assert.equal(failed.title, PUBLIC_AUDIT_SUBMIT_UI.errorFailed.title);
+    });
+
+    it("stops polling on complete or failed only", () => {
+        assert.equal(shouldStopPublicAuditStatusPolling("complete"), true);
+        assert.equal(shouldStopPublicAuditStatusPolling("failed"), true);
+        assert.equal(shouldStopPublicAuditStatusPolling("processing"), false);
+        assert.equal(shouldStopPublicAuditStatusPolling("accepted"), false);
     });
 
     it("uses generic messaging for duplicate/cooldown outcomes", () => {
@@ -69,7 +144,6 @@ describe("public audit submit status view", () => {
         assert.equal(view.phase, "success");
         assert.match(view.description, /already in progress|recently completed/i);
         assert.equal(/another customer|owns this report|audit id/i.test(view.description), false);
-        assert.match(view.backgroundNote ?? "", /safely leave this page/i);
     });
 
     it("maps schedule failure to a recoverable error state", () => {
@@ -131,7 +205,7 @@ describe("public audit form validation remains in place", () => {
 });
 
 describe("public audit submit UI source contracts", () => {
-    it("wires disabled pending submit, status modal, and accessible loading attributes", async () => {
+    it("wires disabled pending submit, status modal, polling, and accessible loading attributes", async () => {
         const formSource = await readFile(
             path.join(process.cwd(), "components/websiteAudit/WebsiteAuditForm.tsx"),
             "utf8",
@@ -145,17 +219,19 @@ describe("public audit submit UI source contracts", () => {
         assert.match(formSource, /aria-busy=\{pending \? "true" : undefined\}/);
         assert.match(formSource, /PUBLIC_AUDIT_SUBMIT_UI\.buttonPending/);
         assert.match(formSource, /PublicAuditSubmitStatusModal/);
+        assert.match(formSource, /\/api\/public\/audits\//);
+        assert.match(formSource, /sessionStorage|persistPublicAuditStatusSession/);
+        assert.match(formSource, /shouldStopPublicAuditStatusPolling/);
         assert.match(formSource, /min-w-\[12\.5rem\]/);
 
         assert.match(modalSource, /<dialog/);
         assert.match(modalSource, /aria-labelledby/);
         assert.match(modalSource, /aria-describedby/);
-        assert.match(modalSource, /aria-busy=\{isLoading \? "true" : undefined\}/);
-        assert.match(modalSource, /role="status"/);
+        assert.match(modalSource, /Audit progress/);
         assert.match(modalSource, /motion-safe:animate-spin/);
         assert.match(modalSource, /motion-reduce:animate-none/);
         assert.equal(/AuditRun|auditRunId|507f1f77/i.test(modalSource), false);
-        assert.equal(/Crawling website|Running PageSpeed|Cursor Cloud/i.test(modalSource), false);
+        assert.equal(/websiteId|CURSOR_|Mongo/i.test(modalSource), false);
     });
 
     it("does not cancel backend processing when the modal closes", async () => {
@@ -164,7 +240,7 @@ describe("public audit submit UI source contracts", () => {
             "utf8",
         );
         assert.equal(/abort\(|AbortController|cancelAudit|stopOrchestration/i.test(formSource), false);
-        assert.match(formSource, /safely leave this page|backgroundNote|derivePublicAuditSubmitStatusView/);
+        assert.match(formSource, /persistPublicAuditStatusSession|statusToken/);
     });
 
     it("leaves shared orchestration entry points unchanged for backend protections", async () => {
@@ -176,5 +252,15 @@ describe("public audit submit UI source contracts", () => {
         assert.match(submitSource, /startAuditOrchestration|startOrchestration/);
         assert.match(submitSource, /forceAsync:\s*true/);
         assert.match(submitSource, /blockReason/);
+        assert.match(submitSource, /issueStatusToken|issuePublicAuditStatusToken/);
+    });
+
+    it("keeps report lookup verification architecture intact", async () => {
+        const lookupSource = await readFile(
+            path.join(process.cwd(), "components/websiteAudit/ReportLookupForm.tsx"),
+            "utf8",
+        );
+        assert.match(lookupSource, /verification code|6-digit/i);
+        assert.match(lookupSource, /request-code|verify-code|public-reports\/lookup/);
     });
 });

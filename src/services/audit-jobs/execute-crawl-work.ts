@@ -201,6 +201,17 @@ export async function executeWebsiteCrawlWork(
                             height: saved.height,
                             format: saved.format,
                             fileSizeBytes: saved.fileSizeBytes,
+                            visualStability: {
+                                attempted: shot.visualStability.attempted,
+                                stabilized: shot.visualStability.stabilized,
+                                timedOut: shot.visualStability.timedOut,
+                                reason: shot.visualStability.reason,
+                                elapsedMs: shot.visualStability.elapsedMs,
+                                samples: shot.visualStability.samples,
+                                unfinishedFiniteAnimations:
+                                    shot.visualStability.unfinishedFiniteAnimations,
+                                infiniteAnimations: shot.visualStability.infiniteAnimations,
+                            },
                         });
 
                         if (auditRunId) {

@@ -125,6 +125,20 @@ const ScreenshotSchema = new Schema(
             default: null,
             maxlength: 2000,
         },
+        /**
+         * Optional provenance for visual capture readiness.
+         * Backwards-compatible — older documents omit this field.
+         */
+        visualStability: {
+            attempted: { type: Boolean, default: null },
+            stabilized: { type: Boolean, default: null },
+            timedOut: { type: Boolean, default: null },
+            reason: { type: String, trim: true, default: null, maxlength: 40 },
+            elapsedMs: { type: Number, default: null, min: 0 },
+            samples: { type: Number, default: null, min: 0 },
+            unfinishedFiniteAnimations: { type: Number, default: null, min: 0 },
+            infiniteAnimations: { type: Number, default: null, min: 0 },
+        },
         generatedAt: {
             type: Date,
             default: null,
@@ -172,6 +186,16 @@ export type ScreenshotLean = {
     fileSizeBytes: number | null;
     status: (typeof SCREENSHOT_STATUSES)[number];
     errorMessage: string | null;
+    visualStability: {
+        attempted: boolean | null;
+        stabilized: boolean | null;
+        timedOut: boolean | null;
+        reason: string | null;
+        elapsedMs: number | null;
+        samples: number | null;
+        unfinishedFiniteAnimations: number | null;
+        infiniteAnimations: number | null;
+    } | null;
     generatedAt: Date | null;
     createdAt: Date;
     updatedAt: Date;

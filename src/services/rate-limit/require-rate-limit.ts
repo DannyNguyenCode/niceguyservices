@@ -19,6 +19,7 @@ const POLICY_ERROR_CODES: Partial<Record<RateLimitPolicyId, string>> = {
     "public-report-lookup-request-ip": RATE_LIMIT_ERROR_CODES.PUBLIC_RESOURCE_EXCEEDED,
     "public-report-lookup-request-email": RATE_LIMIT_ERROR_CODES.PUBLIC_RESOURCE_EXCEEDED,
     "public-report-lookup-verify-ip": RATE_LIMIT_ERROR_CODES.PUBLIC_RESOURCE_EXCEEDED,
+    "public-audit-status": RATE_LIMIT_ERROR_CODES.PUBLIC_RESOURCE_EXCEEDED,
     "pagespeed-global-daily": RATE_LIMIT_ERROR_CODES.BUDGET_EXCEEDED,
     "ai-analysis-global-daily": RATE_LIMIT_ERROR_CODES.BUDGET_EXCEEDED,
 };

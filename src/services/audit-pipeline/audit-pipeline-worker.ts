@@ -103,6 +103,12 @@ export async function runAuditWorkerCycle(): Promise<{
         return { processedJobs: 0, recovered };
     }
 
+    console.info("[audit-worker] AUDIT_JOB_CLAIMED", {
+        jobId: claimed.id,
+        auditRunId: claimed.auditRunId,
+        websiteId: claimed.websiteId,
+    });
+
     await runAuditPipeline(claimed.id);
     return { processedJobs: 1, recovered };
 }

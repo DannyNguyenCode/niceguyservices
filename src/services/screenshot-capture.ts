@@ -1,31 +1,135 @@
 import "server-only";
 
-import type { Browser, BrowserContext } from "playwright-core";
+import type { Browser, BrowserContext, Page } from "playwright-core";
 import { CRAWL_CONFIG } from "@/src/lib/crawl-config";
 import { launchChromium } from "@/src/lib/playwright-config";
 import { validatePublicCrawlUrl } from "@/src/lib/validate-public-url";
 import { installPlaywrightNetworkGuard } from "@/src/services/playwright-network-guard";
 import { screenshotFilenameForTarget } from "@/src/services/screenshot-targets";
+import { VISUAL_STABILITY_CONFIG } from "@/src/services/visual-stability/constants";
+import type { VisualStabilityResult } from "@/src/services/visual-stability/types";
+import {
+    prepareLazyLoadedVisualContent,
+    waitForVisualStability,
+} from "@/src/services/visual-stability/wait-for-visual-stability";
 
-async function navigateSafely(page: import("playwright-core").Page, targetUrl: string): Promise<void> {
+async function navigateForScreenshot(
+    page: Page,
+    targetUrl: string,
+): Promise<void> {
     await validatePublicCrawlUrl(targetUrl);
     await page.goto(targetUrl, {
         waitUntil: "domcontentloaded",
         timeout: CRAWL_CONFIG.timeoutMs,
     });
-    await page.waitForTimeout(CRAWL_CONFIG.contentSettleMs);
     await validatePublicCrawlUrl(page.url());
 }
+
+/**
+ * Legacy short settle used only when visual stability is disabled.
+ * Measurement crawl path still uses CRAWL_CONFIG.contentSettleMs separately.
+ */
+async function legacyContentSettle(page: Page): Promise<void> {
+    await page.waitForTimeout(CRAWL_CONFIG.contentSettleMs);
+}
+
+async function stabilizeForScreenshot(
+    page: Page,
+    contextLabel: string,
+    maxWaitMs?: number,
+): Promise<VisualStabilityResult> {
+    if (!VISUAL_STABILITY_CONFIG.enabled) {
+        await legacyContentSettle(page);
+        return {
+            attempted: false,
+            stabilized: true,
+            timedOut: false,
+            reason: "disabled",
+            elapsedMs: CRAWL_CONFIG.contentSettleMs,
+            samples: 0,
+            unfinishedFiniteAnimations: 0,
+            infiniteAnimations: 0,
+            fontsReady: false,
+            visibleImagesPending: 0,
+        };
+    }
+
+    return waitForVisualStability(page, {
+        contextLabel,
+        maxWaitMs,
+    });
+}
+
+export type CapturedScreenshotShot = {
+    filename: string;
+    type: "desktop-viewport" | "desktop-full" | "mobile-viewport" | "mobile-full";
+    buffer: Buffer;
+    visualStability: VisualStabilityResult;
+};
 
 export type CapturedPageScreenshots = {
     slug: string;
     url: string;
-    shots: Array<{
-        filename: string;
-        type: "desktop-viewport" | "desktop-full" | "mobile-viewport" | "mobile-full";
-        buffer: Buffer;
-    }>;
+    shots: CapturedScreenshotShot[];
 };
+
+async function captureViewportShots(input: {
+    page: Page;
+    slug: string;
+    device: "desktop" | "mobile";
+    includeFullPage: boolean;
+    contextLabel: string;
+}): Promise<CapturedScreenshotShot[]> {
+    const shots: CapturedScreenshotShot[] = [];
+    const stability = await stabilizeForScreenshot(input.page, `${input.contextLabel}:viewport`);
+
+    const viewportType =
+        input.device === "desktop" ? "desktop-viewport" : "mobile-viewport";
+    const viewportBuffer = Buffer.from(
+        await input.page.screenshot({ type: "png", fullPage: false }),
+    );
+    console.info("[screenshot] SCREENSHOT_CAPTURED", {
+        slug: input.slug,
+        type: viewportType,
+        stabilized: stability.stabilized,
+        reason: stability.reason,
+        elapsedMs: stability.elapsedMs,
+    });
+    shots.push({
+        filename: screenshotFilenameForTarget(input.slug, input.device, "viewport"),
+        type: viewportType,
+        buffer: viewportBuffer,
+        visualStability: stability,
+    });
+
+    if (input.includeFullPage) {
+        await prepareLazyLoadedVisualContent(input.page);
+        const fullStability = await stabilizeForScreenshot(
+            input.page,
+            `${input.contextLabel}:full`,
+            VISUAL_STABILITY_CONFIG.postLazyMaxWaitMs,
+        );
+        const fullType = input.device === "desktop" ? "desktop-full" : "mobile-full";
+        const fullBuffer = Buffer.from(
+            await input.page.screenshot({ type: "png", fullPage: true }),
+        );
+        console.info("[screenshot] SCREENSHOT_CAPTURED", {
+            slug: input.slug,
+            type: fullType,
+            stabilized: fullStability.stabilized,
+            reason: fullStability.reason,
+            elapsedMs: fullStability.elapsedMs,
+        });
+        shots.push({
+            filename: screenshotFilenameForTarget(input.slug, input.device, "full"),
+            type: fullType,
+            buffer: fullBuffer,
+            visualStability: fullStability,
+        });
+    }
+
+    return shots;
+}
 
 export async function capturePageScreenshots(input: {
     url: string;
@@ -51,23 +155,16 @@ export async function capturePageScreenshots(input: {
         await installPlaywrightNetworkGuard(desktopContext);
         const desktopPage = await desktopContext.newPage();
         desktopPage.setDefaultTimeout(CRAWL_CONFIG.timeoutMs);
-        await navigateSafely(desktopPage, validatedUrl.toString());
-        shots.push({
-            filename: screenshotFilenameForTarget(input.slug, "desktop", "viewport"),
-            type: "desktop-viewport",
-            buffer: Buffer.from(
-                await desktopPage.screenshot({ type: "png", fullPage: false }),
-            ),
-        });
-        if (input.includeFullPage) {
-            shots.push({
-                filename: screenshotFilenameForTarget(input.slug, "desktop", "full"),
-                type: "desktop-full",
-                buffer: Buffer.from(
-                    await desktopPage.screenshot({ type: "png", fullPage: true }),
-                ),
-            });
-        }
+        await navigateForScreenshot(desktopPage, validatedUrl.toString());
+        shots.push(
+            ...(await captureViewportShots({
+                page: desktopPage,
+                slug: input.slug,
+                device: "desktop",
+                includeFullPage: Boolean(input.includeFullPage),
+                contextLabel: `${input.slug}:desktop`,
+            })),
+        );
         await desktopPage.close();
 
         mobileContext = await browser.newContext({
@@ -81,23 +178,16 @@ export async function capturePageScreenshots(input: {
         await installPlaywrightNetworkGuard(mobileContext);
         const mobilePage = await mobileContext.newPage();
         mobilePage.setDefaultTimeout(CRAWL_CONFIG.timeoutMs);
-        await navigateSafely(mobilePage, validatedUrl.toString());
-        shots.push({
-            filename: screenshotFilenameForTarget(input.slug, "mobile", "viewport"),
-            type: "mobile-viewport",
-            buffer: Buffer.from(
-                await mobilePage.screenshot({ type: "png", fullPage: false }),
-            ),
-        });
-        if (input.includeFullPage) {
-            shots.push({
-                filename: screenshotFilenameForTarget(input.slug, "mobile", "full"),
-                type: "mobile-full",
-                buffer: Buffer.from(
-                    await mobilePage.screenshot({ type: "png", fullPage: true }),
-                ),
-            });
-        }
+        await navigateForScreenshot(mobilePage, validatedUrl.toString());
+        shots.push(
+            ...(await captureViewportShots({
+                page: mobilePage,
+                slug: input.slug,
+                device: "mobile",
+                includeFullPage: Boolean(input.includeFullPage),
+                contextLabel: `${input.slug}:mobile`,
+            })),
+        );
         await mobilePage.close();
 
         return { slug: input.slug, url: validatedUrl.toString(), shots };

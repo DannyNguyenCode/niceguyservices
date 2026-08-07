@@ -14,6 +14,47 @@ type PublicAuditSubmitStatusModalProps = {
     onClose: () => void;
 };
 
+function StageGlyph({ state }: { state: string }) {
+    if (state === "complete") {
+        return (
+            <span
+                className="flex h-5 w-5 items-center justify-center rounded-full bg-success/15 text-success"
+                aria-hidden
+            >
+                ✓
+            </span>
+        );
+    }
+    if (state === "processing") {
+        return (
+            <span
+                className="flex h-5 w-5 items-center justify-center"
+                aria-hidden
+            >
+                <span className="loading-indicator h-4 w-4 rounded-full border-2 border-primary/25 border-t-primary motion-safe:animate-spin motion-reduce:animate-none" />
+            </span>
+        );
+    }
+    if (state === "failed") {
+        return (
+            <span
+                className="flex h-5 w-5 items-center justify-center rounded-full bg-error/15 text-error text-xs font-bold"
+                aria-hidden
+            >
+                !
+            </span>
+        );
+    }
+    return (
+        <span
+            className="flex h-5 w-5 items-center justify-center rounded-full border border-base-content/20 text-base-content/35"
+            aria-hidden
+        >
+            ○
+        </span>
+    );
+}
+
 export default function PublicAuditSubmitStatusModal({
     open,
     view,
@@ -65,8 +106,10 @@ export default function PublicAuditSubmitStatusModal({
     if (!open || !view) return null;
 
     const isLoading = view.phase === "loading";
+    const isProgress = view.phase === "progress";
     const isSuccess = view.phase === "success";
     const isError = view.phase === "error";
+    const showHeaderIcon = !isProgress || !view.stages;
 
     return (
         <dialog
@@ -74,7 +117,7 @@ export default function PublicAuditSubmitStatusModal({
             className="modal modal-bottom sm:modal-middle"
             aria-labelledby={titleId}
             aria-describedby={descriptionId}
-            aria-busy={isLoading ? "true" : undefined}
+            aria-busy={isLoading || isProgress ? "true" : undefined}
         >
             <div className="modal-box mx-4 w-[calc(100%-2rem)] max-w-md sm:mx-auto">
                 <div className="flex flex-col items-center text-center">
@@ -87,21 +130,31 @@ export default function PublicAuditSubmitStatusModal({
                         </span>
                     ) : null}
 
-                    {isSuccess ? (
+                    {showHeaderIcon && isSuccess ? (
                         <CheckCircleIcon
                             className="mb-4 h-12 w-12 text-success"
                             aria-hidden
                         />
                     ) : null}
 
-                    {isError ? (
+                    {showHeaderIcon && isError ? (
                         <ExclamationTriangleIcon
                             className="mb-4 h-12 w-12 text-warning"
                             aria-hidden
                         />
                     ) : null}
 
-                    <h3 id={titleId} className="text-lg font-semibold text-base-content">
+                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-base-content/55">
+                        Website Audit
+                    </p>
+
+                    {view.domain ? (
+                        <p className="mt-1 text-sm font-medium text-base-content">
+                            {view.domain}
+                        </p>
+                    ) : null}
+
+                    <h3 id={titleId} className="mt-3 text-lg font-semibold text-base-content">
                         {view.title}
                     </h3>
 
@@ -111,6 +164,41 @@ export default function PublicAuditSubmitStatusModal({
                     >
                         {view.description}
                     </p>
+
+                    {view.stages && view.stages.length > 0 ? (
+                        <ol
+                            className="mt-5 w-full space-y-3 text-left"
+                            aria-label="Audit progress"
+                        >
+                            {view.stages.map((stage) => (
+                                <li
+                                    key={stage.id}
+                                    className="flex items-start gap-3"
+                                    data-stage={stage.id}
+                                    data-state={stage.state}
+                                >
+                                    <StageGlyph state={stage.state} />
+                                    <div className="min-w-0 flex-1">
+                                        <p
+                                            className={`text-sm font-medium ${
+                                                stage.state === "pending"
+                                                    ? "text-base-content/45"
+                                                    : "text-base-content"
+                                            }`}
+                                        >
+                                            {stage.label}
+                                        </p>
+                                        {stage.state === "processing" ||
+                                        stage.state === "failed" ? (
+                                            <p className="mt-0.5 text-xs leading-relaxed text-base-content/65">
+                                                {stage.description}
+                                            </p>
+                                        ) : null}
+                                    </div>
+                                </li>
+                            ))}
+                        </ol>
+                    ) : null}
 
                     {view.statusLabel ? (
                         <p

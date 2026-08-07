@@ -27,6 +27,7 @@ import { Screenshot } from "../src/models/Screenshot";
 import { Website } from "../src/models/Website";
 import { AuditJob } from "../src/models/AuditJob";
 import { Administrator } from "../src/models/Administrator";
+import { PublicAuditStatusToken } from "../src/models/PublicAuditStatusToken";
 
 const apply = process.argv.includes("--apply");
 
@@ -48,6 +49,7 @@ const MODELS = [
     { name: "ActivityLog", model: ActivityLog },
     { name: "AuditRun", model: AuditRun },
     { name: "AuditJob", model: AuditJob },
+    { name: "PublicAuditStatusToken", model: PublicAuditStatusToken },
     { name: "Administrator", model: Administrator },
 ];
 

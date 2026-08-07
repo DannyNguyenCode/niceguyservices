@@ -47,7 +47,11 @@ async function buildStartAuditJobResult(input: {
             : await maybeRunAuditPipelineSynchronously(input.job);
 
     if (job.status === "queued") {
-        scheduleAuditWorkerKick(input.reused ? "audit-job-reused" : "audit-job-created");
+        // forceAsync must never combine with syncExecution's scheduler short-circuit:
+        // that would leave a durable queued job with no execution path.
+        scheduleAuditWorkerKick(input.reused ? "audit-job-reused" : "audit-job-created", {
+            force: Boolean(input.forceAsync),
+        });
     }
 
     return {

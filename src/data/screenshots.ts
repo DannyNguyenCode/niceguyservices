@@ -34,6 +34,16 @@ export type SerializableScreenshot = {
     fileSizeBytes: number | null;
     status: ScreenshotStatus;
     errorMessage: string | null;
+    visualStability: {
+        attempted: boolean;
+        stabilized: boolean;
+        timedOut: boolean;
+        reason: string;
+        elapsedMs: number;
+        samples: number;
+        unfinishedFiniteAnimations: number;
+        infiniteAnimations: number;
+    } | null;
     generatedAt: string | null;
     createdAt: string;
     updatedAt: string;
@@ -68,6 +78,20 @@ function toSerializable(doc: ScreenshotLean): SerializableScreenshot {
         fileSizeBytes: doc.fileSizeBytes ?? null,
         status: doc.status,
         errorMessage: doc.errorMessage ?? null,
+        visualStability: doc.visualStability
+            ? {
+                  attempted: Boolean(doc.visualStability.attempted),
+                  stabilized: Boolean(doc.visualStability.stabilized),
+                  timedOut: Boolean(doc.visualStability.timedOut),
+                  reason: String(doc.visualStability.reason ?? "unsupported"),
+                  elapsedMs: Number(doc.visualStability.elapsedMs ?? 0),
+                  samples: Number(doc.visualStability.samples ?? 0),
+                  unfinishedFiniteAnimations: Number(
+                      doc.visualStability.unfinishedFiniteAnimations ?? 0,
+                  ),
+                  infiniteAnimations: Number(doc.visualStability.infiniteAnimations ?? 0),
+              }
+            : null,
         generatedAt: doc.generatedAt
             ? new Date(doc.generatedAt).toISOString()
             : null,
@@ -134,6 +158,7 @@ export async function completeScreenshotRecord(
         height: number;
         format: string;
         fileSizeBytes: number;
+        visualStability: NonNullable<SerializableScreenshot["visualStability"]>;
     }>,
 ): Promise<SerializableScreenshot> {
     await connectToDatabase();
