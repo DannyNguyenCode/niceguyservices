@@ -1,0 +1,43 @@
+@page {
+    size: Letter;
+    margin: 0.55in 0.5in;
+}
+
+.pdf-root {
+    background: #ffffff;
+    color: #1f2937;
+}
+
+.pdf-page-break {
+    break-before: page;
+}
+
+.pdf-avoid-break {
+    break-inside: avoid;
+}
+
+.pdf-keep-with-next {
+    break-after: avoid;
+}
+
+.pdf-cover {
+    min-height: 9in;
+    display: grid;
+    align-content: center;
+    gap: 1rem;
+}
+
+.pdf-footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-align: center;
+}
+
+@media print {
+    .pdf-no-print {
+        display: none !important;
+    }
+}

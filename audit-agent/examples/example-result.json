@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "1.1",
+  "auditId": "audit_example_123",
+  "analysisRequestId": "req_example_456",
+  "assessment": {
+    "priority": "moderate",
+    "confidence": 0.82,
+    "summary": "The website presents a credible local business with clear contact paths, but mobile performance and homepage messaging can be strengthened."
+  },
+  "executiveSummary": "The website presents a credible local business with clear contact paths, but mobile performance and homepage messaging can be strengthened.",
+  "strengths": [
+    {
+      "title": "Clear contact information",
+      "description": "The crawl found a dedicated contact page and visible phone number on the homepage.",
+      "category": "trust",
+      "sources": ["crawl", "content"]
+    }
+  ],
+  "issues": [
+    {
+      "title": "Mobile performance is below a comfortable threshold",
+      "description": "PageSpeed mobile performance scored 62.",
+      "severity": "high",
+      "category": "performance",
+      "recommendation": "Optimize hero imagery and defer non-critical scripts on the homepage.",
+      "sources": ["pagespeed"]
+    }
+  ],
+  "limitations": [
+    "Visual interpretation of screenshot contrast is subjective."
+  ],
+  "analyzedAt": "2026-08-01T12:15:00.000Z",
+  "homepageChanges": {
+    "summary": "The homepage communicates a local service business, but visitors need a clearer offer statement, stronger primary CTA, and faster mobile loading before they can confidently take the next step.",
+    "priorityChanges": [
+      {
+        "title": "Clarify the hero headline with the service and service area",
+        "priority": "high",
+        "category": "messaging",
+        "problem": "The homepage headline does not immediately state what service the company provides or where it operates.",
+        "recommendation": "Rewrite the hero headline so visitors immediately understand what service the company provides and where it operates.",
+        "expectedImpact": "Visitors can decide within seconds whether the business is relevant to their need.",
+        "evidence": ["screenshot-desktop", "crawl-headings"]
+      },
+      {
+        "title": "Make the primary homepage CTA more specific",
+        "priority": "high",
+        "category": "conversion",
+        "problem": "The main call-to-action uses generic language that does not communicate the next step.",
+        "recommendation": "Replace the primary CTA with a specific action such as Request a Quote or Book an Appointment, and keep it visible above the fold on mobile.",
+        "expectedImpact": "More visitors understand how to start a conversation and take action.",
+        "evidence": ["screenshot-mobile", "niceguy-conversion"]
+      },
+      {
+        "title": "Improve mobile homepage load performance",
+        "priority": "medium",
+        "category": "performance",
+        "problem": "PageSpeed mobile performance is below a comfortable threshold for first impressions.",
+        "recommendation": "Optimize hero imagery and defer non-critical scripts that delay the mobile homepage experience.",
+        "expectedImpact": "Faster first paint and lower bounce risk on mobile visits.",
+        "evidence": ["pagespeed-mobile"]
+      }
+    ]
+  }
+}

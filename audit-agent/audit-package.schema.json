@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://niceguywebdesign.com/schemas/audit-package-1.1.json",
+  "title": "Nice Guy Audit Package",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "packageVersion",
+    "audit",
+    "crawl",
+    "screenshots",
+    "pageSpeed",
+    "niceGuyMetrics",
+    "analysisInstructions",
+    "resultContract",
+    "metadata"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.1" },
+    "packageVersion": { "type": "string" },
+    "audit": {
+      "type": "object",
+      "required": ["auditId", "analysisRequestId", "auditedUrl", "createdAt"],
+      "properties": {
+        "auditId": { "type": "string" },
+        "analysisRequestId": { "type": "string" },
+        "auditedUrl": { "type": "string", "format": "uri" },
+        "normalizedUrl": { "type": "string", "format": "uri" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "completedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "screenshots": {
+      "type": "object",
+      "required": ["desktop", "mobile"],
+      "properties": {
+        "desktop": { "$ref": "#/$defs/screenshotRef" },
+        "mobile": { "$ref": "#/$defs/screenshotRef" }
+      }
+    },
+    "pageSpeed": {
+      "type": "object",
+      "required": ["mobile", "desktop"],
+      "properties": {
+        "mobile": { "type": "object" },
+        "desktop": { "type": "object" }
+      }
+    },
+    "niceGuyMetrics": { "type": "object" },
+    "crawl": { "type": "object" },
+    "analysisInstructions": { "type": "object" },
+    "resultContract": { "type": "object" },
+    "metadata": { "type": "object" }
+  },
+  "$defs": {
+    "screenshotRef": {
+      "type": ["object", "null"],
+      "required": ["id", "page", "device", "url", "width", "height", "capturedAt"],
+      "properties": {
+        "id": { "type": "string" },
+        "page": { "type": "string" },
+        "device": { "enum": ["desktop", "mobile"] },
+        "url": { "type": "string", "format": "uri" },
+        "width": { "type": "number" },
+        "height": { "type": "number" },
+        "capturedAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

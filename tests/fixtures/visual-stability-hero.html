@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Visual stability fixture — hero entrance</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Georgia, serif;
+        background: #0f172a;
+        color: #f8fafc;
+      }
+      .hero {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        padding: 2rem;
+      }
+      .hero h1,
+      .hero p,
+      .hero .cta {
+        opacity: 0;
+        transform: translateY(28px);
+        animation: enter 1.6s ease forwards;
+      }
+      .hero p {
+        animation-delay: 0.35s;
+      }
+      .hero .cta {
+        animation-delay: 0.7s;
+        display: inline-block;
+        margin-top: 1.5rem;
+        padding: 0.75rem 1.25rem;
+        border: 1px solid #94a3b8;
+        border-radius: 999px;
+      }
+      @keyframes enter {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .spinner {
+        position: fixed;
+        right: 1rem;
+        bottom: 1rem;
+        width: 18px;
+        height: 18px;
+        border: 2px solid #64748b;
+        border-top-color: #e2e8f0;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="hero">
+      <div>
+        <h1>Settled hero headline</h1>
+        <p>Supporting copy should be fully visible after entrance animation.</p>
+        <a class="cta" href="#contact">Request a quote</a>
+      </div>
+    </main>
+    <div class="spinner" aria-hidden="true"></div>
+  </body>
+</html>

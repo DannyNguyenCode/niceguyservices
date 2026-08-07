@@ -1,14 +1,37 @@
 import type { NextConfig } from "next";
 
-const reactPdfBrowserEntry =
-  "./node_modules/@react-pdf/renderer/lib/react-pdf.browser.js";
+const chromiumTraceIncludes = [
+  "./node_modules/@sparticuz/chromium/**",
+  "./node_modules/playwright-core/**",
+];
+
+/** Playwright resolves browsers.json via dynamic require; NFT misses it without an explicit include. */
+const playwrightCoreMinimalTraceIncludes = [
+  "./node_modules/playwright-core/browsers.json",
+  "./node_modules/playwright-core/package.json",
+];
+
+const playwrightServerRoutes = {
+  "/dashboard/websites/[id]": chromiumTraceIncludes,
+  "/dashboard/websites/new": chromiumTraceIncludes,
+  "/api/admin/websites/[id]/crawl": chromiumTraceIncludes,
+  "/api/admin/websites/[id]/audits": chromiumTraceIncludes,
+} as const;
 
 const nextConfig: NextConfig = {
-  turbopack: {
-    resolveAlias: {
-      "@react-pdf/renderer": reactPdfBrowserEntry,
-    },
+  poweredByHeader: false,
+  serverExternalPackages: ["playwright-core", "@sparticuz/chromium", "@react-pdf/renderer"],
+  outputFileTracingIncludes: {
+    "/*": [
+      "./src/services/crawl-browser-extract.js",
+      ...playwrightCoreMinimalTraceIncludes,
+    ],
+    ...playwrightServerRoutes,
   },
+  // Client workbook PDF uses the browser build; server audit PDF uses the
+  // default Node entry (renderToBuffer). Alias only on the client webpack bundle.
+  // Empty turbopack config acknowledges Next 16 default Turbopack + webpack coexistence.
+  turbopack: {},
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.alias = {
@@ -19,6 +42,18 @@ const nextConfig: NextConfig = {
       };
     }
     return config;
+  },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+        ],
+      },
+    ];
   },
   async redirects() {
     return [
@@ -104,6 +139,11 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
         pathname: "/**",
       },
       {

@@ -1,0 +1,28 @@
+{
+  "crons": [
+    {
+      "path": "/api/internal/audit-worker",
+      "schedule": "0 3 * * *"
+    }
+  ],
+  "functions": {
+    "app/api/internal/audit-worker/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/admin/websites/[id]/crawl/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/admin/websites/[id]/pagespeed/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/admin/websites/[id]/niceguy-analysis/route.ts": {
+      "maxDuration": 120
+    },
+    "app/api/admin/reports/[reportId]/pdf/route.ts": {
+      "maxDuration": 120
+    },
+    "app/api/admin/demo-projects/[demoProjectId]/generate/route.ts": {
+      "maxDuration": 300
+    }
+  }
+}

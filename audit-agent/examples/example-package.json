@@ -1,0 +1,351 @@
+{
+  "schemaVersion": "1.1",
+  "packageVersion": "1.1",
+  "audit": {
+    "auditId": "audit_example_123",
+    "analysisRequestId": "req_example_456",
+    "auditedUrl": "https://example.com",
+    "normalizedUrl": "https://example.com/",
+    "createdAt": "2026-08-01T11:00:00.000Z",
+    "completedAt": "2026-08-01T12:00:00.000Z"
+  },
+  "screenshots": {
+    "desktop": {
+      "id": "shot_desktop_home",
+      "page": "home",
+      "device": "desktop",
+      "url": "https://res.cloudinary.com/demo/image/upload/v1/example-desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "capturedAt": "2026-08-01T12:00:00.000Z"
+    },
+    "mobile": {
+      "id": "shot_mobile_home",
+      "page": "home",
+      "device": "mobile",
+      "url": "https://res.cloudinary.com/demo/image/upload/v1/example-mobile.png",
+      "width": 390,
+      "height": 844,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-08-01T12:00:00.000Z"
+    }
+  },
+  "pageSpeed": {
+    "mobile": {
+      "strategy": "mobile",
+      "status": "complete",
+      "scores": {
+        "performance": 62,
+        "accessibility": 88,
+        "bestPractices": 90,
+        "seo": 85
+      }
+    },
+    "desktop": {
+      "strategy": "desktop",
+      "status": "complete",
+      "scores": {
+        "performance": 78,
+        "accessibility": 90,
+        "bestPractices": 92,
+        "seo": 88
+      }
+    }
+  },
+  "niceGuyMetrics": {
+    "status": "complete",
+    "scoringVersion": "niceguy-v2",
+    "overallScore": 71,
+    "categories": [],
+    "completeness": {
+      "status": "complete",
+      "evidenceCoverage": 0.92,
+      "applicableChecks": 40,
+      "evaluatedChecks": 38,
+      "unavailableChecks": 2,
+      "notApplicableChecks": 0
+    },
+    "methodology": {
+      "rubricVersion": "v2",
+      "applicabilityVersion": "v2",
+      "deterministicCheckCount": 35,
+      "aiAssistedCheckCount": 5,
+      "limitations": []
+    },
+    "generatedAt": "2026-08-01T12:00:00.000Z"
+  },
+  "crawl": {
+    "status": "complete",
+    "finalUrl": "https://example.com/",
+    "homepageTitle": "Example Business",
+    "pageResults": [
+      {
+        "url": "https://example.com/",
+        "pageType": "home",
+        "statusCode": 200,
+        "title": "Example Business",
+        "visibleText": "Welcome to Example Business."
+      }
+    ]
+  },
+  "analysisInstructions": {
+    "promptVersion": "1.1",
+    "outputSchemaVersion": "1.1",
+    "rules": [
+      "Treat deterministic Nice Guy Metrics overallScore as the official audit score."
+    ]
+  },
+  "metadata": {
+    "packageCreatedAt": "2026-08-01T12:00:00.000Z",
+    "websiteBusinessName": "Example Business",
+    "websiteIndustry": "Home services",
+    "pagesAnalyzed": [
+      "https://example.com/"
+    ]
+  },
+  "resultContract": {
+    "schemaVersion": "1.1",
+    "contractVersion": "1.1",
+    "jsonSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://niceguywebdesign.com/schemas/audit-result-1.1.json",
+      "title": "Nice Guy Audit Analysis Result",
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "auditId",
+        "analysisRequestId",
+        "assessment",
+        "executiveSummary",
+        "strengths",
+        "issues",
+        "limitations",
+        "analyzedAt"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "1.1"
+        },
+        "auditId": {
+          "type": "string"
+        },
+        "analysisRequestId": {
+          "type": "string"
+        },
+        "assessment": {
+          "type": "object",
+          "required": [
+            "priority",
+            "confidence",
+            "summary"
+          ],
+          "properties": {
+            "priority": {
+              "enum": [
+                "critical",
+                "high",
+                "moderate",
+                "low"
+              ]
+            },
+            "confidence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "summary": {
+              "type": "string",
+              "maxLength": 2000
+            }
+          }
+        },
+        "executiveSummary": {
+          "type": "string",
+          "maxLength": 8000
+        },
+        "strengths": {
+          "type": "array",
+          "maxItems": 10,
+          "items": {
+            "type": "object",
+            "required": [
+              "title",
+              "description",
+              "sources"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "maxLength": 300
+              },
+              "description": {
+                "type": "string",
+                "maxLength": 4000
+              },
+              "category": {
+                "type": "string"
+              },
+              "sources": {
+                "type": "array",
+                "maxItems": 5,
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "issues": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "object",
+            "required": [
+              "title",
+              "description",
+              "severity",
+              "category",
+              "recommendation",
+              "sources"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "maxLength": 300
+              },
+              "description": {
+                "type": "string",
+                "maxLength": 4000
+              },
+              "severity": {
+                "enum": [
+                  "critical",
+                  "high",
+                  "medium",
+                  "low"
+                ]
+              },
+              "category": {
+                "type": "string",
+                "maxLength": 100
+              },
+              "recommendation": {
+                "type": "string",
+                "maxLength": 4000
+              },
+              "sources": {
+                "type": "array",
+                "maxItems": 5,
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "maxItems": 10,
+          "items": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "analyzedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deprecatedAiOverallScore": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Deprecated. Do not use as the official audit score."
+        }
+      }
+    },
+    "requiredFields": [
+      "schemaVersion",
+      "auditId",
+      "analysisRequestId",
+      "assessment",
+      "executiveSummary",
+      "strengths",
+      "issues",
+      "limitations",
+      "analyzedAt"
+    ],
+    "fieldLimits": {
+      "assessmentSummaryMaxLength": 2000,
+      "executiveSummaryMaxLength": 8000,
+      "strengthTitleMaxLength": 300,
+      "strengthDescriptionMaxLength": 4000,
+      "strengthsMaxItems": 10,
+      "issueTitleMaxLength": 300,
+      "issueDescriptionMaxLength": 4000,
+      "issueRecommendationMaxLength": 4000,
+      "issuesMaxItems": 20,
+      "limitationsMaxLength": 1000,
+      "limitationsMaxItems": 10,
+      "sourcesMaxItems": 5
+    },
+    "enums": {
+      "assessmentPriority": [
+        "critical",
+        "high",
+        "moderate",
+        "low"
+      ],
+      "issueSeverity": [
+        "critical",
+        "high",
+        "medium",
+        "low"
+      ]
+    },
+    "example": {
+      "schemaVersion": "1.1",
+      "auditId": "audit_example_123",
+      "analysisRequestId": "req_example_456",
+      "assessment": {
+        "priority": "moderate",
+        "confidence": 0.82,
+        "summary": "The website presents a credible local business with clear contact paths, but mobile performance and homepage messaging can be strengthened."
+      },
+      "executiveSummary": "The website presents a credible local business with clear contact paths, but mobile performance and homepage messaging can be strengthened.",
+      "strengths": [
+        {
+          "title": "Clear contact information",
+          "description": "The crawl found a dedicated contact page and visible phone number on the homepage.",
+          "category": "trust",
+          "sources": [
+            "crawl",
+            "content"
+          ]
+        }
+      ],
+      "issues": [
+        {
+          "title": "Mobile performance is below a comfortable threshold",
+          "description": "PageSpeed mobile performance scored 62.",
+          "severity": "high",
+          "category": "performance",
+          "recommendation": "Optimize hero imagery and defer non-critical scripts on the homepage.",
+          "sources": [
+            "pagespeed"
+          ]
+        }
+      ],
+      "limitations": [
+        "Visual interpretation of screenshot contrast is subjective."
+      ],
+      "analyzedAt": "2026-08-01T12:15:00.000Z"
+    }
+  }
+}

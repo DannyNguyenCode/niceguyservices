@@ -1,0 +1,109 @@
+"use client";
+
+import RunAiAnalysisButton from "@/components/websiteAudit/RunAiAnalysisButton";
+import RunCrawlButton from "@/components/websiteAudit/RunCrawlButton";
+import RunNiceGuyAnalysisButton from "@/components/websiteAudit/RunNiceGuyAnalysisButton";
+import RunPageSpeedButton from "@/components/websiteAudit/RunPageSpeedButton";
+import type { WebsiteAuditDashboardData } from "@/src/types/audit-dashboard";
+
+type AuditStageActionsProps = {
+    websiteId: string;
+    data: WebsiteAuditDashboardData;
+    embedded?: boolean;
+};
+
+export default function AuditStageActions({
+    websiteId,
+    data,
+    embedded = false,
+}: AuditStageActionsProps) {
+    const { website, readiness, latest } = data;
+    const crawlComplete = latest.crawl?.status === "complete";
+    const homepageOk = Boolean(
+        latest.crawl?.pageResults.some(
+            (page) =>
+                page.pageType === "home" &&
+                (page.statusCode ?? 200) < 400 &&
+                !page.errorMessage,
+        ),
+    );
+    const pageSpeedReady = Boolean(
+        latest.pageSpeed.mobile?.status === "complete" ||
+            latest.pageSpeed.desktop?.status === "complete",
+    );
+
+    const content = (
+        <>
+            {!embedded ? (
+                <>
+                    <h2 className="text-lg font-semibold text-base-content">Run audit stages</h2>
+                    <p className="mt-2 text-sm text-base-content/70">
+                        Use these controls to run or retry individual stages. Automated audits run
+                        crawl and PageSpeed concurrently, then Nice Guy after crawl, then Cursor
+                        once the evidence barrier is satisfied. Buttons disable while a stage is
+                        already active.
+                    </p>
+                </>
+            ) : null}
+            <div className={`${embedded ? "" : "mt-4 "}grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3`}>
+                <div className="rounded-xl bg-base-200 p-4 shadow-sm">
+                    <p className="text-sm font-medium text-base-content">Crawl</p>
+                    <div className="mt-3">
+                        <RunCrawlButton
+                            websiteId={websiteId}
+                            crawlStatus={website.crawlStatus}
+                            canRun={readiness.canRunCrawl}
+                        />
+                    </div>
+                </div>
+                <div className="rounded-xl bg-base-200 p-4 shadow-sm">
+                    <p className="text-sm font-medium text-base-content">Screenshots</p>
+                    <p className="mt-2 text-sm text-base-content/70">
+                        Included with crawl. Rerun crawl to recapture homepage screenshots.
+                    </p>
+                </div>
+                <div className="rounded-xl bg-base-200 p-4 shadow-sm">
+                    <p className="text-sm font-medium text-base-content">PageSpeed</p>
+                    <div className="mt-3">
+                        <RunPageSpeedButton
+                            websiteId={websiteId}
+                            pageSpeedStatus={website.pageSpeedStatus}
+                            crawlComplete={crawlComplete && homepageOk}
+                            canRun={readiness.canRunPageSpeed}
+                        />
+                    </div>
+                </div>
+                <div className="rounded-xl bg-base-200 p-4 shadow-sm">
+                    <p className="text-sm font-medium text-base-content">Nice Guy Metrics</p>
+                    <div className="mt-3">
+                        <RunNiceGuyAnalysisButton
+                            websiteId={websiteId}
+                            niceGuyStatus={website.niceGuyStatus}
+                            prerequisitesMet={pageSpeedReady && crawlComplete && homepageOk}
+                            canRun={readiness.canRunNiceGuy}
+                        />
+                    </div>
+                </div>
+                <div className="rounded-xl bg-base-200 p-4 shadow-sm">
+                    <p className="text-sm font-medium text-base-content">AI analysis</p>
+                    <div className="mt-3">
+                        <RunAiAnalysisButton
+                            websiteId={websiteId}
+                            auditRunId={data.selectedAuditRunId}
+                            canRun={readiness.canRunAiAnalysis}
+                            cursorAnalysisConfigured={data.cursorAnalysisConfigured}
+                            cursorAnalysis={data.cursorAnalysis}
+                            cursorReadiness={data.cursorAnalysisReadiness}
+                        />
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+
+    if (embedded) {
+        return <div>{content}</div>;
+    }
+
+    return <section className="rounded-2xl bg-base-100 p-4 shadow-sm sm:p-6">{content}</section>;
+}
