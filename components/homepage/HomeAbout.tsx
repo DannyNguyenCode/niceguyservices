@@ -31,6 +31,7 @@ export default function HomeAbout() {
                             fill
                             className="object-cover grayscale transition-all duration-700 hover:grayscale-0"
                             sizes="(max-width: 768px) 100vw, 50vw"
+                            loading="lazy"
                         />
                     </div>
                     <div className="absolute -right-6 -bottom-8 rounded-xl border border-white/20 bg-base-100/60 p-6 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-base-100/80">

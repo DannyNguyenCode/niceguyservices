@@ -86,8 +86,14 @@ html[data-theme="niceguys-dark"] {
 }
 
 .font-pixel {
-    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-family: var(--font-jetbrains-mono), "JetBrains Mono", ui-monospace, monospace;
     letter-spacing: -0.02em;
+}
+
+.pixel-word {
+    /* Solid color for WCAG contrast — glow/filter still conveys pixel character */
+    color: inherit;
+    -webkit-text-fill-color: currentColor;
 }
 
 .ng-pixel-word-highlight {
@@ -96,29 +102,6 @@ html[data-theme="niceguys-dark"] {
 
 .ng-pixel-word-base {
     color: var(--ng-pixel-word);
-}
-
-.pixel-word {
-    background-image: radial-gradient(currentColor 45%, transparent 47%);
-    background-size: 0.09em 0.09em;
-    background-position: center;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-html[data-theme="niceguys-light"] .pixel-word.ng-pixel-word-highlight {
-    background-image: radial-gradient(var(--ng-pixel-fill) 48%, transparent 50%);
-    filter:
-        drop-shadow(0 1px 0 rgba(11, 37, 64, 0.14))
-        drop-shadow(0 2px 6px rgba(11, 37, 64, 0.08));
-}
-
-html[data-theme="niceguys-light"] .pixel-word.ng-pixel-word-base {
-    background-image: radial-gradient(var(--ng-pixel-word) 48%, transparent 50%);
-    filter:
-        drop-shadow(0 1px 0 rgba(11, 37, 64, 0.14))
-        drop-shadow(0 2px 6px rgba(11, 37, 64, 0.08));
 }
 
 html[data-theme="niceguys-dark"] .pixel-word.ng-pixel-word-highlight {
@@ -133,6 +116,13 @@ html[data-theme="niceguys-dark"] .pixel-word.ng-pixel-word-base {
         drop-shadow(0 0 0.06em var(--ng-pixel-word-glow))
         drop-shadow(0 0 0.18em var(--ng-pixel-word-glow))
         drop-shadow(0 0 0.32em var(--ng-pixel-word-glow));
+}
+
+html[data-theme="niceguys-light"] .pixel-word.ng-pixel-word-highlight,
+html[data-theme="niceguys-light"] .pixel-word.ng-pixel-word-base {
+    filter:
+        drop-shadow(0 1px 0 rgba(11, 37, 64, 0.14))
+        drop-shadow(0 2px 6px rgba(11, 37, 64, 0.08));
 }
 
 .ng-card-shadow {
@@ -172,7 +162,7 @@ html[data-theme="niceguys-dark"] .ng-card-shadow {
     border: none !important;
     border-radius: 3px;
     padding: 0.9rem 1.35rem;
-    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-family: var(--font-jetbrains-mono), "JetBrains Mono", ui-monospace, monospace;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.14em;
@@ -209,6 +199,11 @@ html[data-theme="niceguys-dark"] .ng-card-shadow {
 
 html[data-theme="niceguys-light"] .pixel-btn-neon::before {
     background: radial-gradient(var(--ng-pixel-outline) 42%, transparent 45%);
+}
+
+/* Outline CTAs on light surfaces: navy text meets AA (coral/sky accents stay on the border). */
+html[data-theme="niceguys-light"] .pixel-btn-neon:not(.pixel-btn-neon--filled) {
+    color: var(--ng-navy);
 }
 
 .pixel-btn-neon:hover {
@@ -260,7 +255,7 @@ html[data-theme="niceguys-dark"] .pixel-btn-neon:hover {
 }
 
 .pixel-section-title {
-    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-family: var(--font-jetbrains-mono), "JetBrains Mono", ui-monospace, monospace;
     letter-spacing: -0.02em;
 }
 
@@ -326,6 +321,7 @@ html[data-theme="niceguys-light"] .pixel-btn:hover {
 
 .pixel-browser-mockup {
     object-fit: contain;
+    image-rendering: auto;
 }
 
 html[data-theme="niceguys-dark"] .pixel-browser-mockup {
@@ -390,6 +386,11 @@ html[data-theme="niceguys-dark"] .pixel-browser-mockup {
     .home-hero-browser {
         opacity: 1 !important;
         transform: none !important;
+    }
+
+    .home-hero-secondary-cta {
+        /* Keep secondary quieter than the filled primary without reducing contrast */
+        opacity: 1;
     }
 }
 

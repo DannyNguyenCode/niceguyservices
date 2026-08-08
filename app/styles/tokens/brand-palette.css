@@ -20,7 +20,7 @@ html[data-theme="niceguys-dark"] {
     --brand-on-surface-variant: #9fb4c6;
     --brand-on-primary: #071729;
     --brand-heading: #ffffff;
-    --brand-body: rgba(234, 243, 249, 0.78);
+    --brand-body: rgba(234, 243, 249, 0.92);
     --brand-border: rgba(255, 255, 255, 0.1);
     --brand-pixel-highlight: #60c4e3;
     --brand-pixel-word: #eaf3f9;
@@ -58,9 +58,9 @@ html[data-theme="niceguys-light"] {
     --brand-on-surface-variant: #4c6072;
     --brand-on-primary: #ffffff;
     --brand-heading: #0b2540;
-    --brand-body: rgba(11, 37, 64, 0.78);
+    --brand-body: rgba(11, 37, 64, 0.92);
     --brand-border: rgba(11, 37, 64, 0.12);
-    --brand-pixel-highlight: #0a7dba;
+    --brand-pixel-highlight: #086193;
     --brand-pixel-word: #0b2540;
     --brand-pixel-highlight-glow: transparent;
     --brand-pixel-word-glow: transparent;
@@ -68,8 +68,8 @@ html[data-theme="niceguys-light"] {
     --brand-pixel-fill: #0a7dba;
     --brand-pixel-elevation: 0 1px 0 rgba(11, 37, 64, 0.1), 0 3px 8px rgba(11, 37, 64, 0.08);
     --brand-btn-coral: #ff8a7a;
-    --brand-btn-sky: #0a7dba;
-    --brand-btn-accent: #0a7dba;
+    --brand-btn-sky: #086193;
+    --brand-btn-accent: #086193;
     --brand-btn-text: #0b2540;
     --brand-btn-fill: #ffffff;
     --brand-hero-glow: transparent;
