@@ -231,6 +231,37 @@ export async function getScreenshotsForCrawl(
     );
 }
 
+/** Reuse an existing complete screenshot for the same crawl + viewport type. */
+export async function getCompleteScreenshotForCrawlType(
+    crawlId: string,
+    type: ScreenshotType,
+): Promise<SerializableScreenshot | null> {
+    await connectToDatabase();
+    let objectId: mongoose.Types.ObjectId;
+    try {
+        objectId = assertObjectId(crawlId);
+    } catch {
+        return null;
+    }
+
+    const doc = await Screenshot.findOne({
+        crawlId: objectId,
+        type,
+        status: "complete",
+        $or: [
+            { secureUrl: { $nin: [null, ""] } },
+            { publicUrl: { $nin: [null, ""] } },
+        ],
+    })
+        .sort({ createdAt: -1 })
+        .lean<ScreenshotLean | null>();
+
+    if (!doc) return null;
+    return toSerializable(
+        mapLean(doc as ScreenshotLean & { _id: unknown; websiteId: unknown; crawlId: unknown }),
+    );
+}
+
 export async function getScreenshotById(id: string): Promise<SerializableScreenshot | null> {
     await connectToDatabase();
     try {

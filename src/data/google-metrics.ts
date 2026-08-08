@@ -227,7 +227,6 @@ export async function getLatestGoogleMetricByStrategy(
     const doc = await GoogleMetric.findOne({
         websiteId: objectId,
         strategy,
-        status: "complete",
     })
         .sort({ createdAt: -1 })
         .lean();

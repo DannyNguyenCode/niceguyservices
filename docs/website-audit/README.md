@@ -244,9 +244,9 @@ Controlled development test site: `npm run dev:seed-test-website` (Nice Guy Web 
 
 ### How it works
 
-After a completed crawl, administrators trigger PageSpeed via dashboard or `POST /api/admin/websites/[id]/pagespeed`. The service calls Google PageSpeed Insights v5 separately for **mobile** and **desktop** strategies — results are never averaged.
+After a completed crawl, administrators trigger PageSpeed via dashboard or `POST /api/admin/websites/[id]/pagespeed`. Mobile and desktop strategies run **concurrently** (`Promise.allSettled`) and never average scores.
 
-Each strategy saves a `google_metrics` document with Lighthouse scores, lab metrics, field data (when available), opportunities, diagnostics, and failed audits. Missing field data stays `null` and does not fail the run. Overall website `pageSpeedStatus` becomes `complete`, `partial`, or `failed` depending on strategy outcomes. Retries handle 429/5xx/timeouts with bounded backoff.
+Each strategy saves its own `google_metrics` document with Lighthouse scores, lab metrics, field data (when available), opportunities, diagnostics, failed audits, and safe admin error codes on failure (`PAGESPEED_CONFIGURATION_ERROR`, `PAGESPEED_RATE_LIMIT`, `PAGESPEED_TIMEOUT`, `PAGESPEED_NETWORK_ERROR`, `PAGESPEED_URL_ERROR`, `PAGESPEED_PROVIDER_ERROR`). Missing field data stays `null` and does not fail the sibling strategy. Overall website `pageSpeedStatus` becomes `complete`, `partial`, or `failed`. The dashboard refreshes for every persisted outcome, including failures, so failed records are not shown as “No results yet.” Retries handle 429/5xx/timeouts with bounded backoff.
 
 Prerequisite: completed crawl with reachable homepage. Rate limits apply via Phase 17 policies.
 
@@ -319,6 +319,8 @@ When `AI_API_KEY` or `OPENAI_API_KEY` is configured, `runAiAnalysis` builds a st
 `/dashboard/websites/[id]` is the single audit control center. `getWebsiteAuditDashboard` assembles website metadata, latest crawl/screenshots/PageSpeed/Nice Guy/AI results, readiness flags, and warnings.
 
 **Stage actions** run in order: Crawl → PageSpeed → Nice Guy → AI. Buttons disable when prerequisites are missing or a stage is already running. Sections show live status, scores, evidence, screenshots (Cloudinary URLs), and errors without clearing prior successful data on failure.
+
+Manual **Run Crawl** enters the durable `AuditJob` worker path (crawl + screenshots only). Manual **Run PageSpeed** persists both strategy records and refreshes the dashboard for complete, partial, and failed outcomes.
 
 Additional dashboard sections (wired in later phases): public reports, PDFs, outreach drafts, demo projects, activity timeline, audit history/compare.
 

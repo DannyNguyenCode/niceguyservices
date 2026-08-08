@@ -11,7 +11,8 @@ import { getWebsiteById } from "@/src/data/websites";
 import { registerAuditReference } from "@/src/services/audit-history/register-audit-reference";
 import { updateAuditRunStage } from "@/src/services/audit-history/finalize-audit-run";
 import { finalizeAuditRun } from "@/src/services/audit-history/finalize-audit-run";
-import { executeWebsiteCrawlWork } from "@/src/services/audit-jobs/execute-crawl-work";
+import { executeWebsiteCrawlWork, ScreenshotStageError } from "@/src/services/audit-jobs/execute-crawl-work";
+import { evaluateRequiredScreenshots } from "@/src/services/screenshots/required-screenshots";
 import { runAuditPreflight } from "@/src/services/audit-pipeline/preflight";
 import { createReportDraftFromAuditRun } from "@/src/services/audit-pipeline/create-report-draft-from-audit-run";
 import { markSkippedStages } from "@/src/services/audit-pipeline/stage-plan";
@@ -259,11 +260,15 @@ export async function runAuditStage(
                               errorMessage: refreshed?.errorMessage ?? "Crawl failed.",
                               retryable: true,
                           };
-                } catch {
+                } catch (error) {
+                    if (error instanceof ScreenshotStageError) {
+                        // Crawl persisted successfully; screenshots stage owns the failure.
+                        return { status: "completed" };
+                    }
                     return {
                         status: "failed",
                         errorCode: "CRAWL_FAILED",
-                        errorMessage: "Crawl failed.",
+                        errorMessage: error instanceof Error ? error.message : "Crawl failed.",
                         retryable: true,
                     };
                 }
@@ -317,11 +322,14 @@ export async function runAuditStage(
                           errorMessage: refreshed?.errorMessage ?? "Crawl failed.",
                           retryable: true,
                       };
-            } catch {
+            } catch (error) {
+                if (error instanceof ScreenshotStageError) {
+                    return { status: "completed" };
+                }
                 return {
                     status: "failed",
                     errorCode: "CRAWL_FAILED",
-                    errorMessage: "Crawl failed.",
+                    errorMessage: error instanceof Error ? error.message : "Crawl failed.",
                     retryable: true,
                 };
             }
@@ -332,28 +340,34 @@ export async function runAuditStage(
             }
             const crawl = await getCrawlForContext(context);
             if (!crawl) {
-                return { status: "skipped" };
+                return {
+                    status: "failed",
+                    errorCode: "CRAWL_REQUIRED",
+                    errorMessage: "A completed crawl is required before validating screenshots.",
+                    retryable: true,
+                };
             }
             const screenshots = await getScreenshotsForCrawl(crawl.id);
-            if (screenshots.length === 0) {
-                return {
-                    status: "completed_with_warnings",
-                    errorCode: "SCREENSHOTS_MISSING",
-                    errorMessage: "No screenshots were captured.",
-                    retryable: true,
-                };
+            const required = evaluateRequiredScreenshots(screenshots);
+            if (required.complete) {
+                await updateAuditRunStage(context.auditRunId, "screenshots", "complete");
+                return { status: "completed" };
             }
-            const failed = screenshots.every((shot) => shot.status === "failed");
-            if (failed) {
-                return {
-                    status: "completed_with_warnings",
-                    errorCode: "SCREENSHOTS_FAILED",
-                    errorMessage: "Screenshot capture failed.",
-                    retryable: true,
-                };
-            }
-            await updateAuditRunStage(context.auditRunId, "screenshots", "complete");
-            return { status: "completed" };
+
+            const failedOnly =
+                screenshots.length > 0 && screenshots.every((shot) => shot.status === "failed");
+            return {
+                status: "failed",
+                errorCode: failedOnly
+                    ? "SCREENSHOTS_FAILED"
+                    : required.missing.length === 2
+                      ? "SCREENSHOTS_MISSING"
+                      : "SCREENSHOTS_INCOMPLETE",
+                errorMessage: failedOnly
+                    ? "Screenshot capture failed for required viewports."
+                    : `Required screenshots missing: ${required.missing.join(", ")}.`,
+                retryable: true,
+            };
         }
         case "pagespeed_mobile":
             return runPageSpeedStrategy({ context, strategy: "mobile" });

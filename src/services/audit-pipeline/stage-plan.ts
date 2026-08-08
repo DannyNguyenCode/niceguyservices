@@ -79,8 +79,16 @@ export function getStageDependencies(
             if (configuration.includeNiceGuyMetrics) deps.push("niceguy");
             return deps;
         }
-        case "finalize":
-            return configuration.includeAiAnalysis ? ["ai_analysis"] : ["crawl"];
+        case "finalize": {
+            if (configuration.includeAiAnalysis) {
+                return ["ai_analysis"];
+            }
+            const deps: AuditPipelineStageName[] = ["crawl"];
+            if (configuration.includeScreenshots) {
+                deps.push("screenshots");
+            }
+            return deps;
+        }
         case "report_draft":
             return ["finalize"];
         default:
@@ -122,16 +130,15 @@ export function areStageDependenciesMet(input: {
 
 export function isStageRequired(
     stage: AuditPipelineStageName,
-    _configuration: AuditConfigurationSnapshot,
+    configuration: AuditConfigurationSnapshot,
 ): boolean {
-    void _configuration;
     switch (stage) {
         case "preflight":
         case "crawl":
         case "niceguy":
             return true;
         case "screenshots":
-            return false;
+            return configuration.includeScreenshots;
         case "pagespeed_mobile":
         case "pagespeed_desktop":
             return false;

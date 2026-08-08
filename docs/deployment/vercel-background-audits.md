@@ -35,18 +35,51 @@ Legacy `AI_API_KEY` / `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` are **not** require
 6. Audits start immediately via `after()` / `scheduleAuditWorkerKick()` — they do not wait for the daily cron. On a plan that supports minute crons, change the schedule back to `* * * * *` for frequent recovery.
 7. Customer progress polls `GET /api/public/audits/[statusToken]/status` using an opaque hashed status token issued at submit time.
 
-## Execution flow
+## Manual stage actions (admin dashboard)
 
-1. Admin/public start creates Website + AuditRun + queued AuditJob.
-2. Request returns after scheduling work (`after()` kick + cron).
-3. Worker claims one queued job atomically and runs a dependency-aware
-   concurrent pipeline:
-   - preflight
-   - crawl (+ screenshots capture) **in parallel with** PageSpeed mobile/desktop
-   - Nice Guy Metrics after crawl completes (may overlap remaining PageSpeed)
-   - evidence barrier → Cursor trigger (exactly once)
-4. After Cursor webhook acceptance, the job parks as `waiting_for_external` and the function ends.
-5. Cursor callback authenticates, validates, persists result, marks AI complete, resumes finalize + report draft.
+### Manual Run Crawl
+
+```text
+Run Crawl
+→ startAuditJob (crawl + screenshots configuration only)
+→ AuditRun created/reused
+→ AuditJob created/reused (idempotency key + active-job guard)
+→ scheduleAuditWorkerKick (forceAsync in production)
+→ worker claims job
+→ crawl executes
+→ required desktop + mobile screenshots persist
+→ dashboard shows queued/processing/complete/failed
+```
+
+Manual crawl does **not** create an orphaned queued `CrawlData` without an `AuditJob`.
+It reuses the existing durable worker architecture. Repeated clicks reuse an active job
+for the same website/configuration instead of spawning duplicates.
+
+Screenshot stage completion requires at least one usable desktop and one usable mobile
+screenshot. Partial viewport success preserves valid shots and allows retries of the
+missing viewport without duplicating completed Cloudinary uploads.
+
+### Manual Run PageSpeed
+
+```text
+Run PageSpeed
+→ create/update mobile + desktop GoogleMetric records
+→ mobile and desktop execute concurrently (Promise.allSettled)
+→ both records persist for success, partial success, or failure
+→ dashboard revalidates/refreshes for every persisted outcome
+```
+
+Failed metrics store safe admin error codes such as:
+
+- `PAGESPEED_CONFIGURATION_ERROR`
+- `PAGESPEED_RATE_LIMIT`
+- `PAGESPEED_TIMEOUT`
+- `PAGESPEED_NETWORK_ERROR`
+- `PAGESPEED_URL_ERROR`
+- `PAGESPEED_PROVIDER_ERROR`
+
+The dashboard shows queued/processing/failed states distinctly from “No results yet.”
+
 
 ## Local development
 

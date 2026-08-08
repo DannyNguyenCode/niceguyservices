@@ -8,11 +8,19 @@ import { mapRateLimitErrorToActionState } from "@/src/services/rate-limit/map-ra
 export type RunPageSpeedActionState = {
     ok: boolean;
     message?: string;
-    status?: "complete" | "partial";
+    status?: "complete" | "partial" | "failed";
+    /** True when GoogleMetric records were persisted (including failures). */
+    persisted?: boolean;
     rateLimited?: boolean;
     retryAfterSeconds?: number;
     resetAt?: string;
 };
+
+function revalidatePageSpeedPaths(websiteId: string) {
+    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/websites");
+    revalidatePath(`/dashboard/websites/${websiteId}`);
+}
 
 // Auth enforced via requireAdministratorSession below.
 export async function runPageSpeedAnalysisAction(
@@ -24,9 +32,8 @@ export async function runPageSpeedAnalysisAction(
         const result = await runPageSpeedAnalysis(websiteId);
 
         if (result.success) {
-            revalidatePath("/dashboard");
-            revalidatePath("/dashboard/websites");
-            revalidatePath(`/dashboard/websites/${websiteId}`);
+            // Refresh for complete, partial, and failed — failed records must appear.
+            revalidatePageSpeedPaths(websiteId);
 
             try {
                 const { maybeAdvanceOrchestrationAfterEvidenceChange } = await import(
@@ -37,18 +44,29 @@ export async function runPageSpeedAnalysisAction(
                 // Orchestration advance is best-effort after manual PageSpeed.
             }
 
+            const message =
+                result.status === "complete"
+                    ? "PageSpeed analysis completed for mobile and desktop."
+                    : result.status === "partial"
+                      ? "PageSpeed analysis completed with partial results."
+                      : [
+                            result.results.mobile.errorMessage,
+                            result.results.desktop.errorMessage,
+                        ]
+                            .filter(Boolean)
+                            .join(" ") || "PageSpeed analysis failed for mobile and desktop.";
+
             return {
-                ok: true,
+                ok: result.status !== "failed",
+                persisted: true,
                 status: result.status,
-                message:
-                    result.status === "complete"
-                        ? "PageSpeed analysis completed for mobile and desktop."
-                        : "PageSpeed analysis completed with partial results.",
+                message,
             };
         }
 
         return {
             ok: false,
+            persisted: false,
             message: result.error.message,
         };
     } catch (error) {

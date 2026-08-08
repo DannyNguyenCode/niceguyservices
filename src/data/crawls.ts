@@ -225,6 +225,24 @@ export async function getCrawlById(crawlId: string): Promise<SerializableCrawl |
     return toSerializable(mapLean(doc as CrawlDataLean & { _id: unknown; websiteId: unknown }));
 }
 
+export async function getCrawlByAuditRunId(
+    auditRunId: string,
+): Promise<SerializableCrawl | null> {
+    await connectToDatabase();
+    let objectId: mongoose.Types.ObjectId;
+    try {
+        objectId = assertObjectId(auditRunId);
+    } catch {
+        return null;
+    }
+
+    const doc = await CrawlData.findOne({ auditRunId: objectId })
+        .sort({ createdAt: -1 })
+        .lean<CrawlDataLean | null>();
+    if (!doc) return null;
+    return toSerializable(mapLean(doc as CrawlDataLean & { _id: unknown; websiteId: unknown }));
+}
+
 export async function updateCrawlStatus(
     crawlId: string,
     status: CrawlStatus,

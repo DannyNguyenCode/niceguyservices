@@ -3,33 +3,32 @@ import "server-only";
 import { CRAWL_CONFIG } from "@/src/lib/crawl-config";
 import { toSafePublicErrorMessage, validatePublicCrawlUrl } from "@/src/lib/validate-public-url";
 import { createActivityLog } from "@/src/data/activity-logs";
-import { createCrawlRecord, hasActiveCrawlForWebsite } from "@/src/data/crawls";
-import { getWebsiteById, updateWebsiteCrawlStatus } from "@/src/data/websites";
-import { createAuditRun, AuditHistoryError } from "@/src/services/audit-history/create-audit-run";
-import { recoverOrphanedActiveAuditRunForWebsite } from "@/src/services/audit-history/recover-orphaned-audit-run";
-import { updateAuditRunStage } from "@/src/services/audit-history/finalize-audit-run";
-import { registerAuditReference } from "@/src/services/audit-history/register-audit-reference";
-import { updateAuditRunStatus } from "@/src/data/audit-runs";
+import { getCrawlByAuditRunId, hasActiveCrawlForWebsite } from "@/src/data/crawls";
+import { getWebsiteById } from "@/src/data/websites";
 import {
     calculateScreenshotCost,
     enforceAdministratorActionRateLimit,
 } from "@/src/services/rate-limit/enforce-action-rate-limit";
 import type { RateLimitedServiceOptions } from "@/src/services/rate-limit/service-options";
-import {
-    assertAuditStageEnabled,
-    shouldExecuteAuditStageSynchronously,
-} from "@/src/services/audit-jobs/stage-execution";
-import { executeWebsiteCrawlWork } from "@/src/services/audit-jobs/execute-crawl-work";
+import { assertAuditStageEnabled, shouldExecuteAuditStageSynchronously } from "@/src/services/audit-jobs/stage-execution";
 import { recoverLegacyStageJobs } from "@/src/services/audit-jobs/audit-worker";
 import { recoverAbandonedQueuedCrawlForWebsite } from "@/src/services/audit-jobs/recover-abandoned-queued-crawl";
+import { recoverOrphanedActiveAuditRunForWebsite } from "@/src/services/audit-history/recover-orphaned-audit-run";
+import {
+    StartAuditJobError,
+    startAuditJob,
+} from "@/src/services/audit-pipeline/start-audit-job";
+import { MANUAL_CRAWL_AUDIT_CONFIGURATION } from "@/src/services/audit-pipeline/manual-crawl-configuration";
 
 export type RunWebsiteCrawlResult =
     | {
           ok: true;
-          crawlId: string;
+          crawlId: string | null;
+          auditRunId: string;
+          auditJobId: string;
           message: string;
           accepted?: boolean;
-          auditRunId?: string;
+          reused?: boolean;
       }
     | {
           ok: false;
@@ -41,9 +40,23 @@ export type RunWebsiteCrawlResult =
               | "invalid-url"
               | "crawl-failed"
               | "database"
-              | "disabled";
+              | "disabled"
+              | "worker-schedule-failed";
       };
 
+function mapStartErrorCode(
+    code: string,
+): Extract<RunWebsiteCrawlResult, { ok: false }>["code"] {
+    if (code === "AUDIT_WEBSITE_NOT_FOUND") return "not-found";
+    if (code === "AUDIT_HISTORY_DUPLICATE_ACTIVE_RUN") return "duplicate";
+    if (code.startsWith("AUDIT_PREFLIGHT") || code.includes("URL")) return "invalid-url";
+    return "database";
+}
+
+/**
+ * Manual Run Crawl — enters the same durable AuditJob + worker architecture as
+ * full audits, limited to crawl + screenshots via configuration flags.
+ */
 export async function runWebsiteCrawl(
     websiteId: string,
     options?: RateLimitedServiceOptions & { policyId?: "crawl-start" | "audit-start" },
@@ -99,85 +112,96 @@ export async function runWebsiteCrawl(
         internalWorker: options?.internalWorker,
     });
 
-    let auditRun;
+    const forceAsync = !shouldExecuteAuditStageSynchronously();
+
     try {
-        auditRun = await createAuditRun({
+        const started = await startAuditJob({
             websiteId,
+            configuration: {
+                ...MANUAL_CRAWL_AUDIT_CONFIGURATION,
+                crawlMaxPages: CRAWL_CONFIG.maxPages,
+                crawlMaxDepth: CRAWL_CONFIG.maxDepth,
+            },
             trigger: { type: "administrator", actorId: null, actorName: null },
+            forceAsync,
         });
+
+        const crawl = await getCrawlByAuditRunId(started.auditRunId).catch(() => null);
+
+        console.info("[manual-crawl] MANUAL_CRAWL_ACCEPTED", {
+            websiteId,
+            auditRunId: started.auditRunId,
+            auditJobId: started.job.id,
+            crawlId: crawl?.id ?? null,
+            reused: started.reused,
+            jobStatus: started.job.status,
+            forceAsync,
+        });
+
+        await createActivityLog({
+            websiteId,
+            crawlId: crawl?.id,
+            auditRunId: started.auditRunId,
+            type: "crawl-queued",
+            description: started.reused
+                ? `Manual crawl reused active audit job for ${website.originalUrl}.`
+                : `Manual crawl queued via AuditJob for ${website.originalUrl}.`,
+            actor: "admin",
+            metadata: {
+                auditJobId: started.job.id,
+                reused: started.reused,
+                forceAsync,
+            },
+        });
+
+        const queued =
+            started.job.status === "queued" ||
+            started.job.status === "processing" ||
+            started.job.status === "waiting_for_external";
+
+        if (forceAsync || queued) {
+            return {
+                ok: true,
+                accepted: true,
+                crawlId: crawl?.id ?? null,
+                auditRunId: started.auditRunId,
+                auditJobId: started.job.id,
+                reused: started.reused,
+                message: started.reused
+                    ? "Crawl is already queued or running for this website."
+                    : "Website crawl queued for background processing.",
+            };
+        }
+
+        return {
+            ok: true,
+            crawlId: crawl?.id ?? null,
+            auditRunId: started.auditRunId,
+            auditJobId: started.job.id,
+            reused: started.reused,
+            message:
+                started.job.status === "failed"
+                    ? "Website crawl finished with errors. Check the dashboard for details."
+                    : "Website crawl completed successfully.",
+        };
     } catch (error) {
-        if (error instanceof AuditHistoryError) {
-            if (error.code === "AUDIT_HISTORY_DUPLICATE_ACTIVE_RUN") {
-                return {
-                    ok: false,
-                    code: "duplicate",
-                    message: error.message,
-                };
-            }
+        if (error instanceof StartAuditJobError) {
+            console.error("[manual-crawl] MANUAL_CRAWL_START_FAILED", {
+                websiteId,
+                code: error.code,
+                message: error.message,
+            });
             return {
                 ok: false,
-                code: "database",
+                code: mapStartErrorCode(error.code),
                 message: error.message,
             };
         }
-        throw error;
-    }
 
-    await updateAuditRunStatus(auditRun.id, "crawling", { startedAt: new Date() });
-    await updateAuditRunStage(auditRun.id, "crawl", "running", "crawling");
-
-    const beforeCreateActive = await hasActiveCrawlForWebsite(websiteId);
-    const { crawl, created } = await createCrawlRecord({
-        websiteId,
-        requestedUrl: website.originalUrl,
-        status: "queued",
-        auditRunId: auditRun.id,
-    });
-
-    if (!created || beforeCreateActive) {
-        return {
-            ok: false,
-            code: "duplicate",
-            message: "A crawl is already in progress for this website.",
-        };
-    }
-
-    await registerAuditReference({
-        auditRunId: auditRun.id,
-        resourceType: "crawl-data",
-        resourceId: crawl.id,
-    });
-
-    await createActivityLog({
-        websiteId,
-        crawlId: crawl.id,
-        auditRunId: auditRun.id,
-        type: "crawl-queued",
-        description: `Crawl queued for ${website.originalUrl}.`,
-        actor: "admin",
-    });
-
-    await updateWebsiteCrawlStatus(websiteId, "queued");
-
-    if (!shouldExecuteAuditStageSynchronously()) {
-        return {
-            ok: true,
-            accepted: true,
-            crawlId: crawl.id,
-            auditRunId: auditRun.id,
-            message: "Website crawl queued for background processing.",
-        };
-    }
-
-    try {
-        await executeWebsiteCrawlWork(crawl.id);
-        return {
-            ok: true,
-            crawlId: crawl.id,
-            auditRunId: auditRun.id,
-            message: "Website crawl completed successfully.",
-        };
-    } catch (error) {
+        console.error("[manual-crawl] MANUAL_CRAWL_UNEXPECTED_FAILURE", {
+            websiteId,
+            message: error instanceof Error ? error.message : "unknown",
+        });
         return {
             ok: false,
             code: "crawl-failed",

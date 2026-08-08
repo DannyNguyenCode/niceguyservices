@@ -58,7 +58,8 @@ export default function RunPageSpeedButton({
                 result.message ??
                     (result.ok ? "PageSpeed completed." : "PageSpeed failed."),
             );
-            if (result.ok) {
+            // Refresh whenever metrics were persisted (success, partial, or failed).
+            if (result.persisted || result.ok) {
                 router.refresh();
             }
         });

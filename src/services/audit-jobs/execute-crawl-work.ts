@@ -13,6 +13,8 @@ import {
     completeScreenshotRecord,
     createScreenshotRecord,
     failScreenshotRecord,
+    getCompleteScreenshotForCrawlType,
+    getScreenshotsForCrawl,
 } from "@/src/data/screenshots";
 import { getWebsiteById, updateWebsiteCrawlStatus } from "@/src/data/websites";
 import { getAuditOperationFlags } from "@/src/config/app-env";
@@ -21,6 +23,7 @@ import { finalizeAuditRun, updateAuditRunStage } from "@/src/services/audit-hist
 import { registerAuditReference } from "@/src/services/audit-history/register-audit-reference";
 import { capturePageScreenshots } from "@/src/services/screenshot-capture";
 import { selectScreenshotPageTargets } from "@/src/services/screenshot-targets";
+import { evaluateRequiredScreenshots } from "@/src/services/screenshots/required-screenshots";
 import { crawlWebsite } from "@/src/services/website-crawler";
 import type { ScreenshotType } from "@/src/schemas/enums";
 
@@ -72,6 +75,18 @@ export type ExecuteCrawlWorkOptions = {
     managedByPipeline?: boolean;
 };
 
+export class ScreenshotStageError extends Error {
+    readonly code: string;
+    readonly retryable: boolean;
+
+    constructor(code: string, message: string, retryable = true) {
+        super(message);
+        this.name = "ScreenshotStageError";
+        this.code = code;
+        this.retryable = retryable;
+    }
+}
+
 export async function executeWebsiteCrawlWork(
     crawlId: string,
     options?: ExecuteCrawlWorkOptions,
@@ -92,6 +107,8 @@ export async function executeWebsiteCrawlWork(
     const managedByPipeline = options?.managedByPipeline ?? false;
     const maxPages = options?.crawlMaxPages ?? CRAWL_CONFIG.maxPages;
     const maxDepth = options?.crawlMaxDepth ?? CRAWL_CONFIG.maxDepth;
+    const screenshotsEnabled =
+        includeScreenshots && flags.screenshotEnabled && flags.cloudinaryUploadsEnabled;
 
     await updateCrawlStatus(crawl.id, "processing", {
         startedAt: new Date(),
@@ -102,7 +119,19 @@ export async function executeWebsiteCrawlWork(
 
     if (auditRunId) {
         await updateAuditRunStage(auditRunId, "crawl", "running", "crawling");
+        if (includeScreenshots) {
+            await updateAuditRunStage(auditRunId, "screenshots", "running", "collecting-screenshots");
+        }
     }
+
+    console.info("[crawl-work] CRAWL_STARTED", {
+        websiteId: website.id,
+        auditRunId,
+        crawlId: crawl.id,
+        includeScreenshots,
+        screenshotsEnabled,
+        managedByPipeline,
+    });
 
     await createActivityLog({
         websiteId: website.id,
@@ -137,7 +166,26 @@ export async function executeWebsiteCrawlWork(
             });
         }
 
-        if (includeScreenshots && flags.screenshotEnabled && flags.cloudinaryUploadsEnabled) {
+        let screenshotFailureCode: string | null = null;
+        let screenshotFailureMessage: string | null = null;
+
+        if (includeScreenshots && !flags.screenshotEnabled) {
+            screenshotFailureCode = "SCREENSHOTS_DISABLED";
+            screenshotFailureMessage = "Screenshot capture is disabled in this environment.";
+            console.info("[crawl-work] SCREENSHOT_VIEWPORT_SKIPPED", {
+                websiteId: website.id,
+                crawlId: crawl.id,
+                reason: screenshotFailureCode,
+            });
+        } else if (includeScreenshots && !flags.cloudinaryUploadsEnabled) {
+            screenshotFailureCode = "CLOUDINARY_DISABLED";
+            screenshotFailureMessage = "Cloudinary uploads are disabled; screenshots cannot be stored.";
+            console.info("[crawl-work] SCREENSHOT_VIEWPORT_SKIPPED", {
+                websiteId: website.id,
+                crawlId: crawl.id,
+                reason: screenshotFailureCode,
+            });
+        } else if (screenshotsEnabled) {
             const screenshotTargets = selectScreenshotPageTargets(crawlResult.pageResults);
             const storage = getScreenshotStorage();
 
@@ -145,6 +193,12 @@ export async function executeWebsiteCrawlWork(
                 await touchCrawlHeartbeat(crawl.id);
                 let captured;
                 try {
+                    console.info("[crawl-work] SCREENSHOT_VIEWPORT_STARTED", {
+                        websiteId: website.id,
+                        crawlId: crawl.id,
+                        auditRunId,
+                        pageSlug: target.slug,
+                    });
                     captured = await capturePageScreenshots({
                         url: target.url,
                         slug: target.slug,
@@ -152,6 +206,14 @@ export async function executeWebsiteCrawlWork(
                     });
                 } catch (error) {
                     const message = safeErrorMessage(error);
+                    console.error("[crawl-work] SCREENSHOT_VIEWPORT_FAILED", {
+                        websiteId: website.id,
+                        crawlId: crawl.id,
+                        auditRunId,
+                        pageSlug: target.slug,
+                        errorCode: "SCREENSHOT_CAPTURE_FAILED",
+                        message,
+                    });
                     await createActivityLog({
                         websiteId: website.id,
                         crawlId: crawl.id,
@@ -159,8 +221,16 @@ export async function executeWebsiteCrawlWork(
                         type: "screenshot-failed",
                         description: `Screenshot capture failed for ${target.slug}.`,
                         actor: "system",
-                        metadata: { pageSlug: target.slug, errorMessage: message },
+                        metadata: {
+                            pageSlug: target.slug,
+                            errorCode: "SCREENSHOT_CAPTURE_FAILED",
+                            errorMessage: message,
+                        },
                     });
+                    screenshotFailureCode = screenshotFailureCode ?? "SCREENSHOT_CAPTURE_FAILED";
+                    screenshotFailureMessage =
+                        screenshotFailureMessage ??
+                        `Screenshot capture failed for ${target.slug}.`;
                     continue;
                 }
 
@@ -169,6 +239,17 @@ export async function executeWebsiteCrawlWork(
                         SCREENSHOT_SPECS.find(
                             (item) => item.type === screenshotTypeFromFilename(shot.filename),
                         ) ?? SCREENSHOT_SPECS[0];
+
+                    const existing = await getCompleteScreenshotForCrawlType(crawl.id, spec.type);
+                    if (existing) {
+                        console.info("[crawl-work] SCREENSHOT_VIEWPORT_REUSED", {
+                            websiteId: website.id,
+                            crawlId: crawl.id,
+                            screenshotId: existing.id,
+                            viewport: spec.type,
+                        });
+                        continue;
+                    }
 
                     const record = await createScreenshotRecord({
                         websiteId: website.id,
@@ -181,10 +262,10 @@ export async function executeWebsiteCrawlWork(
                     });
 
                     try {
-                    const saved = await storage.save({
-                        websiteId: website.id,
-                        auditRunId: auditRunId || crawl.id,
-                        crawlId: crawl.id,
+                        const saved = await storage.save({
+                            websiteId: website.id,
+                            auditRunId: auditRunId || crawl.id,
+                            crawlId: crawl.id,
                             filename: shot.filename,
                             buffer: shot.buffer,
                         });
@@ -222,6 +303,15 @@ export async function executeWebsiteCrawlWork(
                             });
                         }
 
+                        console.info("[crawl-work] SCREENSHOT_VIEWPORT_COMPLETED", {
+                            websiteId: website.id,
+                            crawlId: crawl.id,
+                            auditRunId,
+                            screenshotId: record.id,
+                            viewport: spec.type,
+                            pageSlug: target.slug,
+                        });
+
                         await createActivityLog({
                             websiteId: website.id,
                             crawlId: crawl.id,
@@ -233,7 +323,18 @@ export async function executeWebsiteCrawlWork(
                         });
                     } catch (error) {
                         const message = safeErrorMessage(error);
+                        console.error("[crawl-work] CLOUDINARY_UPLOAD_FAILED", {
+                            websiteId: website.id,
+                            crawlId: crawl.id,
+                            auditRunId,
+                            screenshotId: record.id,
+                            viewport: spec.type,
+                            errorCode: "CLOUDINARY_UPLOAD_FAILED",
+                            message,
+                        });
                         await failScreenshotRecord(record.id, message);
+                        screenshotFailureCode = "CLOUDINARY_UPLOAD_FAILED";
+                        screenshotFailureMessage = message;
                         await createActivityLog({
                             websiteId: website.id,
                             crawlId: crawl.id,
@@ -244,6 +345,7 @@ export async function executeWebsiteCrawlWork(
                             metadata: {
                                 screenshotType: spec.type,
                                 pageSlug: target.slug,
+                                errorCode: "CLOUDINARY_UPLOAD_FAILED",
                                 errorMessage: message,
                             },
                         });
@@ -278,16 +380,20 @@ export async function executeWebsiteCrawlWork(
         await updateWebsiteCrawlStatus(website.id, "complete");
 
         if (auditRunId) {
-            await updateAuditRunStage(auditRunId, "crawl", "complete", managedByPipeline ? undefined : "collecting-screenshots");
-            if (includeScreenshots) {
-                await updateAuditRunStage(
-                    auditRunId,
-                    "screenshots",
-                    "complete",
-                    managedByPipeline ? undefined : "collecting-pagespeed",
-                );
-            }
+            await updateAuditRunStage(
+                auditRunId,
+                "crawl",
+                "complete",
+                managedByPipeline ? undefined : "collecting-screenshots",
+            );
         }
+
+        console.info("[crawl-work] CRAWL_COMPLETED", {
+            websiteId: website.id,
+            auditRunId,
+            crawlId: crawl.id,
+            pagesCrawled: crawlResult.pagesCrawled,
+        });
 
         await createActivityLog({
             websiteId: website.id,
@@ -297,14 +403,73 @@ export async function executeWebsiteCrawlWork(
             description: `Crawl completed with ${crawlResult.pagesCrawled} pages.`,
             actor: "system",
         });
+
+        if (includeScreenshots) {
+            const screenshots = await getScreenshotsForCrawl(crawl.id);
+            const required = evaluateRequiredScreenshots(screenshots);
+
+            if (required.complete) {
+                if (auditRunId) {
+                    await updateAuditRunStage(
+                        auditRunId,
+                        "screenshots",
+                        "complete",
+                        managedByPipeline ? undefined : "collecting-pagespeed",
+                    );
+                }
+                console.info("[crawl-work] SCREENSHOTS_STAGE_COMPLETE", {
+                    websiteId: website.id,
+                    auditRunId,
+                    crawlId: crawl.id,
+                });
+            } else {
+                const errorCode =
+                    screenshotFailureCode ??
+                    (required.missing.length === 2
+                        ? "SCREENSHOTS_MISSING"
+                        : "SCREENSHOTS_INCOMPLETE");
+                const errorMessage =
+                    screenshotFailureMessage ??
+                    `Required screenshots missing: ${required.missing.join(", ")}.`;
+
+                if (auditRunId) {
+                    await updateAuditRunStage(auditRunId, "screenshots", "failed");
+                }
+
+                console.error("[crawl-work] SCREENSHOTS_STAGE_FAILED", {
+                    websiteId: website.id,
+                    auditRunId,
+                    crawlId: crawl.id,
+                    errorCode,
+                    missing: required.missing,
+                    hasDesktop: required.hasDesktop,
+                    hasMobile: required.hasMobile,
+                });
+
+                throw new ScreenshotStageError(errorCode, errorMessage, true);
+            }
+        }
     } catch (error) {
+        if (error instanceof ScreenshotStageError) {
+            // Crawl data is already complete; screenshots failed separately.
+            throw error;
+        }
+
         const message = safeErrorMessage(error);
-        console.error("Website crawl failed:", error);
+        console.error("[crawl-work] CRAWL_FAILED", {
+            websiteId: website.id,
+            auditRunId,
+            crawlId: crawl.id,
+            message,
+        });
 
         await failCrawl(crawl.id, message);
         await updateWebsiteCrawlStatus(website.id, "failed");
         if (auditRunId) {
             await updateAuditRunStage(auditRunId, "crawl", "failed");
+            if (includeScreenshots) {
+                await updateAuditRunStage(auditRunId, "screenshots", "failed");
+            }
             if (!managedByPipeline) {
                 try {
                     await finalizeAuditRun({ auditRunId });

@@ -33,56 +33,97 @@ import type { RateLimitedServiceOptions } from "@/src/services/rate-limit/servic
 import type { PageSpeedStrategy } from "@/src/schemas/enums";
 import type { PageSpeedStatus } from "@/src/schemas/enums";
 
+export type PageSpeedStrategyOutcome = {
+    status: "complete" | "failed";
+    googleMetricId: string;
+    errorCode?: string;
+    errorMessage?: string;
+};
+
 export type RunPageSpeedAnalysisResult =
     | {
+          /** Persistence finished; inspect `status` for Google outcome. */
           success: true;
-          status: "complete" | "partial";
+          status: "complete" | "partial" | "failed";
           websiteId: string;
           crawlId: string;
           results: {
-              mobile: { status: "complete" | "failed"; googleMetricId?: string };
-              desktop: { status: "complete" | "failed"; googleMetricId?: string };
+              mobile: PageSpeedStrategyOutcome;
+              desktop: PageSpeedStrategyOutcome;
           };
       }
     | {
+          /** Precondition / setup failure before metrics were run. */
           success: false;
           error: { code: string; message: string };
       };
 
-const STRATEGY_MESSAGES: Record<PageSpeedStrategy, { success: string; failure: string }> = {
-    mobile: {
-        success: "Google PageSpeed completed the mobile analysis.",
-        failure: "Google PageSpeed could not complete the mobile analysis.",
-    },
-    desktop: {
-        success: "Google PageSpeed completed the desktop analysis.",
-        failure: "Google PageSpeed could not complete the desktop analysis.",
-    },
+const STRATEGY_LABEL: Record<PageSpeedStrategy, string> = {
+    mobile: "mobile",
+    desktop: "desktop",
 };
 
-function mapClientError(error: unknown): { code: string; message: string } {
+function adminSafeErrorMessage(code: string, strategy: PageSpeedStrategy, detail: string): string {
+    const label = STRATEGY_LABEL[strategy];
+    switch (code) {
+        case "PAGESPEED_CONFIGURATION_ERROR":
+            return `PageSpeed ${label}: configuration error. Check GOOGLE_PAGESPEED_API_KEY.`;
+        case "PAGESPEED_RATE_LIMIT":
+            return `PageSpeed ${label}: rate limited by Google. Try again later.`;
+        case "PAGESPEED_TIMEOUT":
+            return `PageSpeed ${label}: request timed out.`;
+        case "PAGESPEED_NETWORK_ERROR":
+            return `PageSpeed ${label}: network error reaching Google.`;
+        case "PAGESPEED_URL_ERROR":
+            return `PageSpeed ${label}: Google could not analyze this URL.`;
+        case "PAGESPEED_PROVIDER_ERROR":
+        case "PAGESPEED_API_ERROR":
+            return `PageSpeed ${label}: provider error. ${detail.slice(0, 180)}`;
+        case "PAGESPEED_INVALID_RESPONSE":
+            return `PageSpeed ${label}: invalid response from Google.`;
+        default:
+            return `PageSpeed ${label}: ${detail.slice(0, 200) || "analysis failed."}`;
+    }
+}
+
+function mapClientError(
+    error: unknown,
+    strategy: PageSpeedStrategy,
+): { code: string; message: string } {
     if (error instanceof PageSpeedClientError) {
-        return { code: error.code, message: error.message };
+        const code =
+            error.code === "PAGESPEED_API_ERROR" ? "PAGESPEED_PROVIDER_ERROR" : error.code;
+        return {
+            code,
+            message: adminSafeErrorMessage(code, strategy, error.message),
+        };
     }
     if (error instanceof PublicUrlValidationError) {
-        return { code: "PAGESPEED_URL_ERROR", message: error.message };
+        return {
+            code: "PAGESPEED_URL_ERROR",
+            message: adminSafeErrorMessage("PAGESPEED_URL_ERROR", strategy, error.message),
+        };
     }
     if (error instanceof Error && error.message === "PAGESPEED_CONFIGURATION_ERROR") {
         return {
             code: "PAGESPEED_CONFIGURATION_ERROR",
-            message:
-                "Google PageSpeed is not configured. Set GOOGLE_PAGESPEED_API_KEY in your .env file.",
+            message: adminSafeErrorMessage(
+                "PAGESPEED_CONFIGURATION_ERROR",
+                strategy,
+                error.message,
+            ),
         };
     }
     if (error instanceof Error && error.message === "PAGESPEED_INVALID_RESPONSE") {
         return {
             code: "PAGESPEED_INVALID_RESPONSE",
-            message: "Google PageSpeed returned an invalid response.",
+            message: adminSafeErrorMessage("PAGESPEED_INVALID_RESPONSE", strategy, error.message),
         };
     }
+    const detail = error instanceof Error ? error.message : "unknown error";
     return {
-        code: "PAGESPEED_API_ERROR",
-        message: "Google PageSpeed could not complete the analysis.",
+        code: "PAGESPEED_PROVIDER_ERROR",
+        message: adminSafeErrorMessage("PAGESPEED_PROVIDER_ERROR", strategy, detail),
     };
 }
 
@@ -92,8 +133,15 @@ async function runStrategy(input: {
     strategy: PageSpeedStrategy;
     url: string;
     googleMetricId: string;
-}): Promise<{ status: "complete" | "failed"; googleMetricId: string }> {
+}): Promise<PageSpeedStrategyOutcome> {
     const startedAt = Date.now();
+
+    console.info("[pagespeed] STRATEGY_STARTED", {
+        websiteId: input.websiteId,
+        crawlId: input.crawlId,
+        metricId: input.googleMetricId,
+        strategy: input.strategy,
+    });
 
     await updateGoogleMetricStatus(input.googleMetricId, "processing");
 
@@ -109,6 +157,14 @@ async function runStrategy(input: {
             durationMs: Date.now() - startedAt,
         });
 
+        console.info("[pagespeed] STRATEGY_COMPLETED", {
+            websiteId: input.websiteId,
+            crawlId: input.crawlId,
+            metricId: input.googleMetricId,
+            strategy: input.strategy,
+            durationMs: Date.now() - startedAt,
+        });
+
         await createActivityLog({
             websiteId: input.websiteId,
             crawlId: input.crawlId,
@@ -116,7 +172,7 @@ async function runStrategy(input: {
                 input.strategy === "mobile"
                     ? "pagespeed-mobile-completed"
                     : "pagespeed-desktop-completed",
-            description: STRATEGY_MESSAGES[input.strategy].success,
+            description: `Google PageSpeed completed the ${input.strategy} analysis.`,
             actor: "system",
             metadata: {
                 strategy: input.strategy,
@@ -127,12 +183,19 @@ async function runStrategy(input: {
 
         return { status: "complete", googleMetricId: input.googleMetricId };
     } catch (error) {
-        const mapped = mapClientError(error);
-        console.error(`PageSpeed ${input.strategy} failed:`, error);
+        const mapped = mapClientError(error, input.strategy);
+        console.error("[pagespeed] STRATEGY_FAILED", {
+            websiteId: input.websiteId,
+            crawlId: input.crawlId,
+            metricId: input.googleMetricId,
+            strategy: input.strategy,
+            errorCode: mapped.code,
+            message: mapped.message,
+        });
 
         await failGoogleMetricRecord(input.googleMetricId, {
             errorCode: mapped.code,
-            errorMessage: STRATEGY_MESSAGES[input.strategy].failure,
+            errorMessage: mapped.message,
             durationMs: Date.now() - startedAt,
         });
 
@@ -143,7 +206,7 @@ async function runStrategy(input: {
                 input.strategy === "mobile"
                     ? "pagespeed-mobile-failed"
                     : "pagespeed-desktop-failed",
-            description: STRATEGY_MESSAGES[input.strategy].failure,
+            description: mapped.message,
             actor: "system",
             metadata: {
                 strategy: input.strategy,
@@ -152,8 +215,36 @@ async function runStrategy(input: {
             },
         });
 
-        return { status: "failed", googleMetricId: input.googleMetricId };
+        return {
+            status: "failed",
+            googleMetricId: input.googleMetricId,
+            errorCode: mapped.code,
+            errorMessage: mapped.message,
+        };
     }
+}
+
+function outcomeFromSettled(
+    settled: PromiseSettledResult<PageSpeedStrategyOutcome>,
+    fallbackMetricId: string,
+    strategy: PageSpeedStrategy,
+): PageSpeedStrategyOutcome {
+    if (settled.status === "fulfilled") {
+        return settled.value;
+    }
+    const mapped = mapClientError(settled.reason, strategy);
+    console.error("[pagespeed] STRATEGY_UNHANDLED_REJECTION", {
+        strategy,
+        metricId: fallbackMetricId,
+        errorCode: mapped.code,
+        message: mapped.message,
+    });
+    return {
+        status: "failed",
+        googleMetricId: fallbackMetricId,
+        errorCode: mapped.code,
+        errorMessage: mapped.message,
+    };
 }
 
 export async function runPageSpeedAnalysis(
@@ -298,21 +389,49 @@ export async function runPageSpeedAnalysis(
         actor: "admin",
     });
 
-    const mobileResult = await runStrategy({
-        websiteId,
-        crawlId: latestCrawl.id,
-        strategy: "mobile",
-        url: homepageUrl,
-        googleMetricId: mobileRecord.id,
-    });
+    const [mobileSettled, desktopSettled] = await Promise.allSettled([
+        runStrategy({
+            websiteId,
+            crawlId: latestCrawl.id,
+            strategy: "mobile",
+            url: homepageUrl,
+            googleMetricId: mobileRecord.id,
+        }),
+        runStrategy({
+            websiteId,
+            crawlId: latestCrawl.id,
+            strategy: "desktop",
+            url: homepageUrl,
+            googleMetricId: desktopRecord.id,
+        }),
+    ]);
 
-    const desktopResult = await runStrategy({
-        websiteId,
-        crawlId: latestCrawl.id,
-        strategy: "desktop",
-        url: homepageUrl,
-        googleMetricId: desktopRecord.id,
-    });
+    const mobileResult = outcomeFromSettled(mobileSettled, mobileRecord.id, "mobile");
+    const desktopResult = outcomeFromSettled(desktopSettled, desktopRecord.id, "desktop");
+
+    // If a strategy rejected before failGoogleMetricRecord, persist failure now.
+    if (mobileSettled.status === "rejected" && mobileResult.status === "failed") {
+        try {
+            await failGoogleMetricRecord(mobileRecord.id, {
+                errorCode: mobileResult.errorCode ?? "PAGESPEED_PROVIDER_ERROR",
+                errorMessage: mobileResult.errorMessage ?? "PageSpeed mobile analysis failed.",
+                durationMs: 0,
+            });
+        } catch {
+            // Already failed or complete.
+        }
+    }
+    if (desktopSettled.status === "rejected" && desktopResult.status === "failed") {
+        try {
+            await failGoogleMetricRecord(desktopRecord.id, {
+                errorCode: desktopResult.errorCode ?? "PAGESPEED_PROVIDER_ERROR",
+                errorMessage: desktopResult.errorMessage ?? "PageSpeed desktop analysis failed.",
+                durationMs: 0,
+            });
+        } catch {
+            // Already failed or complete.
+        }
+    }
 
     let finalStatus: PageSpeedStatus = "failed";
     if (mobileResult.status === "complete" && desktopResult.status === "complete") {
@@ -346,6 +465,8 @@ export async function runPageSpeedAnalysis(
         metadata: {
             mobileStatus: mobileResult.status,
             desktopStatus: desktopResult.status,
+            mobileErrorCode: mobileResult.errorCode ?? null,
+            desktopErrorCode: desktopResult.errorCode ?? null,
         },
     });
 
@@ -353,24 +474,29 @@ export async function runPageSpeedAnalysis(
         await updateAuditRunStage(
             auditRunId,
             "pageSpeed",
-            finalStatus === "complete" ? "complete" : finalStatus === "partial" ? "partial" : "failed",
+            finalStatus === "complete"
+                ? "complete"
+                : finalStatus === "partial"
+                  ? "partial"
+                  : "failed",
             "calculating-metrics",
         );
     }
 
-    if (finalStatus === "failed") {
-        return {
-            success: false,
-            error: {
-                code: "PAGESPEED_FAILED",
-                message: "Google PageSpeed could not complete the analysis.",
-            },
-        };
-    }
+    console.info("[pagespeed] DASHBOARD_ACTION_COMPLETED", {
+        websiteId,
+        crawlId: latestCrawl.id,
+        auditRunId,
+        status: finalStatus,
+        mobileStatus: mobileResult.status,
+        desktopStatus: desktopResult.status,
+        mobileMetricId: mobileResult.googleMetricId,
+        desktopMetricId: desktopResult.googleMetricId,
+    });
 
     return {
         success: true,
-        status: finalStatus === "complete" ? "complete" : "partial",
+        status: finalStatus,
         websiteId,
         crawlId: latestCrawl.id,
         results: {

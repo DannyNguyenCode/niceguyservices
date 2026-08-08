@@ -44,6 +44,41 @@ function StrategyPanel({
         );
     }
 
+    if (metric.status === "queued" || metric.status === "processing") {
+        return (
+            <div className="rounded-2xl bg-base-200 p-5 shadow-sm">
+                <p className="text-sm font-medium text-base-content">{label}</p>
+                <p className="mt-2 text-sm text-base-content/70">
+                    Status: {formatStatusLabel(metric.status)}
+                </p>
+                <p className="mt-2 text-sm text-base-content/70">
+                    {metric.status === "queued"
+                        ? "PageSpeed is queued."
+                        : "PageSpeed analysis is in progress."}
+                </p>
+            </div>
+        );
+    }
+
+    if (metric.status === "failed") {
+        return (
+            <div className="rounded-2xl bg-base-200 p-5 shadow-sm">
+                <p className="text-sm font-medium text-base-content">{label}</p>
+                <p className="mt-2 text-sm text-base-content/70">
+                    Status: {formatStatusLabel(metric.status)}
+                </p>
+                {metric.errorCode ? (
+                    <p className="mt-3 text-xs font-mono text-base-content/60">{metric.errorCode}</p>
+                ) : null}
+                {metric.errorMessage ? (
+                    <p className="mt-2 text-sm text-error">{metric.errorMessage}</p>
+                ) : (
+                    <p className="mt-2 text-sm text-error">PageSpeed analysis failed.</p>
+                )}
+            </div>
+        );
+    }
+
     const opportunities = showAllOpportunities
         ? metric.opportunities
         : metric.opportunities.slice(0, 5);
@@ -73,10 +108,6 @@ function StrategyPanel({
                     {metric.fetchTime ? formatWebsiteDate(metric.fetchTime) : "—"}
                 </div>
             </div>
-
-            {metric.status === "failed" && metric.errorMessage ? (
-                <p className="mt-4 text-sm text-error">{metric.errorMessage}</p>
-            ) : null}
 
             <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
                 {(

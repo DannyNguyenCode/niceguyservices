@@ -50,9 +50,11 @@ export async function POST(request: Request, context: RouteContext) {
                 {
                     ok: true,
                     accepted: true,
-                    jobId: result.crawlId,
+                    jobId: result.auditJobId,
+                    auditJobId: result.auditJobId,
                     crawlId: result.crawlId,
                     auditRunId: result.auditRunId,
+                    reused: result.reused ?? false,
                     message: result.message,
                 },
                 { status: 202 },
@@ -63,6 +65,8 @@ export async function POST(request: Request, context: RouteContext) {
             ok: true,
             crawlId: result.crawlId,
             auditRunId: result.auditRunId,
+            auditJobId: result.auditJobId,
+            reused: result.reused ?? false,
             message: result.message,
         });
     } catch (error) {
