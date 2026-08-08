@@ -22,6 +22,7 @@ import {
     submitPublicAuditRequestAction,
     type PublicAuditRequestState,
 } from "@/src/actions/public-audit-request";
+import { PUBLIC_AUDIT_CUSTOMER_DAILY_LIMIT_NOTE } from "@/src/services/public-audit-protection/constants";
 import type { PublicAuditOverallStatus } from "@/src/services/public-audit-status/map-public-audit-progress";
 
 type WebsiteAuditFormProps = {
@@ -378,6 +379,11 @@ export default function WebsiteAuditForm({
                             ? state.message
                             : "Enter your website URL and business email. After you submit, processing starts automatically."}
                     </p>
+                    {!showInlineMessage ? (
+                        <p className="mt-3 text-sm text-base-content/60">
+                            {PUBLIC_AUDIT_CUSTOMER_DAILY_LIMIT_NOTE}
+                        </p>
+                    ) : null}
                 </div>
             </form>
 

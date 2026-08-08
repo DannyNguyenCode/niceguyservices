@@ -110,6 +110,20 @@ describe("public audit form validation remains in place", () => {
     });
 });
 
+describe("public audit daily limit customer copy", () => {
+    it("exposes the email-per-day limit from PUBLIC_AUDIT_LIMITS", async () => {
+        const { PUBLIC_AUDIT_LIMITS, PUBLIC_AUDIT_CUSTOMER_DAILY_LIMIT_NOTE } = await import(
+            "@/src/services/public-audit-protection/constants"
+        );
+        assert.equal(PUBLIC_AUDIT_LIMITS.emailPer24Hours, 3);
+        assert.match(
+            PUBLIC_AUDIT_CUSTOMER_DAILY_LIMIT_NOTE,
+            new RegExp(String(PUBLIC_AUDIT_LIMITS.emailPer24Hours)),
+        );
+        assert.match(PUBLIC_AUDIT_CUSTOMER_DAILY_LIMIT_NOTE, /24 hours/i);
+    });
+});
+
 describe("public audit submit UI source contracts", () => {
     it("uses inline progress only — no customer progress modal", async () => {
         const formSource = await readFile(
@@ -131,6 +145,7 @@ describe("public audit submit UI source contracts", () => {
         assert.match(formSource, /Single polling source/);
         assert.match(formSource, /min-w-\[12\.5rem\]/);
         assert.match(formSource, /Retrieve my audit/);
+        assert.match(formSource, /PUBLIC_AUDIT_CUSTOMER_DAILY_LIMIT_NOTE/);
         assert.equal(/PublicAuditSubmitStatusModal|progressModalVisible|<dialog/i.test(formSource), false);
         assert.equal(
             await fileExists(

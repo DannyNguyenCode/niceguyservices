@@ -18,6 +18,9 @@ export const PUBLIC_AUDIT_LIMITS = {
     publicTriggerActorName: "public-audit-submission",
 } as const;
 
+/** Customer-facing note for the public submission form (keep aligned with emailPer24Hours). */
+export const PUBLIC_AUDIT_CUSTOMER_DAILY_LIMIT_NOTE = `You can submit up to ${PUBLIC_AUDIT_LIMITS.emailPer24Hours} audit requests with the same email every 24 hours.`;
+
 export const PUBLIC_AUDIT_GENERIC_ACCEPTED_MESSAGE =
     "Your audit request has been received and processing has started.";
 
