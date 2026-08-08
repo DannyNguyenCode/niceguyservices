@@ -84,6 +84,8 @@ export async function submitPublicAuditRequestAction(
             logPublicAuditSecurityEvent({
                 event: "public_audit_rate_limited",
                 reason: "rate_limited",
+                policyId: String(error.policyId),
+                retryAfterSeconds: error.retryAfterSeconds,
             });
             return {
                 ok: false,

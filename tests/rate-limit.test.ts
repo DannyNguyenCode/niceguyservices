@@ -6,9 +6,11 @@ import { getRateLimitPolicy } from "@/src/services/rate-limit/rate-limit-policie
 import { hashRateLimitIdentifier } from "@/src/services/rate-limit/hash-rate-limit-identifier";
 import {
     buildRateLimitStorageKey,
+    getClientIp,
     getHashedEmailRateLimitKey,
     getHashedIpRateLimitKey,
     getPublicTokenIdentityFromRawToken,
+    normalizeIpAddressForTests,
     normalizeLoginEmail,
 } from "@/src/services/rate-limit/rate-limit-identity";
 import { RATE_LIMIT_KEY_VERSION } from "@/src/services/rate-limit/constants";
@@ -66,6 +68,23 @@ describe("rate-limit identity", () => {
         ]);
         assert.match(key, new RegExp(`^rate:${RATE_LIMIT_KEY_VERSION}:auth-login-ip:`));
         assert.doesNotMatch(key, /203\.0\.113\.10/);
+    });
+
+    it("normalizes proxy IP headers with ports and forwarded lists", () => {
+        assert.equal(normalizeIpAddressForTests("203.0.113.10:54321"), "203.0.113.10");
+        assert.equal(
+            normalizeIpAddressForTests("203.0.113.10, 198.51.100.1"),
+            "203.0.113.10",
+        );
+        assert.equal(normalizeIpAddressForTests("[2001:db8::1]:443"), "2001:db8::1");
+    });
+
+    it("reads client IP from trusted proxy headers on Request", () => {
+        process.env.RATE_LIMIT_TRUST_PROXY_HEADERS = "true";
+        const request = new Request("http://example.com", {
+            headers: { "x-forwarded-for": "203.0.113.44:1234, 198.51.100.1" },
+        });
+        assert.equal(getClientIp(request), "203.0.113.44");
     });
 
     it("hashes equivalent normalized emails to the same account key", () => {
@@ -254,7 +273,7 @@ describe("public audit submission rate limit", () => {
         assert.equal(policy.scope, "ip");
         assert.equal(policy.limit, 5);
         assert.equal(policy.windowSeconds, 3600);
-        assert.equal(policy.failureMode, "closed");
+        assert.equal(policy.failureMode, "fallback");
     });
 
     it("enforces the public audit submit limit", async () => {

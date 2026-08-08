@@ -80,9 +80,17 @@ export async function enforcePublicAuditSubmitRateLimit(input?: {
     }
 
     const ip = await getClientIpFromHeaders();
+    if (!ip) {
+        // Never fall back to a shared `ip:unknown` bucket — that rate-limits
+        // every unresolved client together and bricks public intake.
+        console.warn("[rate-limit] public audit submit skipped IP limit (no client IP)", {
+            environment: process.env.NODE_ENV ?? "development",
+        });
+        return;
+    }
     await requireRateLimit({
         policyId: "public-audit-submit",
-        identifiers: [ip ? getHashedIpRateLimitKey(ip) : "ip:unknown"],
+        identifiers: [getHashedIpRateLimitKey(ip)],
     });
 }
 
@@ -91,10 +99,12 @@ export async function enforcePublicReportLookupRequestRateLimit(input: {
     normalizedEmail: string;
 }): Promise<void> {
     const ip = getClientIp(input.request);
-    await requireRateLimit({
-        policyId: "public-report-lookup-request-ip",
-        identifiers: [ip ? getHashedIpRateLimitKey(ip) : "ip:unknown"],
-    });
+    if (ip) {
+        await requireRateLimit({
+            policyId: "public-report-lookup-request-ip",
+            identifiers: [getHashedIpRateLimitKey(ip)],
+        });
+    }
     await requireRateLimit({
         policyId: "public-report-lookup-request-email",
         identifiers: [getHashedEmailRateLimitKey(input.normalizedEmail)],
@@ -105,9 +115,12 @@ export async function enforcePublicReportLookupVerifyRateLimit(input: {
     request: Request;
 }): Promise<void> {
     const ip = getClientIp(input.request);
+    if (!ip) {
+        return;
+    }
     await requireRateLimit({
         policyId: "public-report-lookup-verify-ip",
-        identifiers: [ip ? getHashedIpRateLimitKey(ip) : "ip:unknown"],
+        identifiers: [getHashedIpRateLimitKey(ip)],
     });
 }
 

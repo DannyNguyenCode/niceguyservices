@@ -192,7 +192,9 @@ const BASE_POLICIES: Record<RateLimitPolicyId, RateLimitPolicy> = {
         limit: PUBLIC_AUDIT_LIMITS.ipPerHour,
         windowSeconds: 60 * 60,
         scope: "ip",
-        failureMode: "closed",
+        // Prefer availability on the public marketing form: Redis outages must
+        // not return "Too many audit requests" to every visitor.
+        failureMode: "fallback",
         description: `Public audit submissions per IP (${PUBLIC_AUDIT_LIMITS.ipPerHour} per hour).`,
     },
     "public-audit-submit-ip-day": {
@@ -201,7 +203,7 @@ const BASE_POLICIES: Record<RateLimitPolicyId, RateLimitPolicy> = {
         limit: PUBLIC_AUDIT_LIMITS.ipPer24Hours,
         windowSeconds: 24 * 60 * 60,
         scope: "ip",
-        failureMode: "closed",
+        failureMode: "fallback",
         description: `Public audit submissions per IP (${PUBLIC_AUDIT_LIMITS.ipPer24Hours} per 24 hours).`,
     },
     "public-audit-submit-email": {
@@ -210,7 +212,7 @@ const BASE_POLICIES: Record<RateLimitPolicyId, RateLimitPolicy> = {
         limit: PUBLIC_AUDIT_LIMITS.emailPer24Hours,
         windowSeconds: 24 * 60 * 60,
         scope: "composite",
-        failureMode: "closed",
+        failureMode: "fallback",
         description: `Public audit submissions per normalized email (${PUBLIC_AUDIT_LIMITS.emailPer24Hours} per 24 hours).`,
     },
     "public-report-lookup-request-ip": {

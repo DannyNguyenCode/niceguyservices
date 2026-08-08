@@ -19,6 +19,9 @@ export function logPublicAuditSecurityEvent(input: {
     websiteId?: string | null;
     reason?: PublicAuditBlockReason | "rate_limited";
     orchestrationStarted?: boolean;
+    /** Safe machine id only — never raw IP/email. */
+    policyId?: string;
+    retryAfterSeconds?: number;
 }): void {
     console.info("[public-audit-protection]", {
         event: input.event,
@@ -26,6 +29,8 @@ export function logPublicAuditSecurityEvent(input: {
         websiteId: input.websiteId ?? undefined,
         reason: input.reason,
         orchestrationStarted: input.orchestrationStarted,
+        policyId: input.policyId,
+        retryAfterSeconds: input.retryAfterSeconds,
         environment: process.env.NODE_ENV ?? "development",
     });
 }

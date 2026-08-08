@@ -387,9 +387,24 @@ describe("public audit abuse protection", () => {
     it("uses durable shared rate-limit storage keys rather than process-local Maps in the API", () => {
         const hourly = getRateLimitPolicy("public-audit-submit");
         assert.equal(hourly.algorithm, "sliding-window");
-        assert.equal(hourly.failureMode, "closed");
+        assert.equal(hourly.failureMode, "fallback");
         // Provider selection is env-driven; production requires redis (see env.ts).
         assert.ok(typeof process.env.RATE_LIMIT_PROVIDER === "string");
+    });
+
+    it("does not use a shared ip:unknown bucket for public submit limits", async () => {
+        const fs = await import("node:fs");
+        const path = await import("node:path");
+        const source = fs.readFileSync(
+            path.join(
+                process.cwd(),
+                "src/services/public-audit-protection/enforce-public-audit-limits.ts",
+            ),
+            "utf8",
+        );
+        assert.equal(/identifiers:\s*\[[^\]]*ip:unknown/.test(source), false);
+        assert.equal(source.includes('identifiers: [ipKey]'), true);
+        assert.match(source, /skipping IP submit limits/);
     });
 
     it("normalizes URL variants to one domain identity", () => {

@@ -5,35 +5,53 @@ import { RATE_LIMIT_KEY_VERSION } from "@/src/services/rate-limit/constants";
 const IPV4_PATTERN = /^(?:\d{1,3}\.){3}\d{1,3}$/;
 const IPV6_PATTERN = /^[0-9a-f:]+$/i;
 
+function stripIpv4Port(value: string): string {
+    // Some proxies append :port to IPv4 (e.g. "203.0.113.10:54321").
+    const matched = /^((?:\d{1,3}\.){3}\d{1,3})(?::\d+)?$/.exec(value);
+    return matched?.[1] ?? value;
+}
+
 function normalizeIpAddress(value: string): string | null {
     const trimmed = value.trim();
     if (!trimmed) return null;
 
-    if (trimmed.includes(".")) {
-        const first = trimmed.split(",")[0]?.trim() ?? "";
-        if (!IPV4_PATTERN.test(first)) return null;
-        return first;
+    // Prefer the left-most address in X-Forwarded-For style lists.
+    const first = trimmed.split(",")[0]?.trim() ?? "";
+    if (!first) return null;
+
+    if (first.includes(".")) {
+        const ipv4 = stripIpv4Port(first);
+        if (!IPV4_PATTERN.test(ipv4)) return null;
+        return ipv4;
     }
 
-    const ipv6 = trimmed.toLowerCase();
-    if (!IPV6_PATTERN.test(ipv6)) return null;
-    return ipv6.replace(/^::ffff:/, "");
+    // Bracketed IPv6 with optional port: [2001:db8::1]:443
+    const bracketed = /^\[([0-9a-f:]+)\](?::\d+)?$/i.exec(first);
+    const ipv6Raw = (bracketed?.[1] ?? first).toLowerCase();
+    if (!IPV6_PATTERN.test(ipv6Raw)) return null;
+    return ipv6Raw.replace(/^::ffff:/, "");
 }
 
-export function getClientIp(request: Request): string | null {
-    const trustProxy =
+function shouldTrustProxyHeaders(): boolean {
+    return (
         process.env.RATE_LIMIT_TRUST_PROXY_HEADERS === "true" ||
         process.env.VERCEL === "1" ||
-        Boolean(process.env.VERCEL_ENV?.trim());
-    if (!trustProxy) {
+        Boolean(process.env.VERCEL_ENV?.trim())
+    );
+}
+
+function readClientIpFromHeaderGetter(
+    getHeader: (name: string) => string | null,
+): string | null {
+    if (!shouldTrustProxyHeaders()) {
         return null;
     }
 
     const candidates = [
-        request.headers.get("x-vercel-forwarded-for"),
-        request.headers.get("cf-connecting-ip"),
-        request.headers.get("x-real-ip"),
-        request.headers.get("x-forwarded-for"),
+        getHeader("x-vercel-forwarded-for"),
+        getHeader("cf-connecting-ip"),
+        getHeader("x-real-ip"),
+        getHeader("x-forwarded-for"),
     ];
 
     for (const candidate of candidates) {
@@ -47,12 +65,23 @@ export function getClientIp(request: Request): string | null {
     return null;
 }
 
+export function getClientIp(request: Request): string | null {
+    return readClientIpFromHeaderGetter((name) => request.headers.get(name));
+}
+
+/**
+ * Resolve client IP from the current Next.js request headers.
+ * Reads headers() directly — avoids wrapping ReadonlyHeaders in a Fetch Request,
+ * which can drop forwarded-IP headers in some runtimes.
+ */
 export async function getClientIpFromHeaders(): Promise<string | null> {
     const headerStore = await headers();
-    const request = new Request("http://rate-limit.local", {
-        headers: headerStore,
-    });
-    return getClientIp(request);
+    return readClientIpFromHeaderGetter((name) => headerStore.get(name));
+}
+
+/** @internal Exported for unit tests. */
+export function normalizeIpAddressForTests(value: string): string | null {
+    return normalizeIpAddress(value);
 }
 
 export function getAdministratorRateLimitKey(administratorId: string): string {
