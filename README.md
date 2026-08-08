@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="public/niceguywebdesignlogo.png" alt="Nice Guy Web Design logo" width="300" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="public/niceguywebdesignlogodark.png" />
+    <img src="public/niceguywebdesignlogo.png" alt="Nice Guy Web Design logo" width="300" />
+  </picture>
 </p>
 
 <h1 align="center">Nice Guy Web Design</h1>
