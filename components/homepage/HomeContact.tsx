@@ -34,7 +34,7 @@ export default function HomeContact() {
                 <h2 className={`mb-8 text-primary-content ${homeSectionTitleSizeClass}`}>
                     Need A Website That Works Harder For Your Business?
                 </h2>
-                <p className="mx-auto mb-12 max-w-xl text-lg leading-relaxed font-medium text-primary-content/90">
+                <p className="mx-auto mb-12 max-w-xl text-lg leading-relaxed font-medium text-primary-content">
                     {contactTeaser.body}
                 </p>
                 <div className="flex flex-col items-center justify-center gap-4 md:flex-row">
@@ -49,7 +49,7 @@ export default function HomeContact() {
                     >
                         {contactTeaser.primaryCtaLabel}
                     </PixelCtaLink>
-                    <div className="flex items-center justify-center gap-2 font-pm-headline text-sm tracking-widest text-primary-content/90 uppercase md:ml-6">
+                    <div className="flex items-center justify-center gap-2 font-pm-headline text-sm tracking-widest text-primary-content uppercase md:ml-6">
                         <ClockIcon className="h-5 w-5 shrink-0" aria-hidden />
                         {contactTeaser.responseNote}
                     </div>

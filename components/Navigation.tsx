@@ -22,7 +22,7 @@ function navLinkClasses(active: boolean) {
         siteNavLinkClass,
         active
             ? "bg-base-200 font-semibold text-(--pm-on-surface) ring-1 ring-inset ring-primary/35"
-            : "text-(--pm-on-surface)/85 hover:bg-base-200 hover:text-(--pm-on-surface)",
+            : "text-(--pm-on-surface) hover:bg-base-200 hover:text-(--pm-on-surface)",
     ].join(" ");
 }
 
@@ -76,6 +76,8 @@ function WorkDropdown({
                 type="button"
                 id={buttonId}
                 className={`inline-flex min-h-11 items-center gap-1 whitespace-nowrap px-2 py-2 font-medium sm:px-3 ${navLinkClasses(active)}`}
+                aria-label={item.title}
+                aria-haspopup="menu"
                 aria-expanded={open}
                 aria-controls={menuId}
                 onClick={toggleMenu}
@@ -89,14 +91,28 @@ function WorkDropdown({
                     }
                 }}
             >
-                {item.title}
-                <span aria-hidden className="text-xs">
-                    ▾
-                </span>
+                <span>{item.title}</span>
+                <svg
+                    aria-hidden="true"
+                    focusable="false"
+                    className="h-3 w-3 shrink-0 opacity-80"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M2.5 4.5L6 8l3.5-3.5"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    />
+                </svg>
             </button>
             {open ? (
                 <ul
                     id={menuId}
+                    role="menu"
                     aria-labelledby={buttonId}
                     className="menu absolute top-full left-0 z-50 mt-1 min-w-[220px] rounded-lg bg-base-100 p-2 shadow-lg ring-1 ring-base-300/60"
                 >
@@ -107,10 +123,11 @@ function WorkDropdown({
                             item.children,
                         );
                         return (
-                            <li key={child.href}>
+                            <li key={child.href} role="none">
                                 <Link
                                     ref={index === 0 ? firstLinkRef : undefined}
                                     href={child.href}
+                                    role="menuitem"
                                     aria-current={childActive ? "page" : undefined}
                                     className={`block min-h-11 rounded-md px-3 py-2 text-sm ${navLinkClasses(childActive)}`}
                                     onClick={() => {
@@ -295,7 +312,7 @@ export default function Navigation() {
                     <Image
                         src={logoSrc}
                         width={160}
-                        height={160}
+                        height={64}
                         alt=""
                         className={`h-16 max-h-16 w-auto bg-transparent object-contain object-left transition ${logoBlendClass}`}
                     />
@@ -310,7 +327,7 @@ export default function Navigation() {
                 <Image
                     src={logoSrc}
                     width={160}
-                    height={160}
+                    height={64}
                     alt=""
                     priority
                     className={`h-16 max-h-16 w-auto bg-transparent object-contain object-center transition ${logoBlendClass}`}

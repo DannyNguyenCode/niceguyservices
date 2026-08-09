@@ -14,8 +14,10 @@ import {
 import ReportLookupForm from "@/components/websiteAudit/ReportLookupForm";
 import WebsiteAuditForm from "@/components/websiteAudit/WebsiteAuditForm";
 import {
+    pixelPageEyebrow,
     pixelPageHeading,
     pricingLayoutHeroHeadline as heroHeadline,
+    pricingLayoutPixelLabel as pixelLabel,
     responsivePageHeroTitleClass,
     sitePageContentClass,
 } from "@/components/pricing/pricingLayoutConstants";
@@ -34,9 +36,13 @@ export default function WebsiteAuditLandingPage() {
                     className={`relative grid items-center gap-14 py-16 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-16 lg:py-24 ${sitePageContentClass}`}
                 >
                     <div className="min-w-0">
-                        <AuditSectionLabel index="※">Website audit</AuditSectionLabel>
+                        <span
+                            className={`mb-4 block text-sm font-bold ${pixelLabel} ${pixelPageEyebrow}`}
+                        >
+                            Website audit
+                        </span>
                         <h1
-                            className={`mt-6 w-full min-w-0 text-balance font-extrabold ${heroHeadline} ${responsivePageHeroTitleClass} ${pixelPageHeading}`}
+                            className={`w-full min-w-0 text-balance font-extrabold ${heroHeadline} ${responsivePageHeroTitleClass} ${pixelPageHeading}`}
                         >
                             Find <PixelKeyword>Opportunities</PixelKeyword> To Improve Your{" "}
                             <PixelKeyword>Website</PixelKeyword>
@@ -216,9 +222,8 @@ export default function WebsiteAuditLandingPage() {
                             {AUDIT_LANDING_METHOD_ROWS.map((row, index) => (
                                 <div
                                     key={row.n}
-                                    className={`flex gap-6 py-6 ${
-                                        index === 0 ? "" : "border-t border-base-300"
-                                    }`}
+                                    className={`flex gap-6 py-6 ${index === 0 ? "" : "border-t border-base-300"
+                                        }`}
                                 >
                                     <span className="shrink-0 text-xs font-semibold text-primary">
                                         {row.n}

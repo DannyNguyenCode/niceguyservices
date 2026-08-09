@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import SiteJsonLd from "@/components/seo/SiteJsonLd";
+import DeferredMaterialSymbols from "@/components/DeferredMaterialSymbols";
 import { cookies } from "next/headers";
 import ThemeProvider from "@/components/theme/ThemeProvider";
 import { dataThemeName, parseStoredColorMode } from "@/lib/themes/siteTheme";
@@ -10,11 +11,36 @@ import { BUSINESS, getSiteUrl } from "@/lib/siteConfig";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  display: "swap",
+  preload: true,
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  display: "swap",
+  preload: true,
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+  preload: true,
 });
 
 const siteUrl = getSiteUrl();
@@ -75,11 +101,11 @@ export default async function RootLayout({
   return (
     <html lang="en" data-theme={dataTheme}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}
       >
         <SiteJsonLd />
+        <DeferredMaterialSymbols />
         <ThemeProvider initialTheme={initialColorMode}>{children}</ThemeProvider>
-
       </body>
     </html>
   );

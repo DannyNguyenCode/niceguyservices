@@ -7,7 +7,7 @@ export type NavItem =
     | { type: "link"; title: string; href: string }
     | { type: "dropdown"; title: string; href: string; children: NavLink[] };
 
-export const PRIMARY_CTA_LABEL = "Start a project";
+export const PRIMARY_CTA_LABEL = "Start your project";
 
 export const mainNavigation: NavItem[] = [
     { type: "link", title: "Home", href: "/" },
