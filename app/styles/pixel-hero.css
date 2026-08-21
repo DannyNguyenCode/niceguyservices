@@ -168,11 +168,14 @@ html[data-theme="niceguys-dark"] .ng-card-shadow {
     letter-spacing: 0.14em;
     text-transform: uppercase;
     background: transparent;
-    color: var(--pixel-btn-text, var(--pixel-btn-color, var(--ng-btn-accent)));
+    /* Outline label uses accent color; --pixel-btn-text is reserved for hover/fill. */
+    color: var(--pixel-btn-color, var(--ng-btn-accent));
     transition:
         transform 0.2s ease,
         box-shadow 0.2s ease,
-        filter 0.2s ease;
+        filter 0.2s ease,
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
 
 .pixel-btn-neon::before {
@@ -202,22 +205,45 @@ html[data-theme="niceguys-light"] .pixel-btn-neon::before {
 }
 
 /* Outline CTAs on light surfaces: navy text meets AA (coral/sky accents stay on the border). */
-html[data-theme="niceguys-light"] .pixel-btn-neon:not(.pixel-btn-neon--filled) {
+html[data-theme="niceguys-light"] .pixel-btn-neon:not(:hover):not(:focus-visible) {
     color: var(--ng-navy);
 }
 
-.pixel-btn-neon:hover {
+.pixel-btn-neon:hover,
+.pixel-btn-neon:focus-visible {
     transform: translateY(-2px);
-    filter: brightness(1.08);
-}
-
-html[data-theme="niceguys-light"] .pixel-btn-neon:hover {
-    box-shadow: var(--ng-pixel-elevation);
+    background: var(--pixel-btn-fill, var(--pixel-btn-color));
+    color: var(--pixel-btn-text, var(--ng-btn-text));
     filter: none;
 }
 
-html[data-theme="niceguys-dark"] .pixel-btn-neon:hover {
+html[data-theme="niceguys-light"] .pixel-btn-neon:hover,
+html[data-theme="niceguys-light"] .pixel-btn-neon:focus-visible {
+    box-shadow: var(--ng-pixel-elevation);
+}
+
+html[data-theme="niceguys-dark"] .pixel-btn-neon:hover,
+html[data-theme="niceguys-dark"] .pixel-btn-neon:focus-visible {
     box-shadow: 0 0 16px color-mix(in srgb, var(--pixel-btn-color) 40%, transparent);
+}
+
+/* Audit / inspiration opt-out: keep outline, no fill on hover. */
+.pixel-btn-neon--no-hover-fill:hover,
+.pixel-btn-neon--no-hover-fill:focus-visible {
+    background: transparent;
+    color: var(--pixel-btn-color, var(--ng-btn-accent));
+    box-shadow: none;
+}
+
+html[data-theme="niceguys-light"] .pixel-btn-neon--no-hover-fill:hover,
+html[data-theme="niceguys-light"] .pixel-btn-neon--no-hover-fill:focus-visible {
+    color: var(--ng-navy);
+    box-shadow: var(--ng-pixel-elevation);
+}
+
+/* Outline CTAs on dark bands/cards: keep accent (or white) label in light theme. */
+html[data-theme="niceguys-light"] .pixel-btn-neon--on-dark:not(:hover):not(:focus-visible) {
+    color: var(--pixel-btn-color, var(--ng-btn-accent));
 }
 
 .pixel-btn-neon:active {
@@ -235,7 +261,7 @@ html[data-theme="niceguys-dark"] .pixel-btn-neon:hover {
 }
 
 .pixel-btn-neon--xl {
-    border-radius: 0.75rem;
+    border-radius: 9999px;
     padding: 0.95rem 1.25rem;
 }
 
@@ -249,9 +275,9 @@ html[data-theme="niceguys-dark"] .pixel-btn-neon:hover {
     justify-content: center;
 }
 
+/* Legacy --filled marker: CTAs are outline by default and fill on hover site-wide. */
 .pixel-btn-neon--filled {
-    background: var(--pixel-btn-fill, color-mix(in srgb, var(--pixel-btn-color) 14%, transparent));
-    color: var(--pixel-btn-text, var(--pixel-btn-color));
+    background: transparent;
 }
 
 .pixel-section-title {

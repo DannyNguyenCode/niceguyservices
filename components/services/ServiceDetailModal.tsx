@@ -202,9 +202,7 @@ export default function ServiceDetailModal({ service, onClose }: ServiceDetailMo
                                     <PixelCtaLink
                                         href="/contact"
                                         color="var(--ng-btn-coral)"
-                                        fill="var(--ng-btn-fill)"
-                                        textColor="var(--ng-btn-text)"
-                                        filled
+                                        fill="var(--ng-btn-coral)"
                                         xl
                                         className="group"
                                         onClick={() => dialogRef.current?.close()}

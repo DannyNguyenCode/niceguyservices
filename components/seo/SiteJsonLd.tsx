@@ -87,7 +87,7 @@ export default function SiteJsonLd() {
                     {
                         "@type": "Offer",
                         name: "Starter Website",
-                        price: "500",
+                        price: "250",
                         priceCurrency: "CAD",
                         description:
                             "A one-time custom website build for small businesses that need a clean, professional online presence.",
@@ -95,7 +95,7 @@ export default function SiteJsonLd() {
                     {
                         "@type": "Offer",
                         name: "Hosting & Reports",
-                        price: "20",
+                        price: "10",
                         priceCurrency: "CAD",
                         description:
                             "Monthly hosting and Google Search Console reporting for small business websites.",

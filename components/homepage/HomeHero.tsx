@@ -62,8 +62,6 @@ export default function HomeHero() {
                 href={HOME_HERO_PRIMARY_CTA.href}
                 color="var(--ng-btn-coral)"
                 fill="var(--ng-btn-coral)"
-                textColor="var(--ng-btn-text)"
-                filled
                 className="group"
               >
                 {HOME_HERO_PRIMARY_CTA.label}
@@ -75,7 +73,8 @@ export default function HomeHero() {
               <PixelCtaLink
                 href={HOME_HERO_SECONDARY_CTA.href}
                 color="var(--ng-btn-sky)"
-                className="group home-hero-secondary-cta"
+                fill="var(--ng-btn-sky)"
+                className="group"
               >
                 {HOME_HERO_SECONDARY_CTA.label}
                 <ArrowRight

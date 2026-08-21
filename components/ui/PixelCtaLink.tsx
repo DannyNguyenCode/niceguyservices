@@ -8,7 +8,12 @@ type PixelCtaLinkProps = {
     color?: string;
     fill?: string;
     textColor?: string;
+    /** @deprecated CTAs are outline by default and fill on hover. Kept for call-site compat. */
     filled?: boolean;
+    /** When false, skips hover fill (e.g. website audit). Default true. */
+    hoverFill?: boolean;
+    /** Keep accent label color on dark surfaces (skips light-theme navy outline text). */
+    onDark?: boolean;
     pill?: boolean;
     xl?: boolean;
     block?: boolean;
@@ -25,8 +30,10 @@ export default function PixelCtaLink({
     color = "var(--ng-btn-accent)",
     fill,
     textColor,
-    filled = false,
-    pill = false,
+    filled: _filled = false,
+    hoverFill = true,
+    onDark = false,
+    pill = true,
     xl = false,
     block = false,
     lg = false,
@@ -34,9 +41,11 @@ export default function PixelCtaLink({
     rel,
     onClick,
 }: PixelCtaLinkProps) {
+    void _filled;
     const classes = [
         "pixel-btn-neon",
-        filled && "pixel-btn-neon--filled",
+        !hoverFill && "pixel-btn-neon--no-hover-fill",
+        onDark && "pixel-btn-neon--on-dark",
         pill && "pixel-btn-neon--pill",
         xl && "pixel-btn-neon--xl",
         block && "pixel-btn-neon--block",

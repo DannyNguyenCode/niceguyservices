@@ -41,10 +41,8 @@ export default function HomeContact() {
                     <PixelCtaLink
                         href={contactHref}
                         color="var(--ng-btn-sky)"
-                        fill="var(--ng-btn-fill)"
-                        textColor="var(--ng-btn-text)"
-                        filled
-                        pill
+                        fill="var(--ng-btn-sky)"
+                        onDark
                         lg
                     >
                         {contactTeaser.primaryCtaLabel}

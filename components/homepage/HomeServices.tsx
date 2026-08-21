@@ -33,6 +33,7 @@ export default function HomeServices() {
                 <PixelCtaLink
                     href={servicesTeaser.viewAllHref}
                     color="var(--ng-btn-sky)"
+                    fill="var(--ng-btn-sky)"
                     className="group hidden md:inline-flex"
                 >
                     {servicesTeaser.viewAllLabel}
@@ -84,10 +85,9 @@ export default function HomeServices() {
                 <PixelCtaLink
                     href={servicesTeaser.viewAllHref}
                     color="var(--ng-btn-sky)"
-                    filled
+                    fill="var(--ng-btn-sky)"
                     block
                     className="md:hidden"
-                    fill="color-mix(in srgb, var(--ng-btn-sky) 10%, var(--pm-surface-highest))"
                 >
                     {servicesTeaser.viewAllLabel}
                 </PixelCtaLink>

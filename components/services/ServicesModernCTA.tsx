@@ -88,10 +88,8 @@ export default function ServicesModernCTA({
                     <PixelCtaLink
                         href={primaryHref}
                         color="var(--ng-btn-sky)"
-                        fill="var(--ng-btn-fill)"
-                        textColor="var(--ng-btn-text)"
-                        filled
-                        pill={layout === "fullWidth"}
+                        fill="var(--ng-btn-sky)"
+                        onDark={layout === "fullWidth"}
                         lg
                     >
                         {primaryLabel}
@@ -99,8 +97,8 @@ export default function ServicesModernCTA({
                     <PixelCtaLink
                         href={secondaryHref}
                         color={layout === "fullWidth" ? "var(--pm-white)" : "var(--ng-btn-sky)"}
-                        textColor={layout === "fullWidth" ? "var(--ng-btn-text)" : undefined}
-                        pill={layout === "fullWidth"}
+                        fill={layout === "fullWidth" ? "var(--pm-white)" : "var(--ng-btn-sky)"}
+                        onDark={layout === "fullWidth"}
                         lg
                         className={layout === "fullWidth" ? "group" : undefined}
                     >
