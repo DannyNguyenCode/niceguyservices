@@ -1,5 +1,6 @@
 "use client";
 
+import { useId, useState } from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import homepageContent from "./homepageContent.json";
 import { homeSectionTitleSizeClass } from "./homepageLayoutConstants";
@@ -9,6 +10,43 @@ type FaqItem = {
     question: string;
     answer: string;
 };
+
+function FaqAccordionItem({ item }: { item: FaqItem }) {
+    const [open, setOpen] = useState(false);
+    const reactId = useId();
+    const buttonId = `${reactId}-button`;
+    const panelId = `${reactId}-panel`;
+
+    return (
+        <div className="rounded-2xl border border-(--pm-outline-variant)/40 bg-(--pm-card) transition-colors duration-300">
+            <h3 className="m-0 text-base font-semibold leading-snug md:text-lg">
+                <button
+                    type="button"
+                    id={buttonId}
+                    className={`flex w-full cursor-pointer items-center justify-between gap-4 p-5 text-left ${siteDisclosureSummaryClass}`}
+                    aria-expanded={open}
+                    aria-controls={panelId}
+                    onClick={() => setOpen((value) => !value)}
+                >
+                    <span className="pr-2 text-(--pm-on-surface)">{item.question}</span>
+                    <ChevronDownIcon
+                        className={`h-6 w-6 shrink-0 text-(--pm-on-surface-variant) transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+                        aria-hidden
+                    />
+                </button>
+            </h3>
+            <div
+                id={panelId}
+                role="region"
+                aria-labelledby={buttonId}
+                hidden={!open}
+                className="border-t border-(--pm-outline-variant)/30 px-5 pt-4 pb-5 text-base leading-relaxed text-(--pm-on-surface-variant)"
+            >
+                {item.answer}
+            </div>
+        </div>
+    );
+}
 
 export default function HomeFaq() {
     const { faq } = homepageContent;
@@ -34,23 +72,7 @@ export default function HomeFaq() {
                 </div>
                 <div className="space-y-4">
                     {items.map((item) => (
-                        <details
-                            key={item.question}
-                            className="group rounded-2xl border border-(--pm-outline-variant)/40 bg-(--pm-white) transition-colors duration-300 open:border-(--pm-outline-variant) dark:bg-base-100/60"
-                        >
-                            <summary className={`flex cursor-pointer list-none items-center justify-between gap-4 p-5 ${siteDisclosureSummaryClass} [&::-webkit-details-marker]:hidden`}>
-                                <span className="pr-2 text-base font-semibold leading-snug text-(--pm-on-surface) md:text-lg">
-                                    {item.question}
-                                </span>
-                                <ChevronDownIcon
-                                    className="h-6 w-6 shrink-0 text-(--pm-on-surface-variant) transition-transform duration-300 group-open:rotate-180"
-                                    aria-hidden
-                                />
-                            </summary>
-                            <div className="mt-2 border-t border-(--pm-outline-variant)/30 px-5 pt-4 pb-5 text-base leading-relaxed text-(--pm-on-surface-variant)">
-                                {item.answer}
-                            </div>
-                        </details>
+                        <FaqAccordionItem key={item.question} item={item} />
                     ))}
                 </div>
             </div>

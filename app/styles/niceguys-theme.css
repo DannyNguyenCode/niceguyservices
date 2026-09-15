@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme="niceguys-dark"], [data-theme="niceguys-dark"] *));
+
 @plugin "daisyui" {
     themes: false;
     logs: false;
@@ -57,6 +59,7 @@
     --pm-tertiary: #60c4e3;
     --pm-outline-variant: #a9becd;
     --pm-white: #ffffff;
+    --pm-card: #ffffff;
     --pm-glass: rgb(255 255 255 / 0.65);
     --pm-border-subtle: rgb(10 125 186 / 0.12);
     --pm-border-light: rgb(11 37 64 / 0.12);
@@ -136,6 +139,7 @@
     --pm-tertiary: #59d39a;
     --pm-outline-variant: #33495e;
     --pm-white: #ffffff;
+    --pm-card: #14273a;
     --pm-glass: rgb(15 29 46 / 0.45);
     --pm-border-subtle: rgb(255 255 255 / 0.08);
     --pm-border-light: rgb(255 255 255 / 0.12);

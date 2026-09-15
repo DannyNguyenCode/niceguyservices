@@ -122,8 +122,8 @@ export default function HomePricing() {
                     </div>
                     <PixelCtaLink
                         href={contactHref}
-                        color="var(--ng-btn-sky)"
-                        fill="var(--ng-btn-sky)"
+                        color="var(--pm-primary-container)"
+                        fill="var(--pm-primary-container)"
                         xl
                         block
                         onDark

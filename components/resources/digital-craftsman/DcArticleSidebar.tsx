@@ -21,9 +21,9 @@ export function DcArticleSidebar({
         <aside className="col-span-3 sticky top-24">
             <div className="flex flex-col gap-8">
                 <nav aria-label="In this article">
-                    <h4 className="mb-4 text-sm font-medium tracking-widest text-[#414845] uppercase">
+                    <p className="mb-4 text-sm font-medium tracking-widest text-[#414845] uppercase">
                         In this article
-                    </h4>
+                    </p>
                     <ul className="flex flex-col gap-2 border-l border-[#c1c8c4]">
                         {toc.map(({ id, label }) => (
                             <li key={id}>
@@ -43,9 +43,9 @@ export function DcArticleSidebar({
                     </ul>
                 </nav>
                 <div className="rounded-lg border border-[#c1c8c4] bg-white p-6">
-                    <h5 className="dc-display mb-2 text-2xl leading-[1.3] font-medium text-[#1b1c1c]">
+                    <p className="dc-display mb-2 text-2xl leading-[1.3] font-medium text-[#1b1c1c]">
                         {ctaTitle}
-                    </h5>
+                    </p>
                     <p className="mb-2 text-base text-[#414845]">{ctaBody}</p>
                     <Link
                         href="/contact"
@@ -67,9 +67,9 @@ export function DcRelatedGuides({
     return (
         <aside className="col-span-3">
             <div>
-                <h4 className="mb-4 text-sm font-medium tracking-widest text-[#414845] uppercase">
+                <p className="mb-4 text-sm font-medium tracking-widest text-[#414845] uppercase">
                     Related Guides
-                </h4>
+                </p>
                 <ul className="flex flex-col gap-3">
                     {guides.map(({ title, href, year }) => (
                         <li key={title} className="flex items-baseline gap-2">

@@ -40,8 +40,9 @@ export default function HomeContact() {
                 <div className="flex flex-col items-center justify-center gap-4 md:flex-row">
                     <PixelCtaLink
                         href={contactHref}
-                        color="var(--ng-btn-sky)"
-                        fill="var(--ng-btn-sky)"
+                        color="var(--pm-on-primary)"
+                        fill="var(--pm-on-primary)"
+                        textColor="var(--pm-primary)"
                         onDark
                         lg
                     >

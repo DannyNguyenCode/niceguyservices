@@ -73,6 +73,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/testimonials",
+        destination: "/work",
+        permanent: true,
+      },
+      {
         source: "/templates",
         destination: "/inspiration",
         permanent: true,

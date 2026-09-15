@@ -87,18 +87,20 @@ export default function ServicesModernCTA({
                 <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
                     <PixelCtaLink
                         href={primaryHref}
-                        color="var(--ng-btn-sky)"
-                        fill="var(--ng-btn-sky)"
-                        onDark={layout === "fullWidth"}
+                        color="var(--pm-on-primary)"
+                        fill="var(--pm-on-primary)"
+                        textColor="var(--pm-primary)"
+                        onDark
                         lg
                     >
                         {primaryLabel}
                     </PixelCtaLink>
                     <PixelCtaLink
                         href={secondaryHref}
-                        color={layout === "fullWidth" ? "var(--pm-white)" : "var(--ng-btn-sky)"}
-                        fill={layout === "fullWidth" ? "var(--pm-white)" : "var(--ng-btn-sky)"}
-                        onDark={layout === "fullWidth"}
+                        color="var(--pm-on-primary)"
+                        fill="var(--pm-on-primary)"
+                        textColor="var(--pm-primary)"
+                        onDark
                         lg
                         className={layout === "fullWidth" ? "group" : undefined}
                     >

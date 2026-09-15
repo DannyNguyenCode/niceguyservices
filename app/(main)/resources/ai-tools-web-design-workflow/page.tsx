@@ -5,16 +5,15 @@ import ResourceArticleTemplate, {
     ResourceQuoteCallout,
     ResourceSection,
 } from "@/components/resources/ResourceArticleTemplate";
-import { absoluteUrl } from "@/lib/siteConfig";
+import { createPageMetadata } from "@/lib/pageMetadata";
 
 export const metadata: Metadata = {
-    title:
-        "Using AI as a Tool in Web Design (Cursor, Stitch, ChatGPT)",
-    description:
-        "How I use AI in moderation to save time on code and SEO, brainstorm UI with Google Stitch, and draft copy with ChatGPT — without handing the site over to a machine.",
-    alternates: {
-        canonical: absoluteUrl("/resources/ai-tools-web-design-workflow"),
-    },
+    ...createPageMetadata({
+        title: "Using AI as a Tool in Web Design (Cursor, Stitch, ChatGPT)",
+        description:
+            "How I use AI in moderation to save time on code and SEO, brainstorm UI with Google Stitch, and draft copy with ChatGPT — without handing the site over to a machine.",
+        path: "/resources/ai-tools-web-design-workflow",
+    }),
     robots: {
         index: false,
         follow: false,

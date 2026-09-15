@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
 import Content from "@/components/Content";
 import FaqJsonLd from "@/components/seo/FaqJsonLd";
-import { absoluteUrl } from "@/lib/siteConfig";
+import { createPageMetadata } from "@/lib/pageMetadata";
 
-export const metadata: Metadata = {
-  title: {
-    absolute: "Nice Guy Web Design | Toronto Small Business Websites",
-  },
+export const metadata: Metadata = createPageMetadata({
+  title: "Toronto Web Design for Small Businesses",
   description:
     "Custom websites and SEO-ready builds for Toronto and GTA small businesses. Fast, maintainable websites designed to improve visibility, generate leads, and support long-term growth.",
-  alternates: {
-    canonical: absoluteUrl("/"),
-  },
-};
+  path: "/",
+});
 
 export default function Home() {
   return (

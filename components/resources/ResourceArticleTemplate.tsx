@@ -115,7 +115,7 @@ export default function ResourceArticleTemplate({
 
                     <aside className="space-y-8 md:col-span-4">
                         {comparisonBars && comparisonBars.length > 0 ? (
-                            <div className="rounded-xl bg-(--pm-white) p-8 shadow-[0px_12px_32px_rgba(44,47,48,0.06)] dark:bg-base-100">
+                            <div className="rounded-xl bg-(--pm-card) p-8 shadow-[0px_12px_32px_rgba(44,47,48,0.06)]">
                                 <h2 className="font-pm-headline mb-6 text-lg font-bold">
                                     Quick comparison
                                 </h2>
@@ -190,8 +190,8 @@ export default function ResourceArticleTemplate({
                             <div className="flex flex-col items-center justify-center gap-4 md:flex-row">
                                 <PixelCtaLink
                                     href={cta.primary.href}
-                                    color="var(--ng-btn-sky)"
-                                    fill="var(--ng-btn-sky)"
+                                    color="var(--pm-primary-container)"
+                                    fill="var(--pm-primary-container)"
                                     onDark
                                     lg
                                 >

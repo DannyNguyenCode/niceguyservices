@@ -31,7 +31,7 @@ function BrandMark({ showName = true }: { showName?: boolean }) {
                 src={SITE_LOGO}
                 width={160}
                 height={55}
-                alt="Nice Guy Services"
+                alt=""
                 className="h-9 w-auto max-w-[120px] shrink-0 object-contain object-left sm:h-10 sm:max-w-[140px]"
                 priority={showName}
             />
@@ -66,7 +66,7 @@ export function DigitalCraftsmanFooter() {
                             src={SITE_LOGO}
                             width={160}
                             height={50}
-                            alt={BUSINESS.name}
+                            alt=""
                             className="h-[50px] w-auto max-w-[160px] object-contain object-left"
                         />
                     </Link>

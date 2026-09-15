@@ -1,32 +1,24 @@
 import type { ReactNode } from "react";
 import DigitalCraftsmanArticleShell from "./DigitalCraftsmanArticleShell";
 import type { DcArticleMeta } from "./types";
-import { DcDesktopArticleLayout } from "./article-ui/DcDesktopArticleLayout";
-import { DcMobileArticleShell } from "./article-ui/DcMobileArticleShell";
+import { DcResponsiveArticleLayout } from "./article-ui/DcResponsiveArticleLayout";
 
 export type DigitalCraftsmanArticlePageProps = {
     meta: DcArticleMeta;
-    mobile: ReactNode;
-    desktop: ReactNode;
-    desktopFooter?: ReactNode;
+    children: ReactNode;
 };
 
 /**
  * Standard layout for all Digital Craftsman resource articles.
- * Wraps mobile (card) and desktop (3-column) views in the shared shell.
+ * Renders one semantic article tree; responsive chrome is CSS-only.
  */
 export default function DigitalCraftsmanArticlePage({
     meta,
-    mobile,
-    desktop,
-    desktopFooter,
+    children,
 }: DigitalCraftsmanArticlePageProps) {
     return (
         <DigitalCraftsmanArticleShell>
-            <DcMobileArticleShell>{mobile}</DcMobileArticleShell>
-            <DcDesktopArticleLayout meta={meta} footer={desktopFooter}>
-                {desktop}
-            </DcDesktopArticleLayout>
+            <DcResponsiveArticleLayout meta={meta}>{children}</DcResponsiveArticleLayout>
         </DigitalCraftsmanArticleShell>
     );
 }

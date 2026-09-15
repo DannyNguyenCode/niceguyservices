@@ -48,7 +48,7 @@ export default function AboutBiographyLayout() {
             className="flex min-h-screen flex-col bg-(--pm-surface) font-pm-body text-(--pm-on-surface)"
             data-about-biography-layout=""
         >
-                <main className="min-w-0 w-full flex-1">
+                <div className="min-w-0 w-full flex-1">
                     <BiographyHero
                         eyebrow={bl.heroEyebrow}
                         headlineHighlight={bl.heroHeadlineHighlight}
@@ -84,7 +84,7 @@ export default function AboutBiographyLayout() {
                         eyebrow={bl.meetModuleEyebrow}
                         meetCard={meetCard}
                     />
-                </main>
+                </div>
 
                 <ServicesModernCTA
                     title={cta.title}

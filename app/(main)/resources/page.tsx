@@ -16,7 +16,7 @@ import {
     responsivePageHeroTitleClass,
     sitePageContentClass,
 } from "@/components/pricing/pricingLayoutConstants";
-import { absoluteUrl } from "@/lib/siteConfig";
+import { createPageMetadata } from "@/lib/pageMetadata";
 import {
     ArrowRightIcon,
     ChartBarIcon,
@@ -26,14 +26,12 @@ import {
     Squares2X2Icon,
 } from "@heroicons/react/24/outline";
 
-export const metadata: Metadata = {
-    title: "Web Design & SEO Resources for Toronto Small Businesses",
+export const metadata: Metadata = createPageMetadata({
+    title: "Small Business Web Design & SEO Guides",
     description:
         "Practical guides for Toronto and GTA small businesses: SEO, lead generation, custom vs template websites, and more.",
-    alternates: {
-        canonical: absoluteUrl("/resources"),
-    },
-};
+    path: "/resources",
+});
 
 type ResourceArticle = {
     title: string;
@@ -80,7 +78,7 @@ function ResourceCard({ article, index }: { article: ResourceArticle; index: num
             className={[
                 "group flex min-h-[360px] flex-col justify-between rounded-xl p-8 transition-all duration-500 hover:border-primary",
                 large
-                    ? "border-b-4 border-transparent bg-(--pm-white) shadow-sm dark:bg-base-100 md:col-span-7"
+                    ? "border-b-4 border-transparent bg-(--pm-card) shadow-sm md:col-span-7"
                     : "border border-transparent bg-(--pm-surface-low) md:col-span-5",
             ].join(" ")}
         >
@@ -165,7 +163,7 @@ function ResourceCategorySection({ category }: { category: ResourceCategory }) {
 export default function ResourcesPage() {
     return (
         <div className="bg-(--pm-surface) font-pm-body text-(--pm-on-surface)">
-            <main className={`relative pt-28 pb-24 ${sitePageContentClass}`}>
+            <div className={`relative pt-28 pb-24 ${sitePageContentClass}`}>
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px] ng-grid-bg opacity-30" aria-hidden />
                 <header className="relative z-10 mb-20">
                     <div className="mb-6 inline-block rounded-full border border-[color:var(--ng-border)] bg-white/60 px-3 py-1 backdrop-blur dark:bg-white/5">
@@ -217,7 +215,7 @@ export default function ResourcesPage() {
                         <ResourceCategorySection key={category.id} category={category} />
                     ))}
                 </div>
-            </main>
+            </div>
 
             <ServicesModernCTA
                 title="Need a website built the right way?"

@@ -1,5 +1,6 @@
 "use client";
 
+import { useId, useState } from "react";
 import {
     DcChecklist,
     DcFeatureRows,
@@ -49,30 +50,53 @@ export function GeoMythAccordion({ className = "" }: { className?: string }) {
     return (
         <div className={`space-y-3 ${className}`}>
             {GEO_MYTHS.map(({ myth, explanation }) => (
-                <details
-                    key={myth}
-                    className="group rounded-lg border border-[#c1c8c4] bg-white open:shadow-sm"
-                >
-                    <summary className="flex cursor-pointer list-none items-start justify-between gap-4 p-5 marker:content-none [&::-webkit-details-marker]:hidden">
-                        <div>
-                            <span className="mb-1 block text-xs font-medium tracking-widest text-[#ba1a1a] uppercase">
-                                Myth
-                            </span>
-                            <span className="font-medium text-[#1b1c1c]">&ldquo;{myth}&rdquo;</span>
-                        </div>
-                        <MaterialIcon
-                            name="expand_more"
-                            className="shrink-0 text-[#416359] transition-transform group-open:rotate-180"
-                        />
-                    </summary>
-                    <div className="border-t border-[#c1c8c4] px-5 pt-4 pb-5">
-                        <p className="mb-2 text-sm font-medium tracking-wide text-[#416359] uppercase">
-                            False
-                        </p>
-                        <p className="text-[#414845]">{explanation}</p>
-                    </div>
-                </details>
+                <GeoMythItem key={myth} myth={myth} explanation={explanation} />
             ))}
+        </div>
+    );
+}
+
+function GeoMythItem({ myth, explanation }: { myth: string; explanation: string }) {
+    const [open, setOpen] = useState(false);
+    const reactId = useId();
+    const buttonId = `${reactId}-button`;
+    const panelId = `${reactId}-panel`;
+
+    return (
+        <div className="rounded-lg border border-[#c1c8c4] bg-white">
+            <h3 className="m-0">
+                <button
+                    type="button"
+                    id={buttonId}
+                    className="flex w-full cursor-pointer list-none items-start justify-between gap-4 p-5 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#416359]"
+                    aria-expanded={open}
+                    aria-controls={panelId}
+                    onClick={() => setOpen((value) => !value)}
+                >
+                    <span>
+                        <span className="mb-1 block text-xs font-medium tracking-widest text-[#ba1a1a] uppercase">
+                            Myth
+                        </span>
+                        <span className="font-medium text-[#1b1c1c]">&ldquo;{myth}&rdquo;</span>
+                    </span>
+                    <MaterialIcon
+                        name="expand_more"
+                        className={`shrink-0 text-[#416359] transition-transform ${open ? "rotate-180" : ""}`}
+                    />
+                </button>
+            </h3>
+            <div
+                id={panelId}
+                role="region"
+                aria-labelledby={buttonId}
+                hidden={!open}
+                className="border-t border-[#c1c8c4] px-5 pt-4 pb-5"
+            >
+                <p className="mb-2 text-sm font-medium tracking-wide text-[#416359] uppercase">
+                    False
+                </p>
+                <p className="text-[#414845]">{explanation}</p>
+            </div>
         </div>
     );
 }
@@ -139,7 +163,7 @@ export function GeoFriendlyGrid() {
     return (
         <div className="grid gap-4 sm:grid-cols-2">
             {GEO_FRIENDLY_CARDS.map(({ icon, title, body }) => (
-                <article
+                <div
                     key={title}
                     className="rounded-lg border border-[#c1c8c4] bg-white p-5 shadow-sm"
                 >
@@ -148,7 +172,7 @@ export function GeoFriendlyGrid() {
                         <h3 className="font-medium text-[#1b1c1c]">{title}</h3>
                     </div>
                     <p className="text-sm text-[#414845]">{body}</p>
-                </article>
+                </div>
             ))}
         </div>
     );

@@ -5,14 +5,14 @@ type FaqItem = { question: string; answer: string };
 type SupplementalJsonLdProps = {
     pagePath: string;
     headline: string;
-    faq: readonly FaqItem[];
+    faq?: readonly FaqItem[];
 };
 
-/** BreadcrumbList + FAQPage JSON-LD for resource articles. */
+/** BreadcrumbList + optional FAQPage JSON-LD for resource articles. */
 export default function ResourceArticleSupplementalJsonLd({
     pagePath,
     headline,
-    faq,
+    faq = [],
 }: SupplementalJsonLdProps) {
     const pageUrl = absoluteUrl(pagePath);
     const resourcesUrl = absoluteUrl("/resources");
@@ -42,18 +42,21 @@ export default function ResourceArticleSupplementalJsonLd({
         ],
     };
 
-    const faqPage = {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: faq.map(({ question, answer }) => ({
-            "@type": "Question",
-            name: question,
-            acceptedAnswer: {
-                "@type": "Answer",
-                text: answer,
-            },
-        })),
-    };
+    const faqPage =
+        faq.length > 0
+            ? {
+                  "@context": "https://schema.org",
+                  "@type": "FAQPage",
+                  mainEntity: faq.map(({ question, answer }) => ({
+                      "@type": "Question",
+                      name: question,
+                      acceptedAnswer: {
+                          "@type": "Answer",
+                          text: answer,
+                      },
+                  })),
+              }
+            : null;
 
     return (
         <>
@@ -61,10 +64,12 @@ export default function ResourceArticleSupplementalJsonLd({
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
             />
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPage) }}
-            />
+            {faqPage ? (
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPage) }}
+                />
+            ) : null}
         </>
     );
 }

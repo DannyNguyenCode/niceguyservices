@@ -292,7 +292,6 @@ export default function Navigation() {
                     {mobileOpen ? (
                         <ul
                             id="mobile-nav-menu"
-                            role="navigation"
                             aria-label="Mobile"
                             className="menu menu-sm dropdown-content fixed! inset-x-0 z-60 max-h-[min(75dvh,calc(100dvh-4rem))] w-full max-w-none translate-none! flex-col overflow-y-auto rounded-none border-0 border-b border-base-300 bg-base-100 p-0 shadow-lg"
                             style={{

@@ -44,27 +44,29 @@ const inter = Inter({
 });
 
 const siteUrl = getSiteUrl();
+const defaultTitle = "Toronto Web Design for Small Businesses | Nice Guy Web Design";
+const defaultDescription =
+  "Custom websites and SEO-ready builds for Toronto and GTA small businesses. Fast, maintainable websites designed to improve visibility, generate leads, and support long-term growth.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Nice Guy Web Design | Toronto Small Business Websites",
+    default: defaultTitle,
     template: "%s | Nice Guy Web Design",
   },
-  description:
-    "Custom websites and SEO-ready builds for Toronto and GTA small businesses. Fast, maintainable websites designed to improve visibility, generate leads, and support long-term growth.",
+  description: defaultDescription,
   verification: {
     google: "SVu4bQTn5qjJHWHKw6pz34Ob__tmftRjWWFkMecbU_Q",
   },
   alternates: {
-    canonical: siteUrl,
+    canonical: `${siteUrl}/`,
   },
   openGraph: {
     type: "website",
     locale: "en_CA",
-    url: siteUrl,
+    url: `${siteUrl}/`,
     siteName: BUSINESS.name,
-    title: "Nice Guy Web Design | Toronto Small Business Websites",
+    title: defaultTitle,
     description:
       "Custom websites and SEO-ready builds for Toronto and GTA small businesses — designed to improve visibility, generate leads, and stay easy to maintain.",
     images: [
@@ -78,7 +80,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nice Guy Web Design | Toronto Small Business Websites",
+    title: defaultTitle,
     description:
       "Custom websites and SEO-ready builds for Toronto and GTA small businesses.",
     images: ["/og-image.png"],
@@ -99,7 +101,7 @@ export default async function RootLayout({
   const dataTheme = dataThemeName(initialColorMode);
 
   return (
-    <html lang="en" data-theme={dataTheme}>
+    <html lang="en-CA" data-theme={dataTheme}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}
       >

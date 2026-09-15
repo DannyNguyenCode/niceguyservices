@@ -39,7 +39,7 @@ export default function BiographyWhoSection({
                         </p>
                     </div>
                     <div className="space-y-6">
-                        <div className="rounded-2xl border border-(--pm-outline-variant)/15 bg-(--pm-white) p-8 shadow-sm dark:bg-base-100">
+                        <div className="rounded-2xl border border-(--pm-outline-variant)/15 bg-(--pm-card) p-8 shadow-sm">
                             <h3 className="font-pm-headline mb-6 text-sm font-black capitalize tracking-widest text-(--pm-on-surface)">
                                 Vital statistics
                             </h3>
