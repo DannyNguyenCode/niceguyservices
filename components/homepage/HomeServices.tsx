@@ -33,6 +33,7 @@ export default function HomeServices() {
                 <PixelCtaLink
                     href={servicesTeaser.viewAllHref}
                     color="var(--ng-btn-sky)"
+                    fill="var(--ng-btn-sky)"
                     className="group hidden md:inline-flex"
                 >
                     {servicesTeaser.viewAllLabel}
@@ -53,7 +54,7 @@ export default function HomeServices() {
                     return (
                         <div
                             key={svc.id}
-                            className="group rounded-xl border border-transparent bg-(--pm-surface-low) p-8 transition-all duration-500 hover:border-primary/20 hover:bg-(--pm-white) dark:hover:bg-base-100"
+                            className="group rounded-xl border border-transparent bg-(--pm-surface-low) p-8 transition-all duration-500 hover:border-primary/20 hover:bg-(--pm-card)"
                         >
                             <div
                                 className={`mb-6 flex h-12 w-12 items-center justify-center rounded-lg transition-transform group-hover:scale-110 ${iconWrap}`}
@@ -84,10 +85,9 @@ export default function HomeServices() {
                 <PixelCtaLink
                     href={servicesTeaser.viewAllHref}
                     color="var(--ng-btn-sky)"
-                    filled
+                    fill="var(--ng-btn-sky)"
                     block
                     className="md:hidden"
-                    fill="color-mix(in srgb, var(--ng-btn-sky) 10%, var(--pm-surface-highest))"
                 >
                     {servicesTeaser.viewAllLabel}
                 </PixelCtaLink>

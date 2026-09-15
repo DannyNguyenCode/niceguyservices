@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { ArrowLeftIcon, LightBulbIcon } from "@heroicons/react/24/outline";
 import { sitePageContentClass } from "@/components/pricing/pricingLayoutConstants";
 import ArticleJsonLd, { type ArticleJsonLdInput } from "@/components/seo/ArticleJsonLd";
+import PixelCtaLink from "@/components/ui/PixelCtaLink";
 
 export type ResourceComparisonBar = {
     label: string;
@@ -114,7 +115,7 @@ export default function ResourceArticleTemplate({
 
                     <aside className="space-y-8 md:col-span-4">
                         {comparisonBars && comparisonBars.length > 0 ? (
-                            <div className="rounded-xl bg-(--pm-white) p-8 shadow-[0px_12px_32px_rgba(44,47,48,0.06)] dark:bg-base-100">
+                            <div className="rounded-xl bg-(--pm-card) p-8 shadow-[0px_12px_32px_rgba(44,47,48,0.06)]">
                                 <h2 className="font-pm-headline mb-6 text-lg font-bold">
                                     Quick comparison
                                 </h2>
@@ -186,20 +187,27 @@ export default function ResourceArticleTemplate({
                             <p className="mx-auto mb-8 max-w-xl text-neutral-content/75">
                                 {cta.body}
                             </p>
-                            <div className="flex flex-col justify-center gap-4 md:flex-row">
-                                <Link
+                            <div className="flex flex-col items-center justify-center gap-4 md:flex-row">
+                                <PixelCtaLink
                                     href={cta.primary.href}
-                                    className="rounded-full bg-primary px-8 py-3 font-pm-headline font-bold text-primary-content transition-opacity hover:opacity-90"
+                                    color="var(--pm-primary-container)"
+                                    fill="var(--pm-primary-container)"
+                                    onDark
+                                    lg
                                 >
                                     {cta.primary.label}
-                                </Link>
+                                </PixelCtaLink>
                                 {cta.secondary ? (
-                                    <Link
+                                    <PixelCtaLink
                                         href={cta.secondary.href}
-                                        className="rounded-full border border-neutral-content/25 px-8 py-3 font-pm-headline font-bold text-neutral-content transition-colors hover:bg-neutral-content/10"
+                                        color="var(--pm-white)"
+                                        fill="var(--pm-white)"
+                                        onDark
+                                        lg
+                                        className="group"
                                     >
                                         {cta.secondary.label}
-                                    </Link>
+                                    </PixelCtaLink>
                                 ) : null}
                             </div>
                         </div>

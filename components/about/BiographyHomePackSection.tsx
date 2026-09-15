@@ -52,7 +52,7 @@ export default function BiographyHomePackSection({
                         {petPortraits.map((pet, i) => (
                             <div
                                 key={pet.src}
-                                className={`group relative overflow-hidden rounded-3xl border border-(--pm-outline-variant)/15 bg-(--pm-white) p-4 transition-all duration-500 hover:shadow-2xl dark:bg-base-100 ${
+                                className={`group relative overflow-hidden rounded-3xl border border-(--pm-outline-variant)/15 bg-(--pm-card) p-4 transition-all duration-500 hover:shadow-2xl ${
                                     i === 1 ? "mt-8 md:mt-16" : ""
                                 } ${i === 2 ? "mt-16 md:mt-32" : ""}`}
                             >

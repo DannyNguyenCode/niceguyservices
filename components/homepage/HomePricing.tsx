@@ -74,12 +74,11 @@ export default function HomePricing() {
                     </div>
                     <PixelCtaLink
                         href={contactHref}
-                        color="var(--ng-btn-sky)"
-                        filled
+                        color="var(--ng-btn-coral)"
+                        fill="var(--ng-btn-coral)"
                         xl
                         block
                         className="mt-auto"
-                        fill="color-mix(in srgb, var(--ng-btn-sky) 8%, transparent)"
                     >
                         {pricingTeaser.projectCtaLabel}
                     </PixelCtaLink>
@@ -123,12 +122,11 @@ export default function HomePricing() {
                     </div>
                     <PixelCtaLink
                         href={contactHref}
-                        color="var(--ng-btn-sky)"
-                        fill="var(--color-primary)"
-                        textColor="var(--color-primary-content)"
-                        filled
+                        color="var(--pm-primary-container)"
+                        fill="var(--pm-primary-container)"
                         xl
                         block
+                        onDark
                         className="mt-auto"
                     >
                         {pricingTeaser.monthlyCtaLabel}

@@ -147,12 +147,12 @@ export default function ServiceDetailModal({ service, onClose }: ServiceDetailMo
                                         Service module{" "}
                                         {String(serviceModuleIndex(service.id)).padStart(2, "0")}
                                     </span>
-                                    <h1
+                                    <h2
                                         id={titleId}
                                         className={`mb-6 text-4xl leading-[0.95] font-black tracking-tighter sm:text-5xl md:text-6xl ${headline}`}
                                     >
                                         {service.title}
-                                    </h1>
+                                    </h2>
                                     <p
                                         id={descId}
                                         className="max-w-md text-lg leading-relaxed"
@@ -202,9 +202,7 @@ export default function ServiceDetailModal({ service, onClose }: ServiceDetailMo
                                     <PixelCtaLink
                                         href="/contact"
                                         color="var(--ng-btn-coral)"
-                                        fill="var(--ng-btn-fill)"
-                                        textColor="var(--ng-btn-text)"
-                                        filled
+                                        fill="var(--ng-btn-coral)"
                                         xl
                                         className="group"
                                         onClick={() => dialogRef.current?.close()}

@@ -94,7 +94,7 @@ export default function BiographyHero({
                         priority
                     />
                 </div>
-                <div className="border-(--pm-outline-variant)/15 absolute -right-2 -bottom-6 z-20 rounded-2xl border bg-(--pm-white) p-6 shadow-xl dark:bg-base-100 md:-right-6">
+                <div className="border-(--pm-outline-variant)/15 absolute -right-2 -bottom-6 z-20 rounded-2xl border bg-(--pm-card) p-6 shadow-xl md:-right-6">
                     <div className="flex items-center gap-4">
                         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-secondary-content">
                             <CodeBracketIcon

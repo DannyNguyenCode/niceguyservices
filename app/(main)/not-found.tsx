@@ -29,15 +29,14 @@ export default function NotFound() {
         <PixelCtaLink
           href="/"
           color="var(--ng-btn-coral)"
-          filled
-          pill
+          fill="var(--ng-btn-coral)"
         >
           Back to home
         </PixelCtaLink>
         <PixelCtaLink
           href="/contact"
           color="var(--ng-btn-sky)"
-          pill
+          fill="var(--ng-btn-sky)"
         >
           Contact
         </PixelCtaLink>

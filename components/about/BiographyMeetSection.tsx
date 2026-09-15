@@ -17,7 +17,7 @@ export default function BiographyMeetSection({
     return (
         <section className="bg-(--pm-surface-low) py-24">
             <div className={sitePageContentClass}>
-                <div className="flex flex-col overflow-hidden rounded-[2.5rem] border border-(--pm-outline-variant)/15 bg-(--pm-white) shadow-xl dark:bg-base-100 md:flex-row">
+                <div className="flex flex-col overflow-hidden rounded-[2.5rem] border border-(--pm-outline-variant)/15 bg-(--pm-card) shadow-xl md:flex-row">
                     <div className="flex flex-col justify-center p-10 md:w-1/3 md:p-12">
                         <div className="font-pixel mb-4 text-xs font-black capitalize tracking-[0.2em] text-(--pm-on-surface-variant)">
                             {eyebrow}

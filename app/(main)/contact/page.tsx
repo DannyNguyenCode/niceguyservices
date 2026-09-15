@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
 import Contact from "@/components/Contact";
-import { absoluteUrl } from "@/lib/siteConfig";
+import { createPageMetadata } from "@/lib/pageMetadata";
 
-export const metadata: Metadata = {
-    title: { absolute: "Contact Nice Guy Web Design | Web Developer for Small Businesses in Toronto" },
+export const metadata: Metadata = createPageMetadata({
+    title: "Contact Nice Guy Web Design | Toronto Web Designer",
     description:
         "Get in touch with Nice Guy Web Design to discuss your website project. Serving small businesses in Toronto and the GTA with fast, custom website design and ongoing support.",
-    alternates: {
-        canonical: absoluteUrl("/contact"),
-    },
-};
+    path: "/contact",
+    absoluteTitle: true,
+});
 
 export default function ContactPage() {
     return <Contact />;

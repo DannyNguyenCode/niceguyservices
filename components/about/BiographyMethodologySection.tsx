@@ -55,7 +55,7 @@ export default function BiographyMethodologySection({
                         return (
                             <div
                                 key={item.heading}
-                                className="rounded-2xl border border-(--pm-outline-variant)/15 bg-(--pm-white) p-8 shadow-sm transition-transform duration-300 hover:-translate-y-2 dark:bg-base-100"
+                                className="rounded-2xl border border-(--pm-outline-variant)/15 bg-(--pm-card) p-8 shadow-sm transition-transform duration-300 hover:-translate-y-2"
                             >
                                 <div
                                     className={`mb-6 flex h-12 w-12 items-center justify-center rounded-xl ${methodologyIconWrapClass[i % methodologyIconWrapClass.length]}`}

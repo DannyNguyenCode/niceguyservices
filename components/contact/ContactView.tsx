@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { useState } from "react";
-import { sitePageContentClass, pixelPageHeading, pricingLayoutHeroHeadline as heroHeadline, pricingLayoutHeadline as headline, responsiveHeroBodyClass, responsivePageHeroTitleClass } from "@/components/pricing/pricingLayoutConstants";
+import { sitePageContentClass, pixelPageHeading, pricingLayoutHeroHeadline as heroHeadline, pricingLayoutHeadline as headline, responsivePageHeroTitleClass } from "@/components/pricing/pricingLayoutConstants";
 import PixelKeyword from "@/components/ui/PixelKeyword";
 import ContactForm from "./ContactForm";
 import ThankYouModal from "./ThankYouModal";
@@ -156,7 +156,7 @@ export default function ContactView() {
             className="min-h-[max(884px,100dvh)] bg-(--pm-surface) font-pm-body text-(--pm-on-surface)"
             data-contact-page="modern"
         >
-            <main className={`relative pb-24 pt-28 md:pt-32 ${sitePageContentClass}`}>
+            <div className={`relative pb-24 pt-28 md:pt-32 ${sitePageContentClass}`}>
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-[480px] ng-grid-bg opacity-30" aria-hidden />
                 <header className="relative z-10 mb-12 flex min-w-0 flex-col items-baseline gap-4 overflow-hidden sm:mb-16 md:mb-24 md:flex-row md:gap-6">
                     <h1
@@ -285,7 +285,7 @@ export default function ContactView() {
                         <div className="group relative h-64 overflow-hidden rounded-xl">
                             <Image
                                 src={DECOR_IMG}
-                                alt="Decorative abstract technology imagery"
+                                alt=""
                                 fill
                                 className="object-cover opacity-40 brightness-125 grayscale transition-transform duration-700 group-hover:scale-105"
                                 sizes="(max-width: 1024px) 100vw, 33vw"
@@ -306,7 +306,7 @@ export default function ContactView() {
                         </div>
                     </aside>
                 </div>
-            </main>
+            </div>
 
             <ThankYouModal open={thankOpen} onClose={() => setThankOpen(false)} />
         </div>

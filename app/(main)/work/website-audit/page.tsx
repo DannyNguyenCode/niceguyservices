@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
 import WebsiteAuditLandingPage from "@/components/websiteAudit/WebsiteAuditLandingPage";
-import { absoluteUrl } from "@/lib/siteConfig";
+import { createPageMetadata } from "@/lib/pageMetadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
     title: "Website Audit",
     description:
         "Preview the Nice Guy Web Design website audit experience with placeholder submission, methodology, and follow-up report flow.",
-    alternates: {
-        canonical: absoluteUrl("/work/website-audit"),
-    },
-};
+    path: "/work/website-audit",
+});
 
 export default function WebsiteAuditPage() {
     return <WebsiteAuditLandingPage />;

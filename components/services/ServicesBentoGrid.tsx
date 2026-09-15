@@ -237,10 +237,9 @@ export default function ServicesBentoGrid({ onOpenService }: ServicesBentoGridPr
                     </div>
                     <PixelCtaLink
                         href={pricingContent.meta.contactHref}
-                        color="var(--ng-btn-sky)"
-                        fill="var(--ng-btn-fill)"
-                        textColor="var(--ng-btn-text)"
-                        filled
+                        color="var(--pm-primary-container)"
+                        fill="var(--pm-primary-container)"
+                        onDark
                         xl
                         lg
                         className="z-10 w-full md:w-auto"

@@ -56,6 +56,8 @@ export default function WebsiteAuditLandingPage() {
                             <PixelCtaLink
                                 href="#website-audit-form"
                                 color="var(--ng-btn-coral)"
+                                pill={false}
+                                hoverFill={false}
                                 className="group"
                             >
                                 Start the audit
@@ -67,6 +69,8 @@ export default function WebsiteAuditLandingPage() {
                             <PixelCtaLink
                                 href="/contact"
                                 color="var(--ng-btn-sky)"
+                                pill={false}
+                                hoverFill={false}
                                 className="group"
                             >
                                 Talk about your website

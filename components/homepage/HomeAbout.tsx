@@ -59,10 +59,7 @@ export default function HomeAbout() {
                     <PixelCtaLink
                         href={aboutTeaser.meetCtaHref}
                         color="var(--ng-btn-sky)"
-                        fill="var(--pm-on-surface)"
-                        textColor="var(--pm-surface)"
-                        filled
-                        pill
+                        fill="var(--ng-btn-sky)"
                         className="group"
                     >
                         {aboutTeaser.meetCtaLabel}

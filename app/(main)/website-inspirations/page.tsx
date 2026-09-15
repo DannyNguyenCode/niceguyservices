@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
 import TemplatesPage from "@/components/templates/TemplatesPage";
-import { absoluteUrl } from "@/lib/siteConfig";
+import { createPageMetadata } from "@/lib/pageMetadata";
 
-export const metadata: Metadata = {
-    title: "Website Inspirations | Nice Guy Web Design",
+export const metadata: Metadata = createPageMetadata({
+    title: "Website Inspiration Demos",
     description:
         "Browse branded layout demos by stack — e-commerce with cart and checkout, services sites, and portfolio showcases from Nice Guy Web Design.",
-    alternates: {
-        canonical: absoluteUrl("/website-inspirations"),
-    },
-};
+    path: "/website-inspirations",
+});
 
 export default function WebsiteInspirationsRoutePage() {
     return <TemplatesPage />;
